@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{0c37cea1-c75f-4571-b317-755552badfc5}</ProjectGuid>
+    <RootNamespace>OpenGLGame</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>OpenGL</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GL3W;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\MyProject\ガンダム\OpenGLGame\OpenGLGame\GreenEngine\include;C:\MyProject\ガンダム\OpenGLGame\OpenGLGame\pacakages\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GL3W;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\MyProject\ガンダム\OpenGLGame\OpenGLGame\GreenEngine\include;C:\MyProject\ガンダム\OpenGLGame\OpenGLGame\pacakages\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GL3W;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\MyProject\OpenGL\OpenGLGame\Src\Engine\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GL3W;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\MyProject\ガンダム\OpenGLGame\OpenGLGame\GreenEngine\include;C:\MyProject\ガンダム\OpenGLGame\OpenGLGame\pacakages\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application\Src\Application.h" />
+    <ClInclude Include="Application\Src\BaseMS.h" />
+    <ClInclude Include="Application\Src\CameraMove.h" />
+    <ClInclude Include="Application\Src\EnemyMs.h" />
+    <ClInclude Include="Application\Src\FGEngineSub.h" />
+    <ClInclude Include="Application\Src\Gundam.h" />
+    <ClInclude Include="Application\Src\MagunamBullet.h" />
+    <ClInclude Include="Application\Src\MainScene.h" />
+    <ClInclude Include="Application\Src\PlayerController.h" />
+    <ClInclude Include="Application\Src\PlayerManager.h" />
+    <ClInclude Include="Application\Src\SableAttack.h" />
+    <ClInclude Include="Application\Src\TitleScene.h" />
+    <ClInclude Include="FGEngine\Src\FGEngine.h" />
+    <ClInclude Include="FGEngine\Src\My\AabbCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\AudioSettings.h" />
+    <ClInclude Include="FGEngine\Src\My\BoxCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\box_mesh.h" />
+    <ClInclude Include="FGEngine\Src\My\BufferObject.h" />
+    <ClInclude Include="FGEngine\Src\My\Camera.h" />
+    <ClInclude Include="FGEngine\Src\My\ChracterMovement.h" />
+    <ClInclude Include="FGEngine\Src\My\Collider.h" />
+    <ClInclude Include="FGEngine\Src\My\Collision.h" />
+    <ClInclude Include="FGEngine\Src\My\Color.h" />
+    <ClInclude Include="FGEngine\Src\My\Component.h" />
+    <ClInclude Include="FGEngine\Src\My\ComponentHelper.h" />
+    <ClInclude Include="FGEngine\Src\My\Debug.h" />
+    <ClInclude Include="FGEngine\Src\My\EasyAudio.h" />
+    <ClInclude Include="FGEngine\Src\My\Engine.h" />
+    <ClInclude Include="FGEngine\Src\My\EngineSystemFrd.h" />
+    <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h" />
+    <ClInclude Include="FGEngine\Src\My\GameObject.h" />
+    <ClInclude Include="FGEngine\Src\My\GamePad.h" />
+    <ClInclude Include="FGEngine\Src\My\GltfAnimatednMeshRenderer.h" />
+    <ClInclude Include="FGEngine\Src\My\GltfMesh.h" />
+    <ClInclude Include="FGEngine\Src\My\GltfMeshRenderer.h" />
+    <ClInclude Include="FGEngine\Src\My\Image.h" />
+    <ClInclude Include="FGEngine\Src\My\ImGuiUI.h" />
+    <ClInclude Include="FGEngine\Src\My\Input.h" />
+    <ClInclude Include="FGEngine\Src\My\InputHelper.h" />
+    <ClInclude Include="FGEngine\Src\My\KeyCode.h" />
+    <ClInclude Include="FGEngine\Src\My\Light.h" />
+    <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h" />
+    <ClInclude Include="FGEngine\Src\My\Material.h" />
+    <ClInclude Include="FGEngine\Src\My\Mathf.h" />
+    <ClInclude Include="FGEngine\Src\My\Matrix3x3.h" />
+    <ClInclude Include="FGEngine\Src\My\Matrix4x4.h" />
+    <ClInclude Include="FGEngine\Src\My\MatrixFrd.h" />
+    <ClInclude Include="FGEngine\Src\My\MatrixPoint.h" />
+    <ClInclude Include="FGEngine\Src\My\Mesh.h" />
+    <ClInclude Include="FGEngine\Src\My\MeshRenderer.h" />
+    <ClInclude Include="FGEngine\Src\My\Object.h" />
+    <ClInclude Include="FGEngine\Src\My\Package\Glad.h" />
+    <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h" />
+    <ClInclude Include="FGEngine\Src\My\Package\Nlohmann.h" />
+    <ClInclude Include="FGEngine\Src\My\plane_xy_mesh.h" />
+    <ClInclude Include="FGEngine\Src\My\PrimitiveType.h" />
+    <ClInclude Include="FGEngine\Src\My\ProgramObject.h" />
+    <ClInclude Include="FGEngine\Src\My\Quaternion.h" />
+    <ClInclude Include="FGEngine\Src\My\Random.h" />
+    <ClInclude Include="FGEngine\Src\My\Renderer.h" />
+    <ClInclude Include="FGEngine\Src\My\Scene.h" />
+    <ClInclude Include="FGEngine\Src\My\SceneManager.h" />
+    <ClInclude Include="FGEngine\Src\My\Singleton.h" />
+    <ClInclude Include="FGEngine\Src\My\SphereCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\Text.h" />
+    <ClInclude Include="FGEngine\Src\My\Texture.h" />
+    <ClInclude Include="FGEngine\Src\My\Time.h" />
+    <ClInclude Include="FGEngine\Src\My\Transform.h" />
+    <ClInclude Include="FGEngine\Src\My\VecMath.h" />
+    <ClInclude Include="FGEngine\Src\My\Vector2.h" />
+    <ClInclude Include="FGEngine\Src\My\Vector3.h" />
+    <ClInclude Include="FGEngine\Src\My\Vector4.h" />
+    <ClInclude Include="FGEngine\Src\My\VectorFrd.h" />
+    <ClInclude Include="FGEngine\Src\My\VectorPoint.h" />
+    <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h" />
+    <ClInclude Include="FGEngine\Src\Package\glad\include\glad\glad.h" />
+    <ClInclude Include="FGEngine\Src\Package\glad\include\KHR\khrplatform.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imgui.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_impl_glfw.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_impl_opengl3.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_internal.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imstb_rectpack.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imstb_textedit.h" />
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imstb_truetype.h" />
+    <ClInclude Include="FGEngine\Src\Package\nlohmann\json.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application\Src\Application.cpp" />
+    <ClCompile Include="Application\Src\CameraMove.cpp" />
+    <ClCompile Include="Application\Src\EnemyMs.cpp" />
+    <ClCompile Include="Application\Src\Gundam.cpp" />
+    <ClCompile Include="Application\Src\MagunamBullet.cpp" />
+    <ClCompile Include="Application\Src\MainScene.cpp" />
+    <ClCompile Include="Application\Src\PlayerController.cpp" />
+    <ClCompile Include="Application\Src\PlayerManager.cpp" />
+    <ClCompile Include="Application\Src\SableAttack.cpp" />
+    <ClCompile Include="Application\Src\TitleScene.cpp" />
+    <ClCompile Include="FGEngine\Src\Main.cpp" />
+    <ClCompile Include="FGEngine\Src\My\BufferObject.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Collision.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Debug.cpp" />
+    <ClCompile Include="FGEngine\Src\My\EasyAudio.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Engine.cpp" />
+    <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GameObject.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GamePad.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GltfAnimatedMeshRenderer.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GltfMesh.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GltfMeshRenderer.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Image.cpp" />
+    <ClCompile Include="FGEngine\Src\My\ImGuiUI.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Input.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Light.cpp" />
+    <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Mathf.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Matrix4x4.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Mesh.cpp" />
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp" />
+    <ClCompile Include="FGEngine\Src\My\ProgramObject.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Quaternion.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Random.cpp" />
+    <ClCompile Include="FGEngine\Src\My\SceneManager.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Text.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Texture.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Time.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Vector2.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Vector3.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Vector4.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\glad\src\glad.c" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_impl_glfw.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_widgets.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\glfw.3.4.0\build\native\glfw.targets" Condition="Exists('..\packages\glfw.3.4.0\build\native\glfw.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\glfw.3.4.0\build\native\glfw.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\glfw.3.4.0\build\native\glfw.targets'))" />
+  </Target>
+</Project>
