@@ -41,6 +41,7 @@ bool MainScene::Initialize(FGEngine::Engine& engine)
             auto renderer = load->AddComponent<MeshRenderer>();
 
             renderer->mesh = engine.GetStaticMesh("Application/Res/Map/Load.obj");
+            renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->mesh->materials[0]->texBaseColor = engine.GetTexture("FGEngine/Res/Texture/white.tga");
         }
 

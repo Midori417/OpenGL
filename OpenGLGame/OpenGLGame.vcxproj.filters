@@ -399,6 +399,9 @@
     <ClInclude Include="FGEngine\Src\My\EngineSystemFrd.h">
       <Filter>FGEngine\My</Filter>
     </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ObjectHelper.h">
+      <Filter>FGEngine\My\Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -547,6 +550,9 @@
     </ClCompile>
     <ClCompile Include="Application\Src\Application.cpp">
       <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Object.cpp">
+      <Filter>FGEngine\My\Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -8,10 +8,6 @@
 #include "Component.h"
 #include "Collider.h"
 #include "Renderer.h"
-#include "Collision.h"
-#include "Texture.h"
-#include "VecMath.h"
-#include "Color.h"
 
 #include <string>
 #include <vector>
@@ -23,9 +19,6 @@ namespace FGEngine
 
 	// 先行宣言
 	class Engine;
-	class GameObject;
-	using GameObjectPtr = std::shared_ptr<GameObject>;
-	using GameObjectList = std::vector<GameObjectPtr>;
 	class Transform;
 	using TransformPtr = std::shared_ptr<Transform>;
 
@@ -170,7 +163,6 @@ namespace FGEngine
 
 		Engine* engine = nullptr;				// エンジンのアドレス
 		bool isActive = true;
-		bool isDestroyed = false;				// 死亡フラグ
 		GameObject* parent = nullptr;			// 親オブジェクト
 		std::vector<GameObject*> children;		// 子オブジェクト
 		std::vector<ComponentPtr> components;	// コンポーネント配列
@@ -183,19 +175,7 @@ namespace FGEngine
 		{
 			return engine;
 		}
-
-		// ゲームオブジェクトをエンジンから削除する
-		void Destory()
-		{
-			isDestroyed = true;
-		}
-
-		// ゲームオブジェクトが破棄されているかを取得 破棄されていたtrue
-		bool IsDestroyed() const
-		{
-			return isDestroyed;
-		}
-
 	};
+	using GameObjectList = std::vector<GameObjectPtr>;
 }
 #endif // !GAMEOBJECT_H_INCLUDED

@@ -3,6 +3,7 @@
 */
 #ifndef COMPONENT_H_INCLUDED
 #define COMPONENT_H_INCLUDED
+#include "Object.h"
 #include <memory>
 
 namespace FGEngine
@@ -18,7 +19,7 @@ namespace FGEngine
 	/**
 	* コンポーネントの基底クラス
 	*/
-	class Component
+	class Component : public Object
 	{
 		friend GameObject;
 	public:
@@ -29,16 +30,6 @@ namespace FGEngine
 		// コンポーネントの所有者
 		GameObject* GetGameObject() const {
 			return gameObject;
-		}
-
-		// コンポーネントをゲームオブジェクトから削除する
-		void Desotroy() {
-			isDestroyed = true;
-		}
-
-		// コンポーネントが破棄予定か取得する trueだと破棄予定
-		bool IsDestroyed() const {
-			return isDestroyed;
 		}
 
 		// 自身の所有者のコンポーネントを取得
@@ -80,7 +71,6 @@ namespace FGEngine
 		GameObject* gameObject = nullptr; // コンポーネントの所有者
 		bool isActive = true;
 		bool isStarted = false;		// Startが実行されたらtrueになる
-		bool isDestroyed = false;	// Destroyが実行されたらtrueになる
 	};
 }
 #endif // !COMPONENT_H_INCLUDED

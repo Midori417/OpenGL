@@ -16,7 +16,7 @@ void SableAttack::Update()
 	destroyTimer += Time::deltaTime();
 	if (destroyTimer > destoryTime)
 	{
-		GetGameObject()->Destory();
+		Destory(this);
 	}
 }
 
@@ -32,7 +32,7 @@ void SableAttack::OnCollision(const ComponentPtr& self, const ComponentPtr& othe
 		if (otherMs->GetParameter().teum != teum)
 		{
 			otherMs->Damage(atk);
-			GetGameObject()->Destory();
+			Destory(this);
 		}
 	}
 

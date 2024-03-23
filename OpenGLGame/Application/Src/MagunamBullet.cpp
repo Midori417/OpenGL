@@ -48,7 +48,7 @@ void MagunamBullet::Update()
 	destoryTimer -= Time::deltaTime();
 	if (destoryTimer <= 0)
 	{
-		GetGameObject()->Destory();
+		Destory(this);
 	}
 }
 
@@ -63,7 +63,7 @@ void MagunamBullet::OnCollision(const ComponentPtr& self, const ComponentPtr& ot
 		if (otherMs->GetParameter().teum != teum)
 		{
 			otherMs->Damage(atk);
-			GetGameObject()->Destory();
+			Destory(this);
 		}
 	}
 }

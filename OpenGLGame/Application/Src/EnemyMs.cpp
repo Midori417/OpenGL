@@ -39,7 +39,7 @@ void EnemyMs::Update()
 {
 	if (parameter.hp <= 0)
 	{
-		GetGameObject()->Destory();
+		Destory(this);
 	}
 }
 
