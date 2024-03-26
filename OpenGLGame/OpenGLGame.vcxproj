@@ -191,6 +191,7 @@
     <ClInclude Include="FGEngine\Src\My\MeshRenderer.h" />
     <ClInclude Include="FGEngine\Src\My\Object.h" />
     <ClInclude Include="FGEngine\Src\My\ObjectHelper.h" />
+    <ClInclude Include="FGEngine\Src\My\ObjectManager.h" />
     <ClInclude Include="FGEngine\Src\My\Package\Glad.h" />
     <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h" />
     <ClInclude Include="FGEngine\Src\My\Package\Nlohmann.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="FGEngine\Src\My\Mesh.cpp" />
     <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Object.cpp" />
+    <ClCompile Include="FGEngine\Src\My\ObjectManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\ProgramObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Quaternion.cpp" />
     <ClCompile Include="FGEngine\Src\My\Random.cpp" />

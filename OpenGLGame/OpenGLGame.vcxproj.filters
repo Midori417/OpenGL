@@ -136,6 +136,9 @@
     <Filter Include="Application\Component\Camera">
       <UniqueIdentifier>{3db255cc-90db-4e8c-b2bd-1b195128cef7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FGEngine\My\Object\ObjectManager">
+      <UniqueIdentifier>{c3361a10-f6ab-4464-8f58-78a9f3ec8940}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
@@ -402,6 +405,9 @@
     <ClInclude Include="FGEngine\Src\My\ObjectHelper.h">
       <Filter>FGEngine\My\Object</Filter>
     </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ObjectManager.h">
+      <Filter>FGEngine\My\Object\ObjectManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -553,6 +559,9 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Object.cpp">
       <Filter>FGEngine\My\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ObjectManager.cpp">
+      <Filter>FGEngine\My\Object\ObjectManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
