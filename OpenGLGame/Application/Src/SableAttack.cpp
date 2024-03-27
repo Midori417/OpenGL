@@ -20,20 +20,20 @@ void SableAttack::Update()
 	}
 }
 
-void SableAttack::OnCollision(const ComponentPtr& self, const ComponentPtr& other)
+void SableAttack::OnCollisionEnter(const CollisionPtr collision)
 {
-	if (other->GetGameObject()->tag != "MS")
-	{
-		return;
-	}
-	auto otherMs = other->GetComponent<BaseMS>();
-	if (otherMs)
-	{
-		if (otherMs->GetParameter().teum != teum)
-		{
-			otherMs->Damage(atk);
-			Destory(this);
-		}
-	}
+	//if (other->GetGameObject()->tag != "MS")
+	//{
+	//	return;
+	//}
+	//auto otherMs = other->GetComponent<BaseMS>();
+	//if (otherMs)
+	//{
+	//	if (otherMs->GetParameter().teum != teum)
+	//	{
+	//		otherMs->Damage(atk);
+	//		Destory(this);
+	//	}
+	//}
 
 }

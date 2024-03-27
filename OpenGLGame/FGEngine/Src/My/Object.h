@@ -23,7 +23,9 @@ namespace FGEngine
 	class Object
 	{
 	public:
-
+		
+		friend class ObjectManager;
+		
 		// コンストラクタ・デストラクタ
 		Object() = default;
 		virtual ~Object() = default;
@@ -65,7 +67,8 @@ namespace FGEngine
 		/**
 		* ゲームオブジェクトを生成する
 		*/
-		GameObjectPtr Instantate(const std::string& name, const TransformPtr& transform);
+		GameObjectPtr Instantate(const std::string& name);
+		GameObjectPtr Instantate(const std::string& name, const Transform& transform);
 		GameObjectPtr Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation);
 
 		/**
@@ -84,15 +87,16 @@ namespace FGEngine
 		*/
 		bool IsDestroyed() const
 		{
-			return isDestoryed;
+			return isDestroyed;
 		}
 
 	private:
 
 		std::string name;	// オブジェクトの名前
-		bool isDestoryed;	// 破壊予定か
-		float destoryTime = 0;	// 破壊時間
+		bool isDestroyed;	// 破壊予定か
 		HideFlag hideFlag = HideFlag::None;	// オブジェクトの状態
+		float destroyTime = 0;	// 破壊時間
+		
 
 	};
 	using ObjectPtr = std::shared_ptr<Object>;

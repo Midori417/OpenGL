@@ -17,14 +17,9 @@ using namespace FGEngine::SceneSystem;
 int Application::Initialize()
 {
 	// エンジンを取得
-	auto engine = Engine::GetInstance();
+	auto engine = EngineCore::GetInstance();
 
 	// OBJファイルを読み込む
-	engine->LoadObj("Application/Res/Gundam/Model/MagunamBullet.obj");
-	engine->LoadObj("Application/Res/Map/Load.obj");
-	engine->LoadObj("Application/Res/Map/Biru01.obj");
-	engine->LoadObj("Application/Res/Map/Biru02.obj");
-	engine->LoadObj("Application/Res/Map/Biru03.obj");
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");

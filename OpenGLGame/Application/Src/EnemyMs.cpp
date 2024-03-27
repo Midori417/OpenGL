@@ -15,7 +15,7 @@ void EnemyMs::Awake()
 	auto renderer = GetGameObject()->AddComponent<GltfAnimatedMeshRenderer>();
 	renderer->fileBuffer = engine->GetGltfFileBuffer();
 	renderer->file = engine->LoadGltf("Application/Res/Gundam/Model/GundamGL.gltf");
-	GetGameObject()->AddComponent<CharacterMovement>();
+	GetGameObject()->AddComponent<Rigidbody>();
 }
 
 /**
@@ -41,10 +41,4 @@ void EnemyMs::Update()
 	{
 		Destory(this);
 	}
-}
-
-
-
-void EnemyMs::OnCollision(const ComponentPtr& self, const ComponentPtr& other)
-{
 }

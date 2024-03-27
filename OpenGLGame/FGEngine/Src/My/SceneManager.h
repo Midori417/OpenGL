@@ -3,7 +3,6 @@
 */
 #ifndef SCENEMANAGER_H_INCLUDED
 #define SCENEMANAGER_H_INCLUDED
-#include "EngineSystemFrd.h"
 #include "Singleton.h"
 #include "Scene.h"
 #include <unordered_map>
@@ -23,7 +22,7 @@ namespace FGEngine
 		private:
 			
 			friend Singleton<SceneManager>;
-			friend Engine;
+			friend class EngineCore;
 
 			// コンストラクタ
 			SceneManager() = default;
@@ -39,7 +38,7 @@ namespace FGEngine
 			/**
 			* シーンマネージャーの更新
 			*/
-			void Update(Engine& engine);
+			void Update();
 
 		public:
 

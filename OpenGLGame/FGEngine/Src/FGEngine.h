@@ -55,7 +55,7 @@
 // ===================
 
 // RGBA
-#include "My/Collider.h"
+#include "My/Color.h"
 
 
 // ===================
@@ -89,7 +89,6 @@
 // キー一覧
 #include "My/KeyCode.h"
 
-
 // コントローラー入力
 #include "My/GamePad.h"
 
@@ -104,54 +103,6 @@
 
 // ゲームオブジェクト
 #include "My/GameObject.h"
-
-// コンポーネント
-#include "My/Component.h"
-#include "My/ComponentHelper.h"
-
-// 位置回転拡大縮小コンポーネント
-#include "My/Transform.h"
-
-// 描画基底コンポーネント
-#include "My/Renderer.h"
-
-// ライトコンポーネント
-#include "My/Light.h"
-
-// カメラコンポーネント
-#include "My/Camera.h"
-
-// コライダー基底コンポーネント
-#include "My/Collider.h"
-
-// AABBコライダー
-#include "My/AabbCollider.h"
-
-// Boxコライダー
-#include "My/BoxCollider.h"
-
-// 球体コライダー
-#include "My/SphereCollider.h"
-
-// ImGuiを使ったUI基底コンポーネント
-#include "My/ImGuiUI.h"
-
-// 画像コンポーネント
-#include "My/Image.h"
-
-// テキストコンポーネント
-#include "My/Text.h"
-
-// Obj描画コンポーネント
-#include "My/MeshRenderer.h"
-
-// GLTF描画コンポーネント
-#include "My/GltfMeshRenderer.h"
-
-// スケルタル描画コンポーネント
-#include "My/GltfAnimatednMeshRenderer.h"
-
-#include "My/ChracterMovement.h"
 
 // マテリアル
 #include "My/Material.h"

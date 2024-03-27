@@ -8,11 +8,11 @@ namespace FGEngine
 {
 
 	// æséŒ¾
-	class Engine;
+	class EngineCore;
 
 	class Time
 	{
-		friend Engine;
+		friend EngineCore;
 
 	public:
 

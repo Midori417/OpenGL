@@ -13,7 +13,7 @@ class Application : public FGEngine::Singleton<Application>
 private:
 
 	friend FGEngine::Singleton<Application>;
-	friend FGEngine::Engine;
+	friend FGEngine::EngineCore;
 
 	// コンストラクタ
 	Application() = default;

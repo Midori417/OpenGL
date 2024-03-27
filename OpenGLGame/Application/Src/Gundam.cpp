@@ -30,7 +30,7 @@ void Gundam::Awake()
 	renderer->file = engine->LoadGltf("Application/Res/Gundam/Model/GundamGL.gltf");
 
 	// キャラクタームーブメントを追加
-	characterMovement = GetGameObject()->AddComponent<CharacterMovement>();
+	characterMovement = GetGameObject()->AddComponent<Rigidbody>();
 
 	shotParameter.iconfileName = "Application/Res/Gundam/UI/BeumMagunamIcon.tga";
 	shotParameter.maxAmo = 7;

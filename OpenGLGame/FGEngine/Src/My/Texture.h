@@ -16,7 +16,7 @@ namespace FGEngine
 	*/
 	class Texture
 	{
-		friend class Engine;
+		friend class EngineCore;
 	public:
 
 		enum class Usage

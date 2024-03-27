@@ -3,7 +3,7 @@
 */
 #include "Object.h"
 #include "GameObject.h"
-#include "Transform.h"
+#include "ObjectManager.h"
 
 namespace FGEngine
 {
@@ -35,15 +35,31 @@ namespace FGEngine
 
 	/**
 	* ゲームオブジェクトを生成する
+	* 
+	* @param name　オブジェクトの名前
+	* 
+	* @return 生成したオブジェクト
+	*/
+	GameObjectPtr Object::Instantate(const std::string& name)
+	{
+		auto obj = ObjectManager::GetInstance()->CreateGameObject(name);
+
+		return obj;
+	}
+
+	/**
+	* ゲームオブジェクトを生成する
 	*
 	* @param name		オブジェクトの名前
 	* @param transform	オブジェクトのTransform
 	*
 	* @return 生成したオブジェクト
 	*/
-	GameObjectPtr Object::Instantate(const std::string& name, const TransformPtr& transform)
+	GameObjectPtr Object::Instantate(const std::string& name, const Transform& transform)
 	{
-		return nullptr;
+		auto obj = ObjectManager::GetInstance()->CreateGameObject(name, transform);
+
+		return obj;
 	}
 
 	/**
@@ -57,7 +73,9 @@ namespace FGEngine
 	*/
 	GameObjectPtr Object::Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation)
 	{
-		return nullptr;
+		auto obj = ObjectManager::GetInstance()->CreateGameObject(name, position, rotation);
+
+		return obj;
 	}
 
 	/**
@@ -69,15 +87,16 @@ namespace FGEngine
 	void Object::Destory(Object* obj, float t)
 	{
 		// すでに破棄予定
-		if (obj->isDestoryed)
+		if (obj->isDestroyed)
 		{
 			return;
 		}
 
 		// 破棄予定にする
-		obj->isDestoryed = true;
+		obj->isDestroyed = true;
+
 		// 破棄時間を設定
-		obj->destoryTime = t;
+		obj->destroyTime = t;
 	}
 
 }

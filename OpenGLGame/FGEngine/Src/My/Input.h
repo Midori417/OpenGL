@@ -13,7 +13,7 @@
 namespace FGEngine
 {
 	// æséŒ¾
-	class Engine;
+	class EngineCore;
 	struct Vector2;
 
 	/// <summary>
@@ -21,7 +21,7 @@ namespace FGEngine
 	/// </summary>
 	class Input
 	{
-		friend Engine;
+		friend EngineCore;
 	public:
 
 	private:

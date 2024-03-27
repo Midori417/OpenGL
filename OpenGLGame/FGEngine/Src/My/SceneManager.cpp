@@ -34,23 +34,23 @@ namespace FGEngine::SceneSystem
 	/**
 	* シーンマネージャーの更新
 	*/
-	void SceneManager::Update(Engine& engine)
+	void SceneManager::Update()
 	{
 		// シーンの切り替え
 		if (nextScene)
 		{
 			if (scene)
 			{
-				scene->Finalize(engine);
+				scene->Finalize();
 			}
-			nextScene->Initialize(engine);
+			nextScene->Initialize();
 			scene = std::move(nextScene);
 		}
 
 		// シーンの更新
 		if (scene)
 		{
-			scene->Update(engine);
+			scene->Update();
 		}
 	}
 

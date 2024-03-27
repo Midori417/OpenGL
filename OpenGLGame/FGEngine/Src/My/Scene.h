@@ -3,7 +3,6 @@
 */
 #ifndef SCENE_H_INCLUDED
 #define SCENE_H_INCLUDED
-#include "EngineSystemFrd.h"
 #include <memory>
 #include <string>
 
@@ -21,7 +20,7 @@ namespace FGEngine
 		{
 		public:
 
-			friend SceneManager;
+			friend class SceneManager;
 
 			// コンストラクタ・デストラクタ
 			Scene() = default;
@@ -58,7 +57,7 @@ namespace FGEngine
 			* @retval true	初期化成功
 			* @retval false	初期化失敗
 			*/
-			virtual bool Initialize(Engine& engine)
+			virtual bool Initialize()
 			{
 				return true;
 			}
@@ -68,14 +67,14 @@ namespace FGEngine
 			*
 			* @param engine エンジン
 			*/
-			virtual void Update(Engine& engine) {}
+			virtual void Update() {}
 
 			/**
 			* シーンの終了
 			*
 			* @param engine エンジン
 			*/
-			virtual void Finalize(Engine& engine) {}
+			virtual void Finalize() {}
 
 
 		private:

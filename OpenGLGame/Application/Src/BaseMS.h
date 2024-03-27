@@ -41,7 +41,7 @@ public:
 /**
 * すべてのMSの基底コンポーネント
 */
-class BaseMS : public Component
+class BaseMS : public MonoBehaviour
 {
 public:
 

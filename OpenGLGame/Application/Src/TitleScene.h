@@ -23,13 +23,13 @@ public:
 private:
 
 	// タイトルシーンの初期化
-	virtual bool Initialize(FGEngine::Engine& engine) override;
+	virtual bool Initialize() override;
 
 	// タイトルシーンの更新
-	virtual void Update(FGEngine::Engine& engine) override;
+	virtual void Update() override;
 
 	// タイトルシーンの終了
-	virtual void Finalize(FGEngine::Engine& engine) override;
+	virtual void Finalize() override;
 
 private:
 

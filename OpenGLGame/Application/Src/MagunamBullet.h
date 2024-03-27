@@ -6,7 +6,7 @@
 #include "FGEngineSub.h"
 using namespace FGEngine;
 
-class MagunamBullet :public Component
+class MagunamBullet :public MonoBehaviour
 {
 public:
 
@@ -17,7 +17,7 @@ public:
 	// === Component基本イベント === //
 	virtual void Awake() override;
 	virtual void Update() override;
-	virtual void OnCollision(const ComponentPtr& self, const ComponentPtr& other) override;
+	virtual void OnCollisionEnter(const CollisionPtr collision) override;
 
 	/**
 	* ターゲットの設定

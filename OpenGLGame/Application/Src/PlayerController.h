@@ -9,7 +9,7 @@ using namespace FGEngine;
 /**
 * プレイヤーコントローラ入力
 */
-class PlayerController : public Component
+class PlayerController : public MonoBehaviour
 {
 public:
 

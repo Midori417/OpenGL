@@ -15,7 +15,7 @@ using CameraMovePtr = std::shared_ptr<CameraMove>;
 /**
 * プレイヤー管理クラス
 */
-class PlayerManager : public Component
+class PlayerManager : public MonoBehaviour
 {
 public:
 

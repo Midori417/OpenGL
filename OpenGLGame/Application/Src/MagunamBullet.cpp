@@ -55,15 +55,15 @@ void MagunamBullet::Update()
 /**
 * Õ“ËƒCƒxƒ“ƒg
 */
-void MagunamBullet::OnCollision(const ComponentPtr& self, const ComponentPtr& other)
+void MagunamBullet::OnCollisionEnter(const CollisionPtr collision)
 {
-	auto otherMs = other->GetComponent<BaseMS>();
-	if (otherMs)
-	{
-		if (otherMs->GetParameter().teum != teum)
-		{
-			otherMs->Damage(atk);
-			Destory(this);
-		}
-	}
+	//auto otherMs = collision->GetComponent<BaseMS>();
+	//if (otherMs)
+	//{
+	//	if (otherMs->GetParameter().teum != teum)
+	//	{
+	//		otherMs->Damage(atk);
+	//		Destory(this);
+	//	}
+	//}
 }

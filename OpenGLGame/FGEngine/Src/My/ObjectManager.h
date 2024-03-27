@@ -35,6 +35,10 @@ namespace FGEngine
 		void Update();
 
 		/**
+		* コンポーネントの更新
+		*/
+
+		/**
 		* ゲームオブジェクトの削除処理
 		*/
 		void DestoryGameObject();
@@ -78,6 +82,8 @@ namespace FGEngine
 	private:
 
 		std::vector<GameObjectPtr> gameObjects;	// ゲームオブジェクト配列
+		bool isDestoryObject = false;			// 破壊オブジェクトが存在するかどうか
+
 	};
 }
 
