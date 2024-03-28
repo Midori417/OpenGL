@@ -115,20 +115,15 @@ namespace FGEngine
 		auto par = this->parent.lock();
 		if (par)
 		{
-			// ©•ª‚ÌˆÊ’u‚ğŒŸõ
-			std::vector<TransformPtr> child;
-			child.reserve(par->GetChildrenCount());
-
-			for (auto c : par->childrens)
-			{
-				child.push_back(std::shared_ptr<Transform>(c));
-			}
 			
 			// ©•ª‚ÌˆÊ’u‚ğŒŸõ
-			auto itr = std::find(child.begin(), child.end(), GetTransform());
-			if (itr != child.end())
+			auto itr = std::find_if(par->childrens.begin(), par->childrens.end(),
+				[this](const std::weak_ptr<Transform>& child) {
+					return child.lock() == this->GetTransform();
+				});
+			if (itr != par->childrens.end())
 			{
-				child.erase(itr);
+				par->childrens.erase(itr);
 			}
 		}
 
