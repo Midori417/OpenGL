@@ -12,7 +12,7 @@
 #include <fstream>
 #include <filesystem>
 
-namespace FGEngine
+namespace FGEngine::MainSystem
 {
 	/**
 	* OpenGLからのメッセージを処理するコールバック関数
@@ -65,6 +65,14 @@ namespace FGEngine
 			ImGui_ImplGlfw_NewFrame();
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui::NewFrame();
+
+			// エディタ画面を描画
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+
 
 			Update();
 
@@ -196,7 +204,6 @@ namespace FGEngine
 	*/
 	void EngineCore::Update()
 	{
-		sceneManager->Update();
 
 		// 時間ライブラリを更新
 		Time::Update();
@@ -204,8 +211,12 @@ namespace FGEngine
 		// 入力ライブラリを更新
 		Input::Update(window);
 
+		// シーンマネージャーを更新
+		sceneManager->Update();
+
 		// アプリケーションを更新する
 		application->Update();
+
 	}
 
 	/**

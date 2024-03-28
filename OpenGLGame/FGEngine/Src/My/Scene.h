@@ -1,8 +1,9 @@
 /**
 * @file Scene.h
 */
-#ifndef SCENE_H_INCLUDED
-#define SCENE_H_INCLUDED
+#ifndef FGENGINE_SCENE_H_INCLUDED
+#define FGENGINE_SCENE_H_INCLUDED
+#include "SystemFrd.h"
 #include <memory>
 #include <string>
 
@@ -20,32 +21,11 @@ namespace FGEngine
 		{
 		public:
 
-			friend class SceneManager;
+			friend SceneManager;
 
 			// コンストラクタ・デストラクタ
 			Scene() = default;
 			virtual ~Scene() = default;
-
-			/**
-			* スカイスフィアマテリアを設定
-			*
-			* @param skyMaterial 設定するマテリアル
-			*/
-			void SetSkyMaterial(MaterialPtr material)
-			{
-				skyMaterial = material;
-			}
-
-			/**
-			* スカイスフィアを取得する
-			* 
-			* @return シーンに設定されているマテリアル
-			*/
-			MaterialPtr GetSkyMaterial() const
-			{
-				return skyMaterial;
-			}
-
 
 		protected:
 
@@ -77,9 +57,10 @@ namespace FGEngine
 			virtual void Finalize() {}
 
 
-		private:
+		public:
 
-			MaterialPtr skyMaterial;	// スカイスフィア用のマテリアル
+			// スカイスフィア用のマテリアル
+			MaterialPtr skyMaterial;	
 
 		};
 		using ScenePtr = std::shared_ptr<Scene>;

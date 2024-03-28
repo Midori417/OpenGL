@@ -9,8 +9,6 @@ namespace FGEngine
 
     // スタティック変数を初期化
     const float Mathf::PI = 3.14159265358979f;
-    const float Mathf::Deg2Rad = Mathf::PI / 180.0f;
-    const float Mathf::Rad2Deg = 57.29578f;
 
     //=======================================
     //
@@ -225,5 +223,29 @@ namespace FGEngine
     float Mathf::Log10(float value)
     {
         return std::log10f(value);
+    }
+
+    /**
+    * デグリー(度数法)からラジアン(弧度法)に変換する
+    *
+    * @param deg デグリー(度数法)
+    *
+    * @return ラジアンに変換したdeg
+    */
+    float Mathf::DegToRad(float deg)
+    {
+        return deg * PI / 180.0f;
+    }
+
+    /**
+    * ラジアン(弧度法)からデグリー(度数法)に変換する
+    *
+    * @param rad ラジアン(弧度法)
+    *
+    * @return デグリーに変換したrad
+    */
+    float Mathf::RadToDeg(float rad)
+    {
+        return rad * 18.0f / PI;
     }
 }

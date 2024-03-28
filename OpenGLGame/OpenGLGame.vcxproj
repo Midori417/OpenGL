@@ -145,8 +145,12 @@
     <ClInclude Include="Application\Src\TitleScene.h" />
     <ClInclude Include="FGEngine\Src\FGEngine.h" />
     <ClInclude Include="FGEngine\Src\My\AudioSettings.h" />
+    <ClInclude Include="FGEngine\Src\My\BoxCollider.h" />
     <ClInclude Include="FGEngine\Src\My\box_mesh.h" />
     <ClInclude Include="FGEngine\Src\My\BufferObject.h" />
+    <ClInclude Include="FGEngine\Src\My\Camera.h" />
+    <ClInclude Include="FGEngine\Src\My\CapsuleCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\Collider.h" />
     <ClInclude Include="FGEngine\Src\My\Color.h" />
     <ClInclude Include="FGEngine\Src\My\Component.h" />
     <ClInclude Include="FGEngine\Src\My\ComponentHelper.h" />
@@ -160,6 +164,7 @@
     <ClInclude Include="FGEngine\Src\My\Input.h" />
     <ClInclude Include="FGEngine\Src\My\InputHelper.h" />
     <ClInclude Include="FGEngine\Src\My\KeyCode.h" />
+    <ClInclude Include="FGEngine\Src\My\Light.h" />
     <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h" />
     <ClInclude Include="FGEngine\Src\My\Material.h" />
     <ClInclude Include="FGEngine\Src\My\Mathf.h" />
@@ -180,11 +185,16 @@
     <ClInclude Include="FGEngine\Src\My\ProgramObject.h" />
     <ClInclude Include="FGEngine\Src\My\Quaternion.h" />
     <ClInclude Include="FGEngine\Src\My\Random.h" />
+    <ClInclude Include="FGEngine\Src\My\Renderer.h" />
+    <ClInclude Include="FGEngine\Src\My\Rigidbody.h" />
     <ClInclude Include="FGEngine\Src\My\Scene.h" />
     <ClInclude Include="FGEngine\Src\My\SceneManager.h" />
     <ClInclude Include="FGEngine\Src\My\Singleton.h" />
+    <ClInclude Include="FGEngine\Src\My\SphereCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\SystemFrd.h" />
     <ClInclude Include="FGEngine\Src\My\Texture.h" />
     <ClInclude Include="FGEngine\Src\My\Time.h" />
+    <ClInclude Include="FGEngine\Src\My\Transform.h" />
     <ClInclude Include="FGEngine\Src\My\VecMath.h" />
     <ClInclude Include="FGEngine\Src\My\Vector2.h" />
     <ClInclude Include="FGEngine\Src\My\Vector3.h" />
@@ -231,6 +241,7 @@
     <ClCompile Include="FGEngine\Src\My\SceneManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\Texture.cpp" />
     <ClCompile Include="FGEngine\Src\My\Time.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Transform.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector2.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector3.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector4.cpp" />

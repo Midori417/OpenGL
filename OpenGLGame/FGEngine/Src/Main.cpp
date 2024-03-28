@@ -18,7 +18,7 @@ int WINAPI WinMain(
 	_In_ int nShowCmd)
 {
 	// エンジンを生成と取得
-	auto engineCore = FGEngine::EngineCore::GetInstance();
+	auto engineCore = FGEngine::MainSystem::EngineCore::GetInstance();
 	
 	// エンジンを始動
 	return engineCore->Run();

@@ -4,6 +4,7 @@
 #ifndef ENGINE_H_INCLUDED
 #define ENGINE_H_INCLUDED
 #include "Singleton.h"
+#include "SystemFrd.h"
 #include "VecMath.h"
 #include "Package/Glad.h"
 
@@ -17,14 +18,8 @@
 class Application;
 using ApplicationPtr = std::shared_ptr<Application>;
 
-namespace FGEngine
+namespace FGEngine::MainSystem
 {
-	namespace SceneSystem
-	{
-		class SceneManager;
-		using SceneManagerPtr = std::shared_ptr<SceneManager>;
-	}
-
 	/**
 	* ゲームエンジン
 	*/
@@ -71,7 +66,7 @@ namespace FGEngine
 		ApplicationPtr application;
 
 		// シーンマネージャーポインター
-		SceneSystem::SceneManagerPtr sceneManager;
+		std::shared_ptr<SceneSystem::SceneManager> sceneManager;
 	};
 }
 #endif // !ENGINE_H_INCLUDED

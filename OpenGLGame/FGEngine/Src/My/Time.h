@@ -3,16 +3,13 @@
 */
 #ifndef TIME_H_INCLUDED
 #define TIME_H_INCLUDED
+#include "SystemFrd.h"
 
 namespace FGEngine
 {
-
-	// æséŒ¾
-	class EngineCore;
-
 	class Time
 	{
-		friend EngineCore;
+		friend  MainSystem::EngineCore;
 
 	public:
 

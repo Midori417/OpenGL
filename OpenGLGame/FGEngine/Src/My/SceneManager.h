@@ -1,8 +1,8 @@
 /**
 * @file SceneManager.h
 */
-#ifndef SCENEMANAGER_H_INCLUDED
-#define SCENEMANAGER_H_INCLUDED
+#ifndef FGENEING_SCENEMANAGER_H_INCLUDED
+#define FGENEING_SCENEMANAGER_H_INCLUDED
 #include "Singleton.h"
 #include "Scene.h"
 #include <unordered_map>
@@ -22,7 +22,7 @@ namespace FGEngine
 		private:
 			
 			friend Singleton<SceneManager>;
-			friend class EngineCore;
+			friend MainSystem::EngineCore;
 
 			// コンストラクタ
 			SceneManager() = default;
@@ -69,9 +69,6 @@ namespace FGEngine
 				return scene;
 			}
 
-
-		public:
-
 			// 次のシーンを設定する
 			template<typename T>
 			static void SetNextScene()
@@ -81,9 +78,14 @@ namespace FGEngine
 
 		private:
 
-			ScenePtr scene;				// 実行中のシーン
-			static ScenePtr nextScene;	// 次のシーン
-			static std::unordered_map<std::string, ScenePtr> scenes;	// シーン管理配列
+			// 実行中のシーン
+			ScenePtr scene;
+
+			// 次のシーン
+			static ScenePtr nextScene;	
+
+			// シーン管理配列
+			static std::unordered_map<std::string, ScenePtr> scenes;
 
 		};
 	}

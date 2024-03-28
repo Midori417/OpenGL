@@ -48,9 +48,9 @@ namespace FGEngine
 	Quaternion Quaternion::Euler(float x, float y, float z)
 	{
 		Quaternion result = Quaternion::identity;
-		float tx = x * Mathf::Deg2Rad;
-		float ty = y * Mathf::Deg2Rad;
-		float tz = z * Mathf::Deg2Rad;
+		float tx = Mathf::DegToRad(x);
+		float ty = Mathf::DegToRad(y);
+		float tz = Mathf::DegToRad(z);
 		// オイラー角の半分の値を計算
 		float cx = Mathf::Cos(tx * 0.5f);
 		float sx = Mathf::Sin(tx * 0.5f);

@@ -3,17 +3,15 @@
 */
 #ifndef INPUT_H_INCLUDED
 #define INPUT_H_INCLUDED
-
+#include "SystemFrd.h"
 #include "InputHelper.h"
 #include "KeyCode.h"
 #include <unordered_map>
-#include "String.h"
 #include <string>
 
 namespace FGEngine
 {
 	// êÊçsêÈåæ
-	class EngineCore;
 	struct Vector2;
 
 	/// <summary>
@@ -21,7 +19,7 @@ namespace FGEngine
 	/// </summary>
 	class Input
 	{
-		friend EngineCore;
+		friend  MainSystem::EngineCore;
 	public:
 
 	private:

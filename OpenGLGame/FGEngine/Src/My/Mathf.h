@@ -66,12 +66,28 @@ namespace FGEngine
 		static float Floor(float value);
 		static float Log10(float value);
 
+		/**
+		* デグリー(度数法)からラジアン(弧度法)に変換する
+		* 
+		* @param deg デグリー(度数法)
+		* 
+		* @return ラジアンに変換したdeg
+		*/
+		static float DegToRad(float deg);
+
+		/**
+		* ラジアン(弧度法)からデグリー(度数法)に変換する
+		* 
+		* @param rad ラジアン(弧度法)
+		* 
+		* @return デグリーに変換したrad
+		*/
+		static float RadToDeg(float rad);
+
 
 	public:
 
 		const static float PI;			// 円周率
-		const static float Deg2Rad;		// 度からラジアンに変換する定数
-		const static float Rad2Deg;		// ラジアンから度に変換する定数
 	};
 }
 #endif // !MATHF_H_INCLUDED

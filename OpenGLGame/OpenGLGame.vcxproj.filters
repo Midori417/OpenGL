@@ -25,63 +25,6 @@
     <Filter Include="FGEngine\Package\nlohmann">
       <UniqueIdentifier>{23cac10d-5137-4404-9773-a39a08501e48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Object">
-      <UniqueIdentifier>{a8065b21-ed3a-4f43-84ba-3c590cad38a7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component">
-      <UniqueIdentifier>{ece2f248-e832-4421-9899-f875535bf323}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Debug">
-      <UniqueIdentifier>{4fb523bf-2927-40fb-93d6-6eb278cb0960}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\Collider">
-      <UniqueIdentifier>{6d88c5c4-7201-4e24-ab72-d207f15396d1}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\Rigidbody">
-      <UniqueIdentifier>{1ceefb49-ed32-4c38-b3bf-5cb60e6ff15f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\Camera">
-      <UniqueIdentifier>{78299cd8-0668-4db2-98db-2c906ac6daef}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Audio">
-      <UniqueIdentifier>{bd2cfe1f-0858-400d-8adf-134e464dc315}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\GameObject">
-      <UniqueIdentifier>{be4a650d-34f4-48e9-9f47-4dca3bea969c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\UI">
-      <UniqueIdentifier>{eaeecd97-fba1-42b3-9b72-4014f631662f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Input">
-      <UniqueIdentifier>{4e686e03-e6a6-4d99-92f4-a297ad7d9d41}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\Light">
-      <UniqueIdentifier>{feddbd95-32d1-463a-b2d1-8520e148f653}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\Renderer">
-      <UniqueIdentifier>{d61162f2-150c-429f-9d29-67f50d11ab9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Object\Component\Transform">
-      <UniqueIdentifier>{4ed62798-b0c2-4a97-b86d-48cf55f410e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Graphics">
-      <UniqueIdentifier>{a4d81496-0043-4480-86c0-b687f5c6ac97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Graphics\Mesh">
-      <UniqueIdentifier>{0b960c9a-c17e-4128-a409-5dbf8dcfa8dc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Graphics\Mesh\MeshData">
-      <UniqueIdentifier>{ef021062-71aa-4b67-93f1-1a88481a13c3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Graphics\Rendering">
-      <UniqueIdentifier>{dc3997b7-eec2-4c49-be5e-1a2f380afc9d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\SceneSystem">
-      <UniqueIdentifier>{9d7ef94b-ddf5-4998-87f0-92002743a965}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\EngineCore">
-      <UniqueIdentifier>{bdd0dfb1-0471-43ec-a7a2-fcaf289c7231}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\My\Mathf">
       <UniqueIdentifier>{572a1a43-c070-4c40-bf6c-f6099fe5c781}</UniqueIdentifier>
     </Filter>
@@ -109,20 +52,74 @@
     <Filter Include="Application\Component">
       <UniqueIdentifier>{5b596bcb-19a2-4bc4-a8f4-c02ab5ba0467}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Object\ObjectManager">
-      <UniqueIdentifier>{c3361a10-f6ab-4464-8f58-78a9f3ec8940}</UniqueIdentifier>
+    <Filter Include="FGEngine\My\Object">
+      <UniqueIdentifier>{a8065b21-ed3a-4f43-84ba-3c590cad38a7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Object\Component\MonoBehaviour">
+    <Filter Include="FGEngine\My\Object\GameObject">
+      <UniqueIdentifier>{be4a650d-34f4-48e9-9f47-4dca3bea969c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component">
+      <UniqueIdentifier>{ece2f248-e832-4421-9899-f875535bf323}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\Collider">
+      <UniqueIdentifier>{6d88c5c4-7201-4e24-ab72-d207f15396d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\Rigidbody">
+      <UniqueIdentifier>{1ceefb49-ed32-4c38-b3bf-5cb60e6ff15f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\Camera">
+      <UniqueIdentifier>{78299cd8-0668-4db2-98db-2c906ac6daef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\UI">
+      <UniqueIdentifier>{eaeecd97-fba1-42b3-9b72-4014f631662f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\Light">
+      <UniqueIdentifier>{feddbd95-32d1-463a-b2d1-8520e148f653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\Renderer">
+      <UniqueIdentifier>{d61162f2-150c-429f-9d29-67f50d11ab9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\Transform">
+      <UniqueIdentifier>{4ed62798-b0c2-4a97-b86d-48cf55f410e5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\Component\MonoBehaviour">
       <UniqueIdentifier>{3573da3d-ff23-46d6-8cdd-a7ef810bc485}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Asset">
-      <UniqueIdentifier>{14cb8b46-4885-4abf-a259-7cbd1589cf18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\My\Asset\Material">
+    <Filter Include="FGEngine\My\Material">
       <UniqueIdentifier>{84e92b68-24f8-485e-a8da-ba08c8a594bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Asset\Texture">
+    <Filter Include="FGEngine\My\Texture">
       <UniqueIdentifier>{a0853ef8-327c-4cd6-88e4-9b768b7da200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\InputSystem">
+      <UniqueIdentifier>{4e686e03-e6a6-4d99-92f4-a297ad7d9d41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\DebugSystem">
+      <UniqueIdentifier>{4fb523bf-2927-40fb-93d6-6eb278cb0960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\GraphicsSystem">
+      <UniqueIdentifier>{a4d81496-0043-4480-86c0-b687f5c6ac97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\GraphicsSystem\Mesh">
+      <UniqueIdentifier>{0b960c9a-c17e-4128-a409-5dbf8dcfa8dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\GraphicsSystem\Mesh\MeshData">
+      <UniqueIdentifier>{ef021062-71aa-4b67-93f1-1a88481a13c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\GraphicsSystem\Rendering">
+      <UniqueIdentifier>{dc3997b7-eec2-4c49-be5e-1a2f380afc9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\MainSystem">
+      <UniqueIdentifier>{bdd0dfb1-0471-43ec-a7a2-fcaf289c7231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\SceneSystem">
+      <UniqueIdentifier>{9d7ef94b-ddf5-4998-87f0-92002743a965}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\SoundSystem">
+      <UniqueIdentifier>{bd2cfe1f-0858-400d-8adf-134e464dc315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\My\ObjectSystem">
+      <UniqueIdentifier>{c3361a10-f6ab-4464-8f58-78a9f3ec8940}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -163,22 +160,22 @@
       <Filter>FGEngine\Package\glad</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Debug.h">
-      <Filter>FGEngine\My\Debug</Filter>
+      <Filter>FGEngine\My\DebugSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Component.h">
-      <Filter>FGEngine\My\Object\Component</Filter>
+      <Filter>FGEngine\My\Component</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ComponentHelper.h">
-      <Filter>FGEngine\My\Object\Component</Filter>
+      <Filter>FGEngine\My\Component</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Object.h">
       <Filter>FGEngine\My\Object</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\EasyAudio.h">
-      <Filter>FGEngine\My\Audio</Filter>
+      <Filter>FGEngine\My\SoundSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\AudioSettings.h">
-      <Filter>FGEngine\My\Audio</Filter>
+      <Filter>FGEngine\My\SoundSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Mathf.h">
       <Filter>FGEngine\My\Mathf</Filter>
@@ -193,16 +190,16 @@
       <Filter>FGEngine\My\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\GamePad.h">
-      <Filter>FGEngine\My\Input</Filter>
+      <Filter>FGEngine\My\InputSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Input.h">
-      <Filter>FGEngine\My\Input</Filter>
+      <Filter>FGEngine\My\InputSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\KeyCode.h">
-      <Filter>FGEngine\My\Input</Filter>
+      <Filter>FGEngine\My\InputSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\InputHelper.h">
-      <Filter>FGEngine\My\Input</Filter>
+      <Filter>FGEngine\My\InputSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Vector2.h">
       <Filter>FGEngine\My\Mathf\Vector</Filter>
@@ -238,40 +235,40 @@
       <Filter>FGEngine\My\Mathf\Quaternion</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Texture.h">
-      <Filter>FGEngine\My\Asset\Texture</Filter>
+      <Filter>FGEngine\My\Texture</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Material.h">
-      <Filter>FGEngine\My\Asset\Material</Filter>
+      <Filter>FGEngine\My\Material</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Mesh.h">
-      <Filter>FGEngine\My\Graphics\Mesh</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\GltfMesh.h">
-      <Filter>FGEngine\My\Graphics\Mesh</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\plane_xy_mesh.h">
-      <Filter>FGEngine\My\Graphics\Mesh\MeshData</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh\MeshData</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\box_mesh.h">
-      <Filter>FGEngine\My\Graphics\Mesh\MeshData</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh\MeshData</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\PrimitiveType.h">
-      <Filter>FGEngine\My\Graphics\Mesh\MeshData</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh\MeshData</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ProgramObject.h">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\BufferObject.h">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Scene.h">
       <Filter>FGEngine\My\SceneSystem</Filter>
@@ -280,7 +277,7 @@
       <Filter>FGEngine\My\SceneSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Engine.h">
-      <Filter>FGEngine\My\EngineCore</Filter>
+      <Filter>FGEngine\My\MainSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Color.h">
       <Filter>FGEngine\My\Other</Filter>
@@ -312,14 +309,44 @@
     <ClInclude Include="Application\Src\Application.h">
       <Filter>Application</Filter>
     </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ObjectManager.h">
+      <Filter>FGEngine\My\ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h">
+      <Filter>FGEngine\My\Component\MonoBehaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SystemFrd.h">
+      <Filter>FGEngine\My</Filter>
+    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ObjectHelper.h">
       <Filter>FGEngine\My\Object</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ObjectManager.h">
-      <Filter>FGEngine\My\Object\ObjectManager</Filter>
+    <ClInclude Include="FGEngine\Src\My\Camera.h">
+      <Filter>FGEngine\My\Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h">
-      <Filter>FGEngine\My\Object\Component\MonoBehaviour</Filter>
+    <ClInclude Include="FGEngine\Src\My\Collider.h">
+      <Filter>FGEngine\My\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SphereCollider.h">
+      <Filter>FGEngine\My\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\BoxCollider.h">
+      <Filter>FGEngine\My\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\CapsuleCollider.h">
+      <Filter>FGEngine\My\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Light.h">
+      <Filter>FGEngine\My\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Renderer.h">
+      <Filter>FGEngine\My\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Rigidbody.h">
+      <Filter>FGEngine\My\Component\Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Transform.h">
+      <Filter>FGEngine\My\Component\Transform</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -348,10 +375,10 @@
       <Filter>FGEngine\Package\glad</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Debug.cpp">
-      <Filter>FGEngine\My\Debug</Filter>
+      <Filter>FGEngine\My\DebugSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\EasyAudio.cpp">
-      <Filter>FGEngine\My\Audio</Filter>
+      <Filter>FGEngine\My\SoundSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Mathf.cpp">
       <Filter>FGEngine\My\Mathf</Filter>
@@ -363,10 +390,10 @@
       <Filter>FGEngine\My\Object\GameObject</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\GamePad.cpp">
-      <Filter>FGEngine\My\Input</Filter>
+      <Filter>FGEngine\My\InputSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Input.cpp">
-      <Filter>FGEngine\My\Input</Filter>
+      <Filter>FGEngine\My\InputSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Vector2.cpp">
       <Filter>FGEngine\My\Mathf\Vector</Filter>
@@ -387,31 +414,31 @@
       <Filter>FGEngine\My\Mathf\Quaternion</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Texture.cpp">
-      <Filter>FGEngine\My\Asset\Texture</Filter>
+      <Filter>FGEngine\My\Texture</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Mesh.cpp">
-      <Filter>FGEngine\My\Graphics\Mesh</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\GltfMesh.cpp">
-      <Filter>FGEngine\My\Graphics\Mesh</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Mesh</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\BufferObject.cpp">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\ProgramObject.cpp">
-      <Filter>FGEngine\My\Graphics\Rendering</Filter>
+      <Filter>FGEngine\My\GraphicsSystem\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\SceneManager.cpp">
       <Filter>FGEngine\My\SceneSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Engine.cpp">
-      <Filter>FGEngine\My\EngineCore</Filter>
+      <Filter>FGEngine\My\MainSystem</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\TitleScene.cpp">
       <Filter>Application\Scenes</Filter>
@@ -429,7 +456,10 @@
       <Filter>FGEngine\My\Object</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\ObjectManager.cpp">
-      <Filter>FGEngine\My\Object\ObjectManager</Filter>
+      <Filter>FGEngine\My\ObjectSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Transform.cpp">
+      <Filter>FGEngine\My\Component\Transform</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

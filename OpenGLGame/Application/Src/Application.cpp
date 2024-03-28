@@ -16,9 +16,6 @@ using namespace FGEngine::SceneSystem;
 */
 int Application::Initialize()
 {
-	// エンジンを取得
-	auto engine = EngineCore::GetInstance();
-
 	// OBJファイルを読み込む
 
 	// シーンの登録

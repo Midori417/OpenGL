@@ -94,31 +94,31 @@ namespace FGEngine
 
 		}
 		// Axis (C³‚µ‚½‚¢)
-		{
-			auto horizontal = axis.find("Horizontal");
-			if (GetKey(KeyCode::D) || GetKey(KeyCode::RightArrow)) {
-				horizontal->second = 1.0f;
-			}
-			else if (GetKey(KeyCode::A) || GetKey(KeyCode::LeftArrow)) {
-				horizontal->second = -1.0f;
-			}
-			else if (!GetKey(KeyCode::D) && !GetKey(KeyCode::RightArrow) && !GetKey(KeyCode::A) && !GetKey(KeyCode::LeftArrow)) {
-				horizontal->second = 0;
-			}
+		//{
+		//	auto horizontal = axis.find("Horizontal");
+		//	if (GetKey(KeyCode::D) || GetKey(KeyCode::RightArrow)) {
+		//		horizontal->second = 1.0f;
+		//	}
+		//	else if (GetKey(KeyCode::A) || GetKey(KeyCode::LeftArrow)) {
+		//		horizontal->second = -1.0f;
+		//	}
+		//	else if (!GetKey(KeyCode::D) && !GetKey(KeyCode::RightArrow) && !GetKey(KeyCode::A) && !GetKey(KeyCode::LeftArrow)) {
+		//		horizontal->second = 0;
+		//	}
 
 
-			auto vertical = axis.find("Vertical");
-			if (GetKey(KeyCode::W) || GetKey(KeyCode::UpArrow)) {
-				vertical->second = 1.0f;
-			}
-			else if (GetKey(KeyCode::S) || GetKey(KeyCode::DownArrow)) {
-				vertical->second = -1.0f;
-			}
-			else if (!GetKey(KeyCode::W) && !GetKey(KeyCode::UpArrow) && !GetKey(KeyCode::S) && !GetKey(KeyCode::DownArrow)) {
-				vertical->second = 0;
-			}
+		//	auto vertical = axis.find("Vertical");
+		//	if (GetKey(KeyCode::W) || GetKey(KeyCode::UpArrow)) {
+		//		vertical->second = 1.0f;
+		//	}
+		//	else if (GetKey(KeyCode::S) || GetKey(KeyCode::DownArrow)) {
+		//		vertical->second = -1.0f;
+		//	}
+		//	else if (!GetKey(KeyCode::W) && !GetKey(KeyCode::UpArrow) && !GetKey(KeyCode::S) && !GetKey(KeyCode::DownArrow)) {
+		//		vertical->second = 0;
+		//	}
 
-		}
+		//}
 	}
 
 	/// <summary>

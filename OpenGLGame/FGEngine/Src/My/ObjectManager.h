@@ -35,8 +35,15 @@ namespace FGEngine
 		void Update();
 
 		/**
-		* コンポーネントの更新
+		* ゲームオブジェクトの更新
 		*/
+		void UpdateGameObject();
+
+		void UpdateTransform();
+
+		void UpdateRenderer();
+
+		void UpdateRigidbody();
 
 		/**
 		* ゲームオブジェクトの削除処理

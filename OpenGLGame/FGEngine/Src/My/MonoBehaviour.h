@@ -1,8 +1,8 @@
 /**
-* @file MonobeBaviour.h
+* @file MonoBehaviour.h
 */
-#ifndef MONOBEHABIOUR_H_INCLUDED
-#define MONOBEHABIOUR_H_INCLUDED
+#ifndef GENGINE_MONOBEHAVIOUR_H_INCLUDED
+#define FGENGINE_MONOBEHAVIOUR_H_INCLUDED
 #include "Component.h"
 
 namespace FGEngine
@@ -77,9 +77,12 @@ namespace FGEngine
 
 	private:
 
-		bool enabled = true;	// 有効であれば更新され、無効であれば更新されません
-		bool isStart = false;	// Startを実行したか
-	};
-}
+		// 有効であれば更新され、無効であれば更新されません
+		bool enabled = true;
 
-#endif // !MONOBEHABIOUR_H_INCLUDED
+		// Startを実行したか
+		bool isStart = false;
+	};
+	using MonoBehaviourPtr = std::shared_ptr<MonoBehaviour>;
+}
+#endif // !FGENGINE_MONOBEHAVIOUR_H_INCLUDED

@@ -1,8 +1,7 @@
 /**
 * @file ObjectHelper.h
 */
-#ifndef OBJECTHELPER_H_INCLUDED
-#define OBJECTHELPER_H_INCLUDED
+#pragma once
 #include "Object.h"
 #include "ObjectManager.h"
 
@@ -22,5 +21,3 @@ namespace FGEngine
 		return obj;
 	}
 }
-
-#endif // !OBJECTHELPER_H_INCLUDED

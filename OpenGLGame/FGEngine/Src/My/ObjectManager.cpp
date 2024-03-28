@@ -16,6 +16,9 @@ namespace FGEngine
 	*/
 	int ObjectManager::Initialize()
 	{
+		// ゲームオブジェクト配列の容量をを予約
+		gameObjects.reserve(1000);
+
 		return 0;
 	}
 
@@ -23,6 +26,22 @@ namespace FGEngine
 	* オブジェクトマネージャーを更新
 	*/
 	void ObjectManager::Update()
+	{
+	}
+
+	void ObjectManager::UpdateGameObject()
+	{
+	}
+
+	void ObjectManager::UpdateTransform()
+	{
+	}
+
+	void ObjectManager::UpdateRenderer()
+	{
+	}
+
+	void ObjectManager::UpdateRigidbody()
 	{
 	}
 
