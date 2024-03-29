@@ -1,14 +1,12 @@
 ﻿/**
-* @file Engine.cpp
+* @file EngineCore.cpp
 */
 #define _CRT_SECURE_NO_WARNINGS
-
-#include "Engine.h"
+#include "EngineCore.h"
 #include "../../../Application/Src/Application.h"
-
-
+#include "WindowManager.h"
+#include "SceneManager.h"
 #include "Package/ImGUI.h"
-
 #include <fstream>
 #include <filesystem>
 
@@ -49,76 +47,37 @@ namespace FGEngine::MainSystem
 	*/
 	int EngineCore::Run()
 	{
+		// エンジンコアの初期化
 		const int result = Initialize();
-		if (result) {
+		if (result)
+		{
+			// エラー発生
 			return result;
 		}
 
 
 		// ループ
-		while (!glfwWindowShouldClose(window))
+		while (!windowManager->IsClose())
 		{
-			// -------------------------
-			// ImGuiフレームの更新
-			// -------------------------
-
+			// ImGuiのフレームの更新
 			ImGui_ImplGlfw_NewFrame();
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui::NewFrame();
 
-			// エディタ画面を描画
+
+			// エンジンコアの更新
+			Update();
+
+			// imGuiを描画
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-			glfwSwapBuffers(window);
-			glfwPollEvents();
-
-
-			Update();
-
 		}
 
-		// -----------------
-		// ImGuiの終了
-		// -----------------
+		// エンジンコアの終了
+		Fainalize();
 
-		ImGui_ImplGlfw_Shutdown();
-		ImGui_ImplOpenGL3_Shutdown();
-
-		// ------------------------
-		// コンテキストの削除
-		// ------------------------
-
-		ImGui::DestroyContext();
-
-		glfwTerminate();
 		return 0;
-	}
-
-
-
-	/**
-	* フレームバッファの大きさを取得する
-	*
-	* @return フレームバッファの縦の横のサイズ
-	*/
-	Vector2 EngineCore::GetFramebufferSize() const
-	{
-		int w = 0;
-		int h = 0;
-		glfwGetFramebufferSize(window, &w, &h);
-		return Vector2{ static_cast<float>(w), static_cast<float>(h) };
-	}
-
-	/**
-	* フレームバッファのアスペクト比を取得する
-	*
-	* @return フレームバッファのアスペクト比
-	*/
-	float EngineCore::GetAspectRatio() const
-	{
-		const Vector2 size = GetFramebufferSize();
-		return size.x / size.y;
 	}
 
 	/**
@@ -135,21 +94,14 @@ namespace FGEngine::MainSystem
 			return 1; // 初期化失敗
 		}
 
-		// 描画ウィンドウの作成
-		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
-		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
-		glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-		glfwWindowHint(GLFW_HOVERED, GLFW_FALSE);
-		window = glfwCreateWindow(1280, 720, title.c_str(), nullptr, nullptr);
-		if (!window)
-		{
-			glfwTerminate();
-			return 1; // ウィンドウの作成失敗
-		}
+		// ウィンドウマネージャーを作成と取得
+		windowManager = WindowSystem::WindowManager::GetInstance();
 
+		// ウィンドウを作成
+		windowManager->CreateWindow("Window");
 
 		// OpenGLコンテキストの作成
-		glfwMakeContextCurrent(window);
+		glfwMakeContextCurrent(&windowManager->GetWindow());
 
 		// OpenGL関数のアドレスを取得
 		// OpenGLVersion 4.5
@@ -171,24 +123,17 @@ namespace FGEngine::MainSystem
 		// シーンマネージャー
 		sceneManager = SceneSystem::SceneManager::GetInstance();
 
-
-		// ---------------------------
-		// ImGuiコンテキスト作成
-		// ---------------------------
-
+		// ImGuiコンテキストの作成
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
 
-		// ------------------------
+		// ====================
+		// 各機能を初期化
+		// ====================
+
 		// ImGuiの初期化
-		// ------------------------
-
-		// GLFW
-		ImGui_ImplGlfw_InitForOpenGL(window, true);
-
-		// GLSLのバージョンを指定
-		ImGui_ImplOpenGL3_Init("#version 450");
-
+		ImGui_ImplGlfw_InitForOpenGL(&windowManager->GetWindow(0), true);	// GLFW
+		ImGui_ImplOpenGL3_Init("#version 450");		// GLSLのバージョンを指定
 
 		// アプリケーションを初期化
 		application->Initialize();
@@ -204,12 +149,14 @@ namespace FGEngine::MainSystem
 	*/
 	void EngineCore::Update()
 	{
+		// ウィンドウの描画開始
+		windowManager->Begin();
 
 		// 時間ライブラリを更新
 		Time::Update();
 
 		// 入力ライブラリを更新
-		Input::Update(window);
+		Input::Update(&windowManager->GetWindow());
 
 		// シーンマネージャーを更新
 		sceneManager->Update();
@@ -217,6 +164,8 @@ namespace FGEngine::MainSystem
 		// アプリケーションを更新する
 		application->Update();
 
+		// ウィンドウの描画終了
+		windowManager->End();
 	}
 
 	/**
@@ -226,6 +175,16 @@ namespace FGEngine::MainSystem
 	{
 		// アプリケーションの終了
 		application->Fainalize();
+
+		// ImGuiの終了
+		ImGui_ImplGlfw_Shutdown();
+		ImGui_ImplOpenGL3_Shutdown();
+
+		// imGuiのコンテキスト
+		ImGui::DestroyContext();
+
+		// GLFWの終了
+		glfwTerminate();
 	}
 
 }

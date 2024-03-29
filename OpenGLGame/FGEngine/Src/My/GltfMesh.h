@@ -12,6 +12,7 @@
 #include <functional>
 #include "VecMath.h"
 #include "Texture.h"
+#include "Material.h"
 
 namespace FGEngine
 {
@@ -23,19 +24,6 @@ namespace FGEngine
 	using BufferObjectPtr = std::shared_ptr<BufferObject>;
 	class MappedBufferObject;
 	using MappedBufferObjectPtr = std::shared_ptr<MappedBufferObject>;
-
-	/**
-	* glTFマテリアル
-	*/
-	struct GltfMaterial
-	{
-		std::string name;				// マテリアル名
-		Vector4 baseColor = Vector4(1);	// 基本色
-		TexturePtr texBaseColor;		// 基本色テクスチャ
-		TexturePtr texNormal;			// 法線テクスチャ
-		float rouhness = 1;				// 表面の粗さ、なめらか0～1粗い
-	};
-	using GltfMaterialPtr = std::shared_ptr<GltfMaterial>;
 
 	/**
 	* プリミティブデータ
@@ -155,7 +143,7 @@ namespace FGEngine
 		std::vector<GltfNode> nodes;				// ノード配列
 		std::vector<GltfSkinn> skins;				// スキン配列
 		std::vector<GltfMesh> meshes;				// メッシュ配列
-		std::vector<GltfMaterialPtr> materials;		// マテリアル配列
+		std::vector<MaterialPtr> materials;		// マテリアル配列
 		std::vector<GltfAnimationPtr> animations;	// アニメーション
 		Matrix4x4 matRoot = Matrix4x4(1);			// 基本姿勢行列
 	};
@@ -230,7 +218,7 @@ namespace FGEngine
 		BufferObjectPtr buffer;			// binファイルを読み込むバッファ
 		uint8_t* pBuffer = nullptr;		// マップされたアドレス
 		GLsizeiptr curBufferSize = 0;	// 書き込み済みデータ数
-		GltfMaterialPtr defaultMaterial;	// マテリアル未設定時に使用するマテリアル
+		MaterialPtr defaultMaterial;	// マテリアル未設定時に使用するマテリアル
 
 		// ファイル管理用の連想配列
 		std::unordered_map<std::string, GltfFilePtr> files;
@@ -251,6 +239,6 @@ namespace FGEngine
 	* @param materials	描画に使うマテリアル配列
 	* @param program	描画プログラム
 	*/
-	void Draw(const GltfMesh& mesh, const std::vector<GltfMaterialPtr>& materials, GLuint program);
+	void Draw(const GltfMesh& mesh, const std::vector<MaterialPtr>& materials, GLuint program);
 }
 #endif // !GLTFMESHBUFFER_H_INCLUDED

@@ -3,8 +3,10 @@
 */
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "Mesh.h"
+#include "MeshBuffer.h"
 #include "Debug.h"
+#include "Vertex.h"
+#include "DrawParams.h"
 
 #include <numeric>
 #include <algorithm>
@@ -12,146 +14,8 @@
 #include <fstream>
 #include <stdio.h>
 
-namespace FGEngine
+namespace FGEngine::Rendering
 {
-	/**
-	* MTLファイルを読み込む
-	*
-	* @param foldername	OBJファイルのあるファルダ名
-	* @param filename	MTLファイル名
-	*
-	* @return MTLファイルに含まれるマテリアルの配列
-	*/
-	std::vector<MaterialPtr> MeshBuffer::LoadMTL(const std::string& foldername, const char* filename)
-	{
-		// MTLファイルを開く
-		const std::string fullpath = foldername + filename;
-		std::ifstream file(fullpath);
-		if (!file) {
-			LOG_ERROR("%sを開けません", fullpath.c_str());
-			return{};
-		}
-
-		// MTLファイルを解析する
-		std::vector<MaterialPtr> materials;
-		MaterialPtr pMaterial;
-		while (!file.eof()) {
-			std::string line;
-			std::getline(file, line);
-			const char* p = line.c_str();
-
-			// マテリアル定義の読み取りを試みる
-			char name[1000] = { 0 };
-			if (sscanf(line.data(), " newmtl %999s", name) == 1) {
-				pMaterial = std::make_shared<Material>();
-				pMaterial->name = name;
-				materials.push_back(pMaterial);
-				continue;
-			}
-
-			// マテリアルが定義されていない場合は行を無視する
-			if (!pMaterial) {
-				continue;
-			}
-
-			// 基本色の読み取りを試みる
-			if (sscanf(line.data(), " Kd %f %f %f",
-				&pMaterial->baseColor.r,
-				&pMaterial->baseColor.g,
-				&pMaterial->baseColor.b) == 3) {
-				continue;
-			}
-
-			// 不透明度の読み取りを試みる
-			if (sscanf(line.data(), " d %f", &pMaterial->baseColor.a) == 1) {
-				continue;
-			}
-
-			// 基本色テクスチャ名の読み取りを試みる
-			char texureName[1000] = { 0 };
-			if (sscanf(line.data(), " map_Kd %999s", &texureName) == 1) {
-				const std::string filename = foldername + texureName;
-				if (std::filesystem::exists(filename)) {
-					pMaterial->texBaseColor = textureCallback(filename.c_str());
-				}
-				else {
-					LOG_WARNINGS("%sを開けません", filename.c_str());
-				}
-				continue;
-			}
-
-			// 発光色の読み取りを試みる
-			if (sscanf(line.data(), " Ke %f %f %f", &pMaterial->emission.r, &pMaterial->emission.g,
-				&pMaterial->emission.b) == 3) {
-				continue;
-			}
-
-			// 発光色テクスチャ名の読みとりを試みる
-			if (sscanf(line.data(), " map_Ke %999s", &texureName) == 1) {
-				const std::string filename = foldername + texureName;
-				if (std::filesystem::exists(filename)) {
-					pMaterial->texEmission = textureCallback(filename.c_str());
-				}
-				else {
-					LOG_WARNINGS("%sを開けません", filename.c_str());
-				}
-				continue;
-			}
-		}
-
-		// 読み込んだマテリアル配列を返す
-		return materials;
-	}
-
-	/**
-	* メッシュを描画する
-	*
-	* @param mesh		描画したいメッシュ
-	* @param pragram	プログラム管理番号
-	*/
-	void Draw(const StaticMesh& mesh, GLuint program, const MaterialList& materials)
-	{
-		// カラーパラメータを取得
-
-		for (const auto& e : mesh.drawParamsList)
-		{
-			// マテリアルを設定
-			if (e.materialNo >= 0 && e.materialNo < mesh.materials.size()) {
-				const Material& material = *materials[e.materialNo];
-				bool hasUnifomColor = false;
-				if (program)
-				{
-					hasUnifomColor = glGetUniformLocation(program, "color") >= 0;
-				}
-				if (hasUnifomColor)
-				{
-					const Color color = material.baseColor;
-					glProgramUniform4fv(program, 100, 1, &color.r);
-					glProgramUniform4f(program, 101, material.emission.r, material.emission.g,
-						material.emission.b, static_cast<bool>(material.texEmission));
-				}
-				if (material.texBaseColor)
-				{
-					const GLuint tex = *material.texBaseColor;
-					glBindTextures(0, 1, &tex);
-				}
-				if (material.texEmission)
-				{
-					const GLuint tex = *material.texEmission;
-					glBindTextures(1, 1, &tex);
-				}
-				else
-				{
-					glBindTextures(1, 1, nullptr);	// テクスチャ１を未設定
-				}
-			}
-
-			glDrawElementsBaseVertex(e.mode, e.count, GL_UNSIGNED_SHORT, e.indices, e.baseVertex);
-		}
-	}
-
-
-
 	/**
 	* コンストラクタ
 	*/
@@ -172,7 +36,21 @@ namespace FGEngine
 		vao->SetAttribute(0, 3, sizeof(Vertex), offsetof(Vertex, position));
 		vao->SetAttribute(1, 2, sizeof(Vertex), offsetof(Vertex, texcoord));
 		vao->SetAttribute(2, 3, sizeof(Vertex), offsetof(Vertex, normal));
-		//vao->SetAttribute(4, 4, sizeof(Vertex), offsetof(Vertex, normal));
+
+		// スケルタルメッシュ用のVAOを作成
+		vaoSkeletal = VertexArrayObject::Create();
+		glBindVertexArray(*vaoSkeletal);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer);
+		glBindBuffer(GL_ARRAY_BUFFER, *buffer);
+		vaoSkeletal->SetAttribute(0, 3, sizeof(SkeletalVertex), offsetof(SkeletalVertex, position));
+		vaoSkeletal->SetAttribute(1, 2, sizeof(SkeletalVertex), offsetof(SkeletalVertex, texcoord));
+		vaoSkeletal->SetAttribute(2, 3, sizeof(SkeletalVertex), offsetof(SkeletalVertex, normal));
+		glEnableVertexAttribArray(3);
+		glVertexAttribIPointer(3, 4, GL_UNSIGNED_SHORT, sizeof(SkeletalVertex),
+			reinterpret_cast<const void*>(offsetof(SkeletalVertex, joints)));
+		glEnableVertexAttribArray(4);
+		glVertexAttribPointer(4, 4, GL_UNSIGNED_SHORT, GL_TRUE, sizeof(SkeletalVertex),
+			reinterpret_cast<const void*>(offsetof(SkeletalVertex, weights)));
 
 		// 誤った操作が行われないようにバインドを解除
 		glBindVertexArray(0);
@@ -184,6 +62,7 @@ namespace FGEngine
 
 		// 描画パラメータ配列の容量を確保
 		drawParamsList.reserve(100);
+
 	}
 
 	/**
@@ -195,7 +74,7 @@ namespace FGEngine
 	* @param indexBytes		indciesのバイト数
 	* @param mode			プリミティブの種類
 	*/
-	void MeshBuffer::AddVertexData(const Vertex* vertices, size_t vertexBytes, const uint16_t* indices, size_t indexBytes, GLenum mode)
+	void MeshBuffer::AddVertexData(const void* vertices, size_t vertexBytes, const uint16_t* indices, size_t indexBytes, size_t stride, GLenum mode)
 	{
 		// 空き容量が足りていることを確認
 		// 必要なバイト数が空きバイト数より大きい場合は追加できない
@@ -229,39 +108,60 @@ namespace FGEngine
 		// インデックスデータの位置（バイト数で指定）は頂点データの直後
 		newParams.indices = reinterpret_cast<void*>(usedBytes + vertexBytes);
 		//　頂点データの位置は頂点データ数で指定する
-		newParams.baseVertex = static_cast<GLint>(usedBytes / sizeof(Vertex));
+		newParams.baseVertex = static_cast<GLint>(usedBytes / stride);
 		drawParamsList.push_back(newParams);
 
 		// 次のデータ格納開始位置を計算
 		/// std::lcm(数値その１、数値その２)最小公倍数
-		constexpr size_t a = std::lcm(sizeof(uint16_t), sizeof(Vertex)); // 共通の境界サイズ
+		constexpr size_t a = std::lcm(sizeof(SkeletalVertex),
+			std::lcm(sizeof(uint16_t), sizeof(Vertex)));
 		usedBytes += ((totalBytes + a - 1) / a) * a;
 
 	}
 
 	/**
-	* 既存の描画パラメータとテクスチャから新しいスタティックメッシュを作成する
+	* OBJファイルを読み込む
 	*
-	* @param name			メッシュ名
-	* @param params			メッシュの元になる描画パラメータ
-	* @param texBaseColor	メッシュに設定するベースカラーテクスチャ
+	* @param filename OBJファイル名
 	*
-	* @return 作成したスタティックメッシュ
+	* @return filenameから作成したメッシュ
 	*/
-	StaticMeshPtr MeshBuffer::CreateStaticMesh(const char* name, const DrawParams& params, const TexturePtr& texBaseColor)
+	void MeshBuffer::LoadObj(const std::string& name, const std::string& filename)
 	{
-		auto p = std::make_shared<StaticMesh>();
-		p->name = name;
-		p->drawParamsList.push_back(params);
-		p->drawParamsList[0].materialNo = 0;
-		p->materials.push_back(std::make_shared<Material>());
-		if (texBaseColor) {
-			p->materials[0]->texBaseColor = texBaseColor;
+		// OBJファイルからメッシュデータを作成
+		MeshData meshData = CreateMeshDataFormObj(filename);
+		if (meshData.vertices.empty())
+		{
+			return;	// 読み込みを失敗
 		}
-		meshes.emplace(name, p);
-		return p;
+
+		// 変換したデータをバッファに追加
+		AddVertexData(
+			meshData.vertices.data(), meshData.vertices.size() * sizeof(Vertex),
+			meshData.indices.data(), meshData.indices.size() * sizeof(uint16_t),
+			sizeof(Vertex));
+
+		// メッシュを作成
+		auto pMesh = std::make_shared<StaticMesh>();
+
+		pMesh->drawParamsList.swap(meshData.drawParamsList);
+		pMesh->materials.swap(meshData.materials);
+		pMesh->SetName(name);
+		meshes.emplace(name, pMesh);
+
+		// AddVertexDataでコピーしたデータの位置を、描画パラメータに反映
+		const intptr_t baseIndexOffset = reinterpret_cast<intptr_t>(drawParamsList.back().indices);
+		const GLint baseVertex = drawParamsList.back().baseVertex;
+		for (auto& e : pMesh->drawParamsList)
+		{
+			e.baseVertex = baseVertex;
+			e.indices = reinterpret_cast<const void*>(baseIndexOffset + reinterpret_cast<intptr_t>(e.indices));
+		}
+
+		LOG("%sを読み込みました(頂点数=%d, インデックス数=%d)", filename, meshData.vertices.size(), meshData.indices.size());
 	}
 
+	
 	/**
 	* すべての頂点データの削除
 	*/
@@ -279,7 +179,7 @@ namespace FGEngine
 	*
 	* @return 名前がnameと一致するスタティックメッシュ
 	*/
-	StaticMeshPtr MeshBuffer::GetStaticMesh(const char* name) const
+	StaticMeshPtr MeshBuffer::GetStaticMesh(const std::string& name) const
 	{
 		auto itr = meshes.find(name);
 		if (itr != meshes.end()) {
@@ -289,34 +189,145 @@ namespace FGEngine
 	}
 
 	/**
-	* OBJファイルを読み込む
+	* スケルタルメッシュを取得
 	*
-	* @param filename OBJファイル名
+	* @param name スケルタルメッシュの名前
 	*
-	* @return filenameから作成したメッシュ
+	* @return 名前がnameと一致するスケルタルメッシュ
 	*/
-	StaticMeshPtr MeshBuffer::LoadObj(const char* filename)
+	SkeletalMeshPtr MeshBuffer::GetSkeletalMesh(const std::string& name) const
 	{
-		// 以前に読むこんだファイルなら、作成済みのメッシュを返す
+		auto itr = skeletalMeshes.find(name);
+		if (itr != skeletalMeshes.end()) {
+			return itr->second;
+		}
+		return nullptr;
+	}
+
+	/**
+	* MTLファイルを読み込む
+	*
+	* @param foldername	OBJファイルのあるファルダ名
+	* @param filename	MTLファイル名
+	*
+	* @return MTLファイルに含まれるマテリアルの配列
+	*/
+	std::vector<MaterialPtr> MeshBuffer::LoadMTL(const std::string& foldername, const char* filename)
+	{
+		// MTLファイルを開く
+		const std::string fullpath = foldername + filename;
+		std::ifstream file(fullpath);
+		if (!file)
 		{
-			auto itr = meshes.find(filename);
-			if (itr != meshes.end()) {
-				return itr->second;
+			LOG_ERROR("%sを開けません", fullpath.c_str());
+			return{};
+		}
+
+		// MTLファイルを解析する
+		std::vector<MaterialPtr> materials;
+		MaterialPtr pMaterial;
+		while (!file.eof())
+		{
+			std::string line;
+			std::getline(file, line);
+			const char* p = line.c_str();
+
+			// マテリアル定義の読み取りを試みる
+			char name[1000] = { 0 };
+			if (sscanf(line.data(), " newmtl %999s", name) == 1) 
+			{
+				pMaterial = std::make_shared<Material>();
+				pMaterial->SetName(name);
+				materials.push_back(pMaterial);
+				continue;
+			}
+
+			// マテリアルが定義されていない場合は行を無視する
+			if (!pMaterial)
+			{
+				continue;
+			}
+
+			// 基本色の読み取りを試みる
+			if (sscanf(line.data(), " Kd %f %f %f",
+				&pMaterial->color.r,
+				&pMaterial->color.g,
+				&pMaterial->color.b) == 3) {
+				continue;
+			}
+
+			// 不透明度の読み取りを試みる
+			if (sscanf(line.data(), " d %f", &pMaterial->color.a) == 1) 
+			{
+				continue;
+			}
+
+			// 基本色テクスチャ名の読み取りを試みる
+			char texureName[1000] = { 0 };
+			if (sscanf(line.data(), " map_Kd %999s", &texureName) == 1) 
+			{
+				const std::string filename = foldername + texureName;
+				if (std::filesystem::exists(filename)) 
+				{
+					pMaterial->mainTexture = textureCallback(filename.c_str());
+				}
+				else
+				{
+					LOG_WARNINGS("%sを開けません", filename.c_str());
+				}
+				continue;
+			}
+
+			// 発光色の読み取りを試みる
+			if (sscanf(line.data(), " Ke %f %f %f", &pMaterial->emission.r,
+				&pMaterial->emission.g, &pMaterial->emission.b) == 3)
+			{
+				continue;
+			}
+
+			// 発光色テクスチャ名の読みとりを試みる
+			if (sscanf(line.data(), " map_Ke %999s", &texureName) == 1) 
+			{
+				const std::string filename = foldername + texureName;
+				if (std::filesystem::exists(filename)) 
+				{
+					pMaterial->texEmission = textureCallback(filename.c_str());
+				}
+				else 
+				{
+					LOG_WARNINGS("%sを開けません", filename.c_str());
+				}
+				continue;
 			}
 		}
 
+		// 読み込んだマテリアル配列を返す
+		return materials;
+	}
+
+	/**
+	* OBJファイルをメッシュデータを変換する
+	*
+	* @param filename OBJファイル名
+	*
+	* @return filenameから作成したメッシュデータ
+	*/
+	MeshBuffer::MeshData MeshBuffer::CreateMeshDataFormObj(const std::string& filename)
+	{
 		// OBJファイルを開く
 		std::ifstream file(filename);
-		if (!file) {
+		if (!file)
+		{
 			LOG_ERROR("%sを開けません", filename);
-			return nullptr;
+			return {}; // 空のオブジェクトを返す
 		}
 
 		// フォルダ名を取得する
 		std::string foldername(filename);
 		{
 			const size_t p = foldername.find_last_of("\\/");
-			if (p != std::string::npos) {
+			if (p != std::string::npos)
+			{
 				foldername.resize(p + 1);
 			}
 		}
@@ -358,7 +369,7 @@ namespace FGEngine
 			const char* p = line.c_str();
 
 			// 頂点座標の読み取り試みる
-			Vector3 v = { 0,0,0 };
+			Vector3 v(0);
 			// int sscanf(回世紀対象バッファ、書式指定文字列、データ格納先アドレス、 ...)
 			//　戻り値実際に変換できた個数
 			if (sscanf(p, " v %f %f %f", &v.x, &v.y, &v.z) == 3)
@@ -368,7 +379,7 @@ namespace FGEngine
 			}
 
 			// テクスチャ座標の読み取りを試みる
-			Vector2 vt = Vector2{ 0,0 };
+			Vector2 vt(0);
 			if (sscanf(p, "vt %f %f", &vt.x, &vt.y) == 2)
 			{
 				texcoords.push_back(vt);
@@ -376,7 +387,7 @@ namespace FGEngine
 			}
 
 			// 法線の読み取りを試みる
-			Vector3 vn;
+			Vector3 vn(0);
 			if (sscanf(p, " vn %f %f %f", &vn.x, &vn.y, &vn.z) == 3) {
 				normals.push_back(vn);
 				continue;
@@ -440,9 +451,10 @@ namespace FGEngine
 		indexMap.reserve(10000);
 
 		// 読み込んだデータを、OpenGLで使えるデータに変換
-		std::vector<Vertex> vertices;
+		MeshData meshData;
+		std::vector<Vertex>& vertices = meshData.vertices;
 		vertices.reserve(faceIndexSet.size());
-		std::vector<uint16_t> indices;
+		std::vector<uint16_t>& indices = meshData.indices;
 		indices.reserve(faceIndexSet.size());
 		for (int i = 0; i < faceIndexSet.size(); ++i) {
 			const IndexSet& e = faceIndexSet[i];
@@ -483,17 +495,10 @@ namespace FGEngine
 		// 設定されていない法線を補う
 		FillMissingNormals(vertices.data(), vertices.size(), indices.data(), indices.size());
 
-		// 変換したデータをバッファに追加
-		AddVertexData(
-			vertices.data(), vertices.size() * sizeof(Vertex),
-			indices.data(), indices.size() * sizeof(uint16_t));
-
-		// メッシュを作成
-		auto pMesh = std::make_shared<StaticMesh>();
 
 		// データの位置を更新
-		const void* indexOffset = drawParamsList.back().indices;
-		const GLint baseVertex = drawParamsList.back().baseVertex;
+		const void* indexOffset = 0;
+		const GLint baseVertex = 0;
 
 		// マテリアルに対応した描画パラメータを作成
 		// 仮データと番兵以外のマテリアルがある場合、仮データを飛ばす
@@ -516,12 +521,12 @@ namespace FGEngine
 			params.baseVertex = baseVertex;
 			params.materialNo = 0;	// デフォルト値を設定
 			for (int i = 0; i < materials.size(); ++i) {
-				if (materials[i]->name == cur.name) {
+				if (materials[i]->ToString() == cur.name) {
 					params.materialNo = i;	// 名前と一致するマテリアルを設定
 					break;
 				}
 			}
-			pMesh->drawParamsList.push_back(params);
+			meshData.drawParamsList.push_back(params);
 
 			// インデックスオフセットを変更
 			indexOffset = reinterpret_cast<void*>(reinterpret_cast<size_t>(indexOffset) + sizeof(uint16_t) * params.count);
@@ -529,20 +534,15 @@ namespace FGEngine
 
 		// マテリアル配列が空の場合、デフォルトマテリアルを追加
 		if (materials.empty()) {
-			pMesh->materials.push_back(std::make_shared<Material>());
+			meshData.materials.push_back(std::make_shared<Material>());
 		}
 		else {
-			pMesh->materials.assign(materials.begin(), materials.end());
+			meshData.materials.assign(materials.begin(), materials.end());
 		}
-
-		pMesh->name = filename;
-		meshes.emplace(filename, pMesh);
-
-		LOG("%sを読み込みました(頂点数=%d, インデックス数=%d)", filename, vertices.size(), indices.size());
-
-		// 作成したメッシュを返す
-		return pMesh;
+		return meshData;
 	}
+
+
 
 	/**
 	* 欠けている法線を補う

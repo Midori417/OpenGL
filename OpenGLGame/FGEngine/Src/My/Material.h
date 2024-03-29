@@ -1,9 +1,9 @@
 /**
 * @file Material.h
 */
-#ifndef MATERIAL_H_INCLUDED
-#define MATERIAL_H_INCLUDED
-
+#ifndef FGENGINE_MATERIAL_H_INCLUDED
+#define FGENGINE_MATERIAL_H_INCLUDED
+#include "Object.h"
 #include "Color.h"
 #include <memory>
 #include <vector>
@@ -11,25 +11,66 @@
 
 namespace FGEngine
 {
-
 	// 先行宣言
 	class Texture;
 	using TexturePtr = std::shared_ptr<Texture>;
 
+	/**
+	* 描画の順序
+	*/
+	enum RenderQueue
+	{
+		RenderQueue_geometry = 2000,	// 一般的な図形
+		RenderQueue_transparent = 3000,	// 半透明な図形
+		RenderQueue_overlay = 4000,		// UI、全画面エフェクト
+		RenderQueue_max = 5000,			// キューの最大値
+	};
 
 	/**
 	* マテリアル
 	*/
-	struct Material
+	class Material : public Object
 	{
-		std::string name = "<Default>";	// マテリアル名
-		Color baseColor = Color{ 1,1,1,1 };	// 基本色+アルファ
-		Color emission = Color{ 0,0,0,0 };		// 発光色
-		float specularPower = 16;					// 鏡面反射指数
-		float normalizeFactor = 24.0f / 25.13274f;	// 正規化係数
-		TexturePtr texBaseColor;		// 基本色テクスチャ
-		TexturePtr texNormal;			// 法線テクスチャ
-		TexturePtr texEmission;			// 発光色テクスチャ
+	public:
+
+		// コンストラクタ・デストラクタ
+		Material() = default;
+		virtual ~Material() = default;
+
+	public:
+
+		// 基本色+アルファ
+		Color color = Color::white;
+
+		// 発光色
+		Color emission = Color::none;
+
+		// メインテクスチャ
+		TexturePtr mainTexture;
+
+		// メインテクスチャオフセット
+		Vector2 mainTextureOffset = Vector2::zero;
+
+		// メインテクスチャスケール
+		Vector2 mainTextureScale = Vector2::one;
+
+		// 法線テクスチャ
+		TexturePtr texNormal;
+
+		// 発光色テクスチャ
+		TexturePtr texEmission;
+
+		// 鏡面反射指数
+		float specularPower = 16;					
+
+		// 正規化係数
+		float normalizeFactor = 24.0f / 25.13274f;
+
+		// 表面の粗さ、なめらか0～1粗い
+		float rouhness = 1;				
+
+		// レンダーキュー
+		int renderQueue = RenderQueue_geometry;
 	};
 	using MaterialPtr = std::shared_ptr<Material>;
 	using MaterialList = std::vector<MaterialPtr>;

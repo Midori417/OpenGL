@@ -155,8 +155,9 @@
     <ClInclude Include="FGEngine\Src\My\Component.h" />
     <ClInclude Include="FGEngine\Src\My\ComponentHelper.h" />
     <ClInclude Include="FGEngine\Src\My\Debug.h" />
+    <ClInclude Include="FGEngine\Src\My\DrawParams.h" />
     <ClInclude Include="FGEngine\Src\My\EasyAudio.h" />
-    <ClInclude Include="FGEngine\Src\My\Engine.h" />
+    <ClInclude Include="FGEngine\Src\My\EngineCore.h" />
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\GameObject.h" />
     <ClInclude Include="FGEngine\Src\My\GamePad.h" />
@@ -173,6 +174,7 @@
     <ClInclude Include="FGEngine\Src\My\MatrixFrd.h" />
     <ClInclude Include="FGEngine\Src\My\MatrixPoint.h" />
     <ClInclude Include="FGEngine\Src\My\Mesh.h" />
+    <ClInclude Include="FGEngine\Src\My\MeshBuffer.h" />
     <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h" />
     <ClInclude Include="FGEngine\Src\My\Object.h" />
     <ClInclude Include="FGEngine\Src\My\ObjectHelper.h" />
@@ -201,7 +203,9 @@
     <ClInclude Include="FGEngine\Src\My\Vector4.h" />
     <ClInclude Include="FGEngine\Src\My\VectorFrd.h" />
     <ClInclude Include="FGEngine\Src\My\VectorPoint.h" />
+    <ClInclude Include="FGEngine\Src\My\Vertex.h" />
     <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h" />
+    <ClInclude Include="FGEngine\Src\My\WindowManager.h" />
     <ClInclude Include="FGEngine\Src\Package\glad\include\glad\glad.h" />
     <ClInclude Include="FGEngine\Src\Package\glad\include\KHR\khrplatform.h" />
     <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h" />
@@ -223,7 +227,7 @@
     <ClCompile Include="FGEngine\Src\My\BufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Debug.cpp" />
     <ClCompile Include="FGEngine\Src\My\EasyAudio.cpp" />
-    <ClCompile Include="FGEngine\Src\My\Engine.cpp" />
+    <ClCompile Include="FGEngine\Src\My\EngineCore.cpp" />
     <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\GamePad.cpp" />
@@ -232,7 +236,7 @@
     <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Mathf.cpp" />
     <ClCompile Include="FGEngine\Src\My\Matrix4x4.cpp" />
-    <ClCompile Include="FGEngine\Src\My\Mesh.cpp" />
+    <ClCompile Include="FGEngine\Src\My\MeshBuffer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Object.cpp" />
     <ClCompile Include="FGEngine\Src\My\ObjectManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\ProgramObject.cpp" />
@@ -245,6 +249,7 @@
     <ClCompile Include="FGEngine\Src\My\Vector2.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector3.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector4.cpp" />
+    <ClCompile Include="FGEngine\Src\My\WindowManager.cpp" />
     <ClCompile Include="FGEngine\Src\Package\glad\src\glad.c" />
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp" />
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_demo.cpp" />

@@ -17,34 +17,42 @@ namespace FGEngine
 	template<class T>
 	inline std::shared_ptr<T> Component::GetComponent() const
 	{
-		return gameObject->GetComponent<T>();
+		return OwnerObject()->GetComponent<T>();
 	}
 
-	///**
-	//* 自身の所有者の親のコンポーネントを取得
-	//*
-	//* @param T 取得したいコンポーネント
-	//*
-	//* @return 見つけたコンポーネント
-	//* @return nullptr 見つからない
-	//*/
-	//template<class T>
-	//inline std::shared_ptr<T> Component::GetComponentParent() const
-	//{
-	//	return gameObject->GetComponentParent<T>();
-	//}
+	/**
+	* 自身の所有者の親のコンポーネントを取得
+	*
+	* @param T 取得したいコンポーネント
+	*
+	* @return 見つけたコンポーネント
+	* @return nullptr 見つからない
+	*/
+	template<class T>
+	inline std::shared_ptr<T> Component::GetComponentInParent() const
+	{
+		return OwnerObject()->GetComponentInParent<T>();
+	}
 
-	///**
-	//* 自身の所有者の子供のコンポーネントを取得
-	//*
-	//* @param T 所有したいコンポーネント
-	//*
-	//* @return 見つけたコンポーネント
-	//* @return nullptr 見つからない
-	//*/
-	//template<class T>
-	//inline std::shared_ptr<T> Component::GetComponentChildren() const
-	//{
-	//	return gameObject->GetComponenChildren<T>();
-	//}
+	/**
+	* 自身の所有者の子供のコンポーネントを取得
+	*
+	* @param T 所有したいコンポーネント
+	*
+	* @return 見つけたコンポーネント
+	* @return nullptr 見つからない
+	*/
+	template<class T>
+	inline std::shared_ptr<T> Component::GetComponentInChildren() const
+	{
+		return OwnerObject()->GetComponentInChildren();
+	}
+
+	/**
+	* Tagを取得
+	*/
+	inline std::string Component::GetTag() const
+	{
+		return OwnerObject()->tag;
+	}
 }

@@ -51,12 +51,31 @@ namespace FGEngine
 			return ptr;
 		}
 
+		/**
+		* T型のコンポーネントを取得
+		*/
 		template<typename T>
 		std::shared_ptr<T> GetComponent() const;
 
+		/**
+		* 親のT型のコンポーネントを取得
+		*/
+		template<typename T>
+		std::shared_ptr<T> GetComponentInChildren() const;
+
+		/**
+		* 子のT型のコンポーネントを取得
+		*/
+		template<typename T>
+		std::shared_ptr<T> GetComponentInParent() const;
+
+		/**
+		* Tagを取得
+		*/
+		std::string GetTag() const;
+
 	private:
 
-		std::string tag = "None";	// タグ
 		std::weak_ptr<GameObject> ownerObject;		// コンポーネントの所有オブジェクト
 		std::weak_ptr<Transform> transform;			// 所有オブジェクトのTransform
 	};

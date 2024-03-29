@@ -1,13 +1,12 @@
 /**
-* @file Engine.h
+* @file EngineCore.h
 */
-#ifndef ENGINE_H_INCLUDED
-#define ENGINE_H_INCLUDED
+#ifndef FGENGINE_ENGINECORE_H_INCLUDED
+#define FGENGINE_ENGINECORE_H_INCLUDED
 #include "Singleton.h"
 #include "SystemFrd.h"
 #include "VecMath.h"
 #include "Package/Glad.h"
-
 #include <GLFW/glfw3.h>
 #include <string>
 #include <utility>
@@ -39,12 +38,6 @@ namespace FGEngine::MainSystem
 		// ゲームエンジンを実行
 		int Run();
 
-		// フレームバッファの大きさを取得する
-		Vector2 GetFramebufferSize() const;
-
-		// フレームバッファのアスペクト比を取得する
-		float GetAspectRatio() const;
-
 	private:
 
 		// ゲームエンジンを初期化
@@ -58,12 +51,11 @@ namespace FGEngine::MainSystem
 
 	private:
 
-		// ウィンドウ
-		GLFWwindow* window = nullptr;	// ウィンドウオブジェクト
-		const std::string title = "OpenGLGame";	// ウィンドウタイトル
-
 		// アプリケーションポインター
 		ApplicationPtr application;
+
+		// ウィンドウマネージャー
+		std::shared_ptr<WindowSystem::WindowManager> windowManager;
 
 		// シーンマネージャーポインター
 		std::shared_ptr<SceneSystem::SceneManager> sceneManager;

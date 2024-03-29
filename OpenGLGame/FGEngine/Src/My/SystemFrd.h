@@ -23,13 +23,18 @@ namespace FGEngine
 	}
 	namespace SceneSystem
 	{
-		// シーンの管理クラス
+		// シーン管理クラス
 		class SceneManager;
 	}
 	namespace ObjectSystem
 	{
-		// オブジェクトの管理クラス
+		// オブジェクト管理クラス
 		class ObjectManager;
+	}
+	namespace WindowSystem
+	{
+		// ウィンドウ管理クラス
+		class WindowManager;
 	}
 }
 

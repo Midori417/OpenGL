@@ -121,6 +121,8 @@ namespace FGEngine
 				[this](const std::weak_ptr<Transform>& child) {
 					return child.lock() == this->GetTransform();
 				});
+
+			// 親の子供配列の中の自分との関係を各除する
 			if (itr != par->childrens.end())
 			{
 				par->childrens.erase(itr);

@@ -64,7 +64,7 @@ namespace FGEngine
 	/**
 	* 必要な頂点データ要素がプリミティブに存在しない場合に使うデータ
 	*/
-	struct DefaultVertexData
+	struct SkeletalVertex
 	{
 		Vector3 position = Vector3::zero;
 		Vector2 texcoord0 = Vector2::zero;
@@ -666,7 +666,7 @@ namespace FGEngine
 		pBuffer = static_cast<uint8_t*>(glMapNamedBuffer(*buffer, GL_WRITE_ONLY));
 
 		// バッファの先頭にダミーデータを設定
-		const DefaultVertexData defaultData;
+		const SkeletalVertex defaultData;
 		memcpy(pBuffer, &defaultData, sizeof(defaultData));
 		curBufferSize = sizeof(defaultData);
 
@@ -676,16 +676,16 @@ namespace FGEngine
 		tmpAnimationBuffer.reserve(maxMatrixCount);
 
 		// デフォルトマテリアルを作成
-		defaultMaterial = std::make_shared<GltfMaterial>();
-		defaultMaterial->name = "defaultMaterial";
-		defaultMaterial->texBaseColor = Texture::Create("defaultTexture", 4, 4);
+		defaultMaterial = std::make_shared<Material>();
+		defaultMaterial->SetName("defaultMaterial");
+		defaultMaterial->mainTexture = Texture::Create("defaultTexture", 4, 4);
 		static const uint32_t img[4 * 4] = { // テクスチャデータ
 			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
 			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
 			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
 			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
 		};
-		glTextureSubImage2D(*defaultMaterial->texBaseColor, 0, 0, 0,
+		glTextureSubImage2D(*defaultMaterial->mainTexture, 0, 0, 0,
 			+4, 4, GL_BGRA, GL_UNSIGNED_BYTE, img);
 	}
 
@@ -937,7 +937,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasPosition)
 				{
-					SetDefaultAttribute(AttribIndex::position, 3, offsetof(DefaultVertexData, position), *buffer);
+					SetDefaultAttribute(AttribIndex::position, 3, offsetof(SkeletalVertex, position), *buffer);
 				}
 
 				// 頂点アトリビュート(テクスチャ座標)を取得
@@ -945,7 +945,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasTexcoord0)
 				{
-					SetDefaultAttribute(AttribIndex::texcoord0, 2, offsetof(DefaultVertexData, texcoord0), *buffer);
+					SetDefaultAttribute(AttribIndex::texcoord0, 2, offsetof(SkeletalVertex, texcoord0), *buffer);
 				}
 
 				// 頂点アトリビュート(法線)を取得
@@ -953,7 +953,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasNormal)
 				{
-					SetDefaultAttribute(AttribIndex::normal, 3, offsetof(DefaultVertexData, normal), *buffer);
+					SetDefaultAttribute(AttribIndex::normal, 3, offsetof(SkeletalVertex, normal), *buffer);
 				}
 
 				// 頂点アトリビュート(タンジェント)を取得
@@ -969,7 +969,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasJoints)
 				{
-					SetDefaultAttribute(AttribIndex::joints0, 4, offsetof(DefaultVertexData, joints0), *buffer);
+					SetDefaultAttribute(AttribIndex::joints0, 4, offsetof(SkeletalVertex, joints0), *buffer);
 				}
 
 				// 頂点アトリビュート(ジョイントウェイン)を取得
@@ -977,7 +977,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasWeights)
 				{
-					SetDefaultAttribute(AttribIndex::weights0, 4, offsetof(DefaultVertexData, weights0), *buffer);
+					SetDefaultAttribute(AttribIndex::weights0, 4, offsetof(SkeletalVertex, weights0), *buffer);
 				}
 
 
@@ -1003,28 +1003,28 @@ namespace FGEngine
 			file->materials.reserve(materials->size());
 			for (const json& material : *materials)
 			{
-				GltfMaterialPtr m = std::make_shared<GltfMaterial>();
+				MaterialPtr m = std::make_shared<Material>();
 
 				// 名前を設定
-				m->name = material.value("name", std::string());
+				m->SetName(material.value("name", std::string()));
 
 				// カラーを設定
 				const auto pbr = material.find("pbrMetallicRoughness");
 				if (pbr != material.end())
 				{
 					// マテリアルカラーを取得
-					m->baseColor = Vector4(1);
+					m->color = Color::white;
 					const auto baseColorFactor = pbr->find("baseColorFactor");
 					if (baseColorFactor != pbr->end())
 					{
 						for (int i = 0; i < baseColorFactor->size(); ++i) {
-							m->baseColor[i] = baseColorFactor->at(i).get<float>();
+							m->color[i] = baseColorFactor->at(i).get<float>();
 						}
 					}
 
 					// カラーテクスチャを読み込む
-					m->texBaseColor = LoadTexture("baseColorTexture", gltf, *pbr,
-						foldername, defaultMaterial->texBaseColor);
+					m->mainTexture = LoadTexture("baseColorTexture", gltf, *pbr,
+						foldername, defaultMaterial->mainTexture);
 				} // if pbr
 
 				// 法線テクスチャを読み込む
@@ -1253,7 +1253,7 @@ namespace FGEngine
 	* @param materials	描画に使うマテリアル配列
 	* @param program	描画プログラム
 	*/
-	void Draw(const GltfMesh& mesh, const std::vector<GltfMaterialPtr>& materials, GLuint program)
+	void Draw(const GltfMesh& mesh, const std::vector<MaterialPtr>& materials, GLuint program)
 	{
 		// すべてのプリミティブを描画
 		for (const auto& prim : mesh.primitives)
@@ -1261,7 +1261,7 @@ namespace FGEngine
 			// マテリアルを設定
 			if (prim.materialNo >= 0 && prim.materialNo < materials.size())
 			{
-				const GltfMaterial& material = *materials[prim.materialNo];
+				const Material& material = *materials[prim.materialNo];
 
 				// スぺキュラパラメータを計算
 				const float a = 1.0f - material.rouhness;
@@ -1274,14 +1274,14 @@ namespace FGEngine
 				}
 				if (hasUnifomColor)
 				{
-					glProgramUniform4fv(program, 100, 1, &material.baseColor.x);
+					glProgramUniform4fv(program, 100, 1, &material.color.r);
 					//glProgramUniform2f(program, 103, specularPower, normalizeFactor);
 				}
 				// OpenGLコンテキストにテクスチャを割り当てる
-				if (material.texBaseColor)
+				if (material.mainTexture)
 				{
 					GLuint tex = 0;
-					tex = *material.texBaseColor;
+					tex = *material.mainTexture;
 					glBindTextures(0, 1, &tex);
 				}
 				if (material.texNormal)
