@@ -4,10 +4,13 @@
 #include "FrameBufferObject.h"
 #include "Debug.h"
 
-namespace FGEngine
+namespace FGEngine::Rendering::Rall
 {
 	/**
 	* 既存のテクスチャからFBOを作成する
+	* 
+	* @param color カラーバッファ
+	* @param depth 深度バッファ
 	*/
 	FrameBufferObject::FrameBufferObject(const TexturePtr& color, const TexturePtr& depth)
 		: texColor(color), texDepth(depth)
@@ -57,5 +60,18 @@ namespace FGEngine
 	FrameBufferObject::~FrameBufferObject()
 	{
 		glDeleteFramebuffers(1, &fbo);
+	}
+
+	/**
+	* FraneBufferObjectを作成
+	*
+	* @param color カラーバッファ
+	* @param depth 深度バッファ
+	*
+	* @return 作成したフレームバッファオブジェクトポインター
+	*/
+	FrameBufferObjectPtr FrameBufferObject::Create(const TexturePtr& color, const TexturePtr& depth)
+	{
+		return std::make_shared<FrameBufferObject>(color, depth);
 	}
 }

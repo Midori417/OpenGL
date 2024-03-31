@@ -1,13 +1,12 @@
 /**
 * @file VertexArrayObject.h
 */
-#ifndef VECTEXARRAYOBJECT_H_INCLUDED
-#define VECTEXARRAYOBJECT_H_INCLUDED
-
+#ifndef FGENGINE_VECTEXARRAYOBJECT_H_INCLUDED
+#define FGENGINE_VECTEXARRAYOBJECT_H_INCLUDED
 #include "Package/Glad.h"
 #include <memory>
 
-namespace FGEngine
+namespace FGEngine::Rendering::Rall
 {
 	// 先行宣言
 	class VertexArrayObject;
@@ -22,31 +21,25 @@ namespace FGEngine
 	class VertexArrayObject
 	{
 	public:
-
-		VertexArrayObject()
-		{
-			glCreateVertexArrays(1, &id);
-		}
-		~VertexArrayObject()
-		{
-			glDeleteVertexArrays(1, &id);
-		}
+		
+		// コンストラクタ・デストラクタ
+		VertexArrayObject();
+		~VertexArrayObject();
 
 		// コピーと代入を禁止
 		VertexArrayObject(const VertexArrayObject&) = delete;
 		VertexArrayObject& operator=(const VertexArrayObject&) = delete;
 
 		/**
-		* VAOを作成する
+		* VertexArrayObjectを作成する
 		*
-		* @return 作成したVAOへのポインター
+		* @return 作成したVertexArrayObjectのポインター
 		*/
-		static VertexArrayObjectPtr Create()
-		{
-			return std::make_shared<VertexArrayObject>();
-		}
+		static VertexArrayObjectPtr Create();
 
-		// 管理番号を取得
+		/**
+		* VertexArrayObjectの管理番号を取得
+		*/
 		operator GLuint() const
 		{
 			return id;
@@ -60,15 +53,12 @@ namespace FGEngine
 		* @param stride	次の頂点データにある同一要素までの感覚(バイト数)
 		* @param offset 頂点データ内における要素の位置(バイト数)
 		*/
-		void SetAttribute(GLuint index, GLint size, size_t stride, size_t offset)
-		{
-			glEnableVertexAttribArray(index);
-			glVertexAttribPointer(index, size, GL_FLOAT, GL_FALSE, static_cast<GLsizei>(stride), reinterpret_cast<void*>(offset));
-		}
+		void SetAttribute(GLuint index, GLint size, size_t stride, size_t offset);
 
 	private:
 
-		GLuint id = 0; // オブジェクトの管理番号
+		// VertexArrayObjectの管理番号
+		GLuint id = 0; 
 	};
 }
 #endif // !VECTEXARRAYOBJECT_H_INCLUDED

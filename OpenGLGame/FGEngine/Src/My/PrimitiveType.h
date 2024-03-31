@@ -1,8 +1,8 @@
 /**
 * @file PrimitiveType.h
 */
-#ifndef PRIMITIVETYPE_H_INCLUDED
-#define PRIMITIVETYPE_H_INCLUDED
+#ifndef FGENGINE_PRIMITIVETYPE_H_INCLUDED
+#define FGENGINE_PRIMITIVETYPE_H_INCLUDED
 
 namespace FGEngine
 {

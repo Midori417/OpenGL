@@ -15,8 +15,9 @@
 #include <algorithm>
 
 using json = nlohmann::json;
+using namespace FGEngine::Rendering::Rall;
 
-namespace FGEngine
+namespace FGEngine::Rendering
 {
 	/**
 	* バイナリデータ
@@ -671,7 +672,7 @@ namespace FGEngine
 		curBufferSize = sizeof(defaultData);
 
 		// アニメーションの姿勢行列用バッファを作成
-		animationBuffer = MappedBufferObject::Create(maxMatrixCount * sizeof(Matrix4x4),
+		animationBuffer = Rall::MappedBufferObject::Create(maxMatrixCount * sizeof(Matrix4x4),
 			GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY);
 		tmpAnimationBuffer.reserve(maxMatrixCount);
 
@@ -1028,7 +1029,7 @@ namespace FGEngine
 				} // if pbr
 
 				// 法線テクスチャを読み込む
-				m->texNormal = LoadTexture("normalTexture", gltf, material, foldername, nullptr);
+				m->normalTexture = LoadTexture("normalTexture", gltf, material, foldername, nullptr);
 
 				// 作成したマテリアルを追加
 				file->materials.push_back(m);
@@ -1284,10 +1285,10 @@ namespace FGEngine
 					tex = *material.mainTexture;
 					glBindTextures(0, 1, &tex);
 				}
-				if (material.texNormal)
+				if (material.normalTexture)
 				{
 					GLuint tex = 0;
-					tex = *material.texNormal;
+					tex = *material.normalTexture;
 					// シェーダに法線マップを対応させたらつかう
 					//glBindTextures(0, 1, &tex);
 				}

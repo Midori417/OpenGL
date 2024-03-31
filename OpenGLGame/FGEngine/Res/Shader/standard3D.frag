@@ -19,7 +19,7 @@ layout(binding=2) uniform sampler2DShadow texShadow;	// 影長深度テクスチャ
 
 // プログラムからの入力
 layout(location=100) uniform vec4 color;	// 物体の色
-layout(location=101) uniform vec4 emission; // 物体の発光色
+layout(location=101) uniform vec4 emissionColor; // 物体の発光色
 layout(location=102) uniform float alphaCutoff;	// フラグメントを破棄する境界線
 
 // 環境光
@@ -129,11 +129,13 @@ void main()
 	outColor.rgb *= diffuse;
 
 	// 発光色を反映
-	if(emission.w > 0){
-		outColor.rgb += texture(texEmission, inTexcoord).rgb * emission.rgb;
+	if(emissionColor.w > 0)
+	{
+		outColor.rgb += texture(texEmission, inTexcoord).rgb * emissionColor.rgb;
 	}
-	else {
-	 outColor.rgb += emission.rgb;
+	else 
+	{
+	 outColor.rgb += emissionColor.rgb;
 	}
 
 	// ガンマ補正を行う

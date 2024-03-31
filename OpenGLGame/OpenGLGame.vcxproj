@@ -136,6 +136,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="FGEngine\Res\Shader\shadow3D.frag" />
+    <None Include="FGEngine\Res\Shader\shadow3D.vert" />
+    <None Include="FGEngine\Res\Shader\shadowSkeletal3D.vert" />
+    <None Include="FGEngine\Res\Shader\skeletal3D.vert" />
+    <None Include="FGEngine\Res\Shader\standard3D.frag" />
+    <None Include="FGEngine\Res\Shader\standard3D.vert" />
+    <None Include="FGEngine\Res\Shader\unlit.frag" />
+    <None Include="FGEngine\Res\Shader\unlit.vert" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -184,7 +192,7 @@
     <ClInclude Include="FGEngine\Src\My\Package\Nlohmann.h" />
     <ClInclude Include="FGEngine\Src\My\plane_xy_mesh.h" />
     <ClInclude Include="FGEngine\Src\My\PrimitiveType.h" />
-    <ClInclude Include="FGEngine\Src\My\ProgramObject.h" />
+    <ClInclude Include="FGEngine\Src\My\ShaderObject.h" />
     <ClInclude Include="FGEngine\Src\My\Quaternion.h" />
     <ClInclude Include="FGEngine\Src\My\Random.h" />
     <ClInclude Include="FGEngine\Src\My\Renderer.h" />
@@ -239,7 +247,7 @@
     <ClCompile Include="FGEngine\Src\My\MeshBuffer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Object.cpp" />
     <ClCompile Include="FGEngine\Src\My\ObjectManager.cpp" />
-    <ClCompile Include="FGEngine\Src\My\ProgramObject.cpp" />
+    <ClCompile Include="FGEngine\Src\My\ShaderObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Quaternion.cpp" />
     <ClCompile Include="FGEngine\Src\My\Random.cpp" />
     <ClCompile Include="FGEngine\Src\My\SceneManager.cpp" />
@@ -249,6 +257,7 @@
     <ClCompile Include="FGEngine\Src\My\Vector2.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector3.cpp" />
     <ClCompile Include="FGEngine\Src\My\Vector4.cpp" />
+    <ClCompile Include="FGEngine\Src\My\VertexArrayObjectcpp.cpp" />
     <ClCompile Include="FGEngine\Src\My\WindowManager.cpp" />
     <ClCompile Include="FGEngine\Src\Package\glad\src\glad.c" />
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp" />

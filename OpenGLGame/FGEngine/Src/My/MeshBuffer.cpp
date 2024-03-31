@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <fstream>
 #include <stdio.h>
+using namespace FGEngine::Rendering::Rall;
 
 namespace FGEngine::Rendering
 {
@@ -27,7 +28,7 @@ namespace FGEngine::Rendering
 		// VAOを作成
 		vao = VertexArrayObject::Create();
 
-		// VBOとIBOをVAOIにバインド
+		// VBOとIBOをVAOにバインド
 		glBindVertexArray(*vao);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer);
 		glBindBuffer(GL_ARRAY_BUFFER, *buffer);
@@ -39,9 +40,11 @@ namespace FGEngine::Rendering
 
 		// スケルタルメッシュ用のVAOを作成
 		vaoSkeletal = VertexArrayObject::Create();
+
 		glBindVertexArray(*vaoSkeletal);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer);
 		glBindBuffer(GL_ARRAY_BUFFER, *buffer);
+
 		vaoSkeletal->SetAttribute(0, 3, sizeof(SkeletalVertex), offsetof(SkeletalVertex, position));
 		vaoSkeletal->SetAttribute(1, 2, sizeof(SkeletalVertex), offsetof(SkeletalVertex, texcoord));
 		vaoSkeletal->SetAttribute(2, 3, sizeof(SkeletalVertex), offsetof(SkeletalVertex, normal));
@@ -279,8 +282,8 @@ namespace FGEngine::Rendering
 			}
 
 			// 発光色の読み取りを試みる
-			if (sscanf(line.data(), " Ke %f %f %f", &pMaterial->emission.r,
-				&pMaterial->emission.g, &pMaterial->emission.b) == 3)
+			if (sscanf(line.data(), " Ke %f %f %f", &pMaterial->emissionColor.r,
+				&pMaterial->emissionColor.g, &pMaterial->emissionColor.b) == 3)
 			{
 				continue;
 			}
@@ -291,7 +294,7 @@ namespace FGEngine::Rendering
 				const std::string filename = foldername + texureName;
 				if (std::filesystem::exists(filename)) 
 				{
-					pMaterial->texEmission = textureCallback(filename.c_str());
+					pMaterial->emissionTexture = textureCallback(filename.c_str());
 				}
 				else 
 				{
@@ -542,6 +545,67 @@ namespace FGEngine::Rendering
 		return meshData;
 	}
 
+	/**
+	* 描画パラメータは配列を描画する
+	*
+	* @param drawParamList	描画パラメータ配列
+	* @param materials		マテリアル配列
+	*/
+	void Draw(GLuint program, const std::vector<DrawParams>& drawParamsList, const MaterialList& materials)
+	{
+		for (const auto& e : drawParamsList)
+		{
+			// マテリアルを設定
+			if (e.materialNo >= 0 && e.materialNo < materials.size())
+			{
+				// マテリアルを取得
+				const Material& material = *materials[e.materialNo];
+
+				// 色を設定
+				if (glGetUniformLocation(program, "color") >= 0)
+				{
+					const Color color = material.color;
+					glProgramUniform4fv(program, 100, 1, &color.r);
+				}
+				// 発光色を設定
+				if (glGetUniformLocation(program, "emissionColor") >= 0)
+				{
+					const Color emissionColor = material.emissionColor;
+					glProgramUniform4fv(program, 101, 1, &emissionColor.r);
+				}
+				// メインテクスチャを設定
+				if (material.mainTexture)
+				{
+					const GLuint tex = *material.mainTexture;
+					glBindTextures(0, 1, &tex);
+				}
+				// 発光テクスチャを設定
+				if (material.emissionTexture)
+				{
+					const GLuint tex = *material.emissionTexture;
+					glBindTextures(1, 1, &tex);
+				}
+				else
+				{
+					// テクスチャ1を未設定
+					glBindTextures(1, 1, nullptr);
+				}
+			}
+			// 描画
+			glDrawElementsBaseVertex(e.mode, e.count, GL_UNSIGNED_SHORT, e.indices, e.baseVertex);
+		}
+	}
+
+	/**
+	* スタティックメッシュを描画する
+	*
+	* @param mesh		スタティックメッシュ
+	* @param materials	マテリアル配列
+	*/
+	void Draw(GLuint program, const StaticMesh& mesh, const MaterialList& materials)
+	{
+		Draw(program, mesh.drawParamsList, materials);
+	}
 
 
 	/**

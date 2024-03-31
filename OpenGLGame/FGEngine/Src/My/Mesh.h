@@ -27,8 +27,14 @@ namespace FGEngine
 
 	public:
 
-		MaterialList materials;		// マテリアル配列
-		std::vector<Rendering::DrawParams> drawParamsList;	// 描画パラメータ
+		// 指定するシェーダーの名前
+		std::string shaderName;
+
+		// マテリアル配列
+		MaterialList materials;
+
+		// 描画パラメータ
+		std::vector<Rendering::DrawParams> drawParamsList;
 	};
 	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
 

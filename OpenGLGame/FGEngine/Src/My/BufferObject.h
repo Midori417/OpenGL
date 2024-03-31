@@ -1,20 +1,21 @@
 /**
 * @file BufferObject.h
 */
-#ifndef BUFFEROBJECT_H_INCLUDED
-#define BUFFEROBJECT_H_INCLUDED
+#ifndef FGENGINE_BUFFEROBJECT_H_INCLUDED
+#define FGENGINE_BUFFEROBJECT_H_INCLUDED
 #include "Package/Glad.h"
 #include <memory>
 
-namespace FGEngine
+namespace FGEngine::Rendering::Rall
 {
-
 	// 先行宣言
 	class BufferObject;
 	using BufferObjectPtr = std::shared_ptr<BufferObject>;
 
 	/**
 	* バッファオブジェクト(BO)
+	* 
+	* GPUにアクセスするためのメモリ領域
 	*/
 	class BufferObject
 	{
@@ -40,16 +41,29 @@ namespace FGEngine
 		BufferObject(const BufferObject&) = delete;
 		BufferObject& operator=(const BufferObject&) = delete;
 
-		// 管理番号の取得
-		operator GLuint() const { return id; }
+		/**
+		* 管理番号の取得
+		*/
+		operator GLuint() const 
+		{
+			return id;
+		}
 
-		// バッファサイズを取得
-		GLsizeiptr GetSize() const { return bufferSize; }
+		/**
+		* バッファサイズを取得
+		*/
+		GLsizeiptr GetSize() const
+		{ 
+			return bufferSize;
+		}
 
 	private:
 
-		GLuint id = 0;				// オブジェクト管理番号
-		GLsizeiptr bufferSize = 0;	// バッファサイズ(バイト数)
+		// オブジェクト管理番号
+		GLuint id = 0;				
+
+		// バッファサイズ(バイト数)
+		GLsizeiptr bufferSize = 0;
 
 	};
 }

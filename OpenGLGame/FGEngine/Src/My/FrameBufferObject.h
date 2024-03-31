@@ -1,14 +1,18 @@
 /**
 * @file FrameBufferObject.h
 */
-#ifndef FRAMEBUFFEROBJECT_H_INCLUDED
-#define FRAMEBUFFEROBJECT_H_INCLUDED
-
+#ifndef FGENGINE_FRAMEBUFFEROBJECT_H_INCLUDED
+#define FGENGINE_FRAMEBUFFEROBJECT_H_INCLUDED
 #include "Package/Glad.h"
 #include "Texture.h"
 
-namespace FGEngine
+namespace FGEngine::Rendering::Rall
 {
+	// 先行宣言
+	class FrameBufferObject;
+	using FrameBufferObjectPtr = std::shared_ptr<FrameBufferObject>;
+
+
 	/**
 	* フレームバッファ・オブジェクト(FBO)
 	*/
@@ -24,17 +28,35 @@ namespace FGEngine
 		FrameBufferObject(const FrameBufferObject&) = delete;
 		FrameBufferObject& operator=(const FrameBufferObject&) = delete;
 
-		// 管理番号を取得
+		/**
+		* FraneBufferObjectを作成
+		* 
+		* @param color カラーバッファ
+		* @param depth 深度バッファ
+		*
+		* @return 作成したフレームバッファオブジェクトポインター
+		*/
+		static FrameBufferObjectPtr Create(const TexturePtr& color, const TexturePtr& depth);
+
+		/**
+		* 管理番号を取得
+		*/
 		operator GLuint() const
 		{
 			return fbo;
 		}
 
-		// 幅と高さを取得
+		/**
+		* 幅の取得
+		*/
 		int GetWidth() const
 		{
 			return widht;
 		}
+
+		/**
+		* 高さの取得
+		*/
 		int GetHeight() const
 		{
 			return height;
@@ -52,12 +74,20 @@ namespace FGEngine
 
 	private:
 
-		GLuint fbo;		// FBOの管理番号
-		int widht = 0;	// FBOの幅
-		int height = 0;	// FBOの高さ
-		TexturePtr texColor;	// カラーテクスチャ
-		TexturePtr texDepth;	// 深度テクスチャ
+		// FBOの管理番号
+		GLuint fbo;
+
+		// FBOの幅
+		int widht = 0;
+
+		// FBOの高さ
+		int height = 0;
+
+		// カラーテクスチャ
+		TexturePtr texColor;
+
+		// 深度テクスチャ
+		TexturePtr texDepth;
 	};
-	using FrameBufferObjectPtr = std::shared_ptr<FrameBufferObject>;
 }
 #endif // !FRAMEBUFFEROBJECT_H_INCLUDED

@@ -43,7 +43,7 @@ namespace FGEngine
 		Color color = Color::white;
 
 		// 発光色
-		Color emission = Color::none;
+		Color emissionColor = Color::none;
 
 		// メインテクスチャ
 		TexturePtr mainTexture;
@@ -55,10 +55,10 @@ namespace FGEngine
 		Vector2 mainTextureScale = Vector2::one;
 
 		// 法線テクスチャ
-		TexturePtr texNormal;
+		TexturePtr normalTexture;
 
 		// 発光色テクスチャ
-		TexturePtr texEmission;
+		TexturePtr emissionTexture;
 
 		// 鏡面反射指数
 		float specularPower = 16;					
@@ -67,7 +67,8 @@ namespace FGEngine
 		float normalizeFactor = 24.0f / 25.13274f;
 
 		// 表面の粗さ、なめらか0～1粗い
-		float rouhness = 1;				
+		float rouhness = 1;
+
 
 		// レンダーキュー
 		int renderQueue = RenderQueue_geometry;

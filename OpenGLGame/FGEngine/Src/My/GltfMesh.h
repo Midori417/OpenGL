@@ -13,17 +13,13 @@
 #include "VecMath.h"
 #include "Texture.h"
 #include "Material.h"
+#include "BufferObject.h"
+#include "VertexArrayObject.h"
+#include "MapBufferObjecth.h"
 
-namespace FGEngine
+
+namespace FGEngine::Rendering
 {
-
-	// 先行宣言
-	class VertexArrayObject;
-	using VertexArrayObjectPtr = std::shared_ptr<VertexArrayObject>;
-	class BufferObject;
-	using BufferObjectPtr = std::shared_ptr<BufferObject>;
-	class MappedBufferObject;
-	using MappedBufferObjectPtr = std::shared_ptr<MappedBufferObject>;
 
 	/**
 	* プリミティブデータ
@@ -36,7 +32,7 @@ namespace FGEngine
 		const GLvoid* indeices = 0;			// 描画開始インデックスのオフセット
 		GLint baseVertex = 0;				// インデックス0番とみなされる頂点配列内の位置
 
-		VertexArrayObjectPtr vao;	// プリミティブ用VAO
+		Rall::VertexArrayObjectPtr vao;	// プリミティブ用VAO
 		size_t materialNo = -1;	// マテリアル番号
 	};
 
@@ -215,7 +211,7 @@ namespace FGEngine
 
 	private:
 
-		BufferObjectPtr buffer;			// binファイルを読み込むバッファ
+		Rall::BufferObjectPtr buffer;			// binファイルを読み込むバッファ
 		uint8_t* pBuffer = nullptr;		// マップされたアドレス
 		GLsizeiptr curBufferSize = 0;	// 書き込み済みデータ数
 		MaterialPtr defaultMaterial;	// マテリアル未設定時に使用するマテリアル
@@ -225,7 +221,7 @@ namespace FGEngine
 		TextureCallback textureCallback;
 
 		// アニメーションの姿勢行列バッファ
-		MappedBufferObjectPtr animationBuffer;
+		Rall::MappedBufferObjectPtr animationBuffer;
 		GltfAnimationMatrices tmpAnimationBuffer;
 
 

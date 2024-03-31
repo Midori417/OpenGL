@@ -76,7 +76,10 @@ namespace FGEngine
 
 	private:
 
-		std::weak_ptr<GameObject> ownerObject;		// コンポーネントの所有オブジェクト
-		std::weak_ptr<Transform> transform;			// 所有オブジェクトのTransform
+		// コンポーネントの所有オブジェクト
+		std::weak_ptr<GameObject> ownerObject;
+
+		// 所有オブジェクトのTransform
+		std::weak_ptr<Transform> transform;
 	};
 }

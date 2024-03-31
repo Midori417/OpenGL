@@ -1,7 +1,7 @@
 /**
-* @file ProgramObject.cpp
+* @file ShaderObject.cpp
 */
-#include "ProgramObject.h"
+#include "ShaderObject.h"
 #include "Debug.h"
 #include <fstream>
 #include <filesystem>
@@ -64,9 +64,11 @@ namespace FGEngine
 	* @param filenameVS 頂点シェーダーのファイル名
 	* @param filenameFS フラグメントシェーダーのファイル名
 	*/
-	ProgramObject::ProgramObject(const std::string& name, const char* filenameVS, const char* filenameFS)
-		: name(name), filenameVS(filenameVS), filenameFS(filenameFS)
+	ShaderObject::ShaderObject(const std::string& name, const char* filenameVS, const char* filenameFS)
 	{
+		// シェーダの名前を設定
+		SetName(name);
+
 		// シェーダー読み込んでコンパイル
 		vs = CompileShader(GL_VERTEX_SHADER, filenameVS);
 		fs = CompileShader(GL_FRAGMENT_SHADER, filenameFS);
@@ -100,7 +102,7 @@ namespace FGEngine
 	/**
 	* デストラクタ
 	*/
-	ProgramObject::~ProgramObject()
+	ShaderObject::~ShaderObject()
 	{
 		glDeleteProgram(prog);
 		glDeleteShader(fs);
@@ -110,8 +112,8 @@ namespace FGEngine
 	/*
 	* プログラムオブジェクトを作成
 	*/
-	std::shared_ptr<ProgramObject> ProgramObject::Create(const std::string& name, const char* filenameVS, const char* filenameFS)
+	std::shared_ptr<ShaderObject> ShaderObject::Create(const std::string& name, const char* filenameVS, const char* filenameFS)
 	{
-		return std::make_shared<ProgramObject>(name, filenameVS, filenameVS);
+		return std::make_shared<ShaderObject>(name, filenameVS, filenameVS);
 	}
 }

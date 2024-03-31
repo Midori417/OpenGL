@@ -21,8 +21,6 @@ namespace FGEngine::Rendering
 	using MeshBufferPtr = std::shared_ptr<MeshBuffer>;
 	struct Vertex;
 
-	void Draw(const StaticMesh& mesh, GLuint program, const MaterialList& materials);
-
 	// 共有マテリアル配列を複製
 	inline MaterialList CloneMaterialList(const StaticMeshPtr& original) {
 		MaterialList clone(original->materials.size());
@@ -106,7 +104,7 @@ namespace FGEngine::Rendering
 		/**
 		* VAOの取得
 		*/
-		VertexArrayObjectPtr GetVAO() const
+		Rall::VertexArrayObjectPtr GetVAO() const
 		{
 			return vao;
 		}
@@ -114,7 +112,7 @@ namespace FGEngine::Rendering
 		/**
 		* SkeletalVAOの取得
 		* */
-		VertexArrayObjectPtr GetSkeletalVAO() const
+		Rall::VertexArrayObjectPtr GetSkeletalVAO() const
 		{
 			return vaoSkeletal;
 		}
@@ -164,13 +162,13 @@ namespace FGEngine::Rendering
 	private:
 		
 		// 頂点データおよびインデックスデータ
-		BufferObjectPtr buffer;
+		Rall:: BufferObjectPtr buffer;
 
 		// スタティックメッシュ頂点アトリビュート
-		VertexArrayObjectPtr vao;
+		Rall::VertexArrayObjectPtr vao;
 
 		//スケルタルメッシュ頂点アトリビュート
-		VertexArrayObjectPtr vaoSkeletal;
+		Rall::VertexArrayObjectPtr vaoSkeletal;
 
 		// スタティックメッシュ配列
 		std::unordered_map<std::string, StaticMeshPtr> meshes;
@@ -187,6 +185,22 @@ namespace FGEngine::Rendering
 		// テクスチャ作成コールバック
 		TextureCallback textureCallback;	
 	};
+
+	/**
+	* 描画パラメータは配列を描画する
+	* 
+	* @param drawParamList	描画パラメータ配列
+	* @param materials		マテリアル配列
+	*/
+	void Draw(GLuint program, const std::vector<DrawParams>& drawParamsList, const MaterialList& materials);
+
+	/**
+	* スタティックメッシュを描画する
+	* 
+	* @param mesh		スタティックメッシュ
+	* @param materials	マテリアル配列
+	*/
+	void Draw(GLuint program, const StaticMeshPtr mesh, const MaterialList& materials);
 
 	// 欠けている法線を補う
 	void FillMissingNormals(Vertex* vertices, size_t vertexCount, const uint16_t* indices, size_t indexCount);
