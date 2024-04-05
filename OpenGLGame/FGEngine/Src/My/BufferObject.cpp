@@ -4,7 +4,7 @@
 #include "BufferObject.h"
 #include "Debug.h"
 
-namespace FGEngine::Rendering::Rall
+namespace FGEngine::Rendering
 {
 
 	/**

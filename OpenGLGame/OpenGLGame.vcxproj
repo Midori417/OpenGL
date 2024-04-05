@@ -109,7 +109,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>IMGUI_IMPL_OPENGL_LOADER_GL3W;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\MyProject\OpenGL\OpenGLGame\Src\Engine\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
@@ -154,7 +154,6 @@
     <ClInclude Include="FGEngine\Src\FGEngine.h" />
     <ClInclude Include="FGEngine\Src\My\AudioSettings.h" />
     <ClInclude Include="FGEngine\Src\My\BoxCollider.h" />
-    <ClInclude Include="FGEngine\Src\My\box_mesh.h" />
     <ClInclude Include="FGEngine\Src\My\BufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\Camera.h" />
     <ClInclude Include="FGEngine\Src\My\CapsuleCollider.h" />
@@ -168,10 +167,10 @@
     <ClInclude Include="FGEngine\Src\My\EngineCore.h" />
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\GameObject.h" />
-    <ClInclude Include="FGEngine\Src\My\GamePad.h" />
-    <ClInclude Include="FGEngine\Src\My\GltfMesh.h" />
-    <ClInclude Include="FGEngine\Src\My\Input.h" />
-    <ClInclude Include="FGEngine\Src\My\InputHelper.h" />
+    <ClInclude Include="FGEngine\Src\My\InputGamePad.h" />
+    <ClInclude Include="FGEngine\Src\My\InputKey.h" />
+    <ClInclude Include="FGEngine\Src\My\InputManager.h" />
+    <ClInclude Include="FGEngine\Src\My\InputMouse.h" />
     <ClInclude Include="FGEngine\Src\My\KeyCode.h" />
     <ClInclude Include="FGEngine\Src\My\Light.h" />
     <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h" />
@@ -184,13 +183,13 @@
     <ClInclude Include="FGEngine\Src\My\Mesh.h" />
     <ClInclude Include="FGEngine\Src\My\MeshBuffer.h" />
     <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h" />
+    <ClInclude Include="FGEngine\Src\My\MouseButton.h" />
     <ClInclude Include="FGEngine\Src\My\Object.h" />
     <ClInclude Include="FGEngine\Src\My\ObjectHelper.h" />
     <ClInclude Include="FGEngine\Src\My\ObjectManager.h" />
     <ClInclude Include="FGEngine\Src\My\Package\Glad.h" />
     <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h" />
     <ClInclude Include="FGEngine\Src\My\Package\Nlohmann.h" />
-    <ClInclude Include="FGEngine\Src\My\plane_xy_mesh.h" />
     <ClInclude Include="FGEngine\Src\My\PrimitiveType.h" />
     <ClInclude Include="FGEngine\Src\My\ShaderObject.h" />
     <ClInclude Include="FGEngine\Src\My\Quaternion.h" />
@@ -205,7 +204,6 @@
     <ClInclude Include="FGEngine\Src\My\Texture.h" />
     <ClInclude Include="FGEngine\Src\My\Time.h" />
     <ClInclude Include="FGEngine\Src\My\Transform.h" />
-    <ClInclude Include="FGEngine\Src\My\VecMath.h" />
     <ClInclude Include="FGEngine\Src\My\Vector2.h" />
     <ClInclude Include="FGEngine\Src\My\Vector3.h" />
     <ClInclude Include="FGEngine\Src\My\Vector4.h" />
@@ -238,11 +236,12 @@
     <ClCompile Include="FGEngine\Src\My\EngineCore.cpp" />
     <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp" />
-    <ClCompile Include="FGEngine\Src\My\GamePad.cpp" />
-    <ClCompile Include="FGEngine\Src\My\GltfMesh.cpp" />
-    <ClCompile Include="FGEngine\Src\My\Input.cpp" />
+    <ClCompile Include="FGEngine\Src\My\InputGamePad.cpp" />
+    <ClCompile Include="FGEngine\Src\My\InputKey.cpp" />
+    <ClCompile Include="FGEngine\Src\My\InputMouse.cpp" />
     <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Mathf.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Matrix3x3.cpp" />
     <ClCompile Include="FGEngine\Src\My\Matrix4x4.cpp" />
     <ClCompile Include="FGEngine\Src\My\MeshBuffer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Object.cpp" />
@@ -259,6 +258,7 @@
     <ClCompile Include="FGEngine\Src\My\Vector4.cpp" />
     <ClCompile Include="FGEngine\Src\My\VertexArrayObjectcpp.cpp" />
     <ClCompile Include="FGEngine\Src\My\WindowManager.cpp" />
+    <ClCompile Include="FGEngine\Src\My\InputManager.cpp" />
     <ClCompile Include="FGEngine\Src\Package\glad\src\glad.c" />
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp" />
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_demo.cpp" />

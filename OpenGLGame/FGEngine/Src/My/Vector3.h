@@ -1,8 +1,8 @@
 /**
 * @file Vector3.h
 */
-#ifndef VECTOR3_H_INCLUDED
-#define VECTOR3_H_INCLUDED
+#ifndef FGENGINE_VECTOR3_H_INCLUDED
+#define FGENGINE_VECTOR3_H_INCLUDED
 
 #include "VectorFrd.h"
 
@@ -13,57 +13,82 @@ namespace FGEngine
 	struct Vector3
 	{
 
+		// デフォルトコンストラクタ
 		Vector3() = default;
-		explicit constexpr Vector3(float n) : x(n), y(n), z(n) {}
-		constexpr Vector3(float x, float y, float z) : x(x), y(y), z(z) {}
-		explicit constexpr Vector3(const Vector2& v, float z);
-		explicit constexpr Vector3(const Vector4&);
 
-		// 自身のベクトルを正規化する
+		// 3個のfloatからVector3を構築するコンストラクタ
+		explicit Vector3(float x, float y, float z);
+
+		// Vector2と1個のfloatからVector3を構築するコンストラクタ
+		explicit Vector3(const Vector2& v, float z);
+
+		// Vector4からVector3を構築するコンストラクタ
+		explicit Vector3(const Vector4& v);		
+
+		/**
+		* ベクトルを正規化されたベクトル(単位ベクトル)にする
+		*/
 		void Normalize();
 
-		// 各要素をｖの各要素と乗算する
-		void Scale(const Vector3& v);
+		/**
+		* 正規化されたベクトル(単位ベクトル)を取得
+		*
+		* @return 正規化されたベクトル
+		*/
+		Vector3 Normalized() const;
 
-		// aとbのベクトルの内積を返す
+		/**
+		* ベクトルの大きさ(長さ)を計算する
+		*
+		* @return ベクトルの大きさ
+		*/
+		float Magnitude() const;
+
+		/**
+		* 2つのベクトルの内積(ドット積)を計算する
+		*
+		* @param a ベクトル1
+		* @param b ベクトル2
+		*
+		* @return aとbの内積
+		*/
 		static float Dot(const Vector3& a, const Vector3& b);
 
-		// aとbのベクトルの外積を返す
+		/**
+		* 2のベクトルの外積(クロス積)を計算する
+		* 
+		* @param a ベクトル1
+		* @param b ベクトル2
+		*
+		* @return aとbの外積
+		*/
 		static Vector3 Cross(const Vector3& a, const Vector3& b);
 
-		// aとbのベクトルの間の距離を返す
+		/**
+		*  2つのベクトルの距離(長さ)を計算する
+		*
+		* @param a ベクトル1
+		* @param b ベクトル2
+		*
+		* @return aとbの距離
+		*/
 		static float Distance(const Vector3& a, const Vector3& b);
 
-		// aとbの間をt(Clamp0～1)で線形補間する
+		/**
+		* ベクトル a と ベクトル b の間を線形補間する
+		*
+		* @param a 補間の開始ベクトル
+		* @param b 補間の終了ベクトル
+		* @param t 補間パラメータ (0.0 ~ 1.0 の範囲)
+		*
+		* @return 補間されたベクトル
+		*/
 		static Vector3 Lerp(const Vector3& a, const Vector3& b, float t);
-
-		// aとbのの間をtで線形補間する
-		static Vector3 LerpUnclamped(const Vector3& a, const Vector3& b, float t);
-
-		// 現在の位置currentからtargetに向けて移動する
-		static Vector3 MoveTowards(const Vector3& current, const Vector3& target, float maxDistanceDelta);
-
-		// aとbのベクトルの成分を乗算して返す
-		static Vector3 Scale(const Vector3& a, const Vector3& b);
-
-		// aとbのベクトルで各成分の一番大きな値を使用してベクトルを作成
-		static Vector3 Max(const Vector3& a, const Vector3& b);
-
-		// aとbのベクトルで各成分の一番小さな値を使用してベクトルを作成
-		static Vector3 Min(const Vector3& a, const Vector3& b);
 
 	public:
 
 		float x, y, z;
 
-		// ベクトルの長さ返す
-		float magnitude()const;
-
-		// ベクトルの長さを二乗して返す
-		float sqrtMagnitude() const;
-
-		// 正規化ベクトル返す
-		Vector3 normalized() const;
 
 		// Vector3(0,0,0)
 		static const Vector3 zero;

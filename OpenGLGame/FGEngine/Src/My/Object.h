@@ -1,17 +1,21 @@
 /**
 * @file Object.h
 */
-#ifndef OBJECT_H_INCLUDED
-#define OBJECT_H_INCLUDED
+#ifndef FGENGINE_OBJECT_H_INCLUDED
+#define FGENGINE_OBJECT_H_INCLUDED
 #include <memory>
 #include <vector>
 #include <string>
-#include "VecMath.h"
+#include "SystemFrd.h"
+#include "VectorPoint.h"
+#include "MatrixPoint.h"
+#include "Quaternion.h"
 
 namespace FGEngine
 {
 	// 先行宣言
 	class Object;
+	using ObjectPtr = std::shared_ptr<Object>;
 	class GameObject;
 	using GameObjectPtr = std::shared_ptr<GameObject>;
 	class Transform;
@@ -24,7 +28,7 @@ namespace FGEngine
 	{
 	public:
 		
-		friend class ObjectManager;
+		friend ObjectSystem::ObjectManager;
 		
 		// コンストラクタ・デストラクタ
 		Object() = default;
@@ -77,7 +81,7 @@ namespace FGEngine
 		* @param obj 破棄予定にするオブジェクト
 		* @parma t	破壊される時間
 		*/
-		void Destory(Object* obj, float t = 0);
+		void Destory(ObjectPtr obj, float t = 0);
 
 		/**
 		* 破棄予定か取得
@@ -92,14 +96,18 @@ namespace FGEngine
 
 	private:
 
-		std::string name;	// オブジェクトの名前
-		bool isDestroyed;	// 破壊予定か
-		HideFlag hideFlag = HideFlag::None;	// オブジェクトの状態
-		float destroyTime = 0;	// 破壊時間
-		
+		// オブジェクトの名前
+		std::string name;
 
+		// 破壊予定か
+		bool isDestroyed;
+
+		// オブジェクトの状態
+		HideFlag hideFlag = HideFlag::None;
+
+		// 破壊時間
+		float destroyTime = 0;
 	};
-	using ObjectPtr = std::shared_ptr<Object>;
 	using ObjectList = std::vector<ObjectPtr>;
 }
 #endif // !OBJECT_H_INCLUDED

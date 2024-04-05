@@ -20,12 +20,14 @@ namespace FGEngine
 	* @param filename テクスチャファイル名
 	*
 	*/
-	Texture::Texture(const char* filename, Usage usage)
+	Texture::Texture(const std::string& name, const std::string& filename)
 	{
+		// ファイルを開く
 		std::ifstream file(filename, std::ios::binary);
-		if (!file) {
+		if (!file)
+		{
 			char s[256];
-			snprintf(s, 256, "[ERROR] %s: %sを開けません\n", __func__, filename);
+			snprintf(s, 256, "[ERROR] %s: %sを開けません\n", __func__, filename.c_str());
 			OutputDebugStringA(s);
 			return;
 		}
@@ -94,11 +96,12 @@ namespace FGEngine
 		}
 		// 格納方向が「上から下」の場合、データを上下反転
 		bool topToBottom = buffer[17] & 0b0010'0000;
-		if (usage == Usage::forGltf)
+		//if (usage == Usage::forGltf)
+		//{
+		//	topToBottom = !topToBottom;
+		//}
+		if (topToBottom)
 		{
-			topToBottom = !topToBottom;
-		}
-		if (topToBottom) {
 			const int pixelDepth = buffer[16];						// １ピクセルのビット数
 			const int lineByteSize = width * pixelDepth / 8;		// 1行のバイト数
 			uint8_t* top = buffer.data() + tgaHeaderSize;			// 上の行の位置
@@ -107,7 +110,8 @@ namespace FGEngine
 
 			// 行単位で上下反転
 			// 上下の行の位置が逆転するまで繰り返す
-			while (top < bottom) {
+			while (top < bottom)
+			{
 				std::copy_n(top, lineByteSize, tmp.data());			// 「上の行のコピー」を作る
 				std::copy_n(bottom, lineByteSize, top);				// 下の行を、上の行に上書き
 				std::copy_n(tmp.data(), lineByteSize, bottom);		// 「上の行のコピー」を下の行に上書き
@@ -155,12 +159,15 @@ namespace FGEngine
 
 		// テクスチャを作成
 		GLuint object = 0; // テクスチャの管理番号
+
 		// テクスチャを作成
 		// (テクスチャの種類、作成する個数、番号を格納する配列アドレス)
 		glCreateTextures(GL_TEXTURE_2D, 1, &object);
+
 		//　画像データのコピー先であるＧＰＵメモリ領域を確保します
 		// (テクスチャの管理番号,作成するレベル数,ピクセル形式,幅、高さ)
 		glTextureStorage2D(object, 1, format->gpuFormat, width, height);
+
 		// 画像データをGPUにコピー
 		// (テクスチャの管理番号、コピー先のレイヤー番号、コピー先のＸ座標、コピー先のＹ座標、
 		// コピーする画像の幅、コピーする画像の高さ、ピクセルに含まれる要素と順序、要素の方、画像データのアドレス)
@@ -168,12 +175,14 @@ namespace FGEngine
 			format->imageFormat, format->imageType, buffer.data() + tgaHeaderSize);
 
 		// アライメント元に戻す
-		if (alignment != imageAlignment) {
+		if (alignment != imageAlignment)
+		{
 			glPixelStorei(GL_UNPACK_ALIGNMENT, alignment);
 		}
 
 		// グレースケールテクスチャの場合、赤成分をミドリと青にコピーするようにし設定する
-		if (format->imageFormat == GL_RED) {
+		if (format->imageFormat == GL_RED)
+		{
 			// glTextureParameteri(テクスチャの管理番号、設定するパラメータ名、設定する値)
 			glTextureParameteri(object, GL_TEXTURE_SWIZZLE_R, GL_RED);
 			glTextureParameteri(object, GL_TEXTURE_SWIZZLE_G, GL_RED);
@@ -182,7 +191,9 @@ namespace FGEngine
 
 		// 管理ID
 		id = object;
-		this->name = filename;
+		
+		// 名前を設定
+		this->SetName(name);
 	}
 
 	/**
@@ -194,8 +205,8 @@ namespace FGEngine
 	* @param gpuFormat	データ形式
 	* @param wrapMode	ラップモード
 	*/
-	Texture::Texture(const char* name, int width, int height, GLenum gpuFormat, GLenum wrapMode)
-		:name(name), width(width), height(height)
+	Texture::Texture(const std::string& name, int width, int height, GLenum gpuFormat, GLenum wrapMode)
+		: width(width), height(height)
 	{
 		glCreateTextures(GL_TEXTURE_2D, 1, &id);
 		glTextureStorage2D(id, 1, gpuFormat, width, height);
@@ -203,7 +214,8 @@ namespace FGEngine
 		glTextureParameteri(id, GL_TEXTURE_WRAP_T, wrapMode);
 
 		// 深度テクスチャの場合、シャドウマッピングのために比較モードを設定する
-		switch (gpuFormat) {
+		switch (gpuFormat)
+		{
 		case GL_DEPTH_COMPONENT16:
 		case GL_DEPTH_COMPONENT24:
 		case GL_DEPTH_COMPONENT32:
@@ -221,5 +233,34 @@ namespace FGEngine
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &id);
+	}
+
+	/**
+	* テクスチャを読み込んで作成
+	* 
+	* @param name		テクスチャの名前
+	* @apram filename	テクスチャのファイル
+	* 
+	* @return 作成したテクスチャポインター
+	*/
+	std::shared_ptr<Texture> Texture::Create(const std::string& name, const std::string& filename)
+	{
+		return std::make_shared<Texture>(name, filename);
+	}
+
+	/**
+	* 空のテクスチャを作成する
+	* 
+	* @param name		テクスチャ識別用の名前
+	* @param widht		テクスチャの幅(ピクセル数)
+	* @param height		テクスチャの高さ(ピクセル数)
+	* @param gpuFormat	データ形式
+	* @param wrapMode	ラップモード
+	* 
+	* @return 作成したテクスチャポインター
+	*/
+	std::shared_ptr<Texture> Texture::Create(const std::string& name, int width, int height, GLenum gpuFormat, GLenum wrapMode)
+	{
+		return std::make_shared<Texture>(name, width, height, gpuFormat, wrapMode);
 	}
 }

@@ -6,7 +6,7 @@
 #include "Package/Glad.h"
 #include <memory>
 
-namespace FGEngine::Rendering::Rall
+namespace FGEngine::Rendering
 {
 	// æséŒ¾
 	class MappedBufferObject;

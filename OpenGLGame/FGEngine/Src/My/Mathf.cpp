@@ -23,6 +23,7 @@ namespace FGEngine
     {
         return sinf(f);
     }
+
     /**
     * f度のコサインを返す
     */
@@ -30,6 +31,7 @@ namespace FGEngine
     {
         return cosf(f);
     }
+
     /**
     * f度のタンジェントを返す
     */
@@ -37,6 +39,7 @@ namespace FGEngine
     {
         return tanf(f);
     }
+
     /**
     * f度のアークサイン(サインの値がfになる、ラジアンで表された角度)を返す
     */
@@ -44,18 +47,32 @@ namespace FGEngine
     {
         return asinf(f);
     }
+
+    /**
+    * f度のアークコサイン返す
+    */
     float Mathf::Acos(float f)
     {
         return acosf(f);
     }
+
+    /**
+    *  f度のアークタンジェントを返す
+    */
     float Mathf::Atan(float f)
     {
         return atanf(f);
     }
+
+
+    /**
+    *  Tanがy / xになる角度をラジアンを返す
+    */
     float Mathf::Atan2(float x, float y)
     {
         return atan2f(x, y);
     }
+
     /**
     * fの平方根を返す
     */
@@ -63,6 +80,7 @@ namespace FGEngine
     {
         return sqrtf(f);
     }
+
     /**
     * fの絶対値を返す
     */
@@ -70,6 +88,7 @@ namespace FGEngine
     {
         return (f < 0) ? -f : f;
     }
+
     /**
     * valueの絶対値を返す
     */
@@ -77,6 +96,7 @@ namespace FGEngine
     {
         return (value < 0) ? -value : value;
     }
+
     /**
     * aとbの値の最小値を返す
     */
@@ -84,21 +104,7 @@ namespace FGEngine
     {
         return (a < b) ? a : b;
     }
-    /**
-    * value配列の中で最小値を返す
-    */
-    float Mathf::Min(std::vector<float> value)
-    {
-        // 配列が二つ以上なければ返す
-        if (value.size() < 2) {
-            return value[0];
-        }
-        float tmp = value[0];
-        for (int i = 1; i < value.size(); ++i) {
-            tmp = (tmp < value[i]) ? tmp : value[i];
-        }
-        return tmp;
-    }
+
     /**
     * aとbの値の最小値を返す
     */
@@ -106,21 +112,7 @@ namespace FGEngine
     {
         return (a < b) ? a : b;
     }
-    /**
-    * value配列の中で最小値を返す
-    */
-    int Mathf::Min(std::vector<int> value)
-    {
-        // 配列が二つ以上なければ返す
-        if (value.size() < 2) {
-            return value[0];
-        }
-        int tmp = value[0];
-        for (int i = 1; i < value.size(); ++i) {
-            tmp = (tmp < value[i]) ? tmp : value[i];
-        }
-        return tmp;
-    }
+
     /**
     * aとbの値から最大値を返す
     */
@@ -128,21 +120,7 @@ namespace FGEngine
     {
         return (a > b) ? a : b;
     }
-    /**
-    * value配列の中で最大値を返す
-    */
-    float Mathf::Max(std::vector<float> value)
-    {
-        // 配列が二つ以上なければ返す
-        if (value.size() < 2) {
-            return value[0];
-        }
-        float tmp = value[0];
-        for (int i = 1; i < value.size(); ++i) {
-            tmp = (tmp > value[i]) ? tmp : value[i];
-        }
-        return tmp;
-    }
+
     /**
     * aとbの値から最大値を返す
     */
@@ -150,30 +128,15 @@ namespace FGEngine
     {
         return (a > b) ? a : b;
     }
+
     /**
-    * value配列の中で最大値を返す
-    */
-    int Mathf::Max(std::vector<int> value)
-    {
-        // 配列が二つ以上なければ返す
-        if (value.size() < 2) {
-            return value[0];
-        }
-        int tmp = value[0];
-        for (int i = 1; i < value.size(); ++i) {
-            tmp = (tmp > value[i]) ? tmp : value[i];
-        }
-        return tmp;
-    }
-    /**
-    * fをp乗して返す
-    */
-    float Mathf::Pow(float f, float p)
-    {
-        return pow(f, p);
-    }
-    /**
-    * minとmaxの間でvalueを調整する
+    * (float)valueを補完する(min～max)する
+    *
+    * @param (float)補完(min～max)する値
+    * @param min (float)補間の最小値
+    * @parma max (float)補間の最大値
+    *
+    * @return 補完(min～max)した値
     */
     float Mathf::Clamp(float value, float min, float max)
     {
@@ -185,8 +148,15 @@ namespace FGEngine
         }
         return value;
     }
+
     /**
-    * valueをminとmaxの間で返す
+    * (int)valueを補完する(min～max)する
+    * 
+    * @param (int)補完(min～max)する値
+    * @param min (int)補間の最小値
+    * @parma max (int)補間の最大値
+    *
+    * @return 補完(min～max)した値
     */
     int Mathf::Clamp(int value, int min, int max)
     {
@@ -198,8 +168,14 @@ namespace FGEngine
         }
         return value;
     }
+
+
     /**
-    * valueを0～1の間で返す
+    * valueを補完(0～1)する
+    * 
+    * @param value 補完(0～1)する値
+    * 
+    * @return 補完(0～1)した値
     */
     float Mathf::Clamp01(float value)
     {
@@ -210,19 +186,6 @@ namespace FGEngine
             value = 1;
         }
         return value;
-    }
-
-    float Mathf::Floor(float value)
-    {
-        return std::floorf(value);
-    }
-
-    /**
-    * 引数の対数(底が10)を返す
-    */
-    float Mathf::Log10(float value)
-    {
-        return std::log10f(value);
     }
 
     /**

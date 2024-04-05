@@ -6,7 +6,7 @@
 #include "Package/Glad.h"
 #include "Texture.h"
 
-namespace FGEngine::Rendering::Rall
+namespace FGEngine::Rendering
 {
 	// 先行宣言
 	class FrameBufferObject;
@@ -29,7 +29,7 @@ namespace FGEngine::Rendering::Rall
 		FrameBufferObject& operator=(const FrameBufferObject&) = delete;
 
 		/**
-		* FraneBufferObjectを作成
+		* フレームバッファオブジェクトを作成
 		* 
 		* @param color カラーバッファ
 		* @param depth 深度バッファ

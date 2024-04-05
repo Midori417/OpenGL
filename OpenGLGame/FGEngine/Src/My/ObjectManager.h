@@ -1,13 +1,13 @@
 /**
 * @file ObjectManager.h
 */
-#ifndef OBJECTMANAGER_H_INCLUDED
-#define OBJECTMANAGER_H_INCLUDED
+#ifndef FGENGINE_OBJECTMANAGER_H_INCLUDED
+#define FGENGINE_OBJECTMANAGER_H_INCLUDED
 #include "Singleton.h"
 #include "Object.h"
 #include "GameObject.h"
 
-namespace FGEngine
+namespace FGEngine::ObjectSystem
 {
 	/**
 	* オブジェクト管理クラス
@@ -38,12 +38,6 @@ namespace FGEngine
 		* ゲームオブジェクトの更新
 		*/
 		void UpdateGameObject();
-
-		void UpdateTransform();
-
-		void UpdateRenderer();
-
-		void UpdateRigidbody();
 
 		/**
 		* ゲームオブジェクトの削除処理
@@ -88,8 +82,11 @@ namespace FGEngine
 
 	private:
 
-		std::vector<GameObjectPtr> gameObjects;	// ゲームオブジェクト配列
-		bool isDestoryObject = false;			// 破壊オブジェクトが存在するかどうか
+		// ゲームオブジェクト配列
+		std::vector<GameObjectPtr> gameObjects;
+
+		// 破壊オブジェクトが存在するかどうか
+		bool isDestoryObject = false;
 
 	};
 }

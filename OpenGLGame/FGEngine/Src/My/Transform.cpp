@@ -11,7 +11,7 @@ namespace FGEngine
 	Vector3 Transform::Forward() const
 	{
 		auto foward = rotation * Vector3::forward;
-		return foward.normalized();
+		return foward.Normalized();
 	}
 
 	/**
@@ -20,7 +20,7 @@ namespace FGEngine
 	Vector3 Transform::Right() const
 	{
 		auto right = rotation * Vector3::right;
-		return right.normalized();
+		return right.Normalized();
 	}
 
 	/**
@@ -29,7 +29,7 @@ namespace FGEngine
 	Vector3 Transform::Up() const
 	{
 		auto up = rotation * Vector3::up;
-		return up.normalized();
+		return up.Normalized();
 	}
 	
 	/**
@@ -59,7 +59,7 @@ namespace FGEngine
 	*/
 	Vector3 Transform::GetEulerAngle() const
 	{
-		return rotation.eulerAngles();
+		return rotation.EulerAngle();
 	}
 
 	/**
@@ -69,7 +69,7 @@ namespace FGEngine
 	*/
 	void Transform::Rotate(const Vector3& eulers)
 	{
-		rotation = Quaternion::Euler(eulers + rotation.eulerAngles());
+		rotation = Quaternion::EulerToQuaternion(eulers + rotation.EulerAngle());
 	}
 
 	/**
@@ -81,9 +81,9 @@ namespace FGEngine
 	void Transform::LookAt(const TransformPtr target, const Vector3& worldUp)
 	{
 		// ワールド座標系における始点座標系のXYZの向きを計算
-		const Vector3 axisZ = Vector3(position - target->position).normalized();
-		const Vector3 axisX = Vector3::Cross(worldUp, axisZ).normalized();
-		const Vector3 axisY = Vector3::Cross(axisZ, axisX).normalized();
+		const Vector3 axisZ = Vector3(position - target->position).Normalized();
+		const Vector3 axisX = Vector3::Cross(worldUp, axisZ).Normalized();
+		const Vector3 axisY = Vector3::Cross(axisZ, axisX).Normalized();
 
 		// 座標を軸ベクトルに投影するように行列を設定
 		Matrix4x4 m;
@@ -94,7 +94,7 @@ namespace FGEngine
 		// eyeが原点になるように、eyeを各軸に射影して平行移動量を計算
 		m[3] = Vector4{ -Vector3::Dot(axisX, position), -Vector3::Dot(axisY, position), -Vector3::Dot(axisZ, position), 1 };
 
-		rotation = Quaternion::RotationMatrixToQuaternio(Matrix3x3(m));
+		rotation = Quaternion::RotationMatrixToQuaternion(Matrix3x3(m));
 
 	}
 
@@ -115,7 +115,6 @@ namespace FGEngine
 		auto par = this->parent.lock();
 		if (par)
 		{
-			
 			// 自分の位置を検索
 			auto itr = std::find_if(par->childrens.begin(), par->childrens.end(),
 				[this](const std::weak_ptr<Transform>& child) {

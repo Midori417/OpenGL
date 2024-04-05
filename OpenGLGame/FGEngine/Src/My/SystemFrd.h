@@ -8,7 +8,7 @@ namespace FGEngine
 {
 	namespace MainSystem
 	{
-		// すべてのシステムを管理するコア部
+		// すべてのシステムを管理するエンジンクラス
 		class EngineCore;
 	}
 	namespace PhysicsSystem
@@ -16,7 +16,7 @@ namespace FGEngine
 		// 物理エンジン
 		class PhysicsEngine;
 	}
-	namespace RenderSystem
+	namespace GraphicsSystem
 	{
 		// グラフィックエンジン
 		class GraphicsEngine;
@@ -25,6 +25,11 @@ namespace FGEngine
 	{
 		// シーン管理クラス
 		class SceneManager;
+	}
+	namespace InputSystem
+	{
+		// 入力管理クラス
+		class InputManager;
 	}
 	namespace ObjectSystem
 	{

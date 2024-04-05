@@ -1,9 +1,8 @@
 /**
 * @file Vector4.h
 */
-#ifndef VECTOR4_H_INCLUDED
-#define VECTOR4_H_INCLUDED
-
+#ifndef FGENGINE_VECTOR4_H_INCLUDED
+#define FGENGINE_VECTOR4_H_INCLUDED
 #include "VectorFrd.h"
 
 namespace FGEngine
@@ -14,33 +13,49 @@ namespace FGEngine
 	{
 
 		Vector4() = default;
-		explicit constexpr Vector4(float n) : x(n), y(n), z(n), w(n) {}
-		explicit constexpr Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
-		constexpr Vector4(const Vector2& v, float z, float w);
-		constexpr Vector4(const Vector3& v, float w);
 
-		// 正規化する
+		// 4個のfloatからVector4を構築するコンストラクタ
+		explicit Vector4(float x, float y, float z, float w);
+
+		// Vector2と2個のfloatからVector4を構築するコンストラクタ
+		explicit Vector4(const Vector2& v, float z, float w);
+
+		// Vector3と１個のfloatからVector3を構築するコンストラクタ
+		explicit Vector4(const Vector3& v, float w);
+
+		/**
+		* ベクトルを正規化されたベクトル(単位ベクトル)にする
+		*/
 		void Normalize();
 
-		// aとbの各要素の最大値のベクトルを返す
-		static Vector4 Max(const Vector4& a, const Vector4& b);
+		/**
+		* 正規化されたベクトル(単位ベクトル)を取得
+		*
+		* @return 正規化されたベクトル
+		*/
+		Vector4 Normalized() const;
 
-		// aとbの各要素の最小値のベクトルを返す
-		static Vector4 Min(const Vector4& a, const Vector4& b);
+		/**
+		* ベクトルの大きさ(長さ)を計算する
+		*
+		* @return ベクトルの大きさ
+		*/
+		float Magnitude() const;
 
 
 	public:
 
-		float x, y, z, w;
+		// ベクトルのX成分
+		float x;
 
-		// ベクトルの長さ
-		float magnitude() const;
+		// ベクトルのY成分
+		float y;
 
-		// ベクトルの二乗の長さ
-		float sqrtMagnitude() const;
+		// ベクトルのZ成分
+		float z;
 
-		// 正規化ベクトル
-		Vector4 normalized() const;
+		// ベクトルのW成分
+		float w;
 
 		// Vector4(0,0,0,0)
 		const static Vector4 zero;

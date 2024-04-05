@@ -13,7 +13,6 @@
 #include <filesystem>
 #include <fstream>
 #include <stdio.h>
-using namespace FGEngine::Rendering::Rall;
 
 namespace FGEngine::Rendering
 {
@@ -372,7 +371,7 @@ namespace FGEngine::Rendering
 			const char* p = line.c_str();
 
 			// 頂点座標の読み取り試みる
-			Vector3 v(0);
+			Vector3 v = Vector3::zero;
 			// int sscanf(回世紀対象バッファ、書式指定文字列、データ格納先アドレス、 ...)
 			//　戻り値実際に変換できた個数
 			if (sscanf(p, " v %f %f %f", &v.x, &v.y, &v.z) == 3)
@@ -382,7 +381,7 @@ namespace FGEngine::Rendering
 			}
 
 			// テクスチャ座標の読み取りを試みる
-			Vector2 vt(0);
+			Vector2 vt = Vector2::zero;
 			if (sscanf(p, "vt %f %f", &vt.x, &vt.y) == 2)
 			{
 				texcoords.push_back(vt);
@@ -390,7 +389,7 @@ namespace FGEngine::Rendering
 			}
 
 			// 法線の読み取りを試みる
-			Vector3 vn(0);
+			Vector3 vn = Vector3::zero;
 			if (sscanf(p, " vn %f %f %f", &vn.x, &vn.y, &vn.z) == 3) {
 				normals.push_back(vn);
 				continue;
@@ -620,10 +619,12 @@ namespace FGEngine::Rendering
 	{
 		// 法線が設定されていない頂点を見つける
 		std::vector<bool> missingNormals(vertexCount, false);
-		for (int i = 0; i < vertexCount; ++i) {
+		for (int i = 0; i < vertexCount; ++i)
+		{
 			// 法線の長さが0の場合を「設定されていない」とみなす
 			const Vector3& n = vertices[i].normal;
-			if (n.x == 0 && n.y == 0 && n.z == 0) {
+			if (n.x == 0 && n.y == 0 && n.z == 0) 
+			{
 				missingNormals[i] = true;
 			}
 		}
@@ -638,35 +639,36 @@ namespace FGEngine::Rendering
 			const Vector3& v0 = vertices[i0].position;
 			const Vector3& v1 = vertices[i1].position;
 			const Vector3& v2 = vertices[i2].position;
-			const Vector3 a = { v1.x - v0.x, v1.y - v0.y, v1.z - v0.z };
-			const Vector3 b = { v2.x - v0.x, v2.y - v0.y, v2.z - v0.z };
+			const Vector3 a = v1 - v0;
+			const Vector3 b = v2 - v0;
 
 			// 法線を正規化して単位ベクトルにする
-			const float cx = a.y * b.z - a.z * b.y;
-			const float cy = a.z * b.x - a.x * b.z;
-			const float cz = a.x * b.y - a.y * b.x;
+			const Vector3 c = Vector3::Cross(a, b);
 
 			// 法線を正規化して単位ベクトルにする
-			const float l = sqrt(cx * cx + cy * cy + cz * cz);
-			const Vector3 normal = { cx / l, cy / l, cz / l };
+			const Vector3 normal = c.Normalized();
 
 			// 法線が設定されていない頂点にだけ法線を加算
-			if (missingNormals[i0]) {
+			if (missingNormals[i0])
+			{
 				vertices[i0].normal += normal;
 			}
-			if (missingNormals[i1]) {
+			if (missingNormals[i1])
+			{
 				vertices[i1].normal += normal;
 			}
-			if (missingNormals[i2]) {
+			if (missingNormals[i2])
+			{
 				vertices[i2].normal += normal;
 			}
 		}
 		// 法線を正規化
-		for (int i = 0; i < vertexCount; ++i) {
-			if (missingNormals[i]) {
+		for (int i = 0; i < vertexCount; ++i)
+		{
+			if (missingNormals[i])
+			{
 				Vector3& n = vertices[i].normal;
-				const float l = sqrt(n.x * n.x + n.y * n.y + n.z * n.z);
-				n = { n.x / l, n.y / l, n.z / l };
+				n.Normalize();
 			}
 		}
 	}

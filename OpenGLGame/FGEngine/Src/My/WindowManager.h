@@ -6,9 +6,10 @@
 #include "Package/Glad.h"
 #include <GLFW/glfw3.h>
 #include "Singleton.h"
-#include "VecMath.h"
+#include "Vector2.h"
 #include "Color.h"
 #include <string>
+#include <vector>
 	
 namespace FGEngine::WindowSystem
 {
@@ -90,7 +91,10 @@ namespace FGEngine::WindowSystem
 
 	private:
 
-		std::vector<GLFWwindow*> windows;	// ウィンドウ配列
+		// ウィンドウオブジェクト配列
+		std::vector<GLFWwindow*> windows;
+
+		// クリアバッファのカラー
 		Color bufferColor = Color::black;
 
 	};

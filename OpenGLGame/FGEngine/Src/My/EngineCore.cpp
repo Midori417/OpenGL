@@ -6,6 +6,8 @@
 #include "../../../Application/Src/Application.h"
 #include "WindowManager.h"
 #include "SceneManager.h"
+#include "InputManager.h"
+#include "Time.h"
 #include "Package/ImGUI.h"
 #include <fstream>
 #include <filesystem>
@@ -123,6 +125,9 @@ namespace FGEngine::MainSystem
 		// シーンマネージャー
 		sceneManager = SceneSystem::SceneManager::GetInstance();
 
+		// インプットマネージャ
+		inputManager = InputSystem::InputManager::GetInstance();
+
 		// ImGuiコンテキストの作成
 		IMGUI_CHECKVERSION();
 		ImGui::CreateContext();
@@ -155,8 +160,8 @@ namespace FGEngine::MainSystem
 		// 時間ライブラリを更新
 		Time::Update();
 
-		// 入力ライブラリを更新
-		Input::Update(&windowManager->GetWindow());
+		// インプットマネージャを更新
+		inputManager->Update(&windowManager->GetWindow());
 
 		// シーンマネージャーを更新
 		sceneManager->Update();

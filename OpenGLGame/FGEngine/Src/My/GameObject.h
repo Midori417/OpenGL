@@ -1,7 +1,8 @@
 /**
 * @file GameObject.h
 */
-#pragma once
+#ifndef FGENGINE_GAMEOBJECT_H_INCLUDED
+#define FGENGINE_GAMEOBJECT_H_INCLUDED
 #include "Object.h"
 #include "Component.h"
 #include "Collider.h"
@@ -18,6 +19,8 @@ namespace FGEngine
 	class GameObject : public Object
 	{
 	public:
+		
+		friend ObjectSystem::ObjectManager;
 
 		// コンストラクタ・デストラクタ
 		GameObject() = default;
@@ -27,7 +30,9 @@ namespace FGEngine
 		GameObject(GameObject&) = delete;
 		GameObject& operator=(GameObject&) = delete;
 
-		// ゲームオブジェクトにコンポーネントを追加する
+		/**
+		* T型のコンポーネントをゲームオブジェクトに追加
+		*/
 		template<class T>
 		std::shared_ptr<T> AddComponent()
 		{
@@ -38,7 +43,7 @@ namespace FGEngine
 			}
 
 			// コンポーネントを作成
-			auto p = std::make_shared<T>;
+			auto p = std::make_shared<T>();
 
 			// Colliderが基底クラスの場合
 			if constexpr (std::is_base_of_v<Collider, T>)
@@ -70,15 +75,33 @@ namespace FGEngine
 				rigidbody = p;
 			}
 
+			// 親オブジェクトを設定
+			p->ownerObject = gameObject;
+
+			// 名前を設定
 			p->SetName(ToString());
+
+			// Transformを設定
+			p->transform = transform;
+
 			// コンポーネント配列に登録
 			components.push_back(p);
+
+			return p;
 		}
 
-		// コンポーネントを検索する
+		/**
+		* T型のコンポーネントを取得
+		*/
 		template<class T>
 		std::shared_ptr<T> GetComponent() const
 		{
+			// コンポーネントが基底クラスじゃなければnullptrを返す
+			if constexpr (!std::is_base_of_v<Component, T>)
+			{
+				return nullptr;
+			}
+
 			for (auto& e : components)
 			{
 				// T型にアップキャストしている場合取得する
@@ -93,26 +116,74 @@ namespace FGEngine
 			return nullptr;
 		}
 
-		// Transformを取得
+		/**
+		* T型のコンポーネントを削除する 
+		*/
+		template<class T>
+		void RemoveComponent() const
+		{
+			// コンポーネントが基底クラスじゃなければnullptrを返す
+			if constexpr (!std::is_base_of_v<Component, T>)
+			{
+				return nullptr;
+			}
+
+
+			// コンポーネントを取得
+			auto com = GetComponent<T>();
+
+			// 破棄予定にする
+			Destory(com);
+		}
+
+		/**
+		* トランスフォームコンポーネントを取得
+		*/
 		TransformPtr GetTransform() const
 		{
 			return transform;
 		}
 
+	private:
+
+		/**
+		* 削除予定のコンポーネントを削除
+		*/
+		void DestroyComponent();
+
 	public:
 
-		std::string tag = "Untagged";		// タグ
-		bool isActive = true;				// オブジェクトが有効かどうか
+		// オブジェクトが有効かどうか
+		bool isActive = true;
+
+		// タグ
+		std::string tag = "Untagged";
+
 
 	private:
 
-		std::vector<ComponentPtr> components;			// コンポーネント配列
-		std::vector<ColliderPtr> colliders;				// コライダー配列
-		std::vector<MonoBehaviourPtr> monoBehaviours;	// 	アプリケーションコンポーネント配列
-		TransformPtr transform;			// トランスフォームコンポーネントポインター
-		RendererPtr renderer;			// 描画コンポーネントポインター
-		RigidbodyPtr rigidbody;			// 物理コンポーネントポインター
+		// 自身を管理するポインター
+		GameObjectPtr gameObject;
+
+		// コンポーネント配列
+		std::vector<ComponentPtr> components;
+
+		// コライダー配列
+		std::vector<ColliderPtr> colliders;
+
+		// 	モノビヘイビア配列
+		std::vector<MonoBehaviourPtr> monoBehaviours;
+
+		// トランスフォームコンポーネントポインター
+		TransformPtr transform;
+
+		// 描画コンポーネントポインター
+		RendererPtr renderer;	
+
+		// 物理コンポーネントポインター
+		RigidbodyPtr rigidbody;
 
 	};
 	using GameObjectList = std::vector<GameObjectPtr>;
 }
+#endif // !FGENGINE_GAMOBJECYT_H_INCLUDED

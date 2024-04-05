@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_VERTEX_H_INCLUDED
 #define FGENGINE_VERTEX_H_INCLUDED
-#include "VecMath.h"
+#include "VectorPoint.h"
 
 namespace FGEngine::Rendering
 {

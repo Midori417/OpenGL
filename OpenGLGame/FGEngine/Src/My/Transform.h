@@ -121,6 +121,7 @@ namespace FGEngine
 		// 子オブジェクトのTransform
 		std::vector<std::weak_ptr<Transform>> childrens;
 	};
+	using TransformPtr = std::shared_ptr<Transform>;
 }
 
 #endif // !FGENGINE_TRANSFORM_H_INCLUDED

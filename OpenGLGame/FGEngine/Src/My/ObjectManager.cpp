@@ -6,7 +6,7 @@
 #include <algorithm>
 
 
-namespace FGEngine
+namespace FGEngine::ObjectSystem
 {
 	/**
 	* オブジェクトマネージャーを初期化
@@ -33,18 +33,6 @@ namespace FGEngine
 	{
 	}
 
-	void ObjectManager::UpdateTransform()
-	{
-	}
-
-	void ObjectManager::UpdateRenderer()
-	{
-	}
-
-	void ObjectManager::UpdateRigidbody()
-	{
-	}
-
 	/**
 	* ゲームオブジェクトの削除処理
 	*/
@@ -67,7 +55,7 @@ namespace FGEngine
 		{
 			if (i->get()->destroyTime > 0)
 			{
-				i->get()->destroyTime -= Time::deltaTime();
+				i->get()->destroyTime -= Time::DeltaTime();
 				if (i->get()->destroyTime <= 0)
 				{
 					i->get()->hideFlag = Object::HideFlag::Destory;
@@ -83,14 +71,29 @@ namespace FGEngine
 		}
 
 		// 破棄状態の有無でオブジェクトを分ける
-		auto destroyIter = std::stable_partition(
+		auto iter2 = std::stable_partition(
 			gameObjects.begin(), gameObjects.end(),
 			[](const GameObjectPtr p) { return p->GetHideFlag() == Object::HideFlag::Destory; });
 		
 		// 破棄状態のゲームオブジェクトを別の配列に移動
 		GameObjectList destroyList(
-			std::move_iterator(iter),
+			std::move_iterator(iter2),
 			std::move_iterator(gameObjects.end()));
+
+		// 配列から移動済みのゲームオブジェクトを削除
+		gameObjects.erase(iter2, gameObjects.end());
+
+		for (auto& e : destroyList)
+		{
+			// 自身のもつゲームオブジェクト破棄
+			e->gameObject = nullptr;
+
+			// 破棄状態のゲームオブジェクトのOnDestoryを実行
+			for (auto x : e->monoBehaviours)
+			{
+				x->OnDestory();
+			}
+		}
 
 		// 破壊オブジェクトがないにする
 		isDestoryObject = false;
@@ -108,7 +111,10 @@ namespace FGEngine
 		auto obj = CreateObject<GameObject>(name);
 
 		// Transformを追加
-		//obj->AddComponent<Transform>();
+		obj->AddComponent<Transform>();
+		obj->AddComponent<Renderer>();
+
+		obj->gameObject = obj;
 
 		// ゲームオブジェクト配列に登録
 		gameObjects.push_back(obj);
@@ -131,13 +137,13 @@ namespace FGEngine
 		// Tranformを設定
 
 		// 位置
-		//obj->transform->position = transform.position;
+		obj->GetTransform()->position = transform.position;
 
-		//// 回転
-		//obj->transform->rotation = transform.rotation;
+		// 回転
+		obj->GetTransform()->rotation = transform.rotation;
 
-		//// 拡大縮小
-		//obj->transform->scale = transform.scale;
+		// 拡大縮小
+		obj->GetTransform()->scale = transform.scale;
 
 		// 作成したゲームオブジェクト
 		return obj;
@@ -155,10 +161,10 @@ namespace FGEngine
 		auto obj = CreateGameObject(name);
 
 		// 位置
-		//obj->transform->position = position;
+		obj->GetTransform()->position = position;
 
-		//// 回転
-		//obj->transform->rotation = rotation;
+		// 回転
+		obj->GetTransform()->rotation = rotation;
 
 		// 作成したゲームオブジェクト
 		return obj;

@@ -23,10 +23,6 @@ bool TitleScene::Initialize()
 */
 void TitleScene::Update()
 {
-	if (Input::GetKeyDown(KeyCode::Enter))
-	{
-		SceneManager::LoadScene("ƒƒCƒ“ƒV[ƒ“");
-	}
 }
 
 /**

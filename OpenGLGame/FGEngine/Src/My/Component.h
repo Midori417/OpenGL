@@ -1,9 +1,9 @@
 /**
 * @file Component.h
 */
-#pragma once
+#ifndef FGENGINE_COMPONENT_H_INCLUDED
+#define FGENGINE_COMPONENT_H_INCLUDED
 #include "Object.h"
-#include <memory>
 
 namespace FGEngine
 {
@@ -20,6 +20,7 @@ namespace FGEngine
 	class Component : public Object
 	{
 	public:
+		friend GameObject;
 
 		// コンストラクタ・デストラクタ
 		Component() = default;
@@ -83,3 +84,4 @@ namespace FGEngine
 		std::weak_ptr<Transform> transform;
 	};
 }
+#endif // !FGENGINE_COMPONENT_H_INCLUDED

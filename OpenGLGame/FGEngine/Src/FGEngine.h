@@ -3,7 +3,6 @@
 */
 #pragma once
 
-
 // ===================
 //
 // Mathf | 数学関連
@@ -36,9 +35,6 @@
 
 // 4x4の行列
 #include "My/Matrix4x4.h"
-
-// 行列ポイント
-#include "My/MatrixPoint.h"
 
 // 時間
 #include "My/Time.h"
@@ -79,15 +75,6 @@
 //
 // ===================
 
-// キーボード、マウス入力
-#include "My/Input.h"
-#include "My/InputHelper.h"
-
-// キー一覧
-#include "My/KeyCode.h"
-
-// コントローラー入力
-#include "My/GamePad.h"
 
 // ===================
 //

@@ -2,6 +2,8 @@
 * @file Vector4.cpp
 */
 #include "Vector4.h"
+#include "Vector2.h"
+#include "Vector3.h"
 #include "Mathf.h"
 
 namespace FGEngine
@@ -11,18 +13,36 @@ namespace FGEngine
 	const Vector4 Vector4::zero = Vector4(0, 0, 0, 0);
 	const Vector4 Vector4::one = Vector4(1, 1, 1, 1);
 
-	//=======================================
-	//
-	//  関数
-	//
-	//=======================================
+	/**
+	* 4個のfloatからVector4を構築するコンストラクタ
+	*/
+	Vector4::Vector4(float x, float y, float z, float w)
+		: x(x), y(y), z(z), w(w)
+	{
+	}
 
 	/**
-	* 自身のベクトルを正規化する
+	* Vector2と2個のfloatからVector4を構築するコンストラクタ
+	*/
+	Vector4::Vector4(const Vector2& v, float z, float w)
+		: x(v.x), y(v.y), z(z), w(w)
+	{
+	}
+
+	/**
+	* Vector3と１個のfloatからVector3を構築するコンストラクタ
+	*/
+	Vector4::Vector4(const Vector3& v, float w)
+		: x(v.x), y(v.y), z(v.z), w(w)
+	{
+	}
+
+	/**
+	* ベクトルを正規化されたベクトル(単位ベクトル)にする
 	*/
 	void Vector4::Normalize()
 	{
-		float num = magnitude();
+		float num = Magnitude();
 		if (num > 0.0f) {
 			*this /= num;
 		}
@@ -32,65 +52,28 @@ namespace FGEngine
 		}
 	}
 
-
 	/**
-	* aとbの各要素の最大値のベクトルを返す
+	* 正規化されたベクトル(単位ベクトル)を取得
 	*
-	* @param a 計算対象その1
-	* @param b 計算対象その2
-	*
-	* @return 各要素の最大のベクトル
+	* @return 正規化されたベクトル
 	*/
-	Vector4 Vector4::Max(const Vector4& a, const Vector4& b)
-	{
-		return Vector4(Mathf::Max(a.x, b.x), Mathf::Max(a.y, b.y), Mathf::Max(a.z, b.z), Mathf::Max(a.w, b.w));
-	}
-
-	/**
-	* aとbの各要素の最小値のベクトルを返す
-	*
-	* @param a 計算対象その1
-	* @param b 計算対象その2
-	*
-	* @return 各要素の最小のベクトル
-	*/
-	Vector4 Vector4::Min(const Vector4& a, const Vector4& b)
-	{
-		return Vector4(Mathf::Min(a.x, b.x), Mathf::Min(a.y, b.y), Mathf::Min(a.z, b.z), Mathf::Min(a.w, b.w));
-	}
-
-	/**
-	* ベクトルの長さを返す
-	*
-	* @returnベクトルの長さ
-	*/
-	float Vector4::magnitude() const
-	{
-		return Mathf::Sqrt(x * x + y * y + z * z + w * w);
-	}
-
-	/**
-	* ベクトルの長さを二乗して返す
-	*
-	* @return ベクトルの二乗した長さ
-	*/
-	float Vector4::sqrtMagnitude() const
-	{
-		return x * x + y * y + z * z + w * w;
-	}
-
-	/**
-	* ベクトルを正規化して返す
-	*
-	* @return 正規化したベクトル
-	* @return zero 0除算された
-	*/
-	Vector4 Vector4::normalized() const
+	Vector4 Vector4::Normalized() const
 	{
 		Vector4 result = Vector4(x, y, z, w);
 		result.Normalize();
 		return result;
 	}
+
+	/**
+	* ベクトルの大きさ(長さ)を計算する
+	*
+	* @return ベクトルの大きさ
+	*/
+	float Vector4::Magnitude() const
+	{
+		return Mathf::Sqrt(x * x + y * y + z * z + w * w);
+	}
+
 
 	//=======================================
 	//

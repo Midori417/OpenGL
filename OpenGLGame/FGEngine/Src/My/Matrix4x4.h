@@ -1,16 +1,13 @@
 /**
 * @file Matrix4x4.h
 */
-#ifndef MATRIX4X4_H_INCLUDED
-#define MATRIX4X4_H_INCLUDED
-
-#include "Vector3.h"
+#ifndef FGENGINE_MATRIX4X4_H_INCLUDED
+#define FGENGINE_MATRIX4X4_H_INCLUDED
+#include "MatrixFrd.h"
 #include "Vector4.h"
 
 namespace FGEngine
 {
-	// 先行宣言
-	struct Matrix3x3;
 
 	/**
 	* 4x4行列
@@ -19,41 +16,51 @@ namespace FGEngine
 	{
 	public:
 
-		// コンストラクタ
+		// デフォルトコンストラクタ
 		Matrix4x4() = default;
-		// デストラクタ
-		~Matrix4x4() = default;
 
-		// 4このvec4からmat4を構成するコンストラクタ
-		Matrix4x4(const Vector4& v0, const Vector4& v1, const Vector4& v2, const Vector4& v3)
-		{
-			data[0] = v0;
-			data[1] = v1;
-			data[2] = v2;
-			data[3] = v3;
-		}
+		// 4個のVector4からMatrix4x4を構成するコンストラクタ
+		explicit Matrix4x4(const Vector4& v0, const Vector4& v1, const Vector4& v2, const Vector4& v3);
 
 		// 1個のfloatを対角線にコピーするコンストラクタ
-		explicit Matrix4x4(float f)
-		{
-			data[0] = Vector4{ f, 0, 0, 0 };
-			data[1] = Vector4{ 0, f, 0, 0 };
-			data[2] = Vector4{ 0, 0, f, 0 };
-			data[3] = Vector4{ 0, 0, 0, f };
-		}
+		explicit Matrix4x4(float f);
 
-		// mat3からmat4に変換するコンストラクタ
+		// Matrix3x3からMatrix4x4に変換するコンストラクタ
 		explicit Matrix4x4(const Matrix3x3& m);
 
-		// 平行移動行列
-		static Matrix4x4 Translate(const Vector3& v);
-		// 拡大縮小
-		static Matrix4x4 Scale(const Vector3& v);
-		// x軸の回転
+		/**
+		* 平行移動行列を作成
+		* 
+		* @param position 位置
+		*/
+		static Matrix4x4 Translate(const Vector3& position);
+
+		/**
+		*  拡大縮小行列を作成
+		* 
+		* @param scale スケール
+		*/
+		static Matrix4x4 Scale(const Vector3& scale);
+
+		/**
+		* X軸の回転行列を作成
+		* 
+		* @param angle xの角度
+		*/
 		static Matrix4x4 RotateX(float angle);
-		// y軸の回転
+
+		/**
+		* Y軸の回転行列を作成
+		* 
+		* @param angle yの角度
+		*/
 		static Matrix4x4 RotateY(float angle);
-		// z軸の回転
+
+		/**
+		* Z軸の回転行列を作成
+		* 
+		* @param angle zの角度
+		*/
 		static Matrix4x4 RotateZ(float angle);
 
 
@@ -73,40 +80,15 @@ namespace FGEngine
 
 	};
 
-	inline Vector3 operator*(const Matrix4x4& m, const Vector3& v)
-	{
-		Vector3 result(0);
-		for (int i = 0; i < 4; ++i)
-		{
-			for (int j = 0; j < 4; ++j)
-			{
-				result[i] += m[i][j] * v[j];
-			}
-		}
-		return result;
-	}
+	/**
+	* Matrix3x3とVector3の乗算
+	*/
+	Vector4 operator*(const Matrix4x4& m, const Vector4& v);
 
-	// mat4とvec4の乗算
-	inline Vector4 operator*(const Matrix4x4& m, const Vector4& v)
-	{
-		return m.data[0] * v.x + m.data[1] * v.y + m.data[2] * v.z + m.data[3] * v.w;
-	}
-
-	// mat4同士の乗算
-	inline Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b)
-	{
-		Matrix4x4 m;
-		m.data[0] = a * b.data[0];
-		m.data[1] = a * b.data[1];
-		m.data[2] = a * b.data[2];
-		m.data[3] = a * b.data[3];
-
-		return m;
-	}
-	inline Matrix4x4 operator*=(Matrix4x4& a, const Matrix4x4& b)
-	{
-		a = a * b;
-		return a;
-	}
+	/**
+	* Matrix3x3同士の乗算
+	*/
+	Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);
+	Matrix4x4 operator*=(Matrix4x4& a, const Matrix4x4& b);
 }
 #endif // !MATRIX4X4_H_INCLUDED

@@ -1,12 +1,13 @@
 /**
 * @file ComponentHelper.h
 */
+#ifndef FGENGINE_COMPONENT_HELPER_H_INCLUDED
+#define FGENGINE_COMPONENT_HELPER_H_INCLUDED
 #include "Component.h"
 #include "GameObject.h"
 
 namespace FGEngine
 {
-
 	/**
 	* 自身の所有者のコンポーネントを取得
 	*
@@ -56,3 +57,4 @@ namespace FGEngine
 		return OwnerObject()->tag;
 	}
 }
+#endif // !FGENGINE_COMPONENT_HELPER_H_INCLUDED

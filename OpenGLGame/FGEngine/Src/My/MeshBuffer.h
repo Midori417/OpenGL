@@ -9,7 +9,6 @@
 #include "Texture.h"
 #include "BufferObject.h"
 #include "VertexArrayObject.h"
-#include "VecMath.h"
 #include "Material.h"
 #include <unordered_map>
 #include <functional>
@@ -104,7 +103,7 @@ namespace FGEngine::Rendering
 		/**
 		* VAOの取得
 		*/
-		Rall::VertexArrayObjectPtr GetVAO() const
+		VertexArrayObjectPtr GetVAO() const
 		{
 			return vao;
 		}
@@ -112,7 +111,7 @@ namespace FGEngine::Rendering
 		/**
 		* SkeletalVAOの取得
 		* */
-		Rall::VertexArrayObjectPtr GetSkeletalVAO() const
+		VertexArrayObjectPtr GetSkeletalVAO() const
 		{
 			return vaoSkeletal;
 		}
@@ -162,13 +161,13 @@ namespace FGEngine::Rendering
 	private:
 		
 		// 頂点データおよびインデックスデータ
-		Rall:: BufferObjectPtr buffer;
+		BufferObjectPtr buffer;
 
 		// スタティックメッシュ頂点アトリビュート
-		Rall::VertexArrayObjectPtr vao;
+		VertexArrayObjectPtr vao;
 
 		//スケルタルメッシュ頂点アトリビュート
-		Rall::VertexArrayObjectPtr vaoSkeletal;
+		VertexArrayObjectPtr vaoSkeletal;
 
 		// スタティックメッシュ配列
 		std::unordered_map<std::string, StaticMeshPtr> meshes;

@@ -1,34 +1,44 @@
 /**
 * @file Time.h
 */
-#ifndef TIME_H_INCLUDED
-#define TIME_H_INCLUDED
+#ifndef FGENGINE_TIME_H_INCLUDED
+#define FGENGINE_TIME_H_INCLUDED
 #include "SystemFrd.h"
 
 namespace FGEngine
 {
+	/**
+	* 時間クラス
+	*/
 	class Time
 	{
 		friend  MainSystem::EngineCore;
 
 	public:
 
+		// コンストラクタ
 		Time() = default;
-		~Time() = default;
 
-		// デルタタイムを取得
-		static float deltaTime() {
-			return _deltaTime;
-		}
+		/**
+		* 前回の更新からの経過時間を取得
+		* 
+		* @return 前回の更新からの経過時間
+		*/
+		static float DeltaTime();
 
 	private:
 
-		// 更新処理
+		/**
+		* 時間を更新
+		*/
 		static void Update();
 
 	private:
 
-		static float _deltaTime;
+		// 前回の更新からの恵果時間
+		static float deltaTime;
+
+		// 前回の更新時間
 		static double previousTime;
 	};
 }

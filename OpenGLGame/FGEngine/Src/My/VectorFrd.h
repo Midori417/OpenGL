@@ -1,8 +1,8 @@
 /**
 * @file VectorFrd.h
 */
-#ifndef VECTORFRD_H_INCLUDED
-#define VECTORFRD_H_INCLUDED
+#ifndef FGENGINE_VECTORFRD_H_INCLUDED
+#define FGENGINE_VECTORFRD_H_INCLUDED
 
 namespace FGEngine
 {

@@ -6,7 +6,7 @@
 #include "Package/Glad.h"
 #include <memory>
 
-namespace FGEngine::Rendering::Rall
+namespace FGEngine::Rendering
 {
 	// 先行宣言
 	class BufferObject;
@@ -42,7 +42,7 @@ namespace FGEngine::Rendering::Rall
 		BufferObject& operator=(const BufferObject&) = delete;
 
 		/**
-		* 管理番号の取得
+		* バッファオブジェクトの管理番号の取得
 		*/
 		operator GLuint() const 
 		{

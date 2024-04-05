@@ -1,12 +1,15 @@
 /**
 * @file KeyCode.h
 */
-#ifndef KEYCODE_H_INCLUDED
-#define KEYCODE_H_INCLUDED
-
+#ifndef FGENGINE_KEYCODE_H_INCLUDED
+#define FGENGINE_KEYCODE_H_INCLUDED
 #include <GLFW/glfw3.h>
-namespace FGEngine
+
+namespace FGEngine::InputSystem
 {
+	/**
+	* キーボードリスト
+	*/
 	enum class KeyCode
 	{
 		Enter,
@@ -83,6 +86,9 @@ namespace FGEngine
 
 	};
 
+	/**
+	* キーボードリスト対応ビットマップ
+	*/
 	const int KEY_ASSIGN[(int)KeyCode::Max]
 	{
 		GLFW_KEY_ENTER,
@@ -158,17 +164,5 @@ namespace FGEngine
 
 	};
 
-	enum class MouseButton
-	{
-		LeftButton,
-		RightButton,
-		Max,
-	};
-
-	const int MOUSEBUTTON_ASSIGN[(int)MouseButton::Max]
-	{
-		GLFW_MOUSE_BUTTON_LEFT,
-		GLFW_MOUSE_BUTTON_RIGHT,
-	};
 }
 #endif // !KEYCODE_H_INCLUDED

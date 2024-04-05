@@ -42,7 +42,7 @@ namespace FGEngine
 	*/
 	GameObjectPtr Object::Instantate(const std::string& name)
 	{
-		auto obj = ObjectManager::GetInstance()->CreateGameObject(name);
+		auto obj = ObjectSystem::ObjectManager::GetInstance()->CreateGameObject(name);
 
 		return obj;
 	}
@@ -57,7 +57,7 @@ namespace FGEngine
 	*/
 	GameObjectPtr Object::Instantate(const std::string& name, const Transform& transform)
 	{
-		auto obj = ObjectManager::GetInstance()->CreateGameObject(name, transform);
+		auto obj = ObjectSystem::ObjectManager::GetInstance()->CreateGameObject(name, transform);
 
 		return obj;
 	}
@@ -73,7 +73,7 @@ namespace FGEngine
 	*/
 	GameObjectPtr Object::Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation)
 	{
-		auto obj = ObjectManager::GetInstance()->CreateGameObject(name, position, rotation);
+		auto obj = ObjectSystem::ObjectManager::GetInstance()->CreateGameObject(name, position, rotation);
 
 		return obj;
 	}
@@ -84,7 +84,7 @@ namespace FGEngine
 	* @param obj ”jŠü—\’è‚É‚·‚éƒIƒuƒWƒFƒNƒg
 	* @parma t	”j‰ó‚³‚ê‚éŽžŠÔ
 	*/
-	void Object::Destory(Object* obj, float t)
+	void Object::Destory(ObjectPtr obj, float t)
 	{
 		// ‚·‚Å‚É”jŠü—\’è
 		if (obj->isDestroyed)
@@ -95,8 +95,15 @@ namespace FGEngine
 		// ”jŠü—\’è‚É‚·‚é
 		obj->isDestroyed = true;
 
-		// ”jŠüŽžŠÔ‚ðÝ’è
-		obj->destroyTime = t;
+		if (t > 0)
+		{
+			// ”jŠüŽžŠÔ‚ðÝ’è
+			obj->destroyTime = t;
+		}
+		else
+		{
+			obj->hideFlag = HideFlag::Destory;
+		}
 	}
 
 }

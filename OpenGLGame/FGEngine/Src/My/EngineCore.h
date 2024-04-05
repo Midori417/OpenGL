@@ -5,7 +5,6 @@
 #define FGENGINE_ENGINECORE_H_INCLUDED
 #include "Singleton.h"
 #include "SystemFrd.h"
-#include "VecMath.h"
 #include "Package/Glad.h"
 #include <GLFW/glfw3.h>
 #include <string>
@@ -40,13 +39,22 @@ namespace FGEngine::MainSystem
 
 	private:
 
-		// ゲームエンジンを初期化
+		/**
+		* ゲームエンジンを初期化
+		* 
+		* @retval 0		正常に終了
+		* @ratval 0以外	エラーが発生
+		*/
 		int Initialize();
 
-		// ゲームエンジンを更新
+		/**
+		* ゲームエンジンを更新
+		*/
 		void Update();
 
-		// エンジンの終了
+		/**
+		* エンジンを終了
+		*/
 		void Fainalize();
 
 	private:
@@ -54,11 +62,14 @@ namespace FGEngine::MainSystem
 		// アプリケーションポインター
 		ApplicationPtr application;
 
-		// ウィンドウマネージャー
+		// ウィンドウマネージャーポインター
 		std::shared_ptr<WindowSystem::WindowManager> windowManager;
 
 		// シーンマネージャーポインター
 		std::shared_ptr<SceneSystem::SceneManager> sceneManager;
+
+		// インプットマネージャポインター
+		std::shared_ptr<InputSystem::InputManager> inputManager;
 	};
 }
 #endif // !ENGINE_H_INCLUDED

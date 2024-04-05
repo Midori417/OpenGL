@@ -6,7 +6,7 @@
 #include "Package/Glad.h"
 #include <memory>
 
-namespace FGEngine::Rendering::Rall
+namespace FGEngine::Rendering
 {
 	// 先行宣言
 	class VertexArrayObject;
@@ -31,14 +31,14 @@ namespace FGEngine::Rendering::Rall
 		VertexArrayObject& operator=(const VertexArrayObject&) = delete;
 
 		/**
-		* VertexArrayObjectを作成する
+		* 頂点配列オブジェクトを作成する
 		*
-		* @return 作成したVertexArrayObjectのポインター
+		* @return 作成した頂点配列オブジェクトのポインター
 		*/
 		static VertexArrayObjectPtr Create();
 
 		/**
-		* VertexArrayObjectの管理番号を取得
+		* 頂点配列オブジェクトの管理番号を取得
 		*/
 		operator GLuint() const
 		{
