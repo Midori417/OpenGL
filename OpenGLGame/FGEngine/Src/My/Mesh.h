@@ -5,15 +5,10 @@
 #define FGENGINE_MESH_H_INCLUDED
 #include "Object.h"
 #include "Material.h"
+#include "DrawParams.h"
 
 namespace FGEngine
 {
-	namespace Rendering
-	{
-		// 先行宣言
-		struct DrawParams;
-	}
-
 	/**
 	* スタティックメッシュ
 	*/

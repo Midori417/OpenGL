@@ -115,9 +115,6 @@
     <Filter Include="FGEngine\Src\My\GraphicsSystem">
       <UniqueIdentifier>{c468c01d-850d-4e77-b667-be4c10b2a037}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\GraphicsSystem\MeshData">
-      <UniqueIdentifier>{ef021062-71aa-4b67-93f1-1a88481a13c3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\Object\Shader">
       <UniqueIdentifier>{e1e5afdc-f81c-4bf5-b327-21e67d2dc50d}</UniqueIdentifier>
     </Filter>
@@ -171,6 +168,9 @@
     </Filter>
     <Filter Include="FGEngine\Src\My\SoundSystem">
       <UniqueIdentifier>{bd2cfe1f-0858-400d-8adf-134e464dc315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\ResouceSystem">
+      <UniqueIdentifier>{8a34f49f-54d9-42f0-ac1b-c09d5152f66f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -405,6 +405,15 @@
     <ClInclude Include="FGEngine\Src\My\PrimitiveType.h">
       <Filter>FGEngine\Src\My\Object\Mesh</Filter>
     </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\GraphicsEngine.h">
+      <Filter>FGEngine\Src\My\GraphicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\LightData.h">
+      <Filter>FGEngine\Src\My\GraphicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ResouceManager.h">
+      <Filter>FGEngine\Src\My\ResouceSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -529,6 +538,12 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\InputManager.cpp">
       <Filter>FGEngine\Src\My\InputSystem\InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\GraphicsEngine.cpp">
+      <Filter>FGEngine\Src\My\GraphicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ResouceManager.cpp">
+      <Filter>FGEngine\Src\My\ResouceSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -6,7 +6,7 @@
 #include "MeshBuffer.h"
 #include "Debug.h"
 #include "Vertex.h"
-#include "DrawParams.h"
+#include "ResouceManager.h"
 
 #include <numeric>
 #include <algorithm>
@@ -184,9 +184,11 @@ namespace FGEngine::Rendering
 	StaticMeshPtr MeshBuffer::GetStaticMesh(const std::string& name) const
 	{
 		auto itr = meshes.find(name);
-		if (itr != meshes.end()) {
+		if (itr != meshes.end())
+		{
 			return itr->second;
 		}
+		LOG_ERROR("(StaticMesh)%s‚Í“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ", name.c_str());
 		return nullptr;
 	}
 
@@ -200,9 +202,11 @@ namespace FGEngine::Rendering
 	SkeletalMeshPtr MeshBuffer::GetSkeletalMesh(const std::string& name) const
 	{
 		auto itr = skeletalMeshes.find(name);
-		if (itr != skeletalMeshes.end()) {
+		if (itr != skeletalMeshes.end()) 
+		{
 			return itr->second;
 		}
+		LOG_ERROR("(SkeltalMesh)%s‚Í“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ", name.c_str());
 		return nullptr;
 	}
 
@@ -271,7 +275,7 @@ namespace FGEngine::Rendering
 				const std::string filename = foldername + texureName;
 				if (std::filesystem::exists(filename)) 
 				{
-					pMaterial->mainTexture = textureCallback(filename.c_str());
+					pMaterial->mainTexture = ResouceSystem::ResouceManager::GetInstance()->GetTexture(filename);
 				}
 				else
 				{
@@ -293,7 +297,7 @@ namespace FGEngine::Rendering
 				const std::string filename = foldername + texureName;
 				if (std::filesystem::exists(filename)) 
 				{
-					pMaterial->emissionTexture = textureCallback(filename.c_str());
+					pMaterial->emissionTexture = ResouceSystem::ResouceManager::GetInstance()->GetTexture(filename);
 				}
 				else 
 				{
@@ -477,10 +481,12 @@ namespace FGEngine::Rendering
 				v.position = positions[e.v - 1];
 				v.texcoord = texcoords[e.vt - 1];
 				// –@ü‚ªİ’è‚³‚ê‚Ä‚¢‚È‚¢ê‡‚Í0‚ğİ’è(Œã‚ÅŒvZ)
-				if (e.vn == 0) {
-					v.normal = { 0,0,0 };
+				if (e.vn == 0)
+				{
+					v.normal = Vector3::zero;
 				}
-				else {
+				else
+				{
 					v.normal = normals[e.vn - 1];
 				}
 				vertices.push_back(v);

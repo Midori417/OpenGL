@@ -62,11 +62,18 @@ namespace FGEngine::MainSystem
 		// アプリケーションポインター
 		ApplicationPtr application;
 
+		// グラフィックエンジンポインター
+		std::shared_ptr<GraphicsSystem::GraphicsEngine> graphicsEngine;
+
+
 		// ウィンドウマネージャーポインター
 		std::shared_ptr<WindowSystem::WindowManager> windowManager;
 
 		// シーンマネージャーポインター
 		std::shared_ptr<SceneSystem::SceneManager> sceneManager;
+
+		// リソースマネージャー
+		std::shared_ptr<ResouceSystem::ResouceManager> resouceManager;
 
 		// インプットマネージャポインター
 		std::shared_ptr<InputSystem::InputManager> inputManager;

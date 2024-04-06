@@ -50,7 +50,7 @@ namespace FGEngine
 	*/
 	Vector3 Quaternion::EulerAngle() const
 	{
-		return Vector3();
+		return QuaternionToEuler(*this);
 	}
 
 	/**
@@ -118,7 +118,54 @@ namespace FGEngine
 	*/
 	Quaternion Quaternion::LookRotation(const Vector3& foward, const Vector3& upward)
 	{
-		return Quaternion();
+		Quaternion result = identity;
+
+		Vector3 forwardNormalized = foward.Normalized();
+		Vector3 right = Vector3::Cross(upward, forwardNormalized).Normalized();
+		Vector3 upAdjusted = Vector3::Cross(forwardNormalized, right).Normalized();
+		float trace = right.x + upAdjusted.y + forwardNormalized.z;
+
+		if (trace > 0)
+		{
+			float s = 0.5f / Mathf::Sqrt(trace + 1.0f);
+			result = Quaternion(
+				(upAdjusted.z - forwardNormalized.y) * s,
+				(forwardNormalized.x - right.z) * s,
+				(right.y - upAdjusted.x) * s,
+				0.25f / s
+			);
+		}
+		else if (right.x > upAdjusted.y && right.x > forwardNormalized.z) 
+		{
+			float s = 2.0f * Mathf::Sqrt(1.0f + right.x - upAdjusted.y - forwardNormalized.z);
+			result = Quaternion(
+				0.25f * s,
+				(upAdjusted.x + right.y) / s,
+				(forwardNormalized.x + right.z) / s,
+				(upAdjusted.z - forwardNormalized.y) / s
+			);
+		}
+		else if (upAdjusted.y > forwardNormalized.z)
+		{
+			float s = 2.0f * Mathf::Sqrt(1.0f + upAdjusted.y - right.x - forwardNormalized.z);
+			result = Quaternion(
+				(upAdjusted.x + right.y) / s,
+				0.25f * s,
+				(forwardNormalized.y + upAdjusted.z) / s,
+				(forwardNormalized.x - right.z) / s
+			);
+		}
+		else 
+		{
+			float s = 2.0f * Mathf::Sqrt(1.0f + forwardNormalized.z - right.x - upAdjusted.y);
+			result = Quaternion(
+				(forwardNormalized.x + right.z) / s,
+				(forwardNormalized.y + upAdjusted.z) / s,
+				0.25f * s,
+				(right.y - upAdjusted.x) / s
+			);
+		}
+		return result.Normalized();
 	}
 
 	/**
@@ -130,8 +177,29 @@ namespace FGEngine
 	*/
 	Quaternion Quaternion::LookRotation(const Vector3& foward)
 	{
-		return Quaternion();
+		return LookRotation(foward, Vector3::up);
 	}
+
+	/**
+	* Quaternionとfloatの乗算
+	*/
+	Quaternion operator*(const Quaternion& q, float f)
+	{
+		return Quaternion(q.x * f, q.y * f, q.z * f, q.w * f);
+	}
+	Quaternion operator*(float f, const Quaternion& q)
+	{
+		return q * f;
+	}
+
+	/**
+	* Quaternio同士の加算
+	*/
+	Quaternion operator+(const Quaternion& a, const Quaternion& b)
+	{
+		return Quaternion(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+	}
+
 
 	/**
 	* クォータニオン a と クォータニオン b の間を球状補間する
@@ -144,7 +212,46 @@ namespace FGEngine
 	*/
 	Quaternion Quaternion::Slerp(const Quaternion& a, const Quaternion& b, float t)
 	{
-		return Quaternion();
+		Quaternion result = Quaternion::identity;
+
+		float tmp = Mathf::Clamp01(t);
+		auto tmpA = a.Normalized();
+		auto tmpB = b.Normalized();
+
+		// クォータニオンの内積
+		float dotProduct = Dot(a, b);
+
+		// もし逆向きなら符号を反転
+		if (dotProduct < 0.0f)
+		{
+			tmpB = Quaternion(-tmpB.x, -tmpB.y, -tmpB.z, -tmpB.w);
+			dotProduct = -dotProduct;
+		}
+
+		// dotproductが1に近い場合は演算誤差が出るので線形保管する
+		const float threshold = 0.9995f;
+		if (dotProduct > threshold)
+		{
+			result = Quaternion{
+			   tmpA.x + t * (tmpB.x - tmpA.x),
+			   tmpA.y + t * (tmpB.y - tmpA.y),
+			   tmpA.z + t * (tmpB.z - tmpA.z),
+			   tmpA.w + t * (tmpB.w - tmpA.w)
+			};
+			return result.Normalized();
+		}
+		// サインとアークコサインを計算
+		float theta_0 = Mathf::Acos(dotProduct);
+		float theta = theta_0 * t;
+		float sinTheta = Mathf::Sin(theta);
+		float sinTheta_0 = Mathf::Sin(theta_0);
+
+		// 補間の計算
+		float s0 = Mathf::Cos(theta) - dotProduct * sinTheta / sinTheta_0;
+		float s1 = sinTheta / sinTheta_0;
+		result = s0 * tmpA + s1 * tmpB;
+
+		return result;
 	}
 
 	/**

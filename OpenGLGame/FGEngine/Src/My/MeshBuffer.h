@@ -21,9 +21,11 @@ namespace FGEngine::Rendering
 	struct Vertex;
 
 	// 共有マテリアル配列を複製
-	inline MaterialList CloneMaterialList(const StaticMeshPtr& original) {
+	inline MaterialList CloneMaterialList(const StaticMeshPtr& original)
+	{
 		MaterialList clone(original->materials.size());
-		for (int i = 0; i < clone.size(); ++i) {
+		for (int i = 0; i < clone.size(); ++i)
+		{
 			clone[i] = std::make_shared<Material>(*original->materials[i]);
 		}
 		return clone;
@@ -116,17 +118,6 @@ namespace FGEngine::Rendering
 			return vaoSkeletal;
 		}
 
-		// テクスチャ作成コールバック型
-		using TextureCallback = std::function<TexturePtr(const char*)>;
-
-		/**
-		* テクスチャ作成コールバックを設定する
-		*/
-		void SetTextureCallback(const TextureCallback& callback)
-		{
-			textureCallback = callback;
-		}
-
 	private:
 
 		/**
@@ -181,8 +172,6 @@ namespace FGEngine::Rendering
 		// バッファの使用済み容量(バイト)
 		size_t usedBytes = 0;
 
-		// テクスチャ作成コールバック
-		TextureCallback textureCallback;	
 	};
 
 	/**
@@ -199,7 +188,7 @@ namespace FGEngine::Rendering
 	* @param mesh		スタティックメッシュ
 	* @param materials	マテリアル配列
 	*/
-	void Draw(GLuint program, const StaticMeshPtr mesh, const MaterialList& materials);
+	void Draw(GLuint program, const StaticMesh& mesh, const MaterialList& materials);
 
 	// 欠けている法線を補う
 	void FillMissingNormals(Vertex* vertices, size_t vertexCount, const uint16_t* indices, size_t indexCount);

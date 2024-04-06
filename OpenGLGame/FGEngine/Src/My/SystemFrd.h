@@ -21,6 +21,11 @@ namespace FGEngine
 		// グラフィックエンジン
 		class GraphicsEngine;
 	}
+	namespace ResouceSystem
+	{
+		// リソース管理クラス
+		class ResouceManager;
+	}
 	namespace SceneSystem
 	{
 		// シーン管理クラス

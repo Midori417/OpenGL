@@ -20,7 +20,7 @@ namespace FGEngine
 	public:
 
 		// filenameのテクスチャを作成するコンストラクタ
-		explicit Texture(const std::string& name, const std::string& filename);
+		explicit Texture(const std::string& name, GLuint object, int width, int height);
 
 		// 空のテクスチャを作成するコンストラクタ
 		Texture(const std::string& name, int width, int height,
@@ -44,7 +44,7 @@ namespace FGEngine
 		*
 		* @return 作成したテクスチャポインター
 		*/
-		static std::shared_ptr<Texture> Create(const std::string& name, const std::string& filename);
+		static std::shared_ptr<Texture> Create(const std::string& name, GLuint object, int width, int height);
 
 		/**
 		* 空のテクスチャを作成する

@@ -3,10 +3,12 @@
 */
 #define _CRT_SECURE_NO_WARNINGS
 #include "EngineCore.h"
-#include "../../../Application/Src/Application.h"
+#include "GraphicsEngine.h"
 #include "WindowManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "ResouceManager.h"
+#include "../../../Application/Src/Application.h"
 #include "Time.h"
 #include "Package/ImGUI.h"
 #include <fstream>
@@ -119,14 +121,17 @@ namespace FGEngine::MainSystem
 		// 各機能を生成と取得
 		// ====================
 		
-		// アプリケーション
-		application = Application::GetInstance();
+		// グラフィックエンジン
+		graphicsEngine = GraphicsSystem::GraphicsEngine::GetInstance();
 
 		// シーンマネージャー
 		sceneManager = SceneSystem::SceneManager::GetInstance();
 
 		// インプットマネージャ
 		inputManager = InputSystem::InputManager::GetInstance();
+
+		// アプリケーション
+		application = Application::GetInstance();
 
 		// ImGuiコンテキストの作成
 		IMGUI_CHECKVERSION();
@@ -139,6 +144,12 @@ namespace FGEngine::MainSystem
 		// ImGuiの初期化
 		ImGui_ImplGlfw_InitForOpenGL(&windowManager->GetWindow(0), true);	// GLFW
 		ImGui_ImplOpenGL3_Init("#version 450");		// GLSLのバージョンを指定
+
+		// グラフィックエンジンを初期化
+		graphicsEngine->Initialize();
+
+		// リソースマネージャーを初期化
+		resouceManager->Initialize(graphicsEngine->meshBuffer);
 
 		// アプリケーションを初期化
 		application->Initialize();
