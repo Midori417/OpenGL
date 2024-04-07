@@ -7,6 +7,7 @@
 #include <GLFW/glfw3.h>
 #include "Texture.h"
 #include "MeshBuffer.h"
+#include "ShaderObject.h"
 #include <fstream>
 #include <filesystem>
 
@@ -40,6 +41,15 @@ namespace FGEngine::ResouceSystem
 	*/
 	void ResouceManager::LoadTga(const std::string& name, const std::string& filename)
 	{
+		// すでに登録されているため登録できない
+		auto itr = textureCache.find(name);
+		if (itr != textureCache.end())
+		{
+			LOG_ERROR("(Texture)%sはすでに登録されているため登録できません", name.c_str());
+
+			return;
+		}
+
 		// ファイルを開く
 		std::ifstream file(filename, std::ios::binary);
 		if (!file)
@@ -207,8 +217,16 @@ namespace FGEngine::ResouceSystem
 			glTextureParameteri(object, GL_TEXTURE_SWIZZLE_B, GL_RED);
 		}
 
+		// 読み込んだパラメータでテクスチャを作成
 		TexturePtr texture = std::make_shared<Texture>(name, object, width, height);
+		if (!texture)
+		{
+			LOG_ERROR("(Texture)%sの作成に失敗", name.c_str());
+			return;
+		}
 
+		// 作成したテクスチャを配列に登録
+		LOG("(Texture)%sを登録", name.c_str());
 		textureCache.emplace(name, texture);
 	}
 
@@ -221,6 +239,36 @@ namespace FGEngine::ResouceSystem
 	void ResouceManager::LoadObj(const std::string& name, const std::string& filename)
 	{
 		meshBuffer.lock()->LoadObj(name, filename);
+	}
+
+	/**
+	* シェーダファイルを読み込む
+	*
+	* @param name		シェーダの名前
+	* @param filenameVS バーテックスシェーダファイル
+	* @param filenameFS フラグメントシェーダファイル
+	*/
+	void ResouceManager::LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS)
+	{
+		// すでに登録されているため登録できない
+		auto itr = shaderCache.find(name);
+		if (itr != shaderCache.end())
+		{
+			LOG_ERROR("(Shader)%sはすでに登録されているため登録できません", name.c_str());
+			return;
+		}
+
+		// シェーダを作成
+		auto shader = ShaderObject::Create(name, filenameVS, filenameFS);
+		if (!shader)
+		{
+			LOG_ERROR("(Shader)%sの作成に失敗", name.c_str());
+			return;
+		}
+
+		// 作成したシェーダを配列に登録する
+		LOG("(Shader)%sを登録", name.c_str());
+		shaderCache.emplace(name, shader);
 	}
 
 	/**

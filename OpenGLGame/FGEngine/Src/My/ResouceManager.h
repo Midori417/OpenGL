@@ -16,6 +16,9 @@ namespace FGEngine
 	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
 	class SkeletalMesh;
 	using SkeletalMeshPtr = std::shared_ptr<SkeletalMesh>;
+	class ShaderObject;
+	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
+
 
 	namespace Rendering
 	{
@@ -66,6 +69,15 @@ namespace FGEngine
 			void LoadObj(const std::string& name, const std::string& filename);
 
 			/**
+			* シェーダファイルを読み込む
+			* 
+			* @param name		シェーダの名前
+			* @param filenameVS バーテックスシェーダファイル
+			* @param filenameFS フラグメントシェーダファイル
+			*/
+			void LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
+
+			/**
 			* テクスチャを取得
 			* 
 			* @param name テクスチャの名前
@@ -92,10 +104,22 @@ namespace FGEngine
 			*/
 			SkeletalMeshPtr GetSkeltalMesh(const std::string& name);
 
+			/**
+			* シェーダーを取得
+			* 
+			* @param name シェーダーの名前
+			* 
+			* @return nameにあったシェーダ
+			*/
+			ShaderObjectPtr GetShader(const std::string& name);
+
 		private:
 
 			// テクスチャキャッシュ
 			std::unordered_map<std::string, TexturePtr> textureCache;
+
+			// シェーダキャッシュ
+			std::unordered_map<std::string, ShaderObjectPtr> shaderCache;
 
 			// メッシュバッファ
 			std::weak_ptr<Rendering::MeshBuffer> meshBuffer;

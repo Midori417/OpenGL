@@ -22,7 +22,7 @@ namespace FGEngine
 	public:
 
 		// コンストラクタ・デストラクタ
-		ShaderObject(const std::string& name, const char* filenameVS, const char* filenameFS);
+		ShaderObject(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
 		~ShaderObject();
 
 		// コピーと代入を禁止
@@ -38,7 +38,7 @@ namespace FGEngine
 		* 
 		* @return 作成したシェーダオブジェクト
 		*/
-		std::shared_ptr<ShaderObject> Create(const std::string& name, const char* filenameVS, const char* filenameFS);
+		static ShaderObjectPtr Create(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
 
 		/**
 		* プログラムオブジェクト管理番号を取得

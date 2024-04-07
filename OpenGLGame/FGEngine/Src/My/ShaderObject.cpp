@@ -64,14 +64,14 @@ namespace FGEngine
 	* @param filenameVS 頂点シェーダーのファイル名
 	* @param filenameFS フラグメントシェーダーのファイル名
 	*/
-	ShaderObject::ShaderObject(const std::string& name, const char* filenameVS, const char* filenameFS)
+	ShaderObject::ShaderObject(const std::string& name, const std::string& filenameVS, const std::string& filenameFS)
 	{
 		// シェーダの名前を設定
 		SetName(name);
 
 		// シェーダー読み込んでコンパイル
-		vs = CompileShader(GL_VERTEX_SHADER, filenameVS);
-		fs = CompileShader(GL_FRAGMENT_SHADER, filenameFS);
+		vs = CompileShader(GL_VERTEX_SHADER, filenameVS.c_str());
+		fs = CompileShader(GL_FRAGMENT_SHADER, filenameFS.c_str());
 
 		if (vs == 0 || fs == 0)
 		{
@@ -112,7 +112,7 @@ namespace FGEngine
 	/*
 	* プログラムオブジェクトを作成
 	*/
-	std::shared_ptr<ShaderObject> ShaderObject::Create(const std::string& name, const char* filenameVS, const char* filenameFS)
+	ShaderObjectPtr ShaderObject::Create(const std::string& name, const std::string& filenameVS, const std::string& filenameFS)
 	{
 		return std::make_shared<ShaderObject>(name, filenameVS, filenameVS);
 	}
