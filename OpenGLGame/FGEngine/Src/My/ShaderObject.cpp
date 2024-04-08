@@ -92,11 +92,9 @@ namespace FGEngine
 
 		if (status != GL_TRUE)
 		{
-			LOG_ERROR("シェーダーのリンクに失敗(vs=%s, fs=%s)", filenameVS, filenameFS);
+			LOG_ERROR("シェーダーのリンクに失敗(vs=%s, fs=%s)", filenameVS.c_str(), filenameFS.c_str());
 			return;		// シェーダーのリンクに失敗
 		}
-
-		LOG("シェーダーを作成(vs=%s, fs=%s)", filenameVS, filenameFS);
 	}
 
 	/**
@@ -114,6 +112,11 @@ namespace FGEngine
 	*/
 	ShaderObjectPtr ShaderObject::Create(const std::string& name, const std::string& filenameVS, const std::string& filenameFS)
 	{
-		return std::make_shared<ShaderObject>(name, filenameVS, filenameVS);
+		auto shader = std::make_shared<ShaderObject>(name, filenameVS, filenameFS);
+		if (shader->prog == 0)
+		{
+			return nullptr;
+		}
+		return shader;
 	}
 }

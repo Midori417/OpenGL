@@ -16,10 +16,10 @@ namespace FGEngine
 		// 物理エンジン
 		class PhysicsEngine;
 	}
-	namespace GraphicsSystem
+	namespace RenderingSystem
 	{
-		// グラフィックエンジン
-		class GraphicsEngine;
+		// 描画エンジン
+		class RenderingEngine;
 	}
 	namespace ResouceSystem
 	{

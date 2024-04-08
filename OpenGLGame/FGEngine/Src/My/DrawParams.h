@@ -5,7 +5,7 @@
 #define FGENGINE_DRAWPARAMS_H_INCLUDED
 #include "Package/Glad.h"
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	/**
 	* •`‰æƒpƒ‰ƒ[ƒ^

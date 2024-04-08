@@ -3,6 +3,8 @@
 */
 #include "TitleScene.h"
 using namespace FGEngine::SceneSystem;
+using namespace FGEngine::ObjectSystem;
+using namespace FGEngine::ResouceSystem;
 
 /**
 * タイトルシーンの初期化
@@ -11,6 +13,17 @@ using namespace FGEngine::SceneSystem;
 */
 bool TitleScene::Initialize()
 {
+	auto objManager = ObjectManager::GetInstance();
+	auto resouceManager = ResouceManager::GetInstance();
+
+	auto camera = objManager->CreateGameObject("Camera");
+	camera->AddComponent<Camera>();
+	objManager->SetMainCamera(camera);
+
+	auto material = std::make_shared<Material>();
+	material->mainTexture = resouceManager->GetTexture("sky");
+
+	skyMaterial = material;
 
 	return true;
 }

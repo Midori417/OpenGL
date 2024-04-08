@@ -1,8 +1,8 @@
 /**
 * @file Singleton.h
 */
-#ifndef SINGLETON_H_INCLUDED
-#define SINGLETON_H_INCLUDED
+#ifndef FGENGINE_SINGLETON_H_INCLUDED
+#define FGENGINE_SINGLETON_H_INCLUDED
 #include <memory>
 
 namespace FGEngine
@@ -46,7 +46,8 @@ namespace FGEngine
 
 	private:
 
-		static std::weak_ptr<T> instance;	// 自身のインスタンス
+		// 自身のインスタンス
+		static std::weak_ptr<T> instance;
 	};
 
 	// スタティック変数を初期化

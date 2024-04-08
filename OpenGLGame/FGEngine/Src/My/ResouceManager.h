@@ -5,6 +5,7 @@
 #define FGENGINE_RESOUCEMANAGER_H_INCLUDED
 #include "SystemFrd.h"
 #include "Singleton.h"
+#include "ShaderObject.h"
 #include <string>
 #include <unordered_map>
 
@@ -20,7 +21,7 @@ namespace FGEngine
 	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
 
 
-	namespace Rendering
+	namespace RenderingSystem
 	{
 		class MeshBuffer;
 		using MeshBufferPtr = std::shared_ptr<MeshBuffer>;
@@ -37,6 +38,7 @@ namespace FGEngine
 
 			friend MainSystem::EngineCore;
 			friend Singleton<ResouceManager>;
+			friend ObjectSystem::ObjectManager;
 
 			// コンストラクタ
 			ResouceManager() = default;
@@ -47,7 +49,12 @@ namespace FGEngine
 			* @retval 0		初期化成功
 			* @retval 0以外	初期化失敗
 			*/
-			int Initialize(const Rendering::MeshBufferPtr meshBuffer);
+			int Initialize();
+
+			std::unordered_map<std::string, ShaderObjectPtr>* GetShaderList()
+			{
+				return &shaderCache;
+			}
 
 		public:
 
@@ -75,7 +82,8 @@ namespace FGEngine
 			* @param filenameVS バーテックスシェーダファイル
 			* @param filenameFS フラグメントシェーダファイル
 			*/
-			void LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
+			void LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS,
+				bool isNormal = false, bool isShadow = false, bool isLight = false);
 
 			/**
 			* テクスチャを取得
@@ -122,7 +130,7 @@ namespace FGEngine
 			std::unordered_map<std::string, ShaderObjectPtr> shaderCache;
 
 			// メッシュバッファ
-			std::weak_ptr<Rendering::MeshBuffer> meshBuffer;
+			RenderingSystem::MeshBufferPtr meshBuffer;
 		};
 	}
 }

@@ -14,6 +14,8 @@ namespace FGEngine
 	{
 	public:
 
+		friend ObjectSystem::ObjectManager;
+
 		// コンストラクタ・デストラクタ
 		Transform() = default;
 		virtual ~Transform() = default;
@@ -97,7 +99,15 @@ namespace FGEngine
 		*/
 		void AllChildrenPurge();
 
+		/**
+		* ワールド座標行列を取得
+		*/
+		Matrix4x4 GetTransformMatrix() const;
 
+		/**
+		* 法線行列を取得
+		*/
+		Matrix3x3 GetNormalMatrix() const;
 
 	public:
 
@@ -114,6 +124,9 @@ namespace FGEngine
 
 		// ワールド座標からローカル座標に変換した行列
 		Matrix4x4 worldToLocalMatrix = Matrix4x4(1);
+
+		// 法線変換行列
+		Matrix3x3 normalMatrix = Matrix3x3(1);
 
 		// 親オブジェクトのTransfoom
 		std::weak_ptr<Transform> parent;

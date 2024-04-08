@@ -152,6 +152,7 @@
     <ClInclude Include="Application\Src\MainScene.h" />
     <ClInclude Include="Application\Src\TitleScene.h" />
     <ClInclude Include="FGEngine\Src\FGEngine.h" />
+    <ClInclude Include="FGEngine\Src\My\RenderingEngine.h" />
     <ClInclude Include="FGEngine\Src\My\ResouceManager.h" />
     <ClInclude Include="FGEngine\Src\My\AudioSettings.h" />
     <ClInclude Include="FGEngine\Src\My\BoxCollider.h" />
@@ -168,7 +169,6 @@
     <ClInclude Include="FGEngine\Src\My\EngineCore.h" />
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\GameObject.h" />
-    <ClInclude Include="FGEngine\Src\My\GraphicsEngine.h" />
     <ClInclude Include="FGEngine\Src\My\InputGamePad.h" />
     <ClInclude Include="FGEngine\Src\My\InputKey.h" />
     <ClInclude Include="FGEngine\Src\My\InputManager.h" />
@@ -194,6 +194,7 @@
     <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h" />
     <ClInclude Include="FGEngine\Src\My\Package\Nlohmann.h" />
     <ClInclude Include="FGEngine\Src\My\PrimitiveType.h" />
+    <ClInclude Include="FGEngine\Src\My\ShaderLocationNum.h" />
     <ClInclude Include="FGEngine\Src\My\ShaderObject.h" />
     <ClInclude Include="FGEngine\Src\My\Quaternion.h" />
     <ClInclude Include="FGEngine\Src\My\Random.h" />
@@ -233,6 +234,9 @@
     <ClCompile Include="Application\Src\MainScene.cpp" />
     <ClCompile Include="Application\Src\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Main.cpp" />
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp" />
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.h" />
+    <ClCompile Include="FGEngine\Src\My\RenderingEngine.cpp" />
     <ClCompile Include="FGEngine\Src\My\ResouceManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\BufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Debug.cpp" />
@@ -240,7 +244,6 @@
     <ClCompile Include="FGEngine\Src\My\EngineCore.cpp" />
     <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp" />
-    <ClCompile Include="FGEngine\Src\My\GraphicsEngine.cpp" />
     <ClCompile Include="FGEngine\Src\My\InputGamePad.cpp" />
     <ClCompile Include="FGEngine\Src\My\InputKey.cpp" />
     <ClCompile Include="FGEngine\Src\My\InputMouse.cpp" />

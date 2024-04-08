@@ -10,6 +10,7 @@
 #include "Transform.h"
 #include "Renderer.h"
 #include "Rigidbody.h"
+#include "Camera.h"
 
 namespace FGEngine
 {
@@ -21,6 +22,8 @@ namespace FGEngine
 	public:
 		
 		friend ObjectSystem::ObjectManager;
+		friend RenderingSystem::RenderingEngine;
+		friend PhysicsSystem::PhysicsEngine;
 
 		// コンストラクタ・デストラクタ
 		GameObject() = default;
@@ -69,10 +72,16 @@ namespace FGEngine
 			{
 				renderer = p;
 			}
+
 			// Rigidbodyが基底クラスの場合
 			if constexpr (std::is_base_of_v<Rigidbody, T>)
 			{
 				rigidbody = p;
+			}
+			// Cameraが基底クラスの場合
+			if constexpr (std::is_base_of_v<Camera, T>)
+			{
+				camera = p;
 			}
 
 			// 親オブジェクトを設定
@@ -182,6 +191,9 @@ namespace FGEngine
 
 		// 物理コンポーネントポインター
 		RigidbodyPtr rigidbody;
+
+		// カメラコンポーネントポインター
+		CameraPtr camera;
 
 	};
 	using GameObjectList = std::vector<GameObjectPtr>;

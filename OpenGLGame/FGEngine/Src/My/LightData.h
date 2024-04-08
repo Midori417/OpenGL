@@ -5,8 +5,9 @@
 #define FGENGINE_LIGHTDATA_H_INCLUDED
 #include "Vector3.h"
 
-namespace FGEngine::GraphicsSystem
+namespace FGEngine::RenderingSystem
 {
+
 	/**
 	* 光源情報
 	*/
@@ -39,6 +40,21 @@ namespace FGEngine::GraphicsSystem
 		// 使用の有無
 		bool used = false;
 
+	};
+
+	/**
+	* 平行光源
+	*/
+	struct DirectionLight
+	{
+		// 色
+		Vector3 color = Vector3{ 1.00f, 0.98f, 0.95f };
+
+		// 明るさ
+		float intensity = 5.0f;					
+
+		// 向き
+		Vector3 direction = Vector3{ 0.58f, -0.58f, 0.58f };
 	};
 
 }

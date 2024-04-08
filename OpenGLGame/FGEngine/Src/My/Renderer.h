@@ -7,6 +7,26 @@
 
 namespace FGEngine
 {
+	class ShaderObject;
+	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
+
+	/**
+	* 描画の順序
+	*/
+	enum RenderQueue
+	{
+		RenderQueue_geometry = 2000,	// 一般的な図形
+		RenderQueue_transparent = 3000,	// 半透明な図形
+		RenderQueue_overlay = 4000,		// UI、全画面エフェクト
+		RenderQueue_max = 5000,			// キューの最大値
+	};
+
+	enum class DrawType
+	{
+		normal,
+		shadow
+	};
+
 	/**
 	* 描画コンポーネントの基底クラス
 	*/
@@ -14,14 +34,29 @@ namespace FGEngine
 	{
 	public:
 
+		friend RenderingSystem::RenderingEngine;
+
 		// コンストラクタ・デストラクタ
 		Renderer() = default;
 		virtual ~Renderer() = default;
+
+	protected:
+
+		virtual void Draw(DrawType drawType) const{}
 
 	public:
 
 		// 描画するするかの有無
 		bool enabled = true;
+
+		// レンダーキュー
+		int renderQueue = RenderQueue_geometry;
+
+		// シェーダ
+		ShaderObjectPtr shader;
+
+		// 影シェーダ
+		ShaderObjectPtr shadowShader;
 	};
 	using RendererPtr = std::shared_ptr<Renderer>;
 }

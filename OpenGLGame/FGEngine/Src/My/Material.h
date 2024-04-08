@@ -16,17 +16,6 @@ namespace FGEngine
 	using TexturePtr = std::shared_ptr<Texture>;
 
 	/**
-	* 描画の順序
-	*/
-	enum RenderQueue
-	{
-		RenderQueue_geometry = 2000,	// 一般的な図形
-		RenderQueue_transparent = 3000,	// 半透明な図形
-		RenderQueue_overlay = 4000,		// UI、全画面エフェクト
-		RenderQueue_max = 5000,			// キューの最大値
-	};
-
-	/**
 	* マテリアル
 	*/
 	class Material : public Object
@@ -60,6 +49,9 @@ namespace FGEngine
 		// 発光色テクスチャ
 		TexturePtr emissionTexture;
 
+		// 透明のカット率
+		float alphatCutOff = 0.5f;
+
 		// 鏡面反射指数
 		float specularPower = 16;					
 
@@ -68,10 +60,6 @@ namespace FGEngine
 
 		// 表面の粗さ、なめらか0～1粗い
 		float rouhness = 1;
-
-
-		// レンダーキュー
-		int renderQueue = RenderQueue_geometry;
 	};
 	using MaterialPtr = std::shared_ptr<Material>;
 	using MaterialList = std::vector<MaterialPtr>;

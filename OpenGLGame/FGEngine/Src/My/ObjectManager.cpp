@@ -2,9 +2,13 @@
 * @file ObjectManager.cpp
 */
 #include "ObjectManager.h"
+#include "RenderingEngine.h"
+#include "ResouceManager.h"
+#include "WindowManager.h"
+#include "ShaderObject.h"
 #include "Time.h"
+#include "ShaderLocationNum.h"
 #include <algorithm>
-
 
 namespace FGEngine::ObjectSystem
 {
@@ -27,6 +31,69 @@ namespace FGEngine::ObjectSystem
 	*/
 	void ObjectManager::Update()
 	{
+		RendererGameObject();
+	}
+
+	/**
+	* ゲームオブジェクトを描画
+	*/
+	void ObjectManager::RendererGameObject()
+	{
+		// シェーダの仕分け
+		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		std::vector<GLuint> programs;
+		for (auto prog : *resouceManager->GetShaderList())
+		{
+			// 影用のシェーダの場合除外
+			if (prog.second->isShadow)
+			{
+				continue;
+			}
+			programs.push_back(prog.second->GetProgId());
+		}
+
+		// カメラのパラメータを設定
+		for (auto prog : programs)
+		{
+			if (mainCamera)
+			{
+				// アスペクト比と視野角を設定
+				float fovScale = mainCamera->camera->GetFovScale();
+				float aspectRatio = mainCamera->camera->aspect;
+				glProgramUniform2f(prog, RenderingSystem::locAspectRatioAndScaleFov, fovScale / aspectRatio, fovScale);
+
+				// 位置と回転を設定
+				Vector3 pos;
+				Vector3 scale;
+				Matrix3x3 rot;
+				Matrix4x4::Decompose(mainCamera->transform->worldToLocalMatrix, pos, scale, rot);
+				Quaternion q = Quaternion::RotationMatrixToQuaternion(rot);
+				rot = Quaternion::QuaternionToRotationMatrix3x3(Quaternion(q.x, q.y, q.z, -q.w));
+				glProgramUniform3fv(prog, RenderingSystem::locCameraPos, 1, &pos.x);
+				glProgramUniformMatrix3fv(prog, RenderingSystem::locCameraRotationMatrix, 1, GL_FALSE, &rot.data[0].x);
+			}
+		}
+
+		// オブジェクトに描画コンポーネントの有無で分ける
+		auto iter = std::stable_partition(gameObjects.begin(), gameObjects.end(),
+			[](const auto& a) {
+				return !a->renderer; });
+
+		GameObjectList drawList(iter, gameObjects.end());
+		std::vector<RendererPtr> rendererList;
+		rendererList.reserve(gameObjects.size());
+
+		// オブジェクトのrendererを取得
+		for (auto i = iter; i < gameObjects.end(); ++i)
+		{
+			// イテレータから要素番号を取得
+			auto index = std::distance(gameObjects.begin(), i);
+
+			// 要素番号のRendererコンポーネントをRenderer配列に追加
+			rendererList.push_back(gameObjects[index]->renderer);
+		}
+		RenderingSystem::RenderingEngine::GetInstance()->DrawGameObject(rendererList);
+
 	}
 
 	void ObjectManager::UpdateGameObject()

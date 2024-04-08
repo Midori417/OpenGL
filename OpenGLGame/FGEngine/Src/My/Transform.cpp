@@ -170,4 +170,20 @@ namespace FGEngine
 		childrens.clear();
 	}
 
+	/**
+	* ワールド座標行列を取得
+	*/
+	Matrix4x4 Transform::GetTransformMatrix() const
+	{
+		return worldToLocalMatrix;
+	}
+
+	/**
+	* 法線行列を取得
+	*/
+	Matrix3x3 Transform::GetNormalMatrix() const
+	{
+		return normalMatrix;
+	}
+
 }

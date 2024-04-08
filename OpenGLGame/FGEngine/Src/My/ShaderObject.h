@@ -43,11 +43,18 @@ namespace FGEngine
 		/**
 		* プログラムオブジェクト管理番号を取得
 		*/
-		operator GLuint() const
+		GLuint GetProgId() const
 		{
 			return prog;
 		}
 
+	public:
+
+		bool isNormal = false;
+
+		bool isShadow = false;
+
+		bool isLight = false;
 
 	private:
 
@@ -59,6 +66,7 @@ namespace FGEngine
 
 		// プログラムオブジェクト管理番号
 		GLuint prog = 0;
+
 	};
 }
 #endif // !PROGRRAMOBJECT_H_INCLUDED

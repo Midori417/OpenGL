@@ -4,6 +4,7 @@
 #include "Application.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
+using namespace FGEngine::ResouceSystem;
 
 #include "TitleScene.h"
 #include "MainScene.h"
@@ -16,7 +17,11 @@ using namespace FGEngine::SceneSystem;
 */
 int Application::Initialize()
 {
+	auto resouceManager = ResouceManager::GetInstance();
 	// OBJファイルを読み込む
+
+	// 画像読み込み
+	resouceManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");

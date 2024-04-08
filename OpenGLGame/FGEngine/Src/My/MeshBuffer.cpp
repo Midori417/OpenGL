@@ -14,7 +14,7 @@
 #include <fstream>
 #include <stdio.h>
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	/**
 	* コンストラクタ
@@ -149,6 +149,7 @@ namespace FGEngine::Rendering
 		pMesh->drawParamsList.swap(meshData.drawParamsList);
 		pMesh->materials.swap(meshData.materials);
 		pMesh->SetName(name);
+		pMesh->vao = vao;
 		meshes.emplace(name, pMesh);
 
 		// AddVertexDataでコピーしたデータの位置を、描画パラメータに反映
@@ -160,7 +161,7 @@ namespace FGEngine::Rendering
 			e.indices = reinterpret_cast<const void*>(baseIndexOffset + reinterpret_cast<intptr_t>(e.indices));
 		}
 
-		LOG("%sを読み込みました(頂点数=%d, インデックス数=%d)", filename, meshData.vertices.size(), meshData.indices.size());
+		LOG("%sを読み込みました(頂点数=%d, インデックス数=%d)", filename.c_str(), meshData.vertices.size(), meshData.indices.size());
 	}
 
 	
@@ -558,6 +559,8 @@ namespace FGEngine::Rendering
 	*/
 	void Draw(GLuint program, const std::vector<DrawParams>& drawParamsList, const MaterialList& materials)
 	{
+		// シェーダプログラムを設定
+		glUseProgram(program);
 		for (const auto& e : drawParamsList)
 		{
 			// マテリアルを設定
@@ -599,6 +602,9 @@ namespace FGEngine::Rendering
 			// 描画
 			glDrawElementsBaseVertex(e.mode, e.count, GL_UNSIGNED_SHORT, e.indices, e.baseVertex);
 		}
+
+		// シェーダプログラムを解除
+		glUseProgram(0);
 	}
 
 	/**

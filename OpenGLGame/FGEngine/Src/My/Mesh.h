@@ -6,6 +6,7 @@
 #include "Object.h"
 #include "Material.h"
 #include "DrawParams.h"
+#include "VertexArrayObject.h"
 
 namespace FGEngine
 {
@@ -22,14 +23,13 @@ namespace FGEngine
 
 	public:
 
-		// 指定するシェーダーの名前
-		std::string shaderName;
-
 		// マテリアル配列
 		MaterialList materials;
 
 		// 描画パラメータ
-		std::vector<Rendering::DrawParams> drawParamsList;
+		std::vector<RenderingSystem::DrawParams> drawParamsList;
+
+		RenderingSystem::VertexArrayObjectPtr vao;
 	};
 	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
 

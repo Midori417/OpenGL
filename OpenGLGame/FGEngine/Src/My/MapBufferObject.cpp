@@ -4,7 +4,7 @@
 #include "MapBufferObjecth.h"
 #include "Debug.h"
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	/**
 	* バッファオブジェクトを作成する

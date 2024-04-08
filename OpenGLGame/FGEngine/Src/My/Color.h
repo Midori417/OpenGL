@@ -1,8 +1,8 @@
 /**
-*
+* @file Color.h
 */
-#ifndef COLOR_H_INCLUDED
-#define COLOR_H_INCLUDED
+#ifndef FGENGINE_COLOR_H_INCLUDED
+#define FGENGINE_COLOR_H_INCLUDED
 
 namespace FGEngine
 {

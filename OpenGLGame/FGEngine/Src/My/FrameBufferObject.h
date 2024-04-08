@@ -6,7 +6,7 @@
 #include "Package/Glad.h"
 #include "Texture.h"
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	// æséŒ¾
 	class FrameBufferObject;

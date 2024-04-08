@@ -17,6 +17,7 @@ namespace FGEngine::ObjectSystem
 	private:
 
 		friend Singleton<ObjectManager>;
+		friend MainSystem::EngineCore;
 
 		// コンストラクタ
 		ObjectManager() = default;
@@ -35,6 +36,11 @@ namespace FGEngine::ObjectSystem
 		void Update();
 
 		/**
+		* ゲームオブジェクトを描画
+		*/
+		void RendererGameObject();
+
+		/**
 		* ゲームオブジェクトの更新
 		*/
 		void UpdateGameObject();
@@ -43,6 +49,23 @@ namespace FGEngine::ObjectSystem
 		* ゲームオブジェクトの削除処理
 		*/
 		void DestoryGameObject();
+
+		/**
+		* ゲームオブジェクトを取得
+		*/
+		GameObjectList& GetGameObjects()
+		{
+			return gameObjects;
+		}
+
+		/**
+		* 全てのゲームオブジェクトを削除
+		*/
+		void AllClearGameObject()
+		{
+			gameObjects.clear();
+		}
+
 
 	public:
 
@@ -65,25 +88,29 @@ namespace FGEngine::ObjectSystem
 		GameObjectPtr CreateGameObject(const std::string& name, const Vector3& position, const Quaternion& rotation);
 
 		/**
-		* ゲームオブジェクトを取得
+		* メインカメラを取得
 		*/
-		GameObjectList& GetGameObjects()
+		GameObjectPtr GetMainCamera() const
 		{
-			return gameObjects;
+			return mainCamera;
 		}
 
 		/**
-		* 全てのゲームオブジェクトを削除
+		* メインカメラを設定
 		*/
-		void AllClearGameObject()
+		void SetMainCamera(GameObjectPtr camera)
 		{
-			gameObjects.clear();
+			mainCamera = camera;
 		}
+
 
 	private:
 
 		// ゲームオブジェクト配列
 		std::vector<GameObjectPtr> gameObjects;
+
+		// メインカメラオブジェクト
+		GameObjectPtr mainCamera;
 
 		// 破壊オブジェクトが存在するかどうか
 		bool isDestoryObject = false;

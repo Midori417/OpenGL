@@ -7,7 +7,6 @@
 #include <GLFW/glfw3.h>
 #include "Texture.h"
 #include "MeshBuffer.h"
-#include "ShaderObject.h"
 #include <fstream>
 #include <filesystem>
 
@@ -25,11 +24,22 @@ namespace FGEngine::ResouceSystem
 	* @retval 0		初期化成功
 	* @retval 0以外	初期化失敗
 	*/
-	int ResouceManager::Initialize(const Rendering::MeshBufferPtr meshBuffer)
+	int ResouceManager::Initialize()
 	{
-		// メッシュバッファを持たせる
-		this->meshBuffer = meshBuffer;
+		// メッシュバッファを作成
+		this->meshBuffer = RenderingSystem::MeshBuffer::Create(32'000'000);
 
+		// デフォルトメッシュを読み込み
+		LoadObj("square", "FGEngine/Res/Mesh/square/square.obj");
+		LoadObj("skySphere", "FGEngine/Res/Mesh/skySphere/sky_Sphere.obj");
+
+		// デフォルトシェーダーの読み込み
+		LoadShader("Standard3D", "FGEngine/Res/Shader/standard3D.vert", "FGEngine/Res/Shader/standard3D.frag",
+			true, false, true);
+		LoadShader("Shadow3D", "FGEngine/Res/Shader/shadow3D.vert", "FGEngine/Res/Shader/shadow3D.frag",
+			false, true);
+		LoadShader("Unlit", "FGEngine/Res/Shader/unlit.vert", "FGEngine/Res/Shader/unlit.frag",
+			true, false, false);
 
 		return 0;
 	}
@@ -238,7 +248,7 @@ namespace FGEngine::ResouceSystem
 	*/
 	void ResouceManager::LoadObj(const std::string& name, const std::string& filename)
 	{
-		meshBuffer.lock()->LoadObj(name, filename);
+		meshBuffer->LoadObj(name, filename);
 	}
 
 	/**
@@ -248,7 +258,8 @@ namespace FGEngine::ResouceSystem
 	* @param filenameVS バーテックスシェーダファイル
 	* @param filenameFS フラグメントシェーダファイル
 	*/
-	void ResouceManager::LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS)
+	void ResouceManager::LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS,
+		bool isNormal, bool isShadow, bool isLight)
 	{
 		// すでに登録されているため登録できない
 		auto itr = shaderCache.find(name);
@@ -265,6 +276,9 @@ namespace FGEngine::ResouceSystem
 			LOG_ERROR("(Shader)%sの作成に失敗", name.c_str());
 			return;
 		}
+		shader->isNormal = isNormal;
+		shader->isShadow = isShadow;
+		shader->isLight = isLight;
 
 		// 作成したシェーダを配列に登録する
 		LOG("(Shader)%sを登録", name.c_str());
@@ -300,7 +314,7 @@ namespace FGEngine::ResouceSystem
 	*/
 	StaticMeshPtr ResouceManager::GetStaticMesh(const std::string& name)
 	{
-		return meshBuffer.lock()->GetStaticMesh(name);
+		return meshBuffer->GetStaticMesh(name);
 	}
 
 	/**
@@ -312,6 +326,26 @@ namespace FGEngine::ResouceSystem
 	*/
 	SkeletalMeshPtr ResouceManager::GetSkeltalMesh(const std::string& name)
 	{
-		return meshBuffer.lock()->GetSkeletalMesh(name);
+		return meshBuffer->GetSkeletalMesh(name);
+	}
+
+	/**
+	* シェーダを取得
+	* 
+	* @param name シェーダの名前
+	* 
+	* @return nameにあったシェーダ
+	*/
+	ShaderObjectPtr ResouceManager::GetShader(const std::string& name)
+	{
+		// キャッシュがあれば、キャッシュされたテクスチャを返す
+		auto itr = shaderCache.find(name);
+		if (itr != shaderCache.end())
+		{
+			return itr->second;
+		}
+
+		LOG_ERROR("(Shader)%sは登録されていません", name.c_str());
+		return nullptr;
 	}
 }

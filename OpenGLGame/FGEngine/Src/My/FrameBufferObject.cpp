@@ -4,7 +4,7 @@
 #include "FrameBufferObject.h"
 #include "Debug.h"
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	/**
 	* 既存のテクスチャからFBOを作成する

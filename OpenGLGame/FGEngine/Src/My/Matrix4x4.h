@@ -63,6 +63,41 @@ namespace FGEngine
 		*/
 		static Matrix4x4 RotateZ(float angle);
 
+		/**
+		* ビュー行列を作成する
+		*
+		* @param eye		始点の座標
+		* @param target		注視点の座標
+		* @param up			始点の上方向を示す仮のベクトル
+		*
+		* @return eye, target, upから作成したビュー行列
+		*/
+		static Matrix4x4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
+
+		/**
+		* 平行投影行列を作成する
+		*
+		* @param left	描画範囲の左端までの距離
+		* @param right	描画範囲の右端までの距離
+		* @param bottom	描画範囲の下端までの距離
+		* @param top	描画範囲の上端までの距離
+		* @param zNear	描画範囲に含まれる最小Z座標
+		* @param zFar	描画範囲に含まれる最大Z座標
+		*
+		* @return 平行投影行列
+		*/
+		static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
+
+		/**
+		* 座標変換行列を平行移動、拡大率、回転行列の各成分に分解する
+		*
+		* @param[in] transform	分解元の座標変換行列
+		* @param[out] translate 平行移動の格納先となる変数
+		* @param[out] scale		拡大率の格納先となる変数
+		* @param[out] rotation	回転行列の格納先となる変数
+		*/
+		static void Decompose(const Matrix4x4& transform, Vector3& translate, Vector3& scale, Matrix3x3& rotation);
+
 
 		// 添え字演算子
 		Vector4& operator[](size_t i)

@@ -3,7 +3,7 @@
 */
 #include "VertexArrayObject.h"
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	/**
 	* コンストラクタ

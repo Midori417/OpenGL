@@ -103,17 +103,11 @@
     <Filter Include="FGEngine\Src\My\Object\Material">
       <UniqueIdentifier>{84e92b68-24f8-485e-a8da-ba08c8a594bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Rendering">
-      <UniqueIdentifier>{33c4093e-f551-4f35-a536-001264b3eefa}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\MainSystem">
       <UniqueIdentifier>{e39286bb-1e8d-40c5-b031-0db1cca200e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Res">
       <UniqueIdentifier>{02278ff6-35f4-423a-9043-20a20a7bc1e5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\My\GraphicsSystem">
-      <UniqueIdentifier>{c468c01d-850d-4e77-b667-be4c10b2a037}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Src\My\Object\Shader">
       <UniqueIdentifier>{e1e5afdc-f81c-4bf5-b327-21e67d2dc50d}</UniqueIdentifier>
@@ -163,14 +157,29 @@
     <Filter Include="FGEngine\Src\My\WindowSystem">
       <UniqueIdentifier>{94aa4783-7514-43e7-8190-15a72cfa8953}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\SceneSystem\Other">
-      <UniqueIdentifier>{a392a7ba-dacc-41fd-8599-413b46bc81d8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\SoundSystem">
       <UniqueIdentifier>{bd2cfe1f-0858-400d-8adf-134e464dc315}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Src\My\ResouceSystem">
       <UniqueIdentifier>{8a34f49f-54d9-42f0-ac1b-c09d5152f66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Other">
+      <UniqueIdentifier>{a392a7ba-dacc-41fd-8599-413b46bc81d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem">
+      <UniqueIdentifier>{33c4093e-f551-4f35-a536-001264b3eefa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\Buffer">
+      <UniqueIdentifier>{03edaab2-ad61-4637-b4ad-ec0cbb939271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\VAO">
+      <UniqueIdentifier>{59659d28-5fe7-4ff3-b105-0a172df22653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\MeshBuffer">
+      <UniqueIdentifier>{ba0c6fa0-e448-439d-afba-e4ee006b7231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\RenderingEngine">
+      <UniqueIdentifier>{38d6400e-5626-4722-8653-ff2307d5bc83}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -271,7 +280,7 @@
       <Filter>FGEngine\Src\My\SceneSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Color.h">
-      <Filter>FGEngine\Src\My\SceneSystem\Other</Filter>
+      <Filter>FGEngine\Src\My\Other</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Package\Glad.h">
       <Filter>FGEngine\Src\My\Package</Filter>
@@ -295,7 +304,7 @@
       <Filter>FGEngine\Src\My\Package</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Singleton.h">
-      <Filter>FGEngine\Src\My\SceneSystem\Other</Filter>
+      <Filter>FGEngine\Src\My\Other</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Application.h">
       <Filter>Application</Filter>
@@ -339,32 +348,11 @@
     <ClInclude Include="FGEngine\Src\My\Mesh.h">
       <Filter>FGEngine\Src\My\Object\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Vertex.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MeshBuffer.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\DrawParams.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\WindowManager.h">
       <Filter>FGEngine\Src\My\WindowSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ShaderObject.h">
       <Filter>FGEngine\Src\My\Object\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\BufferObject.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\GameObject.h">
       <Filter>FGEngine\Src\My\Object\GameObject</Filter>
@@ -405,14 +393,38 @@
     <ClInclude Include="FGEngine\Src\My\PrimitiveType.h">
       <Filter>FGEngine\Src\My\Object\Mesh</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\GraphicsEngine.h">
-      <Filter>FGEngine\Src\My\GraphicsSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\LightData.h">
-      <Filter>FGEngine\Src\My\GraphicsSystem</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ResouceManager.h">
       <Filter>FGEngine\Src\My\ResouceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\LightData.h">
+      <Filter>FGEngine\Src\My\RenderingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ShaderLocationNum.h">
+      <Filter>FGEngine\Src\My\RenderingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\BufferObject.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\VAO</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MeshBuffer.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\DrawParams.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Vertex.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\RenderingEngine.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\RenderingEngine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -491,9 +503,6 @@
     <ClCompile Include="FGEngine\Src\My\Transform.cpp">
       <Filter>FGEngine\Src\My\Object\Component\Transform</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\MeshBuffer.cpp">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\My\WindowManager.cpp">
       <Filter>FGEngine\Src\My\WindowSystem</Filter>
     </ClCompile>
@@ -502,18 +511,6 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\ShaderObject.cpp">
       <Filter>FGEngine\Src\My\Object\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\BufferObject.cpp">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\VertexArrayObjectcpp.cpp">
-      <Filter>FGEngine\Src\My\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp">
       <Filter>FGEngine\Src\My\Object\GameObject</Filter>
@@ -539,11 +536,32 @@
     <ClCompile Include="FGEngine\Src\My\InputManager.cpp">
       <Filter>FGEngine\Src\My\InputSystem\InputManager</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\GraphicsEngine.cpp">
-      <Filter>FGEngine\Src\My\GraphicsSystem</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\My\ResouceManager.cpp">
       <Filter>FGEngine\Src\My\ResouceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\BufferObject.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\VertexArrayObjectcpp.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\VAO</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MeshBuffer.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\RenderingEngine.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\RenderingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.h">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

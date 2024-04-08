@@ -13,7 +13,7 @@
 #include <unordered_map>
 #include <functional>
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	// æséŒ¾
 	class MeshBuffer;

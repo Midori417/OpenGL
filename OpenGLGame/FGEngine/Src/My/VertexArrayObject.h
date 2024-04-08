@@ -6,7 +6,7 @@
 #include "Package/Glad.h"
 #include <memory>
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	// æséŒ¾
 	class VertexArrayObject;

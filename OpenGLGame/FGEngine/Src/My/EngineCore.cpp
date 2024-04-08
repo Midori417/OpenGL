@@ -3,7 +3,7 @@
 */
 #define _CRT_SECURE_NO_WARNINGS
 #include "EngineCore.h"
-#include "GraphicsEngine.h"
+#include "RenderingEngine.h"
 #include "WindowManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
@@ -109,7 +109,8 @@ namespace FGEngine::MainSystem
 
 		// OpenGL関数のアドレスを取得
 		// OpenGLVersion 4.5
-		if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
+		if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+		{
 			glfwTerminate();
 			return 1;	// アドレスの取得失敗
 		}
@@ -121,14 +122,20 @@ namespace FGEngine::MainSystem
 		// 各機能を生成と取得
 		// ====================
 		
-		// グラフィックエンジン
-		graphicsEngine = GraphicsSystem::GraphicsEngine::GetInstance();
+		// レンダリングエンジン
+		renderingEngine = RenderingSystem::RenderingEngine::GetInstance();
+
+		// リソースマネージャー
+		resouceManager = ResouceSystem::ResouceManager::GetInstance();
 
 		// シーンマネージャー
 		sceneManager = SceneSystem::SceneManager::GetInstance();
 
-		// インプットマネージャ
+		// インプットマネージャー
 		inputManager = InputSystem::InputManager::GetInstance();
+
+		// オブジェクトマネージャー
+		objectManager = ObjectSystem::ObjectManager::GetInstance();
 
 		// アプリケーション
 		application = Application::GetInstance();
@@ -145,11 +152,14 @@ namespace FGEngine::MainSystem
 		ImGui_ImplGlfw_InitForOpenGL(&windowManager->GetWindow(0), true);	// GLFW
 		ImGui_ImplOpenGL3_Init("#version 450");		// GLSLのバージョンを指定
 
-		// グラフィックエンジンを初期化
-		graphicsEngine->Initialize();
-
 		// リソースマネージャーを初期化
-		resouceManager->Initialize(graphicsEngine->meshBuffer);
+		resouceManager->Initialize();
+
+		// レンダリングエンジンーを初期化
+		renderingEngine->Initialize();
+
+		// オブジェクトマネージャーを初期化
+		objectManager->Initialize();
 
 		// アプリケーションを初期化
 		application->Initialize();
@@ -168,14 +178,21 @@ namespace FGEngine::MainSystem
 		// ウィンドウの描画開始
 		windowManager->Begin();
 
+		// シーンマネージャーを更新
+		sceneManager->Update();
+
+
+		// レンダリングエンジンを更新
+		renderingEngine->Update();
+
 		// 時間ライブラリを更新
 		Time::Update();
 
 		// インプットマネージャを更新
 		inputManager->Update(&windowManager->GetWindow());
 
-		// シーンマネージャーを更新
-		sceneManager->Update();
+		// オブジェクトマネージャを更新
+		objectManager->Update();
 
 		// アプリケーションを更新する
 		application->Update();

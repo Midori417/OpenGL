@@ -94,6 +94,12 @@
 // オブジェクト
 #include "My/Object.h"
 
+// マテリアル
+#include "My/Material.h"
+
+// メッシュ
+#include "My/Mesh.h"
+
 // ゲームオブジェクト
 #include "My/GameObject.h"
 
@@ -108,3 +114,12 @@
 
 // シーン
 #include "My/Scene.h"
+
+// ===================
+//
+// ResouceSystem | リソースシステム
+//
+// ===================
+
+// リソースマネージャー
+#include "My/ResouceManager.h"

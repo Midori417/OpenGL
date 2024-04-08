@@ -5,7 +5,7 @@
 #define FGENGINE_VERTEX_H_INCLUDED
 #include "VectorPoint.h"
 
-namespace FGEngine::Rendering
+namespace FGEngine::RenderingSystem
 {
 	/**
 	* 頂点データ形式
