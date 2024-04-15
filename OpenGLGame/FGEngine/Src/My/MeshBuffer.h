@@ -20,18 +20,6 @@ namespace FGEngine::RenderingSystem
 	using MeshBufferPtr = std::shared_ptr<MeshBuffer>;
 	struct Vertex;
 
-	// 共有マテリアル配列を複製
-	inline MaterialList CloneMaterialList(const StaticMeshPtr& original)
-	{
-		MaterialList clone(original->materials.size());
-		for (int i = 0; i < clone.size(); ++i)
-		{
-			clone[i] = std::make_shared<Material>(*original->materials[i]);
-		}
-		return clone;
-	}
-
-
 	/**
 	* 頂点データを管理するクラス
 	*/

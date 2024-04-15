@@ -181,18 +181,17 @@ namespace FGEngine::MainSystem
 		// シーンマネージャーを更新
 		sceneManager->Update();
 
+		// インプットマネージャを更新
+		inputManager->Update(&windowManager->GetWindow());
+
+		// オブジェクトマネージャを更新
+		objectManager->Update();
 
 		// レンダリングエンジンを更新
 		renderingEngine->Update();
 
 		// 時間ライブラリを更新
 		Time::Update();
-
-		// インプットマネージャを更新
-		inputManager->Update(&windowManager->GetWindow());
-
-		// オブジェクトマネージャを更新
-		objectManager->Update();
 
 		// アプリケーションを更新する
 		application->Update();

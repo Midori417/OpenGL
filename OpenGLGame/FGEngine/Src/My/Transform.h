@@ -123,7 +123,7 @@ namespace FGEngine
 	private:
 
 		// ワールド座標からローカル座標に変換した行列
-		Matrix4x4 worldToLocalMatrix = Matrix4x4(1);
+		Matrix4x4 transformMatrix = Matrix4x4(1);
 
 		// 法線変換行列
 		Matrix3x3 normalMatrix = Matrix3x3(1);

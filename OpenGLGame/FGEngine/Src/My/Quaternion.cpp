@@ -281,21 +281,26 @@ namespace FGEngine
 		float tx = Mathf::DegToRad(x);
 		float ty = Mathf::DegToRad(y);
 		float tz = Mathf::DegToRad(z);
+
 		// オイラー角の半分の値を計算
 		float cx = Mathf::Cos(tx * 0.5f);
 		float sx = Mathf::Sin(tx * 0.5f);
+
 		// Y軸
 		float cy = Mathf::Cos(ty * 0.5f);
 		float sy = Mathf::Sin(ty * 0.5f);
+
 		// Z軸
 		float cz = Mathf::Cos(tz * 0.5f);
 		float sz = Mathf::Sin(tz * 0.5f);
+
 		// クォータニオンの各要素を計算
 		result.x = sx * cy * cz - cx * sy * sz;
 		result.y = cx * sy * cz + sx * cy * sz;
 		result.z = cx * cy * sz - sx * sy * cz;
 		result.w = cx * cy * cz + sx * sy * sz;
-		return result.Normalized();
+
+		return result;
 	}
 
 	/**
@@ -312,16 +317,20 @@ namespace FGEngine
 		float t0 = 2.0f * (qua.w * qua.x + qua.y * qua.z);
 		float t1 = 1.0f - 2.0f * (qua.x * qua.x + qua.y * qua.y);
 		axis.x = Mathf::Atan2(t0, t1);
+		axis.x = Mathf::RadToDeg(axis.x);
 
 		// Y軸
 		float t2 = 2.0f * (qua.w * qua.y - qua.z * qua.x);
 		t2 = Mathf::Min(Mathf::Max(t2, -1.0f), 1.0f); 
 		axis.y = Mathf::Asin(t2);
+		axis.y = Mathf::RadToDeg(axis.y);
 
 		// Z軸
 		float t3 = 2.0f * (qua.w * qua.z + qua.x * qua.y);
 		float t4 = 1.0f - 2.0f * (qua.y * qua.y + qua.z * qua.z);
 		axis.z = Mathf::Atan2(t3, t4);
+		axis.z = Mathf::RadToDeg(axis.z);
+
 		return axis;
 	}
 

@@ -36,11 +36,6 @@ namespace FGEngine::ObjectSystem
 		void Update();
 
 		/**
-		* ゲームオブジェクトを描画
-		*/
-		void RendererGameObject();
-
-		/**
 		* ゲームオブジェクトの更新
 		*/
 		void UpdateGameObject();
@@ -49,6 +44,22 @@ namespace FGEngine::ObjectSystem
 		* ゲームオブジェクトの削除処理
 		*/
 		void DestoryGameObject();
+
+		/**
+		* ゲームオブジェクトを描画
+		*/
+		void RendererGameObject();
+
+		/**
+		* Transformを更新
+		*/
+		void UpdateTransform();
+
+		/**
+		* MonoBehaviourを更新
+		*/
+		void UpdateMonoBehavirou();
+
 
 		/**
 		* ゲームオブジェクトを取得

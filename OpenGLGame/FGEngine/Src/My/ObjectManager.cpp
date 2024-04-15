@@ -31,7 +31,15 @@ namespace FGEngine::ObjectSystem
 	*/
 	void ObjectManager::Update()
 	{
+		// オブジェクトトランスフォーム
+		UpdateTransform();
+
+		// オブジェクトの削除処理
 		RendererGameObject();
+	}
+
+	void ObjectManager::UpdateGameObject()
+	{
 	}
 
 	/**
@@ -66,7 +74,7 @@ namespace FGEngine::ObjectSystem
 				Vector3 pos;
 				Vector3 scale;
 				Matrix3x3 rot;
-				Matrix4x4::Decompose(mainCamera->transform->worldToLocalMatrix, pos, scale, rot);
+				Matrix4x4::Decompose(mainCamera->transform->transformMatrix, pos, scale, rot);
 				Quaternion q = Quaternion::RotationMatrixToQuaternion(rot);
 				rot = Quaternion::QuaternionToRotationMatrix3x3(Quaternion(q.x, q.y, q.z, -q.w));
 				glProgramUniform3fv(prog, RenderingSystem::locCameraPos, 1, &pos.x);
@@ -96,7 +104,56 @@ namespace FGEngine::ObjectSystem
 
 	}
 
-	void ObjectManager::UpdateGameObject()
+	/**
+	* Transformを更新
+	*/
+	void ObjectManager::UpdateTransform()
+	{
+
+		// ローカル座標変換行列を計算
+		for (int i = 0; i < gameObjects.size(); ++i)
+		{
+			GameObject* e = gameObjects[i].get();
+			if (e->transform != nullptr)
+			{
+				auto pos = Matrix4x4::Translate(e->transform->position);
+				auto rot = Quaternion::QuaternionToRotationMatrix4x4(e->transform->rotation);
+				auto s = Matrix4x4::Scale(e->transform->scale);
+				e->transform->transformMatrix = pos * rot * s;
+				e->transform->normalMatrix = Matrix3x3(rot);
+			}
+		}
+
+		// ワールド座標変換行列を計算
+		std::vector<Matrix4x4> worldTransforms(gameObjects.size());
+		std::vector<Matrix3x3> worldNormals(gameObjects.size());
+		for (int i = 0; i < gameObjects.size(); ++i)
+		{
+			TransformPtr e = gameObjects[i]->transform;
+			if (e != nullptr)
+			{
+				Matrix4x4 m = e->GetTransformMatrix();
+				Matrix3x3 n = e->GetNormalMatrix();
+				for (e = e->GetParent(); e; e = e->GetParent())
+				{
+					m = e->GetTransformMatrix() * m;
+					n = e->GetNormalMatrix() * n;
+				}
+				worldTransforms[i] = m;
+				worldNormals[i] = n;
+			}
+		}
+
+		// ワールド座標変換行列をゲームオブジェクトに設定
+		for (int i = 0; i < gameObjects.size(); ++i)
+		{
+			gameObjects[i]->transform->transformMatrix = worldTransforms[i];
+			gameObjects[i]->transform->normalMatrix = worldNormals[i];
+		}
+
+	}
+
+	void ObjectManager::UpdateMonoBehavirou()
 	{
 	}
 
@@ -179,7 +236,6 @@ namespace FGEngine::ObjectSystem
 
 		// Transformを追加
 		obj->AddComponent<Transform>();
-		obj->AddComponent<Renderer>();
 
 		obj->gameObject = obj;
 

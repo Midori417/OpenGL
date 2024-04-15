@@ -1,8 +1,8 @@
 /**
 * @file SceneManager.h
 */
-#ifndef FGENEING_SCENEMANAGER_H_INCLUDED
-#define FGENEING_SCENEMANAGER_H_INCLUDED
+#ifndef FGENGINE_SCENEMANAGER_H_INCLUDED
+#define FGENGINE_SCENEMANAGER_H_INCLUDED
 #include "Singleton.h"
 #include "Scene.h"
 #include <unordered_map>

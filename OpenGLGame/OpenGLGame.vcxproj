@@ -152,6 +152,7 @@
     <ClInclude Include="Application\Src\MainScene.h" />
     <ClInclude Include="Application\Src\TitleScene.h" />
     <ClInclude Include="FGEngine\Src\FGEngine.h" />
+    <ClInclude Include="FGEngine\Src\My\MeshRenderer.h" />
     <ClInclude Include="FGEngine\Src\My\RenderingEngine.h" />
     <ClInclude Include="FGEngine\Src\My\ResouceManager.h" />
     <ClInclude Include="FGEngine\Src\My\AudioSettings.h" />
@@ -235,7 +236,6 @@
     <ClCompile Include="Application\Src\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Main.cpp" />
     <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp" />
-    <ClCompile Include="FGEngine\Src\My\MeshRenderer.h" />
     <ClCompile Include="FGEngine\Src\My\RenderingEngine.cpp" />
     <ClCompile Include="FGEngine\Src\My\ResouceManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\BufferObject.cpp" />

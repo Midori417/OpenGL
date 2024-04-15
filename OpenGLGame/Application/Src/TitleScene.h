@@ -33,5 +33,6 @@ private:
 
 private:
 
+	float rotY = 0;
 };
 #endif // !TITLESCENE_H_INCLUDED

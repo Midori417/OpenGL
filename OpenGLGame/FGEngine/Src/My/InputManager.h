@@ -5,7 +5,8 @@
 #define FGENGINE_INPUTMANAGER_H_INCLUDED
 #include "SystemFrd.h"
 #include "Singleton.h"
-#include <GLFW/glfw3.h>
+
+struct GLFWwindow;
 
 namespace FGEngine::InputSystem
 {

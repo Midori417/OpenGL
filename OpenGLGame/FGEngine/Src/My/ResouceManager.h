@@ -6,6 +6,7 @@
 #include "SystemFrd.h"
 #include "Singleton.h"
 #include "ShaderObject.h"
+#include "PrimitiveType.h"
 #include <string>
 #include <unordered_map>
 
@@ -19,6 +20,8 @@ namespace FGEngine
 	using SkeletalMeshPtr = std::shared_ptr<SkeletalMesh>;
 	class ShaderObject;
 	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
+	class Material;
+	using MaterialPtr = std::shared_ptr<Material>;
 
 
 	namespace RenderingSystem
@@ -104,6 +107,15 @@ namespace FGEngine
 			StaticMeshPtr GetStaticMesh(const std::string& name);
 
 			/**
+			* スタティックメッシュを取得
+			* 
+			* @param primitiveType	プリミティブのタイプ
+			* 
+			* @returun primitiveTypeにあったスタティックメッシュ
+			*/
+			StaticMeshPtr GetStaticMesh(PrimitiveType primitiveType);
+
+			/**
 			* スケルタルメッシュを取得
 			* 
 			* @param name スケルタルメッシュの名前
@@ -132,6 +144,12 @@ namespace FGEngine
 			// メッシュバッファ
 			RenderingSystem::MeshBufferPtr meshBuffer;
 		};
+
+		/**
+		* 共有マテリアル配列を複製
+		*/ 
+		std::vector<MaterialPtr> CloneMaterialList(const StaticMeshPtr& original);
+
 	}
 }
 

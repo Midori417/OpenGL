@@ -141,7 +141,12 @@ namespace FGEngine
 	*/
 	TransformPtr Transform::GetParent() const
 	{
-		return parent.lock();
+		auto ptr = parent.lock();
+		if (!ptr)
+		{
+			return nullptr;
+		}
+		return ptr;
 	}
 
 	/**
@@ -175,7 +180,7 @@ namespace FGEngine
 	*/
 	Matrix4x4 Transform::GetTransformMatrix() const
 	{
-		return worldToLocalMatrix;
+		return transformMatrix;
 	}
 
 	/**

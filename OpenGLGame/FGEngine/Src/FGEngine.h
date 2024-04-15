@@ -75,6 +75,14 @@
 //
 // ===================
 
+#include "My/InputManager.h"
+
+// キーボードの入力
+#include "My/InputKey.h"
+
+// マウスの入力
+#include "My/MouseButton.h"
+
 
 // ===================
 //
@@ -102,6 +110,24 @@
 
 // ゲームオブジェクト
 #include "My/GameObject.h"
+
+// コンポーネント
+#include "My/Component.h"
+
+// コンポーネントの補助
+#include "My/ComponentHelper.h"
+
+// トランスフォームコンポーネント
+#include "My/Transform.h"
+
+// レンダラーコンポーネント
+#include "My/Renderer.h"
+
+// スタティックメッシュレンダラーコンポーネント
+#include "My/MeshRenderer.h"
+
+// プリミティブの種類
+#include "My/PrimitiveType.h"
 
 // ===================
 //

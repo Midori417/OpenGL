@@ -4,6 +4,7 @@
 #include "InputManager.h"
 #include "InputKey.h"
 #include "InputMouse.h"
+#include <GLFW/glfw3.h>
 
 namespace FGEngine::InputSystem
 {

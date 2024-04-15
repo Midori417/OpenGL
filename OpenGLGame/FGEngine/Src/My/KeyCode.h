@@ -3,6 +3,7 @@
 */
 #ifndef FGENGINE_KEYCODE_H_INCLUDED
 #define FGENGINE_KEYCODE_H_INCLUDED
+#include "Package/Glad.h"
 #include <GLFW/glfw3.h>
 
 namespace FGEngine::InputSystem

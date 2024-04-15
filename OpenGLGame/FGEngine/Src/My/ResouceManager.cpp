@@ -29,8 +29,11 @@ namespace FGEngine::ResouceSystem
 		// メッシュバッファを作成
 		this->meshBuffer = RenderingSystem::MeshBuffer::Create(32'000'000);
 
+		// テクスチャの読み込み
+		LoadTga("white", "FGEngine/Res/Texture/white.tga");
+
 		// デフォルトメッシュを読み込み
-		LoadObj("square", "FGEngine/Res/Mesh/square/square.obj");
+		LoadObj("Cube", "FGEngine/Res/Mesh/Cube/Cube.obj");
 		LoadObj("skySphere", "FGEngine/Res/Mesh/skySphere/sky_Sphere.obj");
 
 		// デフォルトシェーダーの読み込み
@@ -317,6 +320,35 @@ namespace FGEngine::ResouceSystem
 		return meshBuffer->GetStaticMesh(name);
 	}
 
+	StaticMeshPtr ResouceManager::GetStaticMesh(PrimitiveType primitiveType)
+	{
+		std::string name = "None";
+		switch (primitiveType)
+		{
+		case FGEngine::Sphere:
+			name = "Sphere";
+			break;
+		case FGEngine::Capsule:
+			name = "Capsule";
+			break;
+		case FGEngine::Cylinder:
+			name = "Cylinder";
+			break;
+		case FGEngine::Cube:
+			name = "Cube";
+			break;
+		case FGEngine::Plane:
+			name = "Plane";
+			break;
+		}
+
+		if (name == "None")
+		{
+			return nullptr;
+		}
+		return meshBuffer->GetStaticMesh(name);
+	}
+
 	/**
 	* スケルタルメッシュを取得
 	*
@@ -347,5 +379,15 @@ namespace FGEngine::ResouceSystem
 
 		LOG_ERROR("(Shader)%sは登録されていません", name.c_str());
 		return nullptr;
+	}
+
+	std::vector<MaterialPtr> CloneMaterialList(const StaticMeshPtr& original)
+	{
+		MaterialList clone(original->materials.size());
+		for (int i = 0; i < clone.size(); ++i)
+		{
+			clone[i] = std::make_shared<Material>(*original->materials[i]);
+		}
+		return clone;
 	}
 }
