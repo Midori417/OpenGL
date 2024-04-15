@@ -7,6 +7,7 @@
 #include "Debug.h"
 #include "Vertex.h"
 #include "ResouceManager.h"
+#include "ShaderLocationNum.h"
 
 #include <numeric>
 #include <algorithm>
@@ -37,6 +38,7 @@ namespace FGEngine::RenderingSystem
 		vao->SetAttribute(1, 2, sizeof(Vertex), offsetof(Vertex, texcoord));
 		vao->SetAttribute(2, 3, sizeof(Vertex), offsetof(Vertex, normal));
 
+
 		// スケルタルメッシュ用のVAOを作成
 		vaoSkeletal = VertexArrayObject::Create();
 
@@ -60,7 +62,7 @@ namespace FGEngine::RenderingSystem
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		// スタティックメッシュの容量を予約
-		meshes.reserve(100);
+		meshes.reserve(1000);
 
 		// 描画パラメータ配列の容量を確保
 		drawParamsList.reserve(100);
@@ -598,11 +600,15 @@ namespace FGEngine::RenderingSystem
 					// テクスチャ1を未設定
 					glBindTextures(1, 1, nullptr);
 				}
+				// 透明度カット
+				if (glGetUniformLocation(program, "alphaCutoff") >= 0)
+				{
+					glProgramUniform1f(program, locAlphaCutoff, material.alphatCutOff);
+				}
 			}
 			// 描画
 			glDrawElementsBaseVertex(e.mode, e.count, GL_UNSIGNED_SHORT, e.indices, e.baseVertex);
 		}
-
 		// シェーダプログラムを解除
 		glUseProgram(0);
 	}

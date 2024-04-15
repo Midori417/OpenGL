@@ -27,7 +27,6 @@ namespace FGEngine
 			// VAO‚ðƒoƒCƒ“ƒh
 			glBindVertexArray(*mesh->vao);
 
-
 			if (drawType == DrawType::normal)
 			{
 				if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)

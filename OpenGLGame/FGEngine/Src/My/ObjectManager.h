@@ -58,7 +58,7 @@ namespace FGEngine::ObjectSystem
 		/**
 		* MonoBehaviour‚ğXV
 		*/
-		void UpdateMonoBehavirou();
+		void UpdateMonoBehaviour();
 
 
 		/**

@@ -34,5 +34,6 @@ private:
 private:
 
 	float rotY = 0;
+	float rotX = 0;
 };
 #endif // !TITLESCENE_H_INCLUDED

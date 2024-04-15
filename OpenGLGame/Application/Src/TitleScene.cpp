@@ -28,8 +28,6 @@ bool TitleScene::Initialize()
 	mesh->materials = CloneMaterialList(mesh->mesh);
 	mesh->materials[0]->mainTexture = resouceManager->GetTexture("white");
 
-	obj->GetTransform()->SetParent(camera->GetTransform());
-
 	auto material = std::make_shared<Material>();
 	material->mainTexture = resouceManager->GetTexture("sky");
 
@@ -60,10 +58,15 @@ void TitleScene::Update()
 	}
 	if (InputKey::GetKey(KeyCode::W))
 	{
-
+		rotX++;
+	}
+	if (InputKey::GetKey(KeyCode::S))
+	{
+		rotX--;
 	}
 
-	camera->GetTransform()->rotation = Quaternion::AngleAxis(rotY, Vector3::up);
+
+	camera->GetTransform()->rotation = Quaternion::AngleAxis(rotX, Vector3::forward) * Quaternion::AngleAxis(rotY, Vector3::up);
 }
 
 /**

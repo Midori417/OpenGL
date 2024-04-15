@@ -60,6 +60,7 @@ namespace FGEngine::ObjectSystem
 			programs.push_back(prog.second->GetProgId());
 		}
 
+
 		// カメラのパラメータを設定
 		for (auto prog : programs)
 		{
@@ -68,7 +69,7 @@ namespace FGEngine::ObjectSystem
 				// アスペクト比と視野角を設定
 				float fovScale = mainCamera->camera->GetFovScale();
 				float aspectRatio = mainCamera->camera->aspect;
-				glProgramUniform2f(prog, RenderingSystem::locAspectRatioAndScaleFov, fovScale / aspectRatio, fovScale);
+				glProgramUniform2f(prog, RenderingSystem::locAspectRatioAndScaleFov, 1 / aspectRatio, fovScale);
 
 				// 位置と回転を設定
 				Vector3 pos;
@@ -153,7 +154,10 @@ namespace FGEngine::ObjectSystem
 
 	}
 
-	void ObjectManager::UpdateMonoBehavirou()
+	/**
+	* MonoBehaviourの更新
+	*/
+	void ObjectManager::UpdateMonoBehaviour()
 	{
 	}
 

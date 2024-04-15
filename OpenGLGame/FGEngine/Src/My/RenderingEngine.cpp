@@ -33,8 +33,6 @@ namespace FGEngine::RenderingSystem
 	*/
 	void RenderingEngine::Update()
 	{
-		// スカイスフィアを描画
-		DrawSkySphere();
 	}
 
 	/**
@@ -78,8 +76,8 @@ namespace FGEngine::RenderingSystem
 
 		// アンリッドシェーダで描画
 		glUseProgram(progUnlit);
-		glBindVertexArray(*skySphere->vao);
 		glDepthMask(GL_FALSE);	// 深度バッファへの書き込みを禁止
+		glBindVertexArray(*skySphere->vao);
 
 		// スカイスフィアの半径を0.5mと仮定し、描画範囲の95%の大きさに拡大
 		static const float far = 1000;	// 描画範囲の最大値
@@ -154,6 +152,8 @@ namespace FGEngine::RenderingSystem
 		// transparent以前のキューを描画
 		Draw3DGameObject(rendererList.begin(), transparentBegin);
 
+		// スカイスフィアを描画
+		DrawSkySphere();
 
 		// transparentからoverlayまでのキューを描画
 		glDepthMask(GL_FALSE); // 深度バッファへの書き込みを禁止
