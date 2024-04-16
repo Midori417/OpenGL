@@ -20,8 +20,7 @@ namespace FGEngine::RenderingSystem
 	* @retval 0以外	初期化失敗
 	*/
 	int RenderingEngine::Initialize()
-	{
-		
+	{	
 		// スカイスフィアを設定
 		skySphere = ResouceSystem::ResouceManager::GetInstance()->GetStaticMesh("skySphere");
 

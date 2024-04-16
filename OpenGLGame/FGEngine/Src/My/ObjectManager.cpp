@@ -31,6 +31,9 @@ namespace FGEngine::ObjectSystem
 	*/
 	void ObjectManager::Update()
 	{
+		// ゲームオブジェクトのMonoBehaviourを実行
+		UpdateMonoBehaviour();
+
 		// オブジェクトトランスフォーム
 		UpdateTransform();
 
@@ -159,6 +162,56 @@ namespace FGEngine::ObjectSystem
 	*/
 	void ObjectManager::UpdateMonoBehaviour()
 	{
+		// スタート処理
+		for (auto x : gameObjects)
+		{
+			if (x->monoBehaviours.empty())
+			{
+				continue;
+			}
+			for (auto mono : x->monoBehaviours)
+			{
+				if (!mono->isStart && mono->enabled)
+				{
+					mono->Start();
+					mono->isStart = true;
+				}
+			}
+		}
+
+		// 更新処理
+		for (auto x : gameObjects)
+		{
+			if (x->monoBehaviours.empty())
+			{
+				continue;
+			}
+			for (auto mono : x->monoBehaviours)
+			{
+				if (mono->enabled)
+				{
+					mono->Update();
+				}
+			}
+		}
+
+		// 更新処理2
+		for (auto x : gameObjects)
+		{
+			if (x->monoBehaviours.empty())
+			{
+				continue;
+			}
+			for (auto mono : x->monoBehaviours)
+			{
+				if (mono->enabled)
+				{
+					mono->LateUpdate();
+				}
+			}
+		}
+
+
 	}
 
 	/**

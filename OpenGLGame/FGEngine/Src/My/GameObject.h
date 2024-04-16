@@ -58,6 +58,7 @@ namespace FGEngine
 			if constexpr (std::is_base_of_v<MonoBehaviour, T>)
 			{
 				monoBehaviours.push_back(p);
+				// ¶¬ˆ—‚ðŽÀs
 				p->Awake();
 			}
 

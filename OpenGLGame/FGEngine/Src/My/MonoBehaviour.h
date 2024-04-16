@@ -18,6 +18,8 @@ namespace FGEngine
 	{
 	public:
 
+		friend ObjectSystem::ObjectManager;
+
 		// コンストラクタ・デストラクタ
 		MonoBehaviour() = default;
 		virtual ~MonoBehaviour() = default;
@@ -66,10 +68,18 @@ namespace FGEngine
 		void SetEnable(bool value)
 		{
 			enabled = value;
+			if (enabled)
+			{
+				OnEnable();
+			}
+			else
+			{
+				OnDisable();
+			}
 		}
 
 		// オブジェクトの状態を取得
-		bool GetEnable(bool value)
+		bool GetEnable()
 		{
 			return enabled;
 		}
