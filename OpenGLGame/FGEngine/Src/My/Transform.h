@@ -109,6 +109,13 @@ namespace FGEngine
 		*/
 		Matrix3x3 GetNormalMatrix() const;
 
+	private:
+
+		/**
+		* ローカル座標変換行列を更新
+		*/
+		void LocalTransformUpdate();
+
 	public:
 
 		// 位置

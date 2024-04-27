@@ -8,6 +8,7 @@
 #include "GameObject.h"
 #include "LightData.h"
 #include "Mesh.h"
+#include "FrameBufferObject.h"
 
 namespace FGEngine::RenderingSystem
 {
@@ -45,6 +46,16 @@ namespace FGEngine::RenderingSystem
 		void Draw3DGameObject(std::vector<RendererPtr>::iterator begin, std::vector<RendererPtr>::iterator end);
 
 		/**
+		* カメラに近いライトを選んでGPUメモリーにコピーする
+		*/
+		void UpdateShaderLight();
+
+		/**
+		* デプスシャドウマップの作成
+		*/
+		void CreateShadowMap(std::vector<RendererPtr>::iterator begin, std::vector<RendererPtr>::iterator end);
+
+		/**
 		* スカイスフィアを描画
 		*/
 		void DrawSkySphere();
@@ -77,7 +88,9 @@ namespace FGEngine::RenderingSystem
 
 		// スカイスフィア用モデル
 		StaticMeshPtr skySphere;
-
+		
+		// デプスシャドウ用FBO
+		FrameBufferObjectPtr fboShadow;
 
 	};
 }

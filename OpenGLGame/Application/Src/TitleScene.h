@@ -35,5 +35,6 @@ private:
 
 	float rotY = 0;
 	float rotX = 0;
+	GameObjectPtr obj;
 };
 #endif // !TITLESCENE_H_INCLUDED

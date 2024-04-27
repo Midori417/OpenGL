@@ -23,7 +23,7 @@ namespace FGEngine
 		explicit Texture(const std::string& name, GLuint object, int width, int height);
 
 		// 空のテクスチャを作成するコンストラクタ
-		Texture(const std::string& name, int width, int height,
+		explicit Texture(const std::string& name, int width, int height,
 			GLenum gpuFormat = GL_RGBA8, GLenum wrapMode = GL_CLAMP_TO_EDGE);
 
 		// デストラクタ

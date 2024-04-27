@@ -11,6 +11,7 @@
 #include "Renderer.h"
 #include "Rigidbody.h"
 #include "Camera.h"
+#include "ImGuiLayout.h"
 
 namespace FGEngine
 {
@@ -24,6 +25,7 @@ namespace FGEngine
 		friend ObjectSystem::ObjectManager;
 		friend RenderingSystem::RenderingEngine;
 		friend PhysicsSystem::PhysicsEngine;
+		friend Collider;
 
 		// コンストラクタ・デストラクタ
 		GameObject() = default;
@@ -83,6 +85,12 @@ namespace FGEngine
 			if constexpr (std::is_base_of_v<Camera, T>)
 			{
 				camera = p;
+			}
+
+			// ImGuiLayoutが基底クレスの場合
+			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
+			{
+				imGuiLayout = p;
 			}
 
 			// 親オブジェクトを設定
@@ -195,6 +203,9 @@ namespace FGEngine
 
 		// カメラコンポーネントポインター
 		CameraPtr camera;
+
+		// UIレイアウトコンポーネントポインター
+		UI::ImGuiLayoutPtr imGuiLayout;
 
 	};
 	using GameObjectList = std::vector<GameObjectPtr>;

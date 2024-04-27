@@ -56,6 +56,7 @@ namespace FGEngine
 		default:
 			break;
 		}
+		SetName(name);
 	}
 
 	/**

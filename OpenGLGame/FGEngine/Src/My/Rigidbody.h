@@ -8,15 +8,30 @@
 namespace FGEngine
 {
 	/**
-	* 物理挙動を有効にするコンポーネントの
+	* 物理挙動(剛体)を有効にするコンポーネント
 	*/
 	class Rigidbody : public Component
 	{
 	public:
 
+		friend PhysicsSystem::PhysicsEngine;
+		friend ObjectSystem::ObjectManager;
+
 		// コンストラクタ・デストラクタ
 		Rigidbody() = default;
 		virtual ~Rigidbody() = default;
+
+	private:
+
+		/**
+		* 速度の更新
+		*/
+		void VeocityUpdata();
+
+		/**
+		* 重力の更新
+		*/
+		void GravityUpdate();
 
 	public:
 
@@ -30,6 +45,9 @@ namespace FGEngine
 		float gravityScale = 1;
 
 	private:
+
+		// 地面に設置の有無
+		bool isGrounded = false;
 
 		// 重力加速度
 		static constexpr float gravity = 9.81f;

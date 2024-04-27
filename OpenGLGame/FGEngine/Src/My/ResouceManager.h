@@ -6,7 +6,8 @@
 #include "SystemFrd.h"
 #include "Singleton.h"
 #include "ShaderObject.h"
-#include "PrimitiveType.h"
+#include "ShapeType.h"
+#include "DefalutShader.h"
 #include <string>
 #include <unordered_map>
 
@@ -40,6 +41,7 @@ namespace FGEngine
 		private:
 
 			friend MainSystem::EngineCore;
+			friend RenderingSystem::RenderingEngine;
 			friend Singleton<ResouceManager>;
 			friend ObjectSystem::ObjectManager;
 
@@ -86,7 +88,7 @@ namespace FGEngine
 			* @param filenameFS フラグメントシェーダファイル
 			*/
 			void LoadShader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS,
-				bool isNormal = false, bool isShadow = false, bool isLight = false);
+				bool isNormal = false, bool isShadow = false, bool isLight = false, bool isUseLight = false);
 
 			/**
 			* テクスチャを取得
@@ -107,13 +109,13 @@ namespace FGEngine
 			StaticMeshPtr GetStaticMesh(const std::string& name);
 
 			/**
-			* スタティックメッシュを取得
+			* デフォルトスタティックメッシュを取得
 			* 
 			* @param primitiveType	プリミティブのタイプ
 			* 
 			* @returun primitiveTypeにあったスタティックメッシュ
 			*/
-			StaticMeshPtr GetStaticMesh(PrimitiveType primitiveType);
+			StaticMeshPtr GetStaticMesh(ShapeType primitiveType);
 
 			/**
 			* スケルタルメッシュを取得
@@ -132,6 +134,15 @@ namespace FGEngine
 			* @return nameにあったシェーダ
 			*/
 			ShaderObjectPtr GetShader(const std::string& name);
+
+			/**
+			* デフォルトシェーダーを取得
+			*
+			* @param shader	シェーダー
+			*
+			* @return shaderにあったシェーダ
+			*/
+			ShaderObjectPtr GetShader(DefalutShader shader);
 
 		private:
 

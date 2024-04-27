@@ -4,6 +4,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include "EngineCore.h"
 #include "RenderingEngine.h"
+#include "PhysicsEngine.h"
 #include "WindowManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
@@ -125,6 +126,9 @@ namespace FGEngine::MainSystem
 		// レンダリングエンジン
 		renderingEngine = RenderingSystem::RenderingEngine::GetInstance();
 
+		// 物理エンジン
+		physicsEngine = PhysicsSystem::PhysicsEngine::GetInstance();
+
 		// リソースマネージャー
 		resouceManager = ResouceSystem::ResouceManager::GetInstance();
 
@@ -196,6 +200,10 @@ namespace FGEngine::MainSystem
 		// アプリケーションを更新する
 		application->Update();
 
+		// エディタ画面を描画
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		// ウィンドウの描画終了
 		windowManager->End();
 	}
@@ -212,7 +220,7 @@ namespace FGEngine::MainSystem
 		ImGui_ImplGlfw_Shutdown();
 		ImGui_ImplOpenGL3_Shutdown();
 
-		// imGuiのコンテキスト
+		// imGuiのコンテキストを削除
 		ImGui::DestroyContext();
 
 		// GLFWの終了

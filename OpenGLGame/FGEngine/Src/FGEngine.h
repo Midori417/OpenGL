@@ -126,8 +126,26 @@
 // スタティックメッシュレンダラーコンポーネント
 #include "My/MeshRenderer.h"
 
-// プリミティブの種類
-#include "My/PrimitiveType.h"
+// コライダーコンポーネント基底
+#include "My/Collider.h"
+
+// AABBコライダーコンポーネント
+#include "My/AabbCollider.h"
+
+// Sphereコライダーコンポーネント
+#include "My/SphereCollider.h"
+
+// Boxコライダーコンポーネント
+#include "My/BoxCollider.h"
+
+// 物理(剛体)コンポーネント
+#include "My/Rigidbody.h"
+
+// UIレイアウトの基底クラス
+#include "My/ImGuiLayout.h"
+
+// 画像(UI)描画コンポーネント
+#include "My/Image.h"
 
 // ===================
 //
@@ -149,3 +167,9 @@
 
 // リソースマネージャー
 #include "My/ResouceManager.h"
+
+// 図形の種類
+#include "My/ShapeType.h"
+
+// デフォルトシェーダの種類
+#include "My/DefalutShader.h"

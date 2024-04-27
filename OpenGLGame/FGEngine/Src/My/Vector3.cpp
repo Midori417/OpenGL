@@ -28,6 +28,14 @@ namespace FGEngine
 	}
 
 	/**
+	* 1個のfloatからVector3を構築するコンストラクタ
+	*/
+	Vector3::Vector3(float f)
+		: x(f), y(f), z(f)
+	{
+	}
+
+	/**
 	* Vector2からVector3を構築するコンストラクタ
 	*/
 	Vector3::Vector3(const Vector2& v, float z)

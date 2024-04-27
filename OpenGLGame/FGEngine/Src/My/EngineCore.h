@@ -65,10 +65,13 @@ namespace FGEngine::MainSystem
 		// レンダリングエンジン
 		std::shared_ptr<RenderingSystem::RenderingEngine> renderingEngine;
 
+		// 物理エンジン
+		std::shared_ptr<PhysicsSystem::PhysicsEngine> physicsEngine;
+
 		// ウィンドウマネージャーポインター
 		std::shared_ptr<WindowSystem::WindowManager> windowManager;
 
-		// 某ええクトマネージャーポインター
+		// オブジェクトマネージャーポインター
 		std::shared_ptr<ObjectSystem::ObjectManager> objectManager;
 
 		// シーンマネージャーポインター

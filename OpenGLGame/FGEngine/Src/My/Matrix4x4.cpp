@@ -220,6 +220,21 @@ namespace FGEngine
 	}
 
 	/**
+	* 座標変換行列から拡大率を抽出
+	*
+	* @param transform	抽出元の座標変換行列
+	*
+	* @return 抽出した拡大率を
+	*/
+	Vector3 Matrix4x4::ExtractScale(const Matrix4x4& transform)
+	{
+		const float sx = Vector3(transform[0]).Magnitude();
+		const float sy = Vector3(transform[1]).Magnitude();
+		const float sz = Vector3(transform[2]).Magnitude();
+		return Vector3{ sx,sy,sz };
+	}
+
+	/**
 	* Matrix3x3とVector3の乗算
 	*/
 	Vector4 operator*(const Matrix4x4& m, const Vector4& v)

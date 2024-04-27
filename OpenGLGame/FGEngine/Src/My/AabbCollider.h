@@ -1,23 +1,23 @@
 /**
-* @file BoxCollider.h
+* @file AabbCollider.h
 */
-#ifndef FGENGINE_BOXCOLLIDER_H_INCLUDED
-#define FGENGINE_BOXCOLLIDER_H_INCLUDED
+#ifndef FGENGINE_AABBCOLLIDER_H_INCLUDED
+#define FGENGINE_AABBCOLLIDER_H_INCLUDED
 #include "Collider.h"
-#include "Shape.h"
+#include "Intersect.h"
 
 namespace FGEngine
 {
 	/**
-	* ボックスコライダー
+	* 軸平行ボックスコライダー
 	*/
-	class BoxCollider : public Collider
+	class AabbCollider : public Collider
 	{
 	public:
 
 		// コンストラクタ・デストラクタ
-		BoxCollider() = default;
-		virtual ~BoxCollider() = default;
+		AabbCollider() = default;
+		virtual ~AabbCollider() = default;
 
 		/**
 		* コライダーのタイプを取得
@@ -25,40 +25,39 @@ namespace FGEngine
 		virtual ColliderType GetType() const;
 
 		/**
-		* 図形を取得
+		* 図形を取得する
 		*/
-		const Box& GetShape() const;
+		const AABB& GetShape() const;
 
 		/**
 		* 座標を変更する
 		* 
 		* @param translate 移動量
-		*/
+		*/ 
 		virtual void AddPosition(const Vector3& translate) override;
 
 		/**
 		* 座標変換したコライダーを取得する
-		* 
+		*
 		* @param transform 変換する座標変換行列
-		* 
+		*
 		* @return 変換したコライダーコンポーネント
 		*/
 		virtual ColliderPtr GetTransformedCollider(const Matrix4x4& transform) const;
 
 	public:
 
-		// ロカール座標でのコライダーの中心座標を返す
-		Vector3 center = Vector3::zero;
+		// 最小値
+		Vector3 min = Vector3(-1);
 
-		// ローカルサイズでのコライダーの大きさを返す
-		Vector3 size = Vector3::one;
+		// 最大値
+		Vector3 max = Vector3(1);
 
 	private:
 
 		// 図形
-		Box box;
+		AABB aabb;
 	};
-	using BoxColliderPtr = std::shared_ptr<BoxCollider>;
 }
 
-#endif // !FGENGINE_BOXCOLLIDER_H_INCLUDEED
+#endif // !FGENGINE_AABBCOLLIDER_H_INCLUDED

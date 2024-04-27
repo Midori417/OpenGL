@@ -98,6 +98,14 @@ namespace FGEngine
 		*/
 		static void Decompose(const Matrix4x4& transform, Vector3& translate, Vector3& scale, Matrix3x3& rotation);
 
+		/**
+		* 座標変換行列から拡大率を抽出
+		* 
+		* @param transform	抽出元の座標変換行列
+		* 
+		* @return 抽出した拡大率を
+		*/
+		static Vector3 ExtractScale(const Matrix4x4& transform);
 
 		// 添え字演算子
 		Vector4& operator[](size_t i)

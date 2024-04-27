@@ -94,9 +94,6 @@
     <Filter Include="FGEngine\Src\My\Object\Component\Transform">
       <UniqueIdentifier>{4ed62798-b0c2-4a97-b86d-48cf55f410e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Component\MonoBehaviour">
-      <UniqueIdentifier>{3573da3d-ff23-46d6-8cdd-a7ef810bc485}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\Object\Mesh">
       <UniqueIdentifier>{e08fea84-29b9-4098-8c5e-093401e6f226}</UniqueIdentifier>
     </Filter>
@@ -180,6 +177,39 @@
     </Filter>
     <Filter Include="FGEngine\Src\My\RenderingSystem\RenderingEngine">
       <UniqueIdentifier>{38d6400e-5626-4722-8653-ff2307d5bc83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\PhysicsSystem">
+      <UniqueIdentifier>{f5a273cb-ede8-42ab-a6af-ac00fe661867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Behaviour">
+      <UniqueIdentifier>{3573da3d-ff23-46d6-8cdd-a7ef810bc485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\PhysicsSystem\Intersect">
+      <UniqueIdentifier>{05d7d45a-3703-47aa-a6c6-c794b6486c2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Shape">
+      <UniqueIdentifier>{e2ae68a8-2ec0-41fb-9299-36e90f6d0997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider\AabbCollider">
+      <UniqueIdentifier>{2fe7e22d-d58a-4f49-9381-f3e25a143f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider\SphereCollider">
+      <UniqueIdentifier>{b294508f-b7c9-4839-a539-6a2309f3cd41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider\BoxCollider">
+      <UniqueIdentifier>{a7328477-db2d-493f-9bb4-d357b78b59ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI\Image">
+      <UniqueIdentifier>{7c08f446-4b3a-41d0-861b-8dffd5178cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI\Text">
+      <UniqueIdentifier>{af64227c-fda8-4e73-a6ae-f52523f1f1ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI\ImGui">
+      <UniqueIdentifier>{86ef3d50-435a-4f77-b2bb-62f45be6fd19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Animator">
+      <UniqueIdentifier>{ece777db-c7ee-497f-82a0-2c3f2ecc03b1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -313,7 +343,7 @@
       <Filter>FGEngine\Src\My\ObjectSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h">
-      <Filter>FGEngine\Src\My\Object\Component\MonoBehaviour</Filter>
+      <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\SystemFrd.h">
       <Filter>FGEngine\Src\My</Filter>
@@ -322,15 +352,6 @@
       <Filter>FGEngine\Src\My\Object\Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Collider.h">
-      <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\SphereCollider.h">
-      <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\BoxCollider.h">
-      <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\CapsuleCollider.h">
       <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Light.h">
@@ -390,9 +411,6 @@
     <ClInclude Include="FGEngine\Src\My\EngineCore.h">
       <Filter>FGEngine\Src\My\MainSystem</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\PrimitiveType.h">
-      <Filter>FGEngine\Src\My\Object\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ResouceManager.h">
       <Filter>FGEngine\Src\My\ResouceSystem</Filter>
     </ClInclude>
@@ -428,6 +446,45 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\MeshRenderer.h">
       <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\DefalutShader.h">
+      <Filter>FGEngine\Src\My\Object\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\WorldCollider.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\PhysicsEngine.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Collision.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Behaviour.h">
+      <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Intersect.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem\Intersect</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ShapeType.h">
+      <Filter>FGEngine\Src\My\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Shape.h">
+      <Filter>FGEngine\Src\My\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\AabbCollider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\AabbCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SphereCollider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\BoxCollider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\BoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ImGuiLayout.h">
+      <Filter>FGEngine\Src\My\Object\Component\UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Image.h">
+      <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -562,6 +619,33 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp">
       <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\PhysicsEngine.cpp">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Intersect.cpp">
+      <Filter>FGEngine\Src\My\PhysicsSystem\Intersect</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\AabbCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\SphereCollider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Collider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Rigidbody.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ImGuiLayout.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Image.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

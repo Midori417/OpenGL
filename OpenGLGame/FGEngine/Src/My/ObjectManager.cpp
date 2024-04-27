@@ -3,10 +3,12 @@
 */
 #include "ObjectManager.h"
 #include "RenderingEngine.h"
+#include "PhysicsEngine.h"
 #include "ResouceManager.h"
 #include "WindowManager.h"
 #include "ShaderObject.h"
 #include "Time.h"
+#include "WorldCollider.h"
 #include "ShaderLocationNum.h"
 #include <algorithm>
 
@@ -31,18 +33,33 @@ namespace FGEngine::ObjectSystem
 	*/
 	void ObjectManager::Update()
 	{
-		// ゲームオブジェクトのMonoBehaviourを実行
+		// ゲームオブジェクト配列が空のため何もしない
+		if (gameObjects.empty())
+		{
+			return;
+		}
+
+		// ゲームオブジェクトのイベント処理
 		UpdateMonoBehaviour();
 
-		// オブジェクトトランスフォーム
+		// オブジェクト座標処理
 		UpdateTransform();
 
-		// オブジェクトの削除処理
-		RendererGameObject();
-	}
+		// 衝突処理
+		CollisionGameObject();
 
-	void ObjectManager::UpdateGameObject()
-	{
+		// 物理処理
+		UpdateRigidbody();
+
+		// オブジェクトの破壊処理
+		DestoryGameObject();
+
+		// UIの描画処理
+		UIRendererGameObject();
+
+		// オブジェクトの描画処理
+		RendererGameObject();
+
 	}
 
 	/**
@@ -56,13 +73,11 @@ namespace FGEngine::ObjectSystem
 		for (auto prog : *resouceManager->GetShaderList())
 		{
 			// 影用のシェーダの場合除外
-			if (prog.second->isShadow)
+			if (prog.second->isNormal)
 			{
-				continue;
+				programs.push_back(prog.second->GetProgId());
 			}
-			programs.push_back(prog.second->GetProgId());
 		}
-
 
 		// カメラのパラメータを設定
 		for (auto prog : programs)
@@ -74,37 +89,127 @@ namespace FGEngine::ObjectSystem
 				float aspectRatio = mainCamera->camera->aspect;
 				glProgramUniform2f(prog, RenderingSystem::locAspectRatioAndScaleFov, 1 / aspectRatio, fovScale);
 
-				// 位置と回転を設定
+				// カメラの位置と回転とスケールの格納先
 				Vector3 pos;
 				Vector3 scale;
 				Matrix3x3 rot;
+
+				// カメラの座標変換行列を分解
 				Matrix4x4::Decompose(mainCamera->transform->transformMatrix, pos, scale, rot);
+
+				// クォータニオンに一度変換
 				Quaternion q = Quaternion::RotationMatrixToQuaternion(rot);
+				// カメラは逆回転にするため逆数にする
 				rot = Quaternion::QuaternionToRotationMatrix3x3(Quaternion(q.x, q.y, q.z, -q.w));
+
+				// GPUに情報を伝える
 				glProgramUniform3fv(prog, RenderingSystem::locCameraPos, 1, &pos.x);
 				glProgramUniformMatrix3fv(prog, RenderingSystem::locCameraRotationMatrix, 1, GL_FALSE, &rot.data[0].x);
 			}
 		}
 
-		// オブジェクトに描画コンポーネントの有無で分ける
-		auto iter = std::stable_partition(gameObjects.begin(), gameObjects.end(),
-			[](const auto& a) {
-				return !a->renderer; });
-
-		GameObjectList drawList(iter, gameObjects.end());
+		// 描画コンポーネントの有無で仕分けする
 		std::vector<RendererPtr> rendererList;
 		rendererList.reserve(gameObjects.size());
-
-		// オブジェクトのrendererを取得
-		for (auto i = iter; i < gameObjects.end(); ++i)
+		for (auto x : gameObjects)
 		{
-			// イテレータから要素番号を取得
-			auto index = std::distance(gameObjects.begin(), i);
-
-			// 要素番号のRendererコンポーネントをRenderer配列に追加
-			rendererList.push_back(gameObjects[index]->renderer);
+			if (x->renderer)
+			{
+				rendererList.push_back(x->renderer);
+			}
 		}
+
+		// レンダリングエンジンに描画してもらう
 		RenderingSystem::RenderingEngine::GetInstance()->DrawGameObject(rendererList);
+	}
+
+	/**
+	* ゲームオブジェクトのUI描画処理
+	*/
+	void ObjectManager::UIRendererGameObject()
+	{
+		// UI描画コンポーネントの有無で仕分する
+		std::vector<UI::ImGuiLayoutPtr> imguiList;
+		imguiList.reserve(gameObjects.size());
+
+		for (auto x : gameObjects)
+		{
+			if (x->imGuiLayout)
+			{
+				imguiList.push_back(x->imGuiLayout);
+			}
+		}
+
+		// UIがないため処理を終わる
+		if (imguiList.empty())
+		{
+			return;
+		}
+
+		// レイヤー順に並び替える
+		std::stable_sort(imguiList.begin(), imguiList.end(),
+			[](const UI::ImGuiLayoutPtr& a, const UI::ImGuiLayoutPtr& b) {
+				return a->layer < b->layer; });
+
+		for (auto x : gameObjects)
+		{
+			if (x->imGuiLayout)
+			{
+				x->imGuiLayout->UIUpdate();
+			}
+		}
+	}
+
+	/**
+	* ゲームオブジェクトの衝突処理の準備
+	*/
+	void ObjectManager::CollisionGameObject()
+	{
+		// ワールド座標系の衝突判定を作成
+		std::vector<PhysicsSystem::WorldColliderList> colliders;
+		colliders.reserve(gameObjects.size());
+		for (const auto& e : gameObjects)
+		{
+			if (e->colliders.empty()) 
+			{
+				continue; // コライダーを持っていなかったら何もしない
+			}
+
+			// 衝突判定を作成
+			PhysicsSystem::WorldColliderList list(e->colliders.size());
+			for (int i = 0; i < e->colliders.size(); ++i)
+			{
+				// オリジナルのコライダーをコピー
+				list[i].origin = e->colliders[i];
+
+				//コライダーの座標をワールド座標に変換
+				list[i].world = e->colliders[i]->GetTransformedCollider(e->transform->GetTransformMatrix());
+			}
+			colliders.push_back(list);
+		}
+
+		// 衝突処理はコリジョンのついたゲームオブジェクトが二個以上
+		if (colliders.size() >= 2)
+		{
+			// ゲームオブジェクト単位の衝突判定
+			for (auto a = colliders.begin(); a != colliders.end() - 1; ++a)
+			{
+				const GameObjectPtr goA = a->at(0).origin->OwnerObject();
+				if (goA->IsDestroyed())
+				{
+					continue;	// 削除済みなので飛ばす
+				}
+				for (auto b = a + 1; b != colliders.end(); ++b)
+				{
+					const GameObjectPtr goB = b->at(0).origin->OwnerObject();
+					if (goB->IsDestroyed())
+					{
+						continue;	// 削除済みなので飛ばす
+					}
+					PhysicsSystem::PhysicsEngine::GetInstance()->HandleWorldColliderCollision(&*a, &*b); // コライダー単位の衝突判定
+				}
+			}
+		}
 
 	}
 
@@ -114,17 +219,13 @@ namespace FGEngine::ObjectSystem
 	void ObjectManager::UpdateTransform()
 	{
 
-		// ローカル座標変換行列を計算
+		// ローカル座標変換行列を更新
 		for (int i = 0; i < gameObjects.size(); ++i)
 		{
-			GameObject* e = gameObjects[i].get();
+			GameObjectPtr e = gameObjects[i];
 			if (e->transform != nullptr)
 			{
-				auto pos = Matrix4x4::Translate(e->transform->position);
-				auto rot = Quaternion::QuaternionToRotationMatrix4x4(e->transform->rotation);
-				auto s = Matrix4x4::Scale(e->transform->scale);
-				e->transform->transformMatrix = pos * rot * s;
-				e->transform->normalMatrix = Matrix3x3(rot);
+				e->transform->LocalTransformUpdate();
 			}
 		}
 
@@ -215,6 +316,20 @@ namespace FGEngine::ObjectSystem
 	}
 
 	/**
+	* Rigidbodyを更新
+	*/
+	void ObjectManager::UpdateRigidbody()
+	{
+		for (auto x : gameObjects)
+		{
+			if (x->rigidbody)
+			{
+				x->rigidbody->GravityUpdate();
+			}
+		}
+	}
+
+	/**
 	* ゲームオブジェクトの削除処理
 	*/
 	void ObjectManager::DestoryGameObject()
@@ -255,7 +370,7 @@ namespace FGEngine::ObjectSystem
 		auto iter2 = std::stable_partition(
 			gameObjects.begin(), gameObjects.end(),
 			[](const GameObjectPtr p) { return p->GetHideFlag() == Object::HideFlag::Destory; });
-		
+
 		// 破棄状態のゲームオブジェクトを別の配列に移動
 		GameObjectList destroyList(
 			std::move_iterator(iter2),
@@ -282,9 +397,9 @@ namespace FGEngine::ObjectSystem
 
 	/**
 	* ゲームオブジェクトを作成
-	* 
+	*
 	* @param name オブジェクトの名前
-	* 
+	*
 	* @return 作成したゲームオブジェクト
 	*/
 	GameObjectPtr ObjectManager::CreateGameObject(const std::string& name)
@@ -305,7 +420,7 @@ namespace FGEngine::ObjectSystem
 
 	/**
 	* ゲームオブジェクトを作成
-	* 
+	*
 	* @param name		オブジェクトの名前
 	* @param transform	オブジェクトのTransfrom
 	*/
@@ -331,9 +446,9 @@ namespace FGEngine::ObjectSystem
 
 	/**
 	* ゲームオブジェクトを作成
-	* 
+	*
 	* @param name オブジェクトの名前
-	* @param 
+	* @param
 	*/
 	GameObjectPtr ObjectManager::CreateGameObject(const std::string& name, const Vector3& position, const Quaternion& rotation)
 	{

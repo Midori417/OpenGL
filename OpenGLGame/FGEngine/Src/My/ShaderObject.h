@@ -56,6 +56,8 @@ namespace FGEngine
 
 		bool isLight = false;
 
+		bool isUseLight = false;
+
 	private:
 
 		// 頂点シェーダ管理番号

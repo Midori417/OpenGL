@@ -24,33 +24,38 @@ namespace FGEngine
 		// 座標変換行列をGPUにコピー
 		if (GetTransform())
 		{
-			// VAOをバインド
-			glBindVertexArray(*mesh->vao);
 
 			if (drawType == DrawType::normal)
 			{
-				if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
+				// VAOをバインド
+				glBindVertexArray(*mesh->vao);
+				if (shader)
 				{
-					glProgramUniformMatrix4fv(shader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
-						GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
+					if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
+					{
+						glProgramUniformMatrix4fv(shader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
+							GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
+					}
+					if (glGetUniformLocation(shader->GetProgId(), "normalMatrix") >= 0)
+					{
+						glProgramUniformMatrix3fv(shader->GetProgId(), RenderingSystem::locNormalMatrix, 1,
+							GL_FALSE, &GetTransform()->GetNormalMatrix()[0].x);
+					}
+					// 描画
+					RenderingSystem::Draw(shader->GetProgId(), *mesh, materials);
 				}
-				if (glGetUniformLocation(shader->GetProgId(), "normalMatrix") >= 0)
-				{
-					glProgramUniformMatrix3fv(shader->GetProgId(), RenderingSystem::locNormalMatrix, 1,
-						GL_FALSE, &GetTransform()->GetNormalMatrix()[0].x);
-				}
-				// 描画
-				RenderingSystem::Draw(shader->GetProgId(), *mesh, materials);
 			}
 			else if (drawType == DrawType::shadow)
 			{
-				if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
+				if (shadowShader)
 				{
-
-					glProgramUniformMatrix4fv(shadowShader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
-						GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
-				}// 描画
-				RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, materials);
+					if (glGetUniformLocation(shadowShader->GetProgId(), "transformMatrix") >= 0)
+					{
+						glProgramUniformMatrix4fv(shadowShader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
+							GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
+					}// 描画
+					RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, materials);
+				}
 			}
 
 			// VAOのバインド解除
