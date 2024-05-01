@@ -1,86 +1,54 @@
 /**
 * @file Collision.h
 */
-#ifndef FGENGINE_COLLISION_H_INCLUDED
-#define FGENGINE_COLLISION_H_INCLUDED
-#include <memory>
-#include "SystemFrd.h"
+#ifndef COLLISION_H_INCLUDED
+#define COLLISION_H_INCLUDED
 
-namespace FGEngine
+#include "Vector3.h"
+/**
+* 軸平行境界ボックス
+*/
+struct AABB
 {
-	class GameObject;
-	using GameObjectPtr = std::shared_ptr<GameObject>;
-	class Transform;
-	using TransformPtr = std::shared_ptr<Transform>;
-	class Rigidbody;
-	using RigidbodyPtr = std::shared_ptr<Rigidbody>;
-	class Collider;
-	using ColliderPtr = std::shared_ptr<Collider>;
+	Vector3 min;
+	Vector3 max;
+};
 
+/**
+* 球体
+*/
+struct Sphere
+{
+	Vector3 position;	// 中心座標
+	float radius;	// 半径
+};
 
-	namespace PhysicsSystem
-	{
+/**
+* 有向境界ボックス(OBB)
+*/
+struct Box
+{
+	Vector3 position;	// 中心座標
+	Vector3 axis[3];	// 軸の向きベクトル
+	Vector3 scale;		// 軸方向の大きさ
+};
 
-		/**
-		* 衝突したオブジェクトの情報を扱う
-		*/
-		class Collision
-		{
-		public:
+/**
+* 光線
+*/
+struct Ray
+{
+	Vector3 start;	// 光線の始点
+	Vector3 direction;	// 光線の向き
+};
 
-			friend PhysicsEngine;
+// === 交差判定関数 === //
+bool Intersect(const AABB& a, const AABB& b, Vector3& penetration);
+bool Intersect(const Sphere& a, const Sphere& b, Vector3& penetration);
+bool Intersect(const AABB& aabb, const Sphere& sphere, Vector3& penetration);
+bool Intersect(const Box& box, const Sphere& sphere, Vector3& penetration);
 
-			// コンストラクタ・デストラクタ
-			Collision() = default;
-			~Collision() = default;
-
-			/**
-			* ヒットしたゲームオブジェクトの情報を取得
-			*/
-			GameObjectPtr GetGameObject() const
-			{
-				return gameObject;
-			}
-
-			/**
-			* ヒットしたTransformの情報を取得
-			*/
-			TransformPtr GetTransform() const
-			{
-				return transform;
-			}
-
-			/**
-			* ヒットしたColliderの情報を取得
-			*/
-			ColliderPtr GetCollider() const
-			{
-				return collider;
-			}
-
-			/**
-			* ヒットしたRigidbodyの情報を取得
-			*/
-			RigidbodyPtr GetRigidbody() const
-			{
-				return rigidBody;
-			}
-
-		private:
-
-			// ヒットしたゲームオブジェクト情報
-			GameObjectPtr gameObject;
-
-			// ヒットしたTransform
-			TransformPtr transform;
-
-			// ヒットしたCollider情報
-			ColliderPtr collider;
-
-			// ヒットしたRigidbody情報
-			RigidbodyPtr rigidBody;
-	
-		};
-	}
-}
-#endif // !FGENGINE_COLLISION_H_INCLUDED
+bool Intersect(const AABB& aabb, const Ray& ray, float& distance);
+bool Intersect(const Sphere& sphere, const Ray& ray, float& distance);
+bool Intersect(const Box& box, const Ray& ray, float& distance);
+#endif // !COLLISION_H_INCLUDED

@@ -19,6 +19,7 @@ private:
 
 	virtual void Start() override;
 	virtual void Update() override;
+	virtual void OnCollision(const ComponentPtr& self, const ComponentPtr& other) override;
 
 };
 #endif // !ENEMYMS_H_INCLUDED

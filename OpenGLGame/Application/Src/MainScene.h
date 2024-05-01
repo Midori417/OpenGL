@@ -4,13 +4,12 @@
 #ifndef MAINSCENE_H_INCLUDED
 #define MAINSCENE_H_INCLUDED
 
-#include "FGEngineSub.h"
-using namespace FGEngine;
+#include "MyEngine.h"
 
 /**
 * メインシーン
 */
-class MainScene : public FGEngine::SceneSystem::Scene
+class MainScene : public  SceneManagment::Scene
 {
 public:
 
@@ -23,13 +22,17 @@ public:
 private:
 
 	// メインシーンの初期化
-	virtual bool Initialize() override;
+	virtual bool Initialize(Engine& engine) override;
 
 	// メインシーンの更新
-	virtual void Update() override;
+	virtual void Update(Engine& engine) override;
 
 	// メインシーンの終了処理
-	virtual void Finalize() override;
+	virtual void Finalize(Engine& engine) override;
+
+private:
+
+	GltfAnimatedMeshRendererPtr animTestRenderer;
 
 };
 #endif // !MAINSCENE_H_INCLUDED

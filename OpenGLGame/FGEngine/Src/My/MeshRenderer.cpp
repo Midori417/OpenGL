@@ -1,65 +1,39 @@
 /**
-* @file MeshRenderer.cpp
+* @file MeshRenderer.h
 */
 #include "MeshRenderer.h"
-#include "GameObject.h"
 #include "Mesh.h"
-#include "ShaderObject.h"
-#include "ShaderLocationNum.h"
-#include "MeshBuffer.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "VecMath.h"
 
-namespace FGEngine
+/**
+* 描画する
+*/
+void MeshRenderer::Draw(const ProgramObject& program, Type type) const
 {
-	/**
-	* スタティックメッシュを描画
-	*/
-	void MeshRenderer::Draw(DrawType drawType) const
+	// スタティックメッシュがされていない場合は描画しない
+	if (!mesh)
 	{
-		// メッシュが設定されていない場合は描画しない
-		if (!mesh)
+		return;
+	}
+
+	// 座標変換ベクトルの配列をGPUメモリにコピー
+	if (GetGameObject()->transform != nullptr)
+	{
+		auto trs = GetGameObject()->transform;
+		glProgramUniformMatrix4fv(program, 0, 1, GL_FALSE, &trs->GetTransformMatrix()[0].x);
+		if (type == Type::Standard)
 		{
-			return;
+			glProgramUniformMatrix3fv(program, 1, 1, GL_FALSE, &trs->GetNormalMatrix()[0].x);
 		}
-
-		// 座標変換行列をGPUにコピー
-		if (GetTransform())
-		{
-
-			if (drawType == DrawType::normal)
-			{
-				// VAOをバインド
-				glBindVertexArray(*mesh->vao);
-				if (shader)
-				{
-					if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
-					{
-						glProgramUniformMatrix4fv(shader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
-							GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
-					}
-					if (glGetUniformLocation(shader->GetProgId(), "normalMatrix") >= 0)
-					{
-						glProgramUniformMatrix3fv(shader->GetProgId(), RenderingSystem::locNormalMatrix, 1,
-							GL_FALSE, &GetTransform()->GetNormalMatrix()[0].x);
-					}
-					// 描画
-					RenderingSystem::Draw(shader->GetProgId(), *mesh, materials);
-				}
-			}
-			else if (drawType == DrawType::shadow)
-			{
-				if (shadowShader)
-				{
-					if (glGetUniformLocation(shadowShader->GetProgId(), "transformMatrix") >= 0)
-					{
-						glProgramUniformMatrix4fv(shadowShader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
-							GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
-					}// 描画
-					RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, materials);
-				}
-			}
-
-			// VAOのバインド解除
-			glBindVertexArray(0);
-		}
+	}
+	if (materials.empty())
+	{
+		::Draw(*mesh, program, mesh->materials);
+	}
+	else
+	{
+		::Draw(*mesh, program, materials);
 	}
 }

@@ -1,63 +1,67 @@
 /**
 * @file AabbCollider.h
 */
-#ifndef FGENGINE_AABBCOLLIDER_H_INCLUDED
-#define FGENGINE_AABBCOLLIDER_H_INCLUDED
+#ifndef AABBCOLLIDER_H_INCLUDED
+#define AABBCOLLIDER_H_INCLUDED
+
 #include "Collider.h"
-#include "Intersect.h"
+#include "Collision.h"
 
-namespace FGEngine
+
+/**
+* AABコライダー
+*/
+class AabbCollider : public Collider
 {
-	/**
-	* 軸平行ボックスコライダー
-	*/
-	class AabbCollider : public Collider
+public:
+
+	AabbCollider() = default;
+	virtual ~AabbCollider() = default;
+
+	// 図形の種類
+	Type GetType() const override
 	{
-	public:
+		return Type::AABB;
+	}
 
-		// コンストラクタ・デストラクタ
-		AabbCollider() = default;
-		virtual ~AabbCollider() = default;
+	// 座標を変更する
+	void AddPosition(const Vector3& translate) override
+	{
+		aabb.min += translate;
+		aabb.max += translate;
+	}
 
-		/**
-		* コライダーのタイプを取得
-		*/
-		virtual ColliderType GetType() const;
+	// 座標変換したコライダーを取得する
+	// 回転角度は90°単位で指定すること、それ以外の角度では正しい交差判定が行えない
+	ColliderPtr GetTransformedCollider(const Matrix4x4& transform) const override
+	{
+		// 座標変換したコピーを作成
+		auto p = std::make_shared<AabbCollider>();
+		p->aabb.min = Vector3(transform * Vector4(aabb.min, 1));
+		p->aabb.max = Vector3(transform * Vector4(aabb.max, 1));
 
-		/**
-		* 図形を取得する
-		*/
-		const AABB& GetShape() const;
+		// minのほうが大きかったら入れ替える
+		for (int i = 0; i < 3; ++i)
+		{
+			if (p->aabb.min[i] > p->aabb.max[i])
+			{
+				const float tmp = p->aabb.min[i];
+				p->aabb.min[i] = p->aabb.max[i];
+				p->aabb.max[i] = tmp;
+			}
+		}
+		return p;
+	}
 
-		/**
-		* 座標を変更する
-		* 
-		* @param translate 移動量
-		*/ 
-		virtual void AddPosition(const Vector3& translate) override;
+	// 図形を取得する
+	const AABB& GetShape() const
+	{
+		return aabb;
+	}
 
-		/**
-		* 座標変換したコライダーを取得する
-		*
-		* @param transform 変換する座標変換行列
-		*
-		* @return 変換したコライダーコンポーネント
-		*/
-		virtual ColliderPtr GetTransformedCollider(const Matrix4x4& transform) const;
+public:
 
-	public:
-
-		// 最小値
-		Vector3 min = Vector3(-1);
-
-		// 最大値
-		Vector3 max = Vector3(1);
-
-	private:
-
-		// 図形
-		AABB aabb;
-	};
-}
-
-#endif // !FGENGINE_AABBCOLLIDER_H_INCLUDED
+	AABB aabb = { {-1,-1,-1}, {1,1,1} };	// 図形(軸平行境界ボックス)
+};
+using AabbColliderPtr = std::shared_ptr<AabbCollider>;
+#endif // !AABBCOLLIDER_H_INCLUDED

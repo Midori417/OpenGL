@@ -3,9 +3,7 @@
 */
 #ifndef BASEMS_H_INCLUDED
 #define BASEMS_H_INCLUDED
-#include "FGEngineSub.h"
-using namespace FGEngine;
-
+#include "MyEngine.h"
 
 // 先行宣言
 class PlayerManager;
@@ -41,7 +39,7 @@ public:
 /**
 * すべてのMSの基底コンポーネント
 */
-class BaseMS : public MonoBehaviour
+class BaseMS : public Component
 {
 public:
 

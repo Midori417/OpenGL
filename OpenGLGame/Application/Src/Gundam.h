@@ -123,7 +123,7 @@ private:
 
 
 	// キャラクターコンポーネント
-	RigidbodyPtr characterMovement;
+	ChacterMovementPtr characterMovement;
 	GltfAnimatedMeshRendererPtr renderer;
 
 };

@@ -1,47 +1,43 @@
 /**
 * @file Image.h
 */
-#ifndef FGENGINE_IMAGE_H_INCLUDED
-#define FGENGINE_IMAGE_H_INCLUDED
-#include "ImGuiLayout.h"
-#include "Texture.h"
+#ifndef COMPONENT_IMAGE_H_INCLUDED
+#define COMPONENT_IMAGE_H_INCLUDED
+#include "ImGuiUI.h"
+#include "Vector2.h"
 #include "Color.h"
+#include <string>
 
-namespace FGEngine::UI
+/**
+* UI画像
+*/
+class Image : public ImGuiUI
 {
-	/**
-	* UIの画像を描画
-	*/
-	class Image : public ImGuiLayout
-	{
-	public:
+public:
 
-		// コンストラクタ・デストラクタ
-		Image() = default;
-		virtual ~Image() = default;
+	// コンストラクタ
+	Image() = default;
 
-	private:
+	// デストラクタ
+	virtual ~Image() = default;
 
-		/**
-		* UIの設定
-		*/
-		virtual void UISetting() override;
 
-	public:
+private:
 
-		// 表示するテクスチャポインター
-		TexturePtr texture;
+	// UI処理部
+	virtual void UIUpdate() override;
 
-		// 画像のサイズ
-		Vector2 size = Vector2::zero;
+public:
 
-		// カラー
-		Color color = Color::white;
+	std::string filename;	// テクスチャのファイル名
 
-		// 画像埋め(0～1)
-		float fillAmout = 1;
-	};
-	using ImagePtr = std::shared_ptr<Image>;
-}
+	Vector2 size = Vector2::zero;
+	Color color = Color::black;
 
-#endif // !FGENGINE_IMAGE_H_INCLUDED
+	float radian = 0;
+
+	float fillAmout = 1;	
+};
+using ImagePtr = std::shared_ptr<Image>;
+
+#endif // !COMPONENT_IMAGE_H_INCLUDED

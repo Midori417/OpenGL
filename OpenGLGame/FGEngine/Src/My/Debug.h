@@ -1,8 +1,8 @@
 /**
 * @file Debug.h
 */
-#ifndef FGENIGNE_DEBUG_H_INCLUDED
-#define FGENIGNE_DEBUG_H_INCLUDED
+#ifndef DEBUG_H_INCLUDED
+#define DEBUG_H_INCLUDED
 
 /**
 * デバッグ用の機能を格納する名前空間
@@ -35,4 +35,4 @@ namespace Debug
 	# define LOG(...)			((void)0)
 # endif // !ENABLE_DEBUG_LOG
 
-#endif // !FGENGINE_DEBUG_H_INCLUDED
+#endif // !DEBUG_H_INCLUDED

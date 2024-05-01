@@ -3,10 +3,10 @@
 */
 #ifndef MAGUNAMBULLET_H_INCLUDED
 #define MAGUNAMBULLET_H_INCLUDED
-#include "FGEngineSub.h"
-using namespace FGEngine;
+#include "MyEngine.h"
 
-class MagunamBullet :public MonoBehaviour
+
+class MagunamBullet :public Component
 {
 public:
 
@@ -17,7 +17,7 @@ public:
 	// === Component基本イベント === //
 	virtual void Awake() override;
 	virtual void Update() override;
-	virtual void OnCollisionEnter(const CollisionPtr collision) override;
+	virtual void OnCollision(const ComponentPtr& self, const ComponentPtr& other) override;
 
 	/**
 	* ターゲットの設定
@@ -46,8 +46,8 @@ public:
 
 private:
 
-	Transform* targetTrs = nullptr;
-	float speed = 70;			// 速度
+	Transform* targetTrs;
+	float speed = 170;			// 速度
 	float rotationSpeed = 0.05f;// 旋回速度
 	float homingRate = 0.1f;		// 誘導率
 	float destoryTimer = 10;	// 消滅時間

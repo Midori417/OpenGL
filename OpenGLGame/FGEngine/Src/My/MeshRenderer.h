@@ -1,43 +1,34 @@
 /**
-* @file MeshRenderer,h
+* @file MeshRenderer.h
 */
-#ifndef FGENGINE_MESHRENDERER_H_INCLUDED
-#define FGENGINE_MESHRENDERER_H_INCLUDED
+#ifndef COMPONENT_MESHRENDERER_H_INCLUDED
+#define COMPONENT_MESHRENDERER_H_INCLUDED
 #include "Renderer.h"
+#include "ProgramObject.h"
+#include "Mesh.h"
 
-namespace FGEngine
+/**
+* メッシュ描画コンポーネント
+*/
+class MeshRenderer : public Renderer
 {
-	class StaticMesh;
-	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
-	class Material;
-	using MaterialPtr = std::shared_ptr<Material>;
+public:
 
-	/**
-	* スタティックメッシュを描画
-	*/
-	class MeshRenderer : public Renderer
+	// コンストラクタ・デストラクタ
+	MeshRenderer() = default;
+	virtual ~MeshRenderer() = default;
+
+	virtual ModelFormat GetModelFormat() const override
 	{
-	public:
+		return ModelFormat::obj;
+	}
 
-		// コンストラクタ・デストラクタ
-		MeshRenderer() = default;
-		virtual ~MeshRenderer() = default;
+	virtual void Draw(const ProgramObject& program, Type type = Type::Standard) const override;
 
-	private:
+public:
 
-		/**
-		* スタティックメッシュを描画
-		*/
-		virtual void Draw(DrawType drawType) const override;
+	StaticMeshPtr mesh;
+	MaterialList materials;
+};
 
-	public:
-
-		// 描画のメッシュ
-		StaticMeshPtr mesh;
-		
-		// マテリアル配列
-		std::vector<MaterialPtr> materials;
-	};
-}
-
-#endif // !FGENGINE_MESHRENDERER_H_INCLUDED
+#endif // !

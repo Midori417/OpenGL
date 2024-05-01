@@ -23,14 +23,14 @@ void PlayerManager::Awake()
 	auto boostbarBack = engine->Create<GameObject>("BoostbarBack", Vector3(1000,950,0));
 	{
 		imgBoostbarBack = boostbarBack->AddComponent<Image>();
-		imgBoostbarBack->filename = "Application/Res/UI/Battle/BoostbarBack.tga";
+		imgBoostbarBack->filename = "Res/UI/Battle/BoostbarBack.tga";
 		imgBoostbarBack->size.x = 400;
 		imgBoostbarBack->size.y = 100;
 	}
 	auto boostbar = engine->Create<GameObject>("Boostbar", Vector3(1020, 950,0));
 	{
 		imgBoostbar = boostbar->AddComponent<Image>();
-		imgBoostbar->filename = "Application/Res/UI/Battle/Boostbar2.tga";
+		imgBoostbar->filename = "Res/UI/Battle/Boostbar2.tga";
 		imgBoostbar->size.x = 360;
 		imgBoostbar->size.y = 100;
 	}
@@ -38,7 +38,7 @@ void PlayerManager::Awake()
 	// HP
 	auto hpBack = engine->Create<GameObject>("HpBack", Vector3(-10, 700, 0));
 	imgHpBack = hpBack->AddComponent<Image>();
-	imgHpBack->filename = "Application/Res/UI/Battle/HPBack.tga";
+	imgHpBack->filename = "Res/UI/Battle/HPBack.tga";
 	imgHpBack->size.x = 400;
 	imgHpBack->size.y = 300;
 	auto hp = engine->Create<GameObject>("Hp", Vector3(80, 710, 0));
@@ -50,16 +50,16 @@ void PlayerManager::Awake()
 	Vector2 pos = engine->GetFramebufferSize();
 	auto targetMark = engine->Create<GameObject>("TargetMark", Vector3((pos.x / 2)- (150 /2), (pos.y / 2) - (150 / 2), 0));
 	imgTargetMark = targetMark->AddComponent<Image>();
-	imgTargetMark->filename = "Application/Res/UI/Battle/TargetMark01.tga";
+	imgTargetMark->filename = "Res/UI/Battle/TargetMark01.tga";
 	imgTargetMark->size = Vector2(150);
 	auto targetMsInfo = engine->Create<GameObject>("TargetMsInfo", Vector3((pos.x / 2) +20, (pos.y / 2) - 100, 0));
 	imgTargetMsInfo = targetMsInfo->AddComponent<Image>();
-	imgTargetMsInfo->filename = "Application/Res/UI/Battle/TargetMsInfo.tga";
+	imgTargetMsInfo->filename = "Res/UI/Battle/TargetMsInfo.tga";
 	imgTargetMsInfo->size = Vector2(250, 100);
 	Vector2 msInfoPos(targetMsInfo->transform->position);
 	auto targetMsHpBar = engine->Create<GameObject>("TargetMsHpBar", Vector3(msInfoPos.x + 126, msInfoPos.y +30, 0));
 	imgTargetMSHpBar = targetMsHpBar->AddComponent<Image>();
-	imgTargetMSHpBar->filename = "Application/Res/UI/Battle/TargetMsHpBar.tga";
+	imgTargetMSHpBar->filename = "Res/UI/Battle/TargetMsHpBar.tga";
 	imgTargetMSHpBar->size = Vector2(115, 15);
 
 
@@ -69,7 +69,7 @@ void PlayerManager::Awake()
 	{
 		auto weaponBack = engine->Create<GameObject>("WeaponBack", Vector3(1400, 800, 0));
 		imgWeaponBacks[i] = weaponBack->AddComponent<Image>();
-		imgWeaponBacks[i]->filename = "Application/Res/UI/Battle/WeaponBack.tga";
+		imgWeaponBacks[i]->filename = "Res/UI/Battle/WeaponBack.tga";
 		imgWeaponBacks[i]->size.x = 512;
 		imgWeaponBacks[i]->size.y = 128;
 	}
@@ -136,17 +136,17 @@ void PlayerManager::Update()
 		if (GetDistance() <= myMs->AttackDistance().clossRangeDistance)
 		{
 			imgTargetMark->color = Color::red;
-			imgTargetMark->filename = "Application/Res/UI/Battle/TargetMark03.tga";
+			imgTargetMark->filename = "Res/UI/Battle/TargetMark03.tga";
 		}
 		else if (GetDistance() <= myMs->AttackDistance().shotDistance)
 		{
 			imgTargetMark->color = Color::red;
-			imgTargetMark->filename = "Application/Res/UI/Battle/TargetMark02.tga";
+			imgTargetMark->filename = "Res/UI/Battle/TargetMark02.tga";
 		}
 		else if (GetDistance() > myMs->AttackDistance().shotDistance)
 		{
 			imgTargetMark->color = Color::green;
-			imgTargetMark->filename = "Application/Res/UI/Battle/TargetMark01.tga";
+			imgTargetMark->filename = "Res/UI/Battle/TargetMark01.tga";
 		}
 	}
 	// MyMS‚Ì’e‚Ì”‚ğ”½‰f

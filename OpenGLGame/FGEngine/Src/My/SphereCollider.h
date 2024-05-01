@@ -1,64 +1,52 @@
 /**
 * @file SphereCollider.h
 */
-#ifndef FGENGINE_SPHERECOLLIDER_H_INCLUDED
-#define FGENGINE_SPHERECOLLIDER_H_INCLUDED
+#ifndef SPHERECOLLIDER_H_INCLUDED
+#define SPHERECOLLIDER_H_INCLUDED
+
 #include "Collider.h"
-#include "Shape.h"
+#include "Collision.h"
 
-namespace FGEngine
+/**
+* 球体コライダー
+*/
+class SphereCollider : public Collider
 {
-	/**
-	* スフィアコライダー
-	*/
-	class SphereCollider : public Collider
-	{
-	public:
+public:
 
-		// コンストラクタ・デストラクタ
-		SphereCollider() = default;
-		virtual ~SphereCollider() = default;
+	SphereCollider() = default;
+	virtual ~SphereCollider() = default;
 
-		/**
-		* コライダーのタイプを取得
-		*/
-		virtual ColliderType GetType() const;
+	// 図形の種類
+	Type GetType() const override {
+		return Type::Sphere;
+	}
 
-		/**
-		* 図形を取得
-		*/
-		const Sphere& GetShape() const;
+	// 図形を変更する
+	void AddPosition(const Vector3& translate) override {
+		sphere.position += translate;
+	}
 
-		/**
-		* 図形を変更する
-		* 
-		* @param translate 移動量
-		*/
-		virtual void AddPosition(const Vector3& translate) override;
+	ColliderPtr GetTransformedCollider(const Matrix4x4& transform) const override {
+		// 中心座標を座標変換する
+		auto p = std::make_shared<SphereCollider>();
+		p->sphere.position = Vector3(transform * Vector4(sphere.position, 1));
 
-		/**
-		* 座標変換したコライダーを取得する
-		*
-		* @param transform 変換する座標変換行列
-		*
-		* @return 変換したコライダーコンポーネント
-		*/
-		virtual ColliderPtr GetTransformedCollider(const Matrix4x4& transform) const override;
+		// 球体の拡大率はオブジェクトのXYZ拡大率のうち最大のものとする(Uinty基準)
+		const Vector3 scale = ExtractScale(transform);
+		const float maxScale = std::max({ scale.x,scale.y,scale.z });
+		p->sphere.radius = sphere.radius * maxScale;
+		return p;
+	}
 
-	public:
+	// 図形を取得する
+	const Sphere& GetShape() const {
+		return sphere;
+	}
 
-		// オブジェクトのローカル座標でのコライダーの中心座標
-		Vector3 ceneter = Vector3::zero;
+public:
 
-		// オブジェクトのロカールサイズのコライダーの半径
-		float radius = 1;
-
-	private:
-
-		// 図形
-		Sphere sphere;
-	};
-	using SphereColliderPtr = std::shared_ptr<SphereCollider>;
-}
-
-#endif // !FGENGINE_SPHERECOLLIDER_H_INCLUDED
+	Sphere sphere = { Vector3(0), 1 };	// 図形(球体)
+};
+using SphereColliderPtr = std::shared_ptr<SphereCollider>;
+#endif // !SPHERECOLLIDER_H_INCLUDED

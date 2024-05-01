@@ -4,13 +4,12 @@
 #ifndef TITLESCENE_H_INCLUDED
 #define TITLESCENE_H_INCLUDED
 
-#include "FGEngineSub.h"
-using namespace FGEngine;
+#include "MyEngine.h"
 
 /**
 * タイトルシーン
 */
-class TitleScene : public FGEngine::SceneSystem::Scene
+class TitleScene : public SceneManagment::Scene
 {
 public:
 
@@ -23,18 +22,15 @@ public:
 private:
 
 	// タイトルシーンの初期化
-	virtual bool Initialize() override;
+	virtual bool Initialize(Engine& engine) override;
 
 	// タイトルシーンの更新
-	virtual void Update() override;
+	virtual void Update(Engine& engine) override;
 
 	// タイトルシーンの終了
-	virtual void Finalize() override;
+	virtual void Finalize(Engine& engine) override;
 
 private:
 
-	float rotY = 0;
-	float rotX = 0;
-	GameObjectPtr obj;
 };
 #endif // !TITLESCENE_H_INCLUDED

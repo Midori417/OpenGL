@@ -18,7 +18,7 @@ namespace Debug
 	*/
 	void Log(Type type, const char* func, const char* format, ...)
 	{
-		char buffer[1050] = {""};
+		char buffer[1024];
 		char* p = buffer;
 		size_t size = sizeof(buffer) - 1;	// ––”ö‚É\n‚ð’Ç‰Á‚³‚¹‚é‚½‚ß
 

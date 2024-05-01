@@ -1,102 +1,46 @@
 /**
 * @file MapBufferObject.h
 */
-#ifndef FGENGINE_MAPBUFFEROBJECT_H_INCLUDED
-#define FGENGINE_MAPBUFFEROBJECT_H_INCLUDED
-#include "Package/Glad.h"
+#ifndef MAPBUFFEROBJECT_H_INCLUDED
+#define MAPBUFFEROBJECT_H_INCLUDED
+#include "glad/glad.h"
 #include <memory>
 
-namespace FGEngine::RenderingSystem
+class MappedBufferObject;
+using MappedBufferObjectPtr = std::shared_ptr<MappedBufferObject>;
+
+/**
+* バッファオブジェクト(マップあり)
+*/
+class MappedBufferObject
 {
-	// 先行宣言
-	class MappedBufferObject;
-	using MappedBufferObjectPtr = std::shared_ptr<MappedBufferObject>;
+public:
 
-	/**
-	* バッファオブジェクト(マップあり)
-	*/
-	class MappedBufferObject
-	{
-	public:
+	// コンストラクタ・デストラクタ
+	MappedBufferObject(GLsizeiptr size, GLenum type, GLenum access);
+	~MappedBufferObject();
 
-		// コンストラクタ・デストラクタ
-		MappedBufferObject(GLsizeiptr size, GLenum type, GLenum access);
-		~MappedBufferObject();
+	static MappedBufferObjectPtr Create(GLsizeiptr size, GLenum type, GLenum access);
 
-		/**
-		* バッファオブジェクトを作成する
-		*
-		* @parma size		バッファオブジェクトのバイトサイズ
-		* @param type		バッファオブジェクトの種類
-		* @param access		以下のいずれかを指定する
-		*					GL_READ_WRITE 読み取り書き込みの両対応でマップする
-		*					GL_READ_ONLY　読みとり専用としてマップする
-		*					GL_WRITE_ONLY 書き込み専用としてマップする
-		*
-		* @return 作成しtあバッファオブジェクトへのポインタ
-		*/
-		static MappedBufferObjectPtr Create(GLsizeiptr size, GLenum type, GLenum access);
+	// 管理番号を取得する
+	operator GLuint() const { return id; }
+	GLsizeiptr GetSize() const { return bufferSize; }
 
-		/**
-		* BufferObjectの管理番号を取得
-		*/
-		operator GLuint() const 
-		{ 
-			return id; 
-		}
+	void WaitSync();
+	uint8_t* GetMappedAddress()const;
+	void Bind(GLuint index, size_t offset, size_t size);
+	void SwapBuffers();
 
-		/**
-		* バッファサイズを取得
-		*/
-		GLsizeiptr GetSize() const
-		{ 
-			return bufferSize;
-		}
+private:
 
-		/**
-		* GPUがバッファを使い終わるのを待つ
-		*/
-		void WaitSync();
+	GLuint id = 0;
+	GLsizeiptr bufferSize = 0;
 
-		/**
-		* データのコピー先アドレスを取得する
-		*/
-		uint8_t* GetMappedAddress()const;
+	uint8_t* p = nullptr;			// データコピー先アドレス
+	size_t bufferIndex = 0;			// コピー先バッファのインデックス
+	GLsync syncList[2] = { 0,0 };	// 同期オブジェクト
+	GLenum type = GL_ARRAY_BUFFER;	// バッファの種類
 
-		/**
-		* 指定した範囲をOpenGLコンテキストに割り当てる
-		*
-		* @parma index	割り当てるバインディングポイント番号
-		* @param offset	割り当て範囲の先頭位置
-		* @parma size	割り当て範囲のバイトサイズ
-		*/
-		void Bind(GLuint index, size_t offset, size_t size);
+};
 
-		/**
-		* コピー先バッファを切り替える
-		*/
-		void SwapBuffers();
-
-	private:
-
-		// 管理Id
-		GLuint id = 0;
-
-		// バッファサイズ
-		GLsizeiptr bufferSize = 0;
-
-		// データコピー先アドレス
-		uint8_t* p = nullptr;
-
-		// コピー先バッファのインデックス
-		size_t bufferIndex = 0;		
-
-		// 同期オブジェクト
-		GLsync syncList[2] = { 0,0 };
-
-		// バッファの種類
-		GLenum type = GL_ARRAY_BUFFER;	
-
-	};
-}
 #endif // !MAPBUFFEROBJECT_H_INCLUDED

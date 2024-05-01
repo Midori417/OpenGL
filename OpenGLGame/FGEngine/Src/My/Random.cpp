@@ -4,9 +4,8 @@
 #include "Random.h"
 #include <random>
 
-namespace FGEngine
+namespace Random
 {
-
 	// 乱数生成オブジェクト
 	std::random_device rd;
 	std::mt19937 randomEngine(rd());
@@ -16,7 +15,7 @@ namespace FGEngine
 	*
 	* @param seed 乱数の種
 	*/
-	void Random::Initialize(int seed)
+	void Initialize(int seed)
 	{
 		randomEngine.seed(seed);
 	}
@@ -26,7 +25,7 @@ namespace FGEngine
 	*
 	* @return 生成した乱数
 	*/
-	float Random::Value()
+	float Value()
 	{
 		return std::uniform_real_distribution<float>(0, 1)(randomEngine);
 	}
@@ -39,7 +38,7 @@ namespace FGEngine
 	*
 	* @return 生成した乱数
 	*/
-	float Random::Range(float min, float max)
+	float Range(float min, float max)
 	{
 		return std::uniform_real_distribution<float>(min, max)(randomEngine);
 	}

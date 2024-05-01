@@ -2,367 +2,442 @@
 * @file Vector3.cpp
 */
 #include "Vector3.h"
-#include "Vector2.h"
-#include "Vector4.h"
 #include "Mathf.h"
 
-namespace FGEngine
+// スタティック変数の初期化
+const Vector3 Vector3::zero = Vector3(0, 0, 0);
+const Vector3 Vector3::one = Vector3(1, 1, 1);
+const Vector3 Vector3::up = Vector3(0, 1, 0);
+const Vector3 Vector3::down = Vector3(0, -1, 0);
+const Vector3 Vector3::left = Vector3(-1, 0, 0);
+const Vector3 Vector3::right = Vector3(1, 0, 0);
+const Vector3 Vector3::forward = Vector3(0, 0, -1);
+const Vector3 Vector3::back = Vector3(0, 0, 1);
+
+
+
+//=======================================
+//
+//  関数
+//
+//=======================================
+
+/**
+* 自身のベクトルを正規化する
+*/
+void Vector3::Normalize()
 {
-
-	// スタティック変数の初期化
-	const Vector3 Vector3::zero = Vector3(0, 0, 0);
-	const Vector3 Vector3::one = Vector3(1, 1, 1);
-	const Vector3 Vector3::up = Vector3(0, 1, 0);
-	const Vector3 Vector3::down = Vector3(0, -1, 0);
-	const Vector3 Vector3::left = Vector3(-1, 0, 0);
-	const Vector3 Vector3::right = Vector3(1, 0, 0);
-	const Vector3 Vector3::forward = Vector3(0, 0, 1);
-	const Vector3 Vector3::back = Vector3(0, 0, -1);
-
-	/**
-	* 3個のfloatからVector3を構築するコンストラクタ
-	*/
-	Vector3::Vector3(float x, float y, float z)
-		:x(x), y(y),z (z)
+	float num = magnitude();
+	if (num > 0.0f) {
+		*this /= num;
+	}
+	else
 	{
+		*this = Vector3::zero;
+	}
+}
+
+/**
+* 各要素をvの各要素と乗算する
+* 
+* @param v 乗算する要素
+*/
+void Vector3::Scale(const Vector3& v)
+{
+	x *= v.x;
+	y *= v.y;
+}
+
+
+/**
+* aとbのベクトルの内積を返す
+* 
+* @param a 計算対象その1
+* @param b 計算対象その2
+* 
+* @return aとbの内積
+*/
+float Vector3::Dot(const Vector3& a, const Vector3& b)
+{
+	return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+/**
+* aとbのベクトルの外積を返す
+*
+* @param a 計算対象その1
+* @param b 計算対象その2
+*
+* @return aとbの外積
+*/
+Vector3 Vector3::Cross(const Vector3& a, const Vector3& b)
+{
+	float num = a.y * b.z - a.z * b.y;
+	float num2 = a.z * b.x - a.x * b.z;
+	float num3 = a.x * b.y - a.y * b.x;
+	return Vector3(num, num2, num3);
+}
+
+/**
+* aとbのベクトルの長さを返す
+* 
+* @param a 計算対象その1
+* @param b 計算対象その2
+*
+* @return aとbの長さ
+*/
+float Vector3::Distance(const Vector3& a, const Vector3& b)
+{
+	float num = a.x - b.x;
+	float num2 = a.y - b.y;
+	float num3 = a.z - b.z;
+	return Mathf::Sqrt(num * num + num2 * num2 + num3 * num3);
+}
+
+/**
+* aとbの間をt(Clamp0～1)で線形補間する
+* 
+* @param a 計算対象その1
+* @param b 計算対象その2
+* @param t 
+*/
+Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b, float t)
+{
+	t = Mathf::Clamp01(t);
+	return Vector3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
+}
+
+/**
+* aとbの間をtで線形補間する
+*
+* @param a 計算対象その1
+* @param b 計算対象その2
+* @param t
+*/
+Vector3 Vector3::LerpUnclamped(const Vector3& a, const Vector3& b, float t)
+{
+	return Vector3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
+}
+
+/**
+* 現在の位置currentからtargetに向けて移動する
+*
+* @param current	現在位置
+* @param target		ターゲット位置
+*
+*/
+Vector3 Vector3::MoveTowards(const Vector3& current, const Vector3& target, float maxDistanceDelta)
+{
+	float num = target.x - current.x;
+	float num2 = target.y - current.y;
+	float num3 = target.z - current.z;
+	float num4 = num * num + num2 * num2 + num3 * num3;
+	if (num4 == 0.0f || (maxDistanceDelta >= 0.0f && num4 <= maxDistanceDelta * maxDistanceDelta))
+	{
+		return target;
 	}
 
-	/**
-	* 1個のfloatからVector3を構築するコンストラクタ
-	*/
-	Vector3::Vector3(float f)
-		: x(f), y(f), z(f)
-	{
+	float num5 = Mathf::Sqrt(num4);
+	return Vector3(
+		current.x + num / num5 * maxDistanceDelta,
+		current.y + num2 / num5 * maxDistanceDelta,
+		current.z + num3 / num5 * maxDistanceDelta);
+}
+
+/**
+* aとbの各成分を乗算して返す
+* 
+* @param a 計算対象その1
+* @param b 計算対象その2
+* 
+* @return aとbの各成分を乗算したベクトル
+*/
+Vector3 Vector3::Scale(const Vector3& a, const Vector3& b)
+{
+	float num = a.x * b.x;
+	float num2 = a.y * b.y;
+	float num3 = a.z * b.z;
+	return Vector3(num, num2, num3);
+}
+
+/**
+* aとbの各要素の最大値のベクトルを返す
+*
+* @param a 計算対象その1
+* @param b 計算対象その2
+*
+* @return 各要素の最大のベクトル
+*/
+Vector3 Vector3::Max(const Vector3& a, const Vector3& b)
+{
+	return Vector3(Mathf::Max(a.x, b.x), Mathf::Max(a.y, b.y), Mathf::Max(a.z, b.z));
+}
+
+/**
+* aとbの各要素の最小値のベクトルを返す
+*
+* @param a 計算対象その1
+* @param b 計算対象その2
+*
+* @return 各要素の最小のベクトル
+*/
+Vector3 Vector3::Min(const Vector3& a, const Vector3& b)
+{
+	return Vector3(Mathf::Min(a.x, b.x), Mathf::Min(a.y, b.y), Mathf::Min(a.z, b.z));
+}
+
+/**
+* ベクトルの長さを返す
+*
+* @returnベクトルの長さ
+*/
+float Vector3::magnitude() const
+{
+	return Mathf::Sqrt(x * x + y * y + z * z);
+}
+
+/**
+* ベクトルの長さを二乗して返す
+*
+* @return ベクトルの二乗した長さ
+*/
+float Vector3::sqrtMagnitude() const
+{
+	return x * x + y * y + z * z;
+}
+
+/**
+* ベクトルを正規化して返す
+*
+* @return 正規化したベクトル
+* @return zero 0除算された
+*/
+Vector3 Vector3::normalized() const
+{
+	Vector3 result = Vector3(x, y, z);
+	result.Normalize();
+	return result;
+}
+
+//=======================================
+//
+//  Operator
+//
+//=======================================
+
+/**
+* -単項演算子
+*/
+Vector3 operator-(const Vector3& a)
+{
+	return Vector3(-a.x, -a.y, -a.z);
+}
+
+//=======================================
+//  加算
+//=======================================
+
+/**
+* Vector3同士の代入演算
+*/
+Vector3& operator+=(Vector3& a, const Vector3& b)
+{
+	a.x += b.x;
+	a.y += b.y;
+	a.z += b.z;
+	return a;
+}
+
+/**
+* Vector3同士の演算
+*/
+Vector3 operator+(const Vector3& a, const Vector3& b)
+{
+	return Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
+}
+
+/**
+* Vector3とfloatの代入演算
+*/
+Vector3& operator+=(Vector3& a, float b)
+{
+	return a += Vector3(b, b, b);
+}
+
+/**
+* Vector3とfloatの演算
+*/
+Vector3 operator+(const Vector3& a, float b)
+{
+	return a + Vector3(b, b, b);
+}
+
+/**
+* floatとVector3の演算
+*/
+Vector3 operator+(float a, const Vector3& b)
+{
+	return b + a;
+}
+
+//=======================================
+//  加算
+//=======================================
+
+/**
+* Vector3同士の代入演算
+*/
+Vector3& operator-=(Vector3& a, const Vector3& b)
+{
+	a.x -= b.x;
+	a.y -= b.y;
+	a.z -= b.z;
+	return a;
+}
+
+/**
+* Vector3同士の演算
+*/
+Vector3 operator-(const Vector3& a, const Vector3& b)
+{
+	return Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
+}
+
+/**
+* Vector3とfloatの代入演算
+*/
+Vector3& operator-=(Vector3& a, float b)
+{
+	return a -= Vector3(b, b, b);
+}
+
+/**
+* Vector3とfloatの演算
+*/
+Vector3 operator-(const Vector3& a, float b)
+{
+	return a - Vector3(b, b, b);
+}
+
+/**
+* floatとVector3の演算
+*/
+Vector3 operator-(float a, const Vector3& b)
+{
+	return b - a;
+}
+
+//=======================================
+//  乗算
+//=======================================
+
+/**
+* Vector3同士の代入演算
+*/
+Vector3& operator*=(Vector3& a, const Vector3& b)
+{
+	a.x *= b.x;
+	a.y *= b.y;
+	a.z *= b.z;
+	return a;
+}
+
+/**
+* Vector3同士の演算
+*/
+Vector3 operator*(const Vector3& a, const Vector3& b)
+{
+	return Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
+}
+
+/**
+* Vector3とfloatの代入演算
+*/
+Vector3& operator*=(Vector3& a, float b)
+{
+	return a *= Vector3(b, b, b);
+}
+
+/**
+* Vector3とfloatの演算
+*/
+Vector3 operator*(const Vector3& a, float b)
+{
+	return a * Vector3(b, b, b);
+}
+
+/**
+* floatとVector3の演算
+*/
+Vector3 operator*(float a, const Vector3& b)
+{
+	return b * a;
+}
+
+//=======================================
+//	除算
+//=======================================
+
+/**
+*　Vector3同士の代入演算
+*/
+Vector3& operator/=(Vector3& a, const Vector3& b)
+{
+	if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0 || a.z == 0 || b.z == 0) {
 	}
+	a.x /= b.x;
+	a.y /= b.y;
+	a.z /= b.z;
+	return a;
+}
 
-	/**
-	* Vector2からVector3を構築するコンストラクタ
-	*/
-	Vector3::Vector3(const Vector2& v, float z)
-		: x(v.x), y(v.y),z(z)
-	{
+/**
+* Vector3同士の演算
+*/
+Vector3 operator/(const Vector3& a, const Vector3& b)
+{
+	if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0 || a.z == 0 || b.z == 0) {
 	}
+	return Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
+}
 
-	/**
-	* Vector4からVector3を構築するコンストラクタ
-	*/
-	Vector3::Vector3(const Vector4& v)
-		: x(v.x), y(v.y), z(v.z)
-	{
+/**
+* Vector3とfloatの代入演算
+*/
+Vector3& operator/=(Vector3& a, float b)
+{
+	if (a.x == 0 || a.y == 0 || a.z == 0 || b == 0) {
 	}
+	return a /= Vector3(b, b, b);
+}
 
-	/**
-	* ベクトルを正規化されたベクトル(単位ベクトル)にする
-	*/
-	void Vector3::Normalize()
-	{
-		float num = Magnitude();
-		if (num > 0.0f) {
-			*this /= num;
-		}
-		else
-		{
-			*this = Vector3::zero;
-		}
+/**
+* Vector3とfloatの演算
+*/
+Vector3 operator/(const Vector3& a, float b)
+{
+	if (a.x == 0 || a.y == 0 || b == 0) {
 	}
+	return a / Vector3(b, b, b);
+}
 
-	/**
-	* 正規化されたベクトル(単位ベクトル)を取得
-	*
-	* @return 正規化されたベクトル
-	*/
-	Vector3 Vector3::Normalized() const
-	{
-		Vector3 result = Vector3(x, y, z);
-		result.Normalize();
-		return result;
+Vector3 operator/(float a, const Vector3& b)
+{
+	if (b.x == 0 || b.y == 0 || b.z == 0 || a == 0) {
 	}
+	return b / a;
+}
 
-	/**
-	* ベクトルの大きさ(長さ)を計算する
-	*
-	* @return ベクトルの大きさ
-	*/
-	float Vector3::Magnitude() const
-	{
-		return Mathf::Sqrt(x * x + y * y + z * z);
-	}
+//=======================================
+//	比較
+//=======================================
 
-	/**
-	* 2つのベクトルの内積(ドット積)を計算する
-	*
-	* @param a ベクトル1
-	* @param b ベクトル2
-	*
-	* @return aとbの内積
-	*/
-	float Vector3::Dot(const Vector3& a, const Vector3& b)
-	{
-		return a.x * b.x + a.y * b.y + a.z * b.z;
-	}
+bool operator==(const Vector3& a, const Vector3& b)
+{
+	return ((a.x == b.x) && (a.y == b.y) && (a.z == b.z));
+}
 
-	/**
-	* 2のベクトルの外積(クロス積)を計算する
-	*
-	* @param a ベクトル1
-	* @param b ベクトル2
-	*
-	* @return aとbの外積
-	*/
-	Vector3 Vector3::Cross(const Vector3& a, const Vector3& b)
-	{
-		float num = a.y * b.z - a.z * b.y;
-		float num2 = a.z * b.x - a.x * b.z;
-		float num3 = a.x * b.y - a.y * b.x;
-		return Vector3(num, num2, num3);
-	}
-
-	/**
-	*  2つのベクトルの距離(長さ)を計算する
-	*
-	* @param a ベクトル1
-	* @param b ベクトル2
-	*
-	* @return aとbの距離
-	*/
-	float Vector3::Distance(const Vector3& a, const Vector3& b)
-	{
-		Vector3 tmp = a - b;
-		return Mathf::Sqrt(tmp.x * tmp.x + tmp.y * tmp.y + tmp.z * tmp.z);
-	}
-
-	/**
-	* ベクトル a と ベクトル b の間を線形補間する
-	*
-	* @param a 補間の開始ベクトル
-	* @param b 補間の終了ベクトル
-	* @param t 補間パラメータ (0.0 ~ 1.0 の範囲)
-	*
-	* @return 補間されたベクトル
-	*/
-	Vector3 Vector3::Lerp(const Vector3& a, const Vector3& b, float t)
-	{
-		// 値を補完する
-		t = Mathf::Clamp01(t);
-
-		return Vector3(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t, a.z + (b.z - a.z) * t);
-	}
-
-
-	/**
-	* -単項演算子
-	*/
-	Vector3 operator-(const Vector3& a)
-	{
-		return Vector3(-a.x, -a.y, -a.z);
-	}
-
-	//=======================================
-	//  加算
-	//=======================================
-
-	/**
-	* Vector3同士の代入演算
-	*/
-	Vector3& operator+=(Vector3& a, const Vector3& b)
-	{
-		a.x += b.x;
-		a.y += b.y;
-		a.z += b.z;
-		return a;
-	}
-
-	/**
-	* Vector3同士の演算
-	*/
-	Vector3 operator+(const Vector3& a, const Vector3& b)
-	{
-		return Vector3(a.x + b.x, a.y + b.y, a.z + b.z);
-	}
-
-	/**
-	* Vector3とfloatの代入演算
-	*/
-	Vector3& operator+=(Vector3& a, float b)
-	{
-		return a += Vector3(b, b, b);
-	}
-
-	/**
-	* Vector3とfloatの演算
-	*/
-	Vector3 operator+(const Vector3& a, float b)
-	{
-		return a + Vector3(b, b, b);
-	}
-
-	/**
-	* floatとVector3の演算
-	*/
-	Vector3 operator+(float a, const Vector3& b)
-	{
-		return b + a;
-	}
-
-	//=======================================
-	//  加算
-	//=======================================
-
-	/**
-	* Vector3同士の代入演算
-	*/
-	Vector3& operator-=(Vector3& a, const Vector3& b)
-	{
-		a.x -= b.x;
-		a.y -= b.y;
-		a.z -= b.z;
-		return a;
-	}
-
-	/**
-	* Vector3同士の演算
-	*/
-	Vector3 operator-(const Vector3& a, const Vector3& b)
-	{
-		return Vector3(a.x - b.x, a.y - b.y, a.z - b.z);
-	}
-
-	/**
-	* Vector3とfloatの代入演算
-	*/
-	Vector3& operator-=(Vector3& a, float b)
-	{
-		return a -= Vector3(b, b, b);
-	}
-
-	/**
-	* Vector3とfloatの演算
-	*/
-	Vector3 operator-(const Vector3& a, float b)
-	{
-		return a - Vector3(b, b, b);
-	}
-
-	/**
-	* floatとVector3の演算
-	*/
-	Vector3 operator-(float a, const Vector3& b)
-	{
-		return b - a;
-	}
-
-	//=======================================
-	//  乗算
-	//=======================================
-
-	/**
-	* Vector3同士の代入演算
-	*/
-	Vector3& operator*=(Vector3& a, const Vector3& b)
-	{
-		a.x *= b.x;
-		a.y *= b.y;
-		a.z *= b.z;
-		return a;
-	}
-
-	/**
-	* Vector3同士の演算
-	*/
-	Vector3 operator*(const Vector3& a, const Vector3& b)
-	{
-		return Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
-	}
-
-	/**
-	* Vector3とfloatの代入演算
-	*/
-	Vector3& operator*=(Vector3& a, float b)
-	{
-		return a *= Vector3(b, b, b);
-	}
-
-	/**
-	* Vector3とfloatの演算
-	*/
-	Vector3 operator*(const Vector3& a, float b)
-	{
-		return a * Vector3(b, b, b);
-	}
-
-	/**
-	* floatとVector3の演算
-	*/
-	Vector3 operator*(float a, const Vector3& b)
-	{
-		return b * a;
-	}
-
-	//=======================================
-	//	除算
-	//=======================================
-
-	/**
-	*　Vector3同士の代入演算
-	*/
-	Vector3& operator/=(Vector3& a, const Vector3& b)
-	{
-		if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0 || a.z == 0 || b.z == 0) {
-		}
-		a.x /= b.x;
-		a.y /= b.y;
-		a.z /= b.z;
-		return a;
-	}
-
-	/**
-	* Vector3同士の演算
-	*/
-	Vector3 operator/(const Vector3& a, const Vector3& b)
-	{
-		if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0 || a.z == 0 || b.z == 0) {
-		}
-		return Vector3(a.x / b.x, a.y / b.y, a.z / b.z);
-	}
-
-	/**
-	* Vector3とfloatの代入演算
-	*/
-	Vector3& operator/=(Vector3& a, float b)
-	{
-		if (a.x == 0 || a.y == 0 || a.z == 0 || b == 0) {
-		}
-		return a /= Vector3(b, b, b);
-	}
-
-	/**
-	* Vector3とfloatの演算
-	*/
-	Vector3 operator/(const Vector3& a, float b)
-	{
-		if (a.x == 0 || a.y == 0 || b == 0) {
-		}
-		return a / Vector3(b, b, b);
-	}
-
-	Vector3 operator/(float a, const Vector3& b)
-	{
-		if (b.x == 0 || b.y == 0 || b.z == 0 || a == 0) {
-		}
-		return b / a;
-	}
-
-	//=======================================
-	//	比較
-	//=======================================
-
-	bool operator==(const Vector3& a, const Vector3& b)
-	{
-		return ((a.x == b.x) && (a.y == b.y) && (a.z == b.z));
-	}
-
-	bool operator!=(const Vector3& a, const Vector3& b)
-	{
-		return !(a == b);
-	}
+bool operator!=(const Vector3& a, const Vector3& b)
+{
+	return !(a == b);
 }

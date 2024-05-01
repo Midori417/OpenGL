@@ -1,118 +1,99 @@
 /**
 * @file Vector4.h
 */
-#ifndef FGENGINE_VECTOR4_H_INCLUDED
-#define FGENGINE_VECTOR4_H_INCLUDED
+#ifndef VECTOR4_H_INCLUDED
+#define VECTOR4_H_INCLUDED
+
 #include "VectorFrd.h"
 
-namespace FGEngine
+// 四次元ベクトル
+struct Vector4
 {
 
-	// 四次元ベクトル
-	struct Vector4
-	{
+	Vector4() = default;
+	explicit constexpr Vector4(float n) : x(n), y(n), z(n), w(n) {}
+	explicit constexpr Vector4(float x, float y, float z, float w) : x(x), y(y), z(z), w(w) {}
+	constexpr Vector4(const Vector2& v, float z, float w);
+	constexpr Vector4(const Vector3& v, float w);
 
-		Vector4() = default;
+	// 正規化する
+	void Normalize();
 
-		// 4個のfloatからVector4を構築するコンストラクタ
-		explicit Vector4(float x, float y, float z, float w);
+	// aとbの各要素の最大値のベクトルを返す
+	static Vector4 Max(const Vector4& a, const Vector4& b);
 
-		// Vector2と2個のfloatからVector4を構築するコンストラクタ
-		explicit Vector4(const Vector2& v, float z, float w);
-
-		// Vector3と１個のfloatからVector3を構築するコンストラクタ
-		explicit Vector4(const Vector3& v, float w);
-
-		/**
-		* ベクトルを正規化されたベクトル(単位ベクトル)にする
-		*/
-		void Normalize();
-
-		/**
-		* 正規化されたベクトル(単位ベクトル)を取得
-		*
-		* @return 正規化されたベクトル
-		*/
-		Vector4 Normalized() const;
-
-		/**
-		* ベクトルの大きさ(長さ)を計算する
-		*
-		* @return ベクトルの大きさ
-		*/
-		float Magnitude() const;
+	// aとbの各要素の最小値のベクトルを返す
+	static Vector4 Min(const Vector4& a, const Vector4& b);
 
 
-	public:
+public:
 
-		// ベクトルのX成分
-		float x;
+	float x, y, z, w;
 
-		// ベクトルのY成分
-		float y;
+	// ベクトルの長さ
+	float magnitude() const;
+	
+	// ベクトルの二乗の長さ
+	float sqrtMagnitude() const;
 
-		// ベクトルのZ成分
-		float z;
+	// 正規化ベクトル
+	Vector4 normalized() const;
 
-		// ベクトルのW成分
-		float w;
+	// Vector4(0,0,0,0)
+	const static Vector4 zero;
 
-		// Vector4(0,0,0,0)
-		const static Vector4 zero;
+	// Vector4(1,1,1,1)
+	const static Vector4 one;
 
-		// Vector4(1,1,1,1)
-		const static Vector4 one;
-
-		float operator[](size_t i)const {
-			return *(&x + i);
-		}
-		float& operator[](size_t i) {
-			return *(&x + i);
-		}
-	};
+	float operator[](size_t i)const {
+		return *(&x + i);
+	}
+	float& operator[](size_t i) {
+		return *(&x + i);
+	}
+};
 
 
-	// Vector4の単項-演算子
-	Vector4 operator-(const Vector4& a);
+// Vector4の単項-演算子
+Vector4 operator-(const Vector4& a);
 
-	// Vector4同士の加算
-	Vector4& operator+=(Vector4& a, const Vector4& b);
-	Vector4 operator+(const Vector4& a, const Vector4& b);
+// Vector4同士の加算
+Vector4& operator+=(Vector4& a, const Vector4& b);
+Vector4 operator+(const Vector4& a, const Vector4& b);
 
-	// Vector4とfloatの加算
-	Vector4& operator+=(Vector4& a, float b);
-	Vector4 operator+(const Vector4& a, float b);
-	Vector4 operator+(float a, const Vector4& b);
+// Vector4とfloatの加算
+Vector4& operator+=(Vector4& a, float b);
+Vector4 operator+(const Vector4& a, float b);
+Vector4 operator+(float a, const Vector4& b);
 
-	// Vector4同士の減算
-	Vector4& operator-=(Vector4& a, const Vector4& b);
-	Vector4 operator-(const Vector4& a, const Vector4& b);
+// Vector4同士の減算
+Vector4& operator-=(Vector4& a, const Vector4& b);
+Vector4 operator-(const Vector4& a, const Vector4& b);
 
-	// Vector4とfloatの減算
-	Vector4& operator-=(Vector4& a, float b);
-	Vector4 operator-(const Vector4& a, float b);
-	Vector4 operator-(float a, const Vector4& b);
+// Vector4とfloatの減算
+Vector4& operator-=(Vector4& a, float b);
+Vector4 operator-(const Vector4& a, float b);
+Vector4 operator-(float a, const Vector4& b);
 
-	// Vector4同士の乗算
-	Vector4& operator*=(Vector4& a, const Vector4& b);
-	Vector4 operator*(const Vector4& a, const Vector4& b);
+// Vector4同士の乗算
+Vector4& operator*=(Vector4& a, const Vector4& b);
+Vector4 operator*(const Vector4& a, const Vector4& b);
 
-	// Vector4とfloatの乗算
-	Vector4& operator*=(Vector4& a, float b);
-	Vector4 operator*(const Vector4& a, float b);
-	Vector4 operator*(float a, const Vector4& b);
+// Vector4とfloatの乗算
+Vector4& operator*=(Vector4& a, float b);
+Vector4 operator*(const Vector4& a, float b);
+Vector4 operator*(float a, const Vector4& b);
 
-	// Vector4同士の徐算
-	Vector4& operator/=(Vector4& a, const Vector4& b);
-	Vector4 operator/(const Vector4& a, const Vector4& b);
+// Vector4同士の徐算
+Vector4& operator/=(Vector4& a, const Vector4& b);
+Vector4 operator/(const Vector4& a, const Vector4& b);
 
-	// Vector4とfloatの徐算
-	Vector4& operator/=(Vector4& a, float b);
-	Vector4 operator/(const Vector4& a, float b);
-	Vector4 operator/(float a, const Vector4& b);
+// Vector4とfloatの徐算
+Vector4& operator/=(Vector4& a, float b);
+Vector4 operator/(const Vector4& a, float b);
+Vector4 operator/(float a, const Vector4& b);
 
-	// Vector4同士の比較演算
-	bool operator==(const Vector4& a, const Vector4& b);
-	bool operator!=(const Vector4& a, const Vector4& b);
-}
+// Vector4同士の比較演算
+bool operator==(const Vector4& a, const Vector4& b);
+bool operator!=(const Vector4& a, const Vector4& b);
 #endif // !VECTOR4_H_INCLUDED
