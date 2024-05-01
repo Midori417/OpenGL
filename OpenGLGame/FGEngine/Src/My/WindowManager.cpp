@@ -19,7 +19,7 @@ namespace FGEngine::WindowSystem
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 
 		// ウィンドウをフルスクリーンに設定
-		//glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
+		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 		// 描画ウィンドウの作成
 		auto window = glfwCreateWindow(1280, 720, windowTitle.c_str(), nullptr, nullptr);

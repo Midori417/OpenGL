@@ -3,6 +3,7 @@
 */
 #include "Image.h"
 #include "Package/ImGUI.h"
+#include "WindowManager.h"
 
 namespace FGEngine::UI
 {
@@ -16,13 +17,18 @@ namespace FGEngine::UI
 		const ImTextureID texId = (void*)(std::intptr_t)(*texture);
 
 		// ‰æ‘œ•
-		float w = size.x * fillAmout;
+		float imageW = size.x * fillAmout;
 
 		// F
 		ImVec4 basecolor(color.r, color.g, color.b, color.a);
 
 		// ‰æ‘œ‚ğ•`‰æ
-		ImGui::Image(texId, ImVec2(w, size.y), ImVec2(0, 1), ImVec2(fillAmout, 0), basecolor);
+		ImGui::Image(texId, ImVec2(imageW, size.y), ImVec2(0, 1), ImVec2(fillAmout, 0), basecolor);
+		auto vec =  ImGui::GetWindowSize();
+
+		// Šî’êƒNƒ‰ƒX‚É‘å‚«‚³‚ğ“`‚¦‚é
+		w = size.x;
+		h = size.y;
 
 	}
 }

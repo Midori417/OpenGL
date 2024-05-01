@@ -39,12 +39,6 @@ bool TitleScene::Initialize()
 	mesh2->materials = CloneMaterialList(mesh2->mesh);
 	mesh2->materials[0]->mainTexture = resouceManager->GetTexture("white");
 
-	auto obj3 = objManager->CreateGameObject("UI", Vector3::zero, Quaternion::identity);
-	auto image = obj3->AddComponent<Image>();
-	image->size = Vector2(1280, 720);
-	image->texture = resouceManager->GetTexture("white");
-
-
 	auto material = std::make_shared<Material>();
 	material->mainTexture = resouceManager->GetTexture("sky");
 
@@ -88,7 +82,6 @@ void TitleScene::Update()
 	{
 		camera->GetTransform()->position += camera->GetTransform()->Right() * Time::DeltaTime();
 	}
-
 
 	camera->GetTransform()->rotation = Quaternion::AngleAxis(rotX, Vector3::right) * Quaternion::AngleAxis(rotY, Vector3::up);
 }

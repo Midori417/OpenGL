@@ -153,6 +153,7 @@
     <ClInclude Include="Application\Src\TitleScene.h" />
     <ClInclude Include="FGEngine\Src\FGEngine.h" />
     <ClInclude Include="FGEngine\Src\My\AabbCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\AnimationClip.h" />
     <ClInclude Include="FGEngine\Src\My\Behaviour.h" />
     <ClInclude Include="FGEngine\Src\My\Collision.h" />
     <ClInclude Include="FGEngine\Src\My\DefalutShader.h" />
@@ -245,6 +246,7 @@
     <ClCompile Include="Application\Src\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Main.cpp" />
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />
+    <ClCompile Include="FGEngine\Src\My\AnimationClip.cpp" />
     <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Collider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Image.cpp" />

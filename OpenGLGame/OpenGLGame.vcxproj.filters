@@ -211,6 +211,12 @@
     <Filter Include="FGEngine\Src\My\Object\Component\Animator">
       <UniqueIdentifier>{ece777db-c7ee-497f-82a0-2c3f2ecc03b1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FGEngine\Src\My\Animation">
+      <UniqueIdentifier>{908db9e1-3cfa-4765-80cd-1053ccb49406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Animation\AnimationClip">
+      <UniqueIdentifier>{682b639b-8eb0-4cdb-b973-1f11b3007def}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
@@ -486,6 +492,9 @@
     <ClInclude Include="FGEngine\Src\My\Image.h">
       <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
     </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\AnimationClip.h">
+      <Filter>FGEngine\Src\My\Animation\AnimationClip</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -646,6 +655,9 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Image.cpp">
       <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\AnimationClip.cpp">
+      <Filter>FGEngine\Src\My\Animation\AnimationClip</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
