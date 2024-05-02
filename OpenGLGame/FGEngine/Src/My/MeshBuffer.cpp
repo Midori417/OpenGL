@@ -4,9 +4,15 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "MeshBuffer.h"
+#include "BufferObject.h"
+#include "VertexArrayObject.h"
 #include "Debug.h"
+#include "DrawParams.h"
 #include "Vertex.h"
-#include "ResouceManager.h"
+#include "StaticMesh.h"
+#include "Material.h"
+#include "Texture.h"
+//#include "ResouceManager.h"
 #include "ShaderLocationNum.h"
 
 #include <numeric>
@@ -19,6 +25,8 @@ namespace FGEngine::RenderingSystem
 {
 	/**
 	* コンストラクタ
+	* 
+	* @param bufferSize ファイル格納用バッファの最大バイト数
 	*/
 	MeshBuffer::MeshBuffer(size_t bufferSize)
 	{
@@ -35,7 +43,7 @@ namespace FGEngine::RenderingSystem
 
 		// 頂点アトリビュートを設定
 		vao->SetAttribute(0, 3, sizeof(Vertex), offsetof(Vertex, position));
-		vao->SetAttribute(1, 2, sizeof(Vertex), offsetof(Vertex, texcoord));
+		vao->SetAttribute(1, 2, sizeof(Vertex), offsetof(Vertex, texcoord0));
 		vao->SetAttribute(2, 3, sizeof(Vertex), offsetof(Vertex, normal));
 
 		// 誤った操作が行われないようにバインドを解除
@@ -49,6 +57,18 @@ namespace FGEngine::RenderingSystem
 		// 描画パラメータ配列の容量を確保
 		drawParamsList.reserve(100);
 
+	}
+
+	/**
+	* メッシュバッファを作成
+	*
+	* @param bufferSize	格納できる頂点データのサイズ(バイト数)
+	*
+	* @return 作成したメッシュバッファポインター
+	*/
+	MeshBufferPtr MeshBuffer::Create(size_t bufferSize)
+	{
+		return std::make_shared<MeshBuffer>(bufferSize);
 	}
 
 	/**
@@ -113,6 +133,13 @@ namespace FGEngine::RenderingSystem
 	*/
 	void MeshBuffer::LoadObj(const std::string& name, const std::string& filename)
 	{
+		// 以前に読み込んだメッシュなら何もしない
+		auto itr = meshes.find(filename.c_str());
+		if (itr != meshes.end())
+		{
+			return;
+		}
+
 		// OBJファイルからメッシュデータを作成
 		MeshData meshData = CreateMeshDataFormObj(filename);
 		if (meshData.vertices.empty())
@@ -241,7 +268,7 @@ namespace FGEngine::RenderingSystem
 				const std::string filename = foldername + texureName;
 				if (std::filesystem::exists(filename)) 
 				{
-					pMaterial->mainTexture = ResouceSystem::ResouceManager::GetInstance()->GetTexture(filename);
+					pMaterial->mainTexture = Texture::Create(filename, filename);
 				}
 				else
 				{
@@ -263,7 +290,7 @@ namespace FGEngine::RenderingSystem
 				const std::string filename = foldername + texureName;
 				if (std::filesystem::exists(filename)) 
 				{
-					pMaterial->emissionTexture = ResouceSystem::ResouceManager::GetInstance()->GetTexture(filename);
+					pMaterial->emissionTexture = Texture::Create(filename, filename);
 				}
 				else 
 				{
@@ -335,7 +362,8 @@ namespace FGEngine::RenderingSystem
 		// 仮データを追加(マテリアル指定がないファイル対策)
 		usemtls.push_back({ std::string(), 0 });
 
-		while (!file.eof()) {
+		while (!file.eof())
+		{
 			std::string line;
 			std::getline(file, line);
 			const char* p = line.c_str();
@@ -360,7 +388,8 @@ namespace FGEngine::RenderingSystem
 
 			// 法線の読み取りを試みる
 			Vector3 vn = Vector3::zero;
-			if (sscanf(p, " vn %f %f %f", &vn.x, &vn.y, &vn.z) == 3) {
+			if (sscanf(p, " vn %f %f %f", &vn.x, &vn.y, &vn.z) == 3)
+			{
 				normals.push_back(vn);
 				continue;
 			}
@@ -368,10 +397,13 @@ namespace FGEngine::RenderingSystem
 			// 頂点座標+テクスチャ座標+法線
 			IndexSet f0, f1, f2;
 			int readByte = 0;
-			if (sscanf(p, " f %u/%u/%u %u/%u/%u%n", &f0.v, &f0.vt, &f0.vn, &f1.v, &f1.vt, &f1.vn, &readByte) == 6) {
+			if (sscanf(p, " f %u/%u/%u %u/%u/%u%n", &f0.v, &f0.vt, &f0.vn, &f1.v, &f1.vt, &f1.vn, &readByte) == 6) 
+			{
 				p += readByte; // 読み取り位置の更新
-				for (;;) {
-					if (sscanf(p, " %u/%u/%u%n", &f2.v, &f2.vt, &f2.vn, &readByte) != 3) {
+				for (;;) 
+				{
+					if (sscanf(p, " %u/%u/%u%n", &f2.v, &f2.vt, &f2.vn, &readByte) != 3)
+					{
 						break;
 					}
 					p += readByte; // 読み取り位置を更新
@@ -383,11 +415,13 @@ namespace FGEngine::RenderingSystem
 				continue;
 			}
 			// 頂点座標+テクスチャ座標
-			if (sscanf(p, " f %u/%u %u/%u%n", &f0.v, &f0.vt, &f1.v, &f1.vt, &readByte) == 4) {
+			if (sscanf(p, " f %u/%u %u/%u%n", &f0.v, &f0.vt, &f1.v, &f1.vt, &readByte) == 4) 
+			{
 				f0.vn = f1.vn = 0; // 法線なし
 				p += readByte; // 読み取り位置更新
 				for (;;) {
-					if (sscanf(p, " %u/%u%n", &f2.v, &f2.vt, &readByte) != 2) {
+					if (sscanf(p, " %u/%u%n", &f2.v, &f2.vt, &readByte) != 2) 
+					{
 						break;
 					}
 					f2.vn = 0; // 法線なし
@@ -402,7 +436,8 @@ namespace FGEngine::RenderingSystem
 
 			// MTLファイルの読み込みを試みる
 			char mtlFilename[1000];
-			if (sscanf(line.data(), " mtllib %999s", mtlFilename) == 1) {
+			if (sscanf(line.data(), " mtllib %999s", mtlFilename) == 1)
+			{
 				const auto tmp = LoadMTL(foldername, mtlFilename);
 				materials.insert(materials.end(), tmp.begin(), tmp.end());
 				continue;
@@ -410,7 +445,8 @@ namespace FGEngine::RenderingSystem
 
 			// 使用中のマテリアル名の読み取りを試みる
 			char mtlName[1000];
-			if (sscanf(line.data(), " usemtl %999s", mtlName) == 1) {
+			if (sscanf(line.data(), " usemtl %999s", mtlName) == 1)
+			{
 				usemtls.push_back({ mtlName, faceIndexSet.size() });
 				continue;
 			}
@@ -428,7 +464,8 @@ namespace FGEngine::RenderingSystem
 		vertices.reserve(faceIndexSet.size());
 		std::vector<uint16_t>& indices = meshData.indices;
 		indices.reserve(faceIndexSet.size());
-		for (int i = 0; i < faceIndexSet.size(); ++i) {
+		for (int i = 0; i < faceIndexSet.size(); ++i) 
+		{
 			const IndexSet& e = faceIndexSet[i];
 
 			// f構文の値の64ビットの「キー」に変換]
@@ -437,15 +474,17 @@ namespace FGEngine::RenderingSystem
 
 			// 対応表にあるので既存の頂点インデックスを使う
 			const auto itr = indexMap.find(key);
-			if (itr != indexMap.end()) {
+			if (itr != indexMap.end()) 
+			{
 				// 対応表にあるので既存の頂点インデックスを使う
 				indices.push_back(itr->second);
 			}
-			else {
+			else
+			{
 				// 対応表にないので新しい頂点データを作成し、頂点配列に追加
 				Vertex v;
 				v.position = positions[e.v - 1];
-				v.texcoord = texcoords[e.vt - 1];
+				v.texcoord0 = texcoords[e.vt - 1];
 				// 法線が設定されていない場合は0を設定(後で計算)
 				if (e.vn == 0)
 				{
@@ -477,13 +516,16 @@ namespace FGEngine::RenderingSystem
 		// マテリアルに対応した描画パラメータを作成
 		// 仮データと番兵以外のマテリアルがある場合、仮データを飛ばす
 		size_t i = 0;
-		if (usemtls.size() > 2) {
+		if (usemtls.size() > 2)
+		{
 			i = 1;	// 仮データと番兵以外のマテリアルがある場合、仮データを飛ばす
 		}
-		for (; i < usemtls.size() - 1; ++i) {
+		for (; i < usemtls.size() - 1; ++i) 
+		{
 			const UseMaterial& cur = usemtls[i];	// 使用中のマテリアル
 			const UseMaterial& next = usemtls[i + 1]; // 次のマテリアル
-			if (next.startOffset == cur.startOffset) {
+			if (next.startOffset == cur.startOffset) 
+			{
 				continue;	// インデックスデータがない場合は飛ばす
 			}
 
@@ -494,8 +536,10 @@ namespace FGEngine::RenderingSystem
 			params.indices = indexOffset;
 			params.baseVertex = baseVertex;
 			params.materialNo = 0;	// デフォルト値を設定
-			for (int i = 0; i < materials.size(); ++i) {
-				if (materials[i]->name == cur.name) {
+			for (int i = 0; i < materials.size(); ++i) 
+			{
+				if (materials[i]->name == cur.name) 
+				{
 					params.materialNo = i;	// 名前と一致するマテリアルを設定
 					break;
 				}
@@ -507,10 +551,12 @@ namespace FGEngine::RenderingSystem
 		}
 
 		// マテリアル配列が空の場合、デフォルトマテリアルを追加
-		if (materials.empty()) {
+		if (materials.empty())
+		{
 			meshData.materials.push_back(std::make_shared<Material>());
 		}
-		else {
+		else
+		{
 			meshData.materials.assign(materials.begin(), materials.end());
 		}
 		return meshData;

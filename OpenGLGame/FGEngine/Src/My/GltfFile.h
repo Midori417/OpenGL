@@ -11,7 +11,7 @@
 namespace FGEngine
 {
 	/**
-	* Gltfスキン
+	* glTFスキン
 	*/
 	struct GltfSkin
 	{
@@ -35,7 +35,7 @@ namespace FGEngine
 	};
 
 	/**
-	* Gltfノード
+	* glTFノード
 	*/
 	struct GltfNode
 	{
@@ -62,7 +62,7 @@ namespace FGEngine
 	};
 
 	/**
-	* Gltfシーン
+	* glTfシーン
 	*/
 	struct GltfScene
 	{
@@ -81,7 +81,7 @@ namespace FGEngine
 	using MaterialPtr = std::shared_ptr<Material>;
 
 	/**
-	* Gltfファイル
+	* glTfファイル
 	*/
 	struct GltfFile
 	{
@@ -89,7 +89,7 @@ namespace FGEngine
 		std::string name;
 
 		// シーン配列
-		std::vector<GltfScene> scens;
+		std::vector<GltfScene> scenes;
 
 		// ノード配列
 		std::vector<GltfNode> nodes;
@@ -111,8 +111,6 @@ namespace FGEngine
 	};
 	using GltfFilePtr = std::shared_ptr<GltfFile>;
 
-	// アニメーション用座標変換行列の配列
-	using GltfAnimationMatrices = std::vector<Matrix4x4>;
 }
 
 #endif // !FGENGINE_GLTFFILE_H_INCLUDED

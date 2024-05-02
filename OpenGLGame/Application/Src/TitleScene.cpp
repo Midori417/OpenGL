@@ -22,22 +22,15 @@ bool TitleScene::Initialize()
 	camera->AddComponent<Camera>();
 	objManager->SetMainCamera(camera);
 
-	obj = objManager->CreateGameObject("GameObject", Vector3(0,5,0), Quaternion::identity);
+	obj = objManager->CreateGameObject("GameObject", Vector3(0,0,0), Quaternion::identity);
 	auto col = obj->AddComponent<SphereCollider>();
-	obj->AddComponent<Rigidbody>();
 	auto mesh = obj->AddComponent<MeshRenderer>();
-	mesh->mesh = resouceManager->GetStaticMesh("Sphere");
+	mesh->mesh = resouceManager->GetGltfFile("Gundam")->meshes[0];
+	mesh->materials = resouceManager->GetGltfFile("Gundam")->materials;
 	mesh->shader = resouceManager->GetShader(DefalutShader::Standard3D);
-	mesh->materials = CloneMaterialList(mesh->mesh);
-	mesh->materials[0]->mainTexture = resouceManager->GetTexture("white");
-
-	auto obj2 = objManager->CreateGameObject("GameObject", Vector3(0,-2,0), Quaternion::identity);
-	auto col2 = obj2->AddComponent<BoxCollider>();
-	auto mesh2 = obj2->AddComponent<MeshRenderer>();
-	mesh2->mesh = resouceManager->GetStaticMesh("Cube");
-	mesh2->shader = resouceManager->GetShader(DefalutShader::Standard3D);
-	mesh2->materials = CloneMaterialList(mesh2->mesh);
-	mesh2->materials[0]->mainTexture = resouceManager->GetTexture("white");
+	mesh->shadowShader = resouceManager->GetShader(DefalutShader::Shadow3D);
+	//mesh->materials = CloneMaterialList(mesh->mesh);
+	//mesh->materials[0]->mainTexture = resouceManager->GetTexture("white");
 
 	auto material = std::make_shared<Material>();
 	material->mainTexture = resouceManager->GetTexture("sky");

@@ -266,6 +266,7 @@ namespace FGEngine::ObjectSystem
 		// スタート処理
 		for (auto x : gameObjects)
 		{
+			// 持っていなければ何もしない
 			if (x->monoBehaviours.empty())
 			{
 				continue;
@@ -283,6 +284,7 @@ namespace FGEngine::ObjectSystem
 		// 更新処理
 		for (auto x : gameObjects)
 		{
+			// 持っていなければ何もしない
 			if (x->monoBehaviours.empty())
 			{
 				continue;
@@ -299,6 +301,7 @@ namespace FGEngine::ObjectSystem
 		// 更新処理2
 		for (auto x : gameObjects)
 		{
+			// 持っていなければ何もしない
 			if (x->monoBehaviours.empty())
 			{
 				continue;
@@ -404,7 +407,10 @@ namespace FGEngine::ObjectSystem
 	*/
 	GameObjectPtr ObjectManager::CreateGameObject(const std::string& name)
 	{
-		auto obj = CreateObject<GameObject>(name);
+		auto obj = std::make_shared<GameObject>();
+
+		// 名前を設定
+		obj->SetName(name);
 
 		// Transformを追加
 		obj->AddComponent<Transform>();

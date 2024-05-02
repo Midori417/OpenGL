@@ -12,10 +12,14 @@ namespace FGEngine::RenderingSystem
 	*/
 	struct Vertex
 	{
-		Vector3 position = Vector3::zero;	// 頂点座標
-		Vector2 texcoord = Vector2::zero;	// テクスチャ座標
-		Vector3 normal = Vector3(0,0,-1);	// 法線ベクトル
+		Vector3 position = Vector3::zero;
+		Vector2 texcoord0 = Vector2::zero;
+		Vector3 normal = Vector3(0, 0, -1);
+		Vector4 tangent = Vector4(1, 0, 0, 1);
+		Vector4 joints0 = Vector4::zero;
+		Vector4 weights0 = Vector4::zero;
 	};
+
 }
 
 #endif // !FGENGINE_VERTEX_H_INCLUDED

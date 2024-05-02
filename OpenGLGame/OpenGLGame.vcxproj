@@ -194,7 +194,6 @@
     <ClInclude Include="FGEngine\Src\My\Matrix4x4.h" />
     <ClInclude Include="FGEngine\Src\My\MatrixFrd.h" />
     <ClInclude Include="FGEngine\Src\My\MatrixPoint.h" />
-    <ClInclude Include="FGEngine\Src\My\Mesh.h" />
     <ClInclude Include="FGEngine\Src\My\MeshBuffer.h" />
     <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h" />
     <ClInclude Include="FGEngine\Src\My\MouseButton.h" />
@@ -214,6 +213,7 @@
     <ClInclude Include="FGEngine\Src\My\SceneManager.h" />
     <ClInclude Include="FGEngine\Src\My\Singleton.h" />
     <ClInclude Include="FGEngine\Src\My\SphereCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\StaticMesh.h" />
     <ClInclude Include="FGEngine\Src\My\SystemFrd.h" />
     <ClInclude Include="FGEngine\Src\My\Texture.h" />
     <ClInclude Include="FGEngine\Src\My\Time.h" />
@@ -248,6 +248,7 @@
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Collider.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GltfFileBuffer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Image.cpp" />
     <ClCompile Include="FGEngine\Src\My\ImGuiLayout.cpp" />
     <ClCompile Include="FGEngine\Src\My\Intersect.cpp" />

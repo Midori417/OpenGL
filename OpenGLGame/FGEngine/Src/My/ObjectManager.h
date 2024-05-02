@@ -91,17 +91,6 @@ namespace FGEngine::ObjectSystem
 	public:
 
 		/**
-		* オブジェクトを作成
-		*/
-		template<typename T>
-		std::shared_ptr<T> CreateObject(const std::string& name)
-		{
-			auto obj = std::make_shared<T>();
-			obj->SetName(name);
-			return obj;
-		}
-
-		/**
 		* ゲームオブジェクトを作成
 		*/
 		GameObjectPtr CreateGameObject(const std::string& name);

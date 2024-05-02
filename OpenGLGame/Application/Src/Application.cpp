@@ -22,6 +22,7 @@ int Application::Initialize()
 
 	// 画像読み込み
 	resouceManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
+	resouceManager->LoadGlTF("Gundam", "Application/Res/Gundam/Model/GundamGL.gltf");
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");

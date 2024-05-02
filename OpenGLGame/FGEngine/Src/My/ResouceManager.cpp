@@ -2,11 +2,13 @@
 * @file ResouceManager.cpp
 */
 #include "ResouceManager.h"
-#include "Debug.h"
 #include "Package/Glad.h"
 #include <GLFW/glfw3.h>
+#include "Debug.h"
+#include "StaticMesh.h"
 #include "Texture.h"
 #include "MeshBuffer.h"
+#include "GltfFileBuffer.h"
 #include <fstream>
 #include <filesystem>
 
@@ -28,6 +30,10 @@ namespace FGEngine::ResouceSystem
 	{
 		// メッシュバッファを作成
 		this->meshBuffer = RenderingSystem::MeshBuffer::Create(32'000'000);
+		// glTFファイル用バッファを初期化
+		const size_t maxAnimationModelCount = 64;	// アニメーションするモデル数
+		const size_t maxAnimationMatrixCount = 256;	// 1モデルのボーン数
+		gltfFileBuffer = RenderingSystem::GltfFileBuffer::Create(10'000'000, maxAnimationModelCount * maxAnimationMatrixCount);
 
 		// テクスチャの読み込み
 		LoadTga("white", "FGEngine/Res/Texture/white.tga");
@@ -44,13 +50,18 @@ namespace FGEngine::ResouceSystem
 			false, true);
 		LoadShader("Unlit", "FGEngine/Res/Shader/unlit.vert", "FGEngine/Res/Shader/unlit.frag",
 			true, false, false);
+		LoadShader("Skeletal3D", "FGEngine/Res/Shader/skeletal3D.vert", "FGEngine/Res/Shader/standard3D.frag",
+			true, false, true, true);
+		LoadShader("ShadowSkeletal3D", "FGEngine/Res/Shader/shadowSkeletal3D.vert", "FGEngine/Res/Shader/shadow3D.frag",
+			false, true);
+
 
 		return 0;
 	}
 	/**
 	* tgaファイルを読み込む
 	*
-	* @param name		テクスチャの名前
+	* @param name		保存する名前
 	* @param filename	Tgaファイル名
 	*/
 	void ResouceManager::LoadTga(const std::string& name, const std::string& filename)
@@ -80,12 +91,23 @@ namespace FGEngine::ResouceSystem
 	/**
 	* OBJファイルを読み込む
 	*
-	* @param name		メッシュの名前
+	* @param name		保存する名前
 	* @param filename	Objファイル名
 	*/
 	void ResouceManager::LoadObj(const std::string& name, const std::string& filename)
 	{
 		meshBuffer->LoadObj(name, filename);
+	}
+
+	/**
+	* glTFファイルを読み込む
+	* 
+	* @param name		保存する名前
+	* @param filename	glTFファイル名
+	*/
+	void ResouceManager::LoadGlTF(const std::string& name, const std::string& filename)
+	{
+		gltfFileBuffer->LoadGltf(name, filename);
 	}
 
 	/**
@@ -156,6 +178,18 @@ namespace FGEngine::ResouceSystem
 	}
 
 	/**
+	* glTFファイルを取得
+	*
+	* @param name glTFファイルの名前
+	*
+	* @return nameにあったglTFファイル
+	*/
+	GltfFilePtr ResouceManager::GetGltfFile(const std::string& name)
+	{
+		return gltfFileBuffer->GetGltf(name);
+	}
+
+	/**
 	* シェーダを取得
 	* 
 	* @param name シェーダの名前
@@ -191,8 +225,14 @@ namespace FGEngine::ResouceSystem
 		case FGEngine::DefalutShader::Standard3D:
 			name = "Standard3D";
 			break;
+		case FGEngine::DefalutShader::Skeletal3D:
+			name = "Skeletal3D";
+			break;
 		case FGEngine::DefalutShader::Shadow3D:
 			name = "Shadow3D";
+			break;
+		case FGEngine::DefalutShader::ShadowSkeletal3D:
+			name = "ShadowSkeletal3D";
 			break;
 		case FGEngine::DefalutShader::Unlit:
 			name = "Unlit";
@@ -200,7 +240,6 @@ namespace FGEngine::ResouceSystem
 		default:
 			break;
 		}
-
 
 		if (name == "None")
 		{

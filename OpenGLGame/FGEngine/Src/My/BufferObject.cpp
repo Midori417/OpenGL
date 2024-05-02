@@ -14,7 +14,6 @@ namespace FGEngine::RenderingSystem
 	* @param data	バッファにコピーするデータのアドレス
 	*				nullptrを指定すると空のバッファが作成される
 	* @param flags	用途を示すビットフラグの論理和(glBufferStorageを参照)
-	*
 	*/
 	BufferObject::BufferObject(GLsizeiptr size, const void* data, GLbitfield flags)
 		:bufferSize(size)
@@ -44,5 +43,21 @@ namespace FGEngine::RenderingSystem
 	BufferObjectPtr BufferObject::Create(GLsizeiptr size, const void* data, GLbitfield flags)
 	{
 		return std::make_shared<BufferObject>(size, data, flags);
+	}
+
+	/**
+	* 管理番号を取得
+	*/
+	BufferObject::operator GLuint() const
+	{
+		return id;
+	}
+
+	/**
+	* バッファサイズを取得
+	*/
+	GLsizeiptr BufferObject::GetSize() const
+	{
+		return bufferSize;
 	}
 }

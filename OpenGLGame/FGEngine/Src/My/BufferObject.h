@@ -21,8 +21,19 @@ namespace FGEngine::RenderingSystem
 	{
 	public:
 
-		// コンストラクタ・デストラクタ
+		/**
+		* コンストラクタ
+		*
+		* @param size	バッファオブジェクトのバイトサイズ
+		* @param data	バッファにコピーするデータのアドレス
+		*				nullptrを指定すると空のバッファが作成される
+		* @param flags	用途を示すビットフラグの論理和(glBufferStorageを参照)
+		*/
 		explicit BufferObject(GLsizeiptr size, const void* data = nullptr, GLbitfield flags = 0);
+
+		/**
+		* デストラクタ
+		*/
 		~BufferObject();
 
 		/**
@@ -42,20 +53,14 @@ namespace FGEngine::RenderingSystem
 		BufferObject& operator=(const BufferObject&) = delete;
 
 		/**
-		* バッファオブジェクトの管理番号の取得
+		* 管理番号の取得
 		*/
-		operator GLuint() const 
-		{
-			return id;
-		}
+		operator GLuint() const;
 
 		/**
 		* バッファサイズを取得
 		*/
-		GLsizeiptr GetSize() const
-		{ 
-			return bufferSize;
-		}
+		GLsizeiptr GetSize() const;
 
 	private:
 

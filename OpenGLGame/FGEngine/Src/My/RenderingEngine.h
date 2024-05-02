@@ -7,7 +7,7 @@
 #include "SystemFrd.h"
 #include "GameObject.h"
 #include "LightData.h"
-#include "Mesh.h"
+#include "StaticMesh.h"
 #include "FrameBufferObject.h"
 
 namespace FGEngine::RenderingSystem
@@ -22,6 +22,7 @@ namespace FGEngine::RenderingSystem
 		friend Singleton<RenderingEngine>;
 		friend MainSystem::EngineCore;
 
+		// コンストラクタ
 		RenderingEngine() = default;
 
 		/**

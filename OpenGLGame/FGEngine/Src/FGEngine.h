@@ -106,7 +106,9 @@
 #include "My/Material.h"
 
 // メッシュ
-#include "My/Mesh.h"
+#include "My/StaticMesh.h"
+
+#include "My/GltfFile.h"
 
 // ゲームオブジェクト
 #include "My/GameObject.h"

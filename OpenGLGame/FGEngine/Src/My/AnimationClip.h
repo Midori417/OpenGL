@@ -13,9 +13,9 @@
 namespace FGEngine
 {
 	/**
-* アニメーションの値の保管方法
-*/
-	enum class GltfIterpolation
+	* アニメーションの値の保管方法
+	*/
+	enum class GltfInterpolation
 	{
 		// 補間なし
 		None,
@@ -24,7 +24,7 @@ namespace FGEngine
 		Linear,
 
 		// 3次スプライン補間
-		CubicSphline,
+		CubicSpline,
 	};
 
 	/**
@@ -47,10 +47,10 @@ namespace FGEngine
 	struct AnimationCurve
 	{
 		// 値を適用するノードId
-		int targetNodeid = -1;
+		int targetNodeId = -1;
 
 		// 補間方法
-		GltfIterpolation interpolation = GltfIterpolation::None;
+		GltfInterpolation interpolation = GltfInterpolation::None;
 
 		// キーフレーム配列
 		std::vector<KeyFrame<T>> keyFrames;

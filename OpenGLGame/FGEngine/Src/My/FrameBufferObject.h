@@ -20,8 +20,17 @@ namespace FGEngine::RenderingSystem
 	{
 	public:
 
-		// テクスチャからFBOを作成するコンストラクタ
+		/**
+		* 既存のテクスチャからFBOを作成する
+		*
+		* @param color カラーバッファ
+		* @param depth 深度バッファ
+		*/
 		FrameBufferObject(const TexturePtr& color, const TexturePtr& depth);
+
+		/**
+		* デストラクタ
+		*/
 		~FrameBufferObject();
 
 		// コピーと代入を禁止
@@ -41,41 +50,32 @@ namespace FGEngine::RenderingSystem
 		/**
 		* 管理番号を取得
 		*/
-		operator GLuint() const
-		{
-			return fbo;
-		}
+		operator GLuint() const;
 
 		/**
 		* 幅の取得
 		*/
-		int GetWidth() const
-		{
-			return widht;
-		}
+		int GetWidth() const;
 
 		/**
 		* 高さの取得
 		*/
-		int GetHeight() const
-		{
-			return height;
-		}
+		int GetHeight() const;
 
-		// テクスチャを取得
-		const TexturePtr& GetColorTexture() const
-		{
-			return texColor;
-		}
-		const TexturePtr& GetDepthTexture() const
-		{
-			return texDepth;
-		}
+		/**
+		* カラーテクスチャを取得
+		*/
+		const TexturePtr& GetColorTexture() const;
+
+		/**
+		* 深度テクスチャを取得
+		*/
+		const TexturePtr& GetDepthTexture() const;
 
 	private:
 
 		// FBOの管理番号
-		GLuint fbo;
+		GLuint id;
 
 		// FBOの幅
 		int widht = 0;

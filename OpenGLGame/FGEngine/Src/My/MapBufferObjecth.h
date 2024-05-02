@@ -19,9 +19,26 @@ namespace FGEngine::RenderingSystem
 	{
 	public:
 
-		// コンストラクタ・デストラクタ
+		/**
+		* バッファオブジェクトを作成する
+		*
+		* @parma size		バッファオブジェクトのバイトサイズ
+		* @param type		バッファオブジェクトの種類
+		* @param access		以下のいずれかを指定する
+		*					GL_READ_WRITE 読み取り書き込みの両対応でマップする
+		*					GL_READ_ONLY　読みとり専用としてマップする
+		*					GL_WRITE_ONLY 書き込み専用としてマップする
+		*/
 		MappedBufferObject(GLsizeiptr size, GLenum type, GLenum access);
+
+		/**
+		* デストラクタ
+		*/
 		~MappedBufferObject();
+
+		// コピーと代入を禁止
+		MappedBufferObject(const MappedBufferObject&) = delete;
+		MappedBufferObject& operator=(const MappedBufferObject&) = delete;
 
 		/**
 		* バッファオブジェクトを作成する
@@ -33,25 +50,19 @@ namespace FGEngine::RenderingSystem
 		*					GL_READ_ONLY　読みとり専用としてマップする
 		*					GL_WRITE_ONLY 書き込み専用としてマップする
 		*
-		* @return 作成しtあバッファオブジェクトへのポインタ
+		* @return 作成したバッファオブジェクトへのポインタ
 		*/
 		static MappedBufferObjectPtr Create(GLsizeiptr size, GLenum type, GLenum access);
 
 		/**
-		* BufferObjectの管理番号を取得
+		* 管理番号を取得
 		*/
-		operator GLuint() const 
-		{ 
-			return id; 
-		}
+		operator GLuint() const;
 
 		/**
 		* バッファサイズを取得
 		*/
-		GLsizeiptr GetSize() const
-		{ 
-			return bufferSize;
-		}
+		GLsizeiptr GetSize() const;
 
 		/**
 		* GPUがバッファを使い終わるのを待つ

@@ -3,7 +3,7 @@
 */
 #include "MeshRenderer.h"
 #include "GameObject.h"
-#include "Mesh.h"
+#include "StaticMesh.h"
 #include "Shader.h"
 #include "ShaderLocationNum.h"
 #include "MeshBuffer.h"

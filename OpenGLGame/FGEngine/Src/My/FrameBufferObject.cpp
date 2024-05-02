@@ -15,34 +15,34 @@ namespace FGEngine::RenderingSystem
 	FrameBufferObject::FrameBufferObject(const TexturePtr& color, const TexturePtr& depth)
 		: texColor(color), texDepth(depth)
 	{
-		glCreateFramebuffers(1, &fbo);
+		glCreateFramebuffers(1, &id);
 
 		// カラーバッファを設定
 		if (color)
 		{
-			glNamedFramebufferTexture(fbo, GL_COLOR_ATTACHMENT0, *color, 0);
+			glNamedFramebufferTexture(id, GL_COLOR_ATTACHMENT0, *color, 0);
 			widht = texColor->GetWidth();
 			height = texColor->GetHeight();
 		}
 		else
 		{
 			// テクスチャを割り当てない
-			glNamedFramebufferDrawBuffer(fbo, GL_NONE);
+			glNamedFramebufferDrawBuffer(id, GL_NONE);
 		}
 
 		// 深度バッファを設定
 		if (depth)
 		{
-			glNamedFramebufferTexture(fbo, GL_DEPTH_ATTACHMENT, *depth, 0);
+			glNamedFramebufferTexture(id, GL_DEPTH_ATTACHMENT, *depth, 0);
 			widht = texDepth->GetWidth();
 			height = texDepth->GetHeight();
 		}
 
 		// FBOのエラーチェック
-		if (glCheckNamedFramebufferStatus(fbo, GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		if (glCheckNamedFramebufferStatus(id, GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		{
-			glDeleteFramebuffers(1, &fbo);
-			fbo = 0;
+			glDeleteFramebuffers(1, &id);
+			id = 0;
 			texColor.reset();
 			texDepth.reset();
 			LOG_ERROR("FBOの作成に失敗");
@@ -59,7 +59,7 @@ namespace FGEngine::RenderingSystem
 	*/
 	FrameBufferObject::~FrameBufferObject()
 	{
-		glDeleteFramebuffers(1, &fbo);
+		glDeleteFramebuffers(1, &id);
 	}
 
 	/**
@@ -73,5 +73,45 @@ namespace FGEngine::RenderingSystem
 	FrameBufferObjectPtr FrameBufferObject::Create(const TexturePtr& color, const TexturePtr& depth)
 	{
 		return std::make_shared<FrameBufferObject>(color, depth);
+	}
+
+	/**
+	* フレームバッファオブジェクトの管理番号を取得
+	*/
+	FrameBufferObject::operator GLuint() const
+	{
+		return id;
+	}
+
+	/**
+	* 幅を取得
+	*/
+	int FrameBufferObject::GetWidth() const
+	{
+		return widht;
+	}
+
+	/**
+	* 高さを取得
+	*/
+	int FrameBufferObject::GetHeight() const
+	{
+		return height;
+	}
+
+	/**
+	* カラーテクスチャを取得
+	*/
+	const TexturePtr& FrameBufferObject::GetColorTexture() const
+	{
+		return texColor;
+	}
+
+	/**
+	* 深度テクスチャを取得
+	*/
+	const TexturePtr& FrameBufferObject::GetDepthTexture() const
+	{
+		return texDepth;
 	}
 }

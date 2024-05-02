@@ -15,8 +15,6 @@ namespace FGEngine::RenderingSystem
 	*					GL_READ_WRITE 読み取り書き込みの両対応でマップする
 	*					GL_READ_ONLY　読みとり専用としてマップする
 	*					GL_WRITE_ONLY 書き込み専用としてマップする
-	*
-	* @return 作成しtあバッファオブジェクトへのポインタ
 	*/
 	MappedBufferObject::MappedBufferObject(GLsizeiptr size, GLenum type, GLenum access)
 		:type(type)
@@ -72,11 +70,27 @@ namespace FGEngine::RenderingSystem
 	*					GL_READ_ONLY　読みとり専用としてマップする
 	*					GL_WRITE_ONLY 書き込み専用としてマップする
 	*
-	* @return 作成しtあバッファオブジェクトへのポインタ
+	* @return 作成したバッファオブジェクトへのポインタ
 	*/
 	MappedBufferObjectPtr MappedBufferObject::Create(GLsizeiptr size, GLenum type, GLenum acceess)
 	{
 		return std::make_shared<MappedBufferObject>(size, type, acceess);
+	}
+
+	/**
+	* バッファオブジェクトの管理番号を取得
+	*/
+	MappedBufferObject::operator GLuint() const
+	{
+		return id;
+	}
+
+	/**
+	* バッファサイズを取得
+	*/
+	GLsizeiptr MappedBufferObject::GetSize() const
+	{
+		return bufferSize;
 	}
 
 	/**
