@@ -15,9 +15,7 @@ layout(location=1) out vec2 outTexcoord;	// テクスチャ座標
 layout(location=0) uniform mat4 transformMatrix;
 layout(location=3) uniform vec2 aspectRatioAndScaleFov;	// アスペクト比
 layout(location=4) uniform vec3 cameraPosition;	// カメラの位置
-//layout(location=5) uniform vec3 cameraSin;
-//layout(location=6) uniform vec3 cameraCos;
-layout(location=7) uniform mat3 cameraRotationMatrix;
+layout(location=5) uniform mat3 cameraRotationMatrix;
 
 
 void main()
@@ -31,7 +29,11 @@ void main()
 	outPosition = gl_Position.xyz;
 
 	// ワールド座標系からビュー座標系に変換
+//	vec3 pos = gl_Position.xyz - cameraPosition;
+//	gl_Position.xyz = RotateXYZ(pos, cameraSin, cameraCos);
+//
 	vec3 pos = (gl_Position.xyz - cameraPosition) * cameraRotationMatrix;
+//	gl_Position.xyz = RotateXYZ(pos, cameraSin, cameraCos);
 	gl_Position.xyz = pos;
 
 	// ビュー座標系からクリップ座標系に変換

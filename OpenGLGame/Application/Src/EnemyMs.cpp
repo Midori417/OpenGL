@@ -14,8 +14,8 @@ void EnemyMs::Awake()
 	// ƒŒƒ“ƒ_ƒ‰[‚ð’Ç‰Á
 	auto renderer = GetGameObject()->AddComponent<GltfAnimatedMeshRenderer>();
 	renderer->fileBuffer = engine->GetGltfFileBuffer();
-	renderer->file = engine->LoadGltf("Res/Gundam/Model/GundamGL.gltf");
-	GetGameObject()->AddComponent<CharacterMovement>();
+	renderer->file = engine->LoadGltf("Application/Res/Gundam/Model/GundamGL.gltf");
+	GetGameObject()->AddComponent<Rigidbody>();
 }
 
 /**
@@ -39,12 +39,6 @@ void EnemyMs::Update()
 {
 	if (parameter.hp <= 0)
 	{
-		GetGameObject()->Destory();
+		Destory(this);
 	}
-}
-
-
-
-void EnemyMs::OnCollision(const ComponentPtr& self, const ComponentPtr& other)
-{
 }

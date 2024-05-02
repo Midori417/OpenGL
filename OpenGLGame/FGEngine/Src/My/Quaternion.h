@@ -1,97 +1,204 @@
 /**
 * @file Quaternion.h
 */
-#ifndef QUATERNION_H_INCLUDED
-#define QUATERNION_H_INCLUDED
+#ifndef FGENGINE_QUATERNION_H_INCLUDED
+#define FGENGINE_QUATERNION_H_INCLUDED
 
 #include "VectorFrd.h"
 #include "MatrixFrd.h"
 
-/**
-* クォータニオン
-*/
-struct Quaternion
+namespace FGEngine
 {
-public:		
-	
-	Quaternion() = default;
-	constexpr explicit Quaternion(float x, float y, float z, float w)
-		: x(x), y(y), z(z), w(w) {}
-	constexpr Quaternion(const Quaternion& q)
-		: x(q.x), y(q.y), z(q.z), w(q.w){}
-	~Quaternion() = default;
-	
-	// axisの周りをangle度回転する回転を返す
-	static Quaternion AngleAxis(float angle, const Vector3& axis);
-	
-	// aとbの内積を返す
-	static float Dot(const Quaternion& a, const Quaternion& b);
-	
-	// オイラー角からクォータニオンに変換
-	static Quaternion Euler(float x, float y, float z);
-	static Quaternion Euler(const Vector3& v);
 
-	// 指定されたforwardとupwards方向に回転する
-	static Quaternion LookRotation(const Vector3& forward, const Vector3& upward);
-	static Quaternion LookRotation(const Vector3& foward);
+	/**
+	* クォータニオン
+	*/
+	struct Quaternion
+	{
+	public:
 
-	// qを正規化して返す
-	static Quaternion Normalize(const Quaternion& q);
-	
-	// aとbを球状補間してt[0～1]で返す
-	static Quaternion Slerp(const Quaternion& a, const Quaternion& b, float t);
-	
-	// aとbを球状保管してtで返す
-	static Quaternion SlerpUnclamped(const Quaternion& a, const Quaternion& b, float t);
+		// デフォルトコンストラクタ
+		Quaternion() = default;
 
-public:
+		// 4個のfloatからクォータニオンを構築するコンストラクタ
+		explicit Quaternion(float x, float y, float z, float w);
 
-	float x, y, z, w;
+		/**
+		* クォータニオンを正規化する
+		*/
+		void Normalize();
 
-	static const Quaternion identity;
+		/**
+		* 正規化したクォータニオンを取得
+		* 
+		* @return 正規化したクォータニオン
+		*/
+		Quaternion Normalized() const;
 
-	// クォータニオンの正規化
-	Quaternion normalized() const;
+		/**
+		* オイラー角に変換して取得
+		* 
+		* @return 変換したオイラー角
+		*/
+		Vector3 EulerAngle() const;
 
-	// オイラー角を取得
-	Vector3 eulerAngles() const;
+		/**
+		* クォータニオンの逆数を取得
+		* 
+		* @param クォータニオンの逆数
+		*/
+		Quaternion Inverse() const;
 
-	// クォータニオンの逆数を取得
-	Quaternion inverse() const;
+		/**
+		* axisの周りをangle(度数法)回転するクォータニオンを返す
+		* 
+		* @param angle	回転する角度(度数法)
+		* @param axis	回転する軸
+		* 
+		* @return 回転したクォータニオン
+		*/
+		static Quaternion AngleAxis(float angle, const Vector3& axis);
 
+		/**
+		* 2つのクォータニオンの内積を計算する
+		* 
+		* @param a	クォータニオン1
+		* @param b	クォータニオン2
+		* 
+		* @return aとbの内積
+		*/
+		static float Dot(const Quaternion& a, const Quaternion& b);
 
-	float operator[](size_t i)const {
-		return *(&x + i);
-	}
-	float& operator[](size_t i) {
-		return *(&x + i);
-	}
+		/**
+		* 前方ベクトルと上方ベクトルの方向に回転する
+		*
+		* @param foward	前方ベクトル
+		* @param upward 上方べベクトル
+		*
+		* @return 作成したクォータニオン
+		*/
+		static Quaternion LookRotation(const Vector3& foward, const Vector3& upward);
 
-	// 回転行列からクォータニオンに変換
-	static Quaternion RotationMatrixToQuaternio(const Matrix3x3& rotationMatrix);
+		/**
+		* 前方ベクトルと上方ベクトルの方向に回転する
+		*
+		* @param foward	前方ベクトル
+		*
+		* @return 作成したクォータニオン
+		*/
+		static Quaternion LookRotation(const Vector3& foward);
 
-	// クォータニオンを行列に変換する
-	static Matrix3x3 Matrix3x3Cast(const Quaternion& qua); 
-	static Matrix4x4 Matrix4x4Cast(const Quaternion& qua);
+		/**
+		* クォータニオン a と クォータニオン b の間を球状補間する
+		*
+		* @param a 補間の開始クォータニオン
+		* @param b 補間の終了クォータニオン
+		* @param t 補間パラメータ (0.0 ~ 1.0 の範囲)
+		*
+		* @return 補間されたクォータニオン
+		*/
+		static Quaternion Slerp(const Quaternion& a, const Quaternion& b, float t);
 
-private:
+		/**
+		* オイラー角からクォータニオンに変換
+		* 
+		* @param euler	オイラー角
+		* 
+		* @return 変換したクォータニオン
+		*/
+		static Quaternion EulerToQuaternion(const Vector3& euler);
 
-	// オイラー角からクォータニオンに変換
-	static Quaternion EulerToQuaternion(const Vector3& v);
-	
-	// クォータニオンからオイラー角に変換
-	static Vector3 QuaternionToEuler(const Quaternion& q);
-	
-	// オイラー角から回転行列に変換
-	static Matrix3x3 EulerToRotationMatrix(const Vector3& rotation);
-};
+		/**
+		* オイラー角からクォータニオンに変換
+		* 
+		* @param x	Xの角度(度数法)
+		* @param y	Yの角度(度数法)
+		* @param z	Zの角度(度数法)
+		* 
+		* @return 変換したクォータニオン
+		*/
+		static Quaternion EulerToQuaternion(float x, float y, float z);
 
-// クォータニオン同士の乗算
-Quaternion operator*(const Quaternion& a, const Quaternion& b);
+		/**
+		* クォータニオンからオイラー角に変換
+		* 
+		* @param qua クォータニオン
+		* 
+		* @return 変換したオイラー角
+		*/
+		static Vector3 QuaternionToEuler(const Quaternion& qua);
 
-// クォータニオンとベクトルの乗算
-Vector3 operator*(const Quaternion& q, const Vector3& v);
+		/**
+		* 回転行列(Matrix3x3)からクォータニオンに変換
+		*
+		* @param rotationMatrix 回転行列(Matrix3x3)
+		*
+		* @return 変換したクォータニオン
+		*/
+		static Quaternion RotationMatrixToQuaternion(const Matrix3x3& rotationMatrix);
 
-// 二つのクォータニオンが一致するかどうか
-bool operator==(const Quaternion& a, const Quaternion& b);
+		/**
+		* 回転行列(Matrix4x4)からクォータニオンに変換
+		* 
+		* @param rotationMatrix 回転行列(Matrix4x4)
+		* 
+		* @return 変換したクォータニオン
+		*/
+		static Quaternion RotationMatrixToQuaternion(const Matrix4x4& rotationMatrix);
+
+		/**
+		* クォータニオンから回転行列(Matrix3x3)に変換
+		* 
+		* @param qua クォータニオン
+		* 
+		* @return 変換した回転行列(Matrix3x3)
+		*/
+		static Matrix3x3 QuaternionToRotationMatrix3x3(const Quaternion& qua);
+
+		/**
+		* クォータニオンから回転行列(Matrix4x4)に変換
+		*
+		* @param qua クォータニオン
+		*
+		* @return 変換した回転行列(Matrix4x4)
+		*/
+		static Matrix4x4 QuaternionToRotationMatrix4x4(const Quaternion& qua);
+
+	public:
+
+		// クォータニオンのX成分
+		float x;
+
+		// クォータニオンのY成分
+		float y;
+
+		// クォータニオンのZ成分
+		float z;
+
+		// クォータニオンのW成分
+		float w;
+
+		const static Quaternion identity;
+
+		float operator[](size_t i) const
+		{
+			return *(&x + i);
+		}
+		float& operator[](size_t i) 
+		{
+			return *(&x + i);
+		}
+
+	};
+
+	// クォータニオン同士の乗算
+	Quaternion operator*(const Quaternion& a, const Quaternion& b);
+
+	// クォータニオンとベクトルの乗算
+	Vector3 operator*(const Quaternion& qua, const Vector3& v);
+
+	// クォータニオンの比較演算
+	bool operator==(const Quaternion& a, const Quaternion& b);
+
+}
 #endif // !QUATERNION_H_INCLUDED

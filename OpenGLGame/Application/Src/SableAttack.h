@@ -3,12 +3,13 @@
 */
 #ifndef SABLEATTACK_H_INCLUDED
 #define SABLEATTACK_H_INCLUDED
-#include "MyEngine.h"
+#include "FGEngineSub.h"
+using namespace FGEngine;
 
 /**
 * ãﬂê⁄çUåÇ
 */
-class SableAttack : public Component
+class SableAttack : public MonoBehaviour
 {
 public:
 
@@ -17,7 +18,7 @@ public:
 
 	virtual void Awake() override;
 	virtual void Update() override;
-	virtual void OnCollision(const ComponentPtr& self, const ComponentPtr& other) override;
+	virtual void OnCollisionEnter(const CollisionPtr collision) override;
 
 private:
 

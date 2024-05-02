@@ -4,7 +4,8 @@
 #ifndef CAMERAMOVE_H_INCLUDED
 #define CAMERAMOVE_H_INCLUDED
 
-#include "MyEngine.h"
+#include "FGEngineSub.h"
+using namespace FGEngine;
 
 /**
 * ƒJƒƒ‰‚Ì“®‚«

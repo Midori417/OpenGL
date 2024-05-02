@@ -1,143 +1,147 @@
 /**
 * @file Transform.h
 */
-#ifndef TRANSFORM_H_INCLUDED
-#define TRANSFORM_H_INCLUDED
-
+#ifndef FGENGINE_TRANSFORM_H_INCLUDED
+#define FGENGINE_TRANSFORM_H_INCLUDED
 #include "Component.h"
-#include "VecMath.h"
 
-/**
-* 座標回転拡大率
-*/
-class Transform : public Component
+namespace FGEngine
 {
-public:
-
-	Transform() = default;
-	~Transform() = default;
-
-	// 位置と回転を設定する
-	void SetPositionAndRotation(const Vector3& newPosition, const Quaternion& newRotation) 
-	{
-		position = newPosition;
-		rotation = newRotation;
-	}
-
-	void LookAt(const Vector3& target, const Vector3& up)
-	{
-		// ワールド座標系における始点座標系のXYZの向きを計算
-		const Vector3 axisZ = Vector3(position - target).normalized();
-		const Vector3 axisX = Vector3::Cross(up, axisZ).normalized();
-		const Vector3 axisY = Vector3::Cross(axisZ, axisX).normalized();
-
-		// 座標を軸ベクトルに投影するように行列を設定
-		Matrix4x4 m;
-		m[0] = Vector4{ axisX.x, axisY.x, axisZ.x, 0 };
-		m[1] = Vector4{ axisX.y, axisY.y, axisZ.y, 0 };
-		m[2] = Vector4{ axisX.z, axisY.z, axisZ.z, 0 };
-
-		// eyeが原点になるように、eyeを各軸に射影して平行移動量を計算
-		m[3] = Vector4{ -Vector3::Dot(axisX, position), -Vector3::Dot(axisY, position), -Vector3::Dot(axisZ, position), 1 };
-
-		transform->rotation = Quaternion::RotationMatrixToQuaternio(Matrix3x3(m));
-
-	}
-
-	// 前方ベクトルを取得
-	Vector3 forward()
-	{
-		Vector3 forward = rotation * Vector3::forward;
-		return forward.normalized();
-	}
-
-	// 右方ベクトルを取得
-	Vector3 right()
-	{
-		Vector3 right = rotation * Vector3::right;
-		return right.normalized();
-
-	}
-
-	// 上方ベクトルを取得
-	Vector3 up()
-	{
-		Vector3 up = rotation * Vector3::up;
-		return up.normalized();
-	}
-
 	/**
-	* オイラー角を取得
-	*
-	* @return オイラー角
+	* オブジェクトの位置、回転、拡大縮小を扱うコンポーネント
 	*/
-	Vector3 eulerAngles() const
+	class Transform : public Component
 	{
-		return rotation.eulerAngles();
-	}
+	public:
 
-	/**
-	* オイラー角を設定
-	*
-	* @pram roll	X軸
-	* @param pitch	Y軸
-	* @param yaw	Z軸
-	*/
-	void SetEulerAngles(float roll, float pitch, float yaw)
-	{
-		rotation = Quaternion::Euler(roll, pitch, yaw);
-	}
+		friend ObjectSystem::ObjectManager;
 
-	/**
-	* 座標変換行列を取得する
-	*/
-	const Matrix4x4& GetTransformMatrix() const 
-	{
-		return transformMatrix;
-	}
+		// コンストラクタ・デストラクタ
+		Transform() = default;
+		virtual ~Transform() = default;
 
-	/**
-	* 法線変換行列を取得する
-	*/
-	const Matrix3x3& GetNormalMatrix() const
-	{
-		return normalMatrix;
-	}
+		/**
+		* 前方ベクトルを取得
+		*/
+		Vector3 Forward() const;
 
-	void SetTransformMatrix(const Matrix4x4& transformMatrix)
-	{
-		this->transformMatrix = transformMatrix;
-	}
+		/**
+		* 右方ベクトルを取得
+		*/
+		Vector3	Right() const;
 
-	void SetNormalMatrix(const Matrix3x3& normalMatrix)
-	{
-		this->normalMatrix = normalMatrix;
-	}
+		/**
+		* 上方ベクトルを取得
+		*/
+		Vector3 Up() const;
 
-	// モデル行列を取得
-	Matrix4x4 GetModelMatrix() const
-	{
-		const Vector3 rot = rotation.eulerAngles();
-		const auto mt = Matrix4x4::Translate(position);
-		const auto mr = Quaternion::Matrix4x4Cast(rotation);
-		const auto ms = Matrix4x4::Scale(scale);
-		return mt * mr * ms;
-	}
+		/**
+		* 位置と回転を設定する
+		* 
+		* @param pos 位置
+		* @param rot 回転
+		*/
+		void SetPositionAndRotation(const Vector3& pos, const Quaternion& rot);
 
+		/**
+		* translationの方向と距離に移動する
+		* 
+		* @param translation 移動する方向と距離
+		*/
+		void Translate(const Vector3& translation);
 
-public:
+		/**
+		* オイラー角を取得
+		*/
+		Vector3 GetEulerAngle() const;
 
-	Vector3 position = Vector3::zero;			// 座標
-	Quaternion rotation = Quaternion::identity;	// 回転
-	Vector3 scale = { 1,1,1 };					// 拡大率
+		/**
+		* 現在の角度からeuler加算する
+		* 
+		* @param euler 回転量(オイラー角)
+		*/
+		void Rotate(const Vector3& eulers);
 
-private:
+		/**
+		* 対象のTransformを設定し、その方向へ向く
+		* 
+		* @param target		向ける対象オブジェクトのTransform
+		* @param worldUp	上方ベクトル
+		*/
+		void LookAt(const TransformPtr target, const Vector3& worldUp = Vector3::up);
 
-	Matrix4x4 transformMatrix = Matrix4x4(1);	// 座標変換行列
-	Matrix3x3 normalMatrix = Matrix3x3(1);		// 法線変換行列
+		/**
+		* 親Transformを設定する
+		* 
+		* @param parent 設定する親のTransform
+		*/
+		void SetParent(const TransformPtr parent);
 
-};
+		/**
+		* 親Transformを取得する
+		*/
+		TransformPtr GetParent() const;
 
-using TransformPtr = std::shared_ptr<Transform>;
+		/**
+		* 子オブジェクトの数を取得する
+		*/
+		size_t GetChildrenCount() const;
 
-#endif // !TEANSFORM_H_INCLUDED
+		/**
+		* indexから子のTransformを取得する
+		* 
+		* @param 子Transformのindex
+		*/
+		TransformPtr GetChildren(size_t index) const;
+
+		/**
+		* 全ての子オブジェクトを切り離す
+		*/
+		void AllChildrenPurge();
+
+		/**
+		* ワールド座標行列を取得
+		*/
+		Matrix4x4 GetTransformMatrix() const;
+
+		/**
+		* 法線行列を取得
+		*/
+		Matrix3x3 GetNormalMatrix() const;
+
+	private:
+
+		/**
+		* ローカル座標変換行列を更新
+		*/
+		void LocalTransformUpdate();
+
+	public:
+
+		// 位置
+		Vector3 position = Vector3::zero;
+
+		// 回転
+		Quaternion rotation = Quaternion::identity;
+
+		// 拡大縮小
+		Vector3 scale = Vector3::one;
+
+	private:
+
+		// ワールド座標からローカル座標に変換した行列
+		Matrix4x4 transformMatrix = Matrix4x4(1);
+
+		// 法線変換行列
+		Matrix3x3 normalMatrix = Matrix3x3(1);
+
+		// 親オブジェクトのTransfoom
+		std::weak_ptr<Transform> parent;
+
+		// 子オブジェクトのTransform
+		std::vector<std::weak_ptr<Transform>> childrens;
+	};
+	using TransformPtr = std::shared_ptr<Transform>;
+}
+
+#endif // !FGENGINE_TRANSFORM_H_INCLUDED

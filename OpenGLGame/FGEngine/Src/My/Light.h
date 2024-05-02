@@ -1,49 +1,48 @@
 /**
 * @file Light.h
 */
-#ifndef LIGHT_H_INCULDED
-#define LIGHT_H_INCLUDED
-
+#ifndef FGENGINE_LIGHT_H_INCLUDED
+#define FGENGINE_LIHGT_H_INCLUDED
 #include "Component.h"
-#include "VecMath.h"
+#include "Color.h"
 
-/**
-* ライトコンポーネント
-*/
-class Light : public Component
+namespace FGEngine
 {
-public:
+	/**
+	* ライトコンポーネント
+	*/
+	class Light : public Component
+	{
+	public:
 
-	Light() = default;
-	virtual ~Light();
+		// コンストラクタ・デストラクタ
+		Light() = default;
+		virtual ~Light();
 
-	// コンポーネントの初期化
-	virtual void Awake() override;
-	// コンポーネントの更新
-	virtual void Update() override;
+	public:
 
-public:
+		// ライトの種類
+		enum class Type
+		{
+			pointLihgt,		// 点光源
+			spotLight,		// スポットライト光源
+			directionLight,	// ディレクション光源
+		};
+		Type type = Type::pointLihgt;	// ライトの種類
 
-	// ライトの種類
-	enum class Type {
-		pointLight, // 点光源
-		spotLight,	// スポットライト光源
+		// ライトの色
+		Color color = Color::white;
+
+		// ライトの明るさ
+		float intensity = 1;
+
+		// ライトが届く最大半径
+		float radius = 1;
+
+		// スポットライト用のパラメータ
+		float coneAngle = Mathf::DegToRad(30);
 	};
-	Type type = Type::pointLight; // ライトの種類
+	using LightPtr = std::shared_ptr<Light>;
+}
 
-	Vector3 color = { 1,1,1 }; // 色
-	float intensity = 1;	// 明るさ
-	float radius = 1;		// ライトが届く最大半径
-
-	// スポットライト用のパラメータ
-	// 方向はGameObject::rotationから計算
-	float coneAngle = 30 * Mathf::Deg2Rad;	// スポットライトが照らす角度
-	float falloffAngle = 20 * Mathf::Deg2Rad;	// スポットライトの減衰開始角度
-
-private:
-
-	int lightIndex = -1;		// ライトインデックス
-
-};
-
-#endif // !LIGHT_H_INCULDED
+#endif // !FGENGINE_LIGHT_H_INCLUDED

@@ -7,7 +7,6 @@
 void SableAttack::Awake()
 {
 	auto renderer = GetGameObject()->AddComponent<MeshRenderer>();
-	renderer->mesh = GetGameObject()->GetEngine()->GetStaticMesh("box");
 	auto coll = GetGameObject()->AddComponent<SphereCollider>();
 	coll->isTrigger = true;
 }
@@ -17,24 +16,24 @@ void SableAttack::Update()
 	destroyTimer += Time::deltaTime();
 	if (destroyTimer > destoryTime)
 	{
-		GetGameObject()->Destory();
+		Destory(this);
 	}
 }
 
-void SableAttack::OnCollision(const ComponentPtr& self, const ComponentPtr& other)
+void SableAttack::OnCollisionEnter(const CollisionPtr collision)
 {
-	if (other->GetGameObject()->tag != "MS")
-	{
-		return;
-	}
-	auto otherMs = other->GetComponent<BaseMS>();
-	if (otherMs)
-	{
-		if (otherMs->GetParameter().teum != teum)
-		{
-			otherMs->Damage(atk);
-			GetGameObject()->Destory();
-		}
-	}
+	//if (other->GetGameObject()->tag != "MS")
+	//{
+	//	return;
+	//}
+	//auto otherMs = other->GetComponent<BaseMS>();
+	//if (otherMs)
+	//{
+	//	if (otherMs->GetParameter().teum != teum)
+	//	{
+	//		otherMs->Damage(atk);
+	//		Destory(this);
+	//	}
+	//}
 
 }

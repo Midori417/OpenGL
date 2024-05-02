@@ -27,12 +27,12 @@ void Gundam::Awake()
 	// レンダラーを追加
 	renderer = GetGameObject()->AddComponent<GltfAnimatedMeshRenderer>();
 	renderer->fileBuffer = engine->GetGltfFileBuffer();
-	renderer->file = engine->LoadGltf("Res/Gundam/Model/GundamGL.gltf");
+	renderer->file = engine->LoadGltf("Application/Res/Gundam/Model/GundamGL.gltf");
 
 	// キャラクタームーブメントを追加
-	characterMovement = GetGameObject()->AddComponent<CharacterMovement>();
+	characterMovement = GetGameObject()->AddComponent<Rigidbody>();
 
-	shotParameter.iconfileName = "Res/Gundam/UI/BeumMagunamIcon.tga";
+	shotParameter.iconfileName = "Application/Res/Gundam/UI/BeumMagunamIcon.tga";
 	shotParameter.maxAmo = 7;
 	shotParameter.amo = shotParameter.maxAmo;
 
@@ -71,7 +71,7 @@ void Gundam::Update()
 	}
 
 	// 移動処理
-	Move();	
+	Move();
 
 	
 	// 地面についていたらエネルギー回復
@@ -361,8 +361,6 @@ void Gundam::Update()
 		break;
 
 	}
-
-
 }
 
 

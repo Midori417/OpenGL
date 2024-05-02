@@ -1,82 +1,87 @@
 /**
 * @file Component.h
 */
-#ifndef COMPONENT_H_INCLUDED
-#define COMPONENT_H_INCLUDED
-#include <memory>
+#ifndef FGENGINE_COMPONENT_H_INCLUDED
+#define FGENGINE_COMPONENT_H_INCLUDED
+#include "Object.h"
 
-// 先行宣言
-class GameObject;
-using GameObjectPtr = std::shared_ptr<GameObject>;
-class Component;
-using ComponentPtr = std::shared_ptr<Component>;
-class Transform;
-
-/**
-* コンポーネントの基底クラス
-*/
-class Component
+namespace FGEngine
 {
-	friend GameObject;
-public:
+	// 先行宣言
+	class GameObject;
+	using GameObjectPtr = std::shared_ptr<GameObject>;
+	class Component;
+	using ComponentPtr = std::shared_ptr<Component>;
+	class Transform;
 
-	Component() = default;
-	virtual ~Component() = default;
+	/**
+	* コンポーネントの基底クラス
+	*/
+	class Component : public Object
+	{
+	public:
+		friend GameObject;
 
-	// コンポーネントの所有者
-	GameObject* GetGameObject() const {
-		return gameObject;
-	}
+		// コンストラクタ・デストラクタ
+		Component() = default;
+		virtual ~Component() = default;
 
-	// コンポーネントをゲームオブジェクトから削除する
-	void Desotroy() {
-		isDestroyed = true;
-	}
+		/**
+		* コンポーネントを所有しているオブジェクトを取得
+		*/
+		GameObjectPtr OwnerObject() const
+		{
+			auto ptr = ownerObject.lock();
+			if (!ptr)
+			{
+				return nullptr;
+			}
+			return ptr;
+		}
 
-	// コンポーネントが破棄予定か取得する trueだと破棄予定
-	bool IsDestroyed() const {
-		return isDestroyed;
-	}
+		/**
+		* トランスフォームを取得
+		*/
+		TransformPtr GetTransform() const
+		{
+			auto ptr = transform.lock();
+			if (!ptr)
+			{
+				return nullptr;
+			}
+			return ptr;
+		}
 
-	// 自身の所有者のコンポーネントを取得
-	template<class T>
-	inline std::shared_ptr<T> GetComponent() const;
+		/**
+		* T型のコンポーネントを取得
+		*/
+		template<typename T>
+		std::shared_ptr<T> GetComponent() const;
 
-	// 親のコンポーネントを取得
-	template<class T>
-	inline std::shared_ptr<T> GetComponentParent() const;
+		/**
+		* 親のT型のコンポーネントを取得
+		*/
+		template<typename T>
+		std::shared_ptr<T> GetComponentInChildren() const;
 
-	// 子供のコンポーネントを取得
-	template<class T>
-	inline std::shared_ptr<T> GetComponentChildren()const;
+		/**
+		* 子のT型のコンポーネントを取得
+		*/
+		template<typename T>
+		std::shared_ptr<T> GetComponentInParent() const;
 
-	// ゲームオブジェクトに追加されたときから呼び出される
-	virtual void Awake() {}
+		/**
+		* Tagを取得
+		*/
+		std::string GetTag() const;
 
-	// 最初のUpdateの直前で呼び出される
-	virtual void Start() {}
+	private:
 
-	// 毎フレーム一回呼び出される
-	virtual void Update() {}
+		// コンポーネントの所有オブジェクト
+		std::weak_ptr<GameObject> ownerObject;
 
-	// 毎フレーム一回呼び出される(Updateよりあと)
-	virtual void LateUpdate() {}
-
-	// 衝突が起きたときに呼び出される
-	virtual void OnCollision(const ComponentPtr& slef, const ComponentPtr& other) {}
-
-	// ゲームオブジェクトがエンジンが削除されるときの呼び出される
-	virtual void OnDestroy() {}
-
-public:
-
-	Transform* transform = nullptr;
-
-private:
-
-	GameObject* gameObject = nullptr; // コンポーネントの所有者
-	bool isActive = true;
-	bool isStarted = false;		// Startが実行されたらtrueになる
-	bool isDestroyed = false;	// Destroyが実行されたらtrueになる
-};
-#endif // !COMPONENT_H_INCLUDED
+		// 所有オブジェクトのTransform
+		std::weak_ptr<Transform> transform;
+	};
+}
+#endif // !FGENGINE_COMPONENT_H_INCLUDED

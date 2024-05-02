@@ -11,15 +11,11 @@ void MagunamBullet::Awake()
 {
 	auto engine = GetGameObject()->GetEngine();
 	auto renderer = GetGameObject()->AddComponent<MeshRenderer>();
-	renderer->mesh = engine->GetStaticMesh("Res/Gundam/Model/MagunamBullet.obj");
+	renderer->mesh = engine->GetStaticMesh("Application/Res/Gundam/Model/MagunamBullet.obj");
 	renderer->materials = CloneMaterialList(renderer->mesh);
-	renderer->materials[0]->texBaseColor = engine->GetTexture("Res/Gundam/Model/Bullet.tga");
-	renderer->materials[0]->baseColor = Color(0.5, 0.5, 0.5, 1);
-	renderer->materials[0]->texEmission = engine->GetTexture("Res/Gundam/Model/Bullet.tga");
-	renderer->materials[0]->emission = Color(0.5,0.5,0.5,1);
+	renderer->materials[0]->texBaseColor = engine->GetTexture("Application/Res/Gundam/Model/Bullet.tga");
 	auto collder = GetGameObject()->AddComponent<SphereCollider>();
 	collder->isTrigger = true;
-	transform->scale = Vector3(1, 1, 5);
 }
 
 /**
@@ -52,22 +48,22 @@ void MagunamBullet::Update()
 	destoryTimer -= Time::deltaTime();
 	if (destoryTimer <= 0)
 	{
-		GetGameObject()->Destory();
+		Destory(this);
 	}
 }
 
 /**
 * Õ“ËƒCƒxƒ“ƒg
 */
-void MagunamBullet::OnCollision(const ComponentPtr& self, const ComponentPtr& other)
+void MagunamBullet::OnCollisionEnter(const CollisionPtr collision)
 {
-	auto otherMs = other->GetComponent<BaseMS>();
-	if (otherMs)
-	{
-		if (otherMs->GetParameter().teum != teum)
-		{
-			otherMs->Damage(atk);
-			GetGameObject()->Destory();
-		}
-	}
+	//auto otherMs = collision->GetComponent<BaseMS>();
+	//if (otherMs)
+	//{
+	//	if (otherMs->GetParameter().teum != teum)
+	//	{
+	//		otherMs->Damage(atk);
+	//		Destory(this);
+	//	}
+	//}
 }

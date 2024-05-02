@@ -1,109 +1,137 @@
 /**
 * @file Matrix4x4.h
 */
-#ifndef MATRIX4X4_H_INCLUDED
-#define MATRIX4X4_H_INCLUDED
-
-#include "Vector3.h"
+#ifndef FGENGINE_MATRIX4X4_H_INCLUDED
+#define FGENGINE_MATRIX4X4_H_INCLUDED
+#include "MatrixFrd.h"
 #include "Vector4.h"
 
-// 先行宣言
-struct Matrix3x3;
-
-/**
-* 4x4行列
-*/
-struct Matrix4x4
+namespace FGEngine
 {
-public:
 
-	// コンストラクタ
-	Matrix4x4() = default;
-	// デストラクタ
-	~Matrix4x4() = default;
-
-	// 4このvec4からmat4を構成するコンストラクタ
-	Matrix4x4(const Vector4& v0, const Vector4& v1, const Vector4& v2, const Vector4& v3)
+	/**
+	* 4x4行列
+	*/
+	struct Matrix4x4
 	{
-		data[0] = v0;
-		data[1] = v1;
-		data[2] = v2;
-		data[3] = v3;
-	}
+	public:
 
-	// 1個のfloatを対角線にコピーするコンストラクタ
-	explicit Matrix4x4(float f)
-	{
-		data[0] = Vector4{ f, 0, 0, 0 };
-		data[1] = Vector4{ 0, f, 0, 0 };
-		data[2] = Vector4{ 0, 0, f, 0 };
-		data[3] = Vector4{ 0, 0, 0, f };
-	}
+		// デフォルトコンストラクタ
+		Matrix4x4() = default;
 
-	// mat3からmat4に変換するコンストラクタ
-	explicit Matrix4x4(const Matrix3x3& m);
+		// 4個のVector4からMatrix4x4を構成するコンストラクタ
+		explicit Matrix4x4(const Vector4& v0, const Vector4& v1, const Vector4& v2, const Vector4& v3);
 
-	// 平行移動行列
-	static Matrix4x4 Translate(const Vector3& v);
-	// 拡大縮小
-	static Matrix4x4 Scale(const Vector3& v);
-	// x軸の回転
-	static Matrix4x4 RotateX(float angle);
-	// y軸の回転
-	static Matrix4x4 RotateY(float angle);
-	// z軸の回転
-	static Matrix4x4 RotateZ(float angle);
+		// 1個のfloatを対角線にコピーするコンストラクタ
+		explicit Matrix4x4(float f);
 
+		// Matrix3x3からMatrix4x4に変換するコンストラクタ
+		explicit Matrix4x4(const Matrix3x3& m);
 
-	// 添え字演算子
-	Vector4& operator[](size_t i) 
-	{
-		return data[i];
-	}
-	const Vector4& operator[](size_t i) const
-	{
-		return data[i];
-	}
+		/**
+		* 平行移動行列を作成
+		* 
+		* @param position 位置
+		*/
+		static Matrix4x4 Translate(const Vector3& position);
 
-public:
+		/**
+		*  拡大縮小行列を作成
+		* 
+		* @param scale スケール
+		*/
+		static Matrix4x4 Scale(const Vector3& scale);
 
-	Vector4 data[4];
+		/**
+		* X軸の回転行列を作成
+		* 
+		* @param angle xの角度
+		*/
+		static Matrix4x4 RotateX(float angle);
 
-};
+		/**
+		* Y軸の回転行列を作成
+		* 
+		* @param angle yの角度
+		*/
+		static Matrix4x4 RotateY(float angle);
 
-inline Vector3 operator*(const Matrix4x4& m, const Vector3& v)
-{
-	Vector3 result(0);
-	for (int i = 0; i < 4; ++i)
-	{
-		for (int j = 0; j < 4; ++j) 
+		/**
+		* Z軸の回転行列を作成
+		* 
+		* @param angle zの角度
+		*/
+		static Matrix4x4 RotateZ(float angle);
+
+		/**
+		* ビュー行列を作成する
+		*
+		* @param eye		始点の座標
+		* @param target		注視点の座標
+		* @param up			始点の上方向を示す仮のベクトル
+		*
+		* @return eye, target, upから作成したビュー行列
+		*/
+		static Matrix4x4 LookAt(const Vector3& eye, const Vector3& target, const Vector3& up);
+
+		/**
+		* 平行投影行列を作成する
+		*
+		* @param left	描画範囲の左端までの距離
+		* @param right	描画範囲の右端までの距離
+		* @param bottom	描画範囲の下端までの距離
+		* @param top	描画範囲の上端までの距離
+		* @param zNear	描画範囲に含まれる最小Z座標
+		* @param zFar	描画範囲に含まれる最大Z座標
+		*
+		* @return 平行投影行列
+		*/
+		static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
+
+		/**
+		* 座標変換行列を平行移動、拡大率、回転行列の各成分に分解する
+		*
+		* @param[in] transform	分解元の座標変換行列
+		* @param[out] translate 平行移動の格納先となる変数
+		* @param[out] scale		拡大率の格納先となる変数
+		* @param[out] rotation	回転行列の格納先となる変数
+		*/
+		static void Decompose(const Matrix4x4& transform, Vector3& translate, Vector3& scale, Matrix3x3& rotation);
+
+		/**
+		* 座標変換行列から拡大率を抽出
+		* 
+		* @param transform	抽出元の座標変換行列
+		* 
+		* @return 抽出した拡大率を
+		*/
+		static Vector3 ExtractScale(const Matrix4x4& transform);
+
+		// 添え字演算子
+		Vector4& operator[](size_t i)
 		{
-			result[i] += m[i][j] * v[j];
+			return data[i];
 		}
-	}
-	return result;
-}
+		const Vector4& operator[](size_t i) const
+		{
+			return data[i];
+		}
 
-// mat4とvec4の乗算
-inline Vector4 operator*(const Matrix4x4& m, const Vector4& v)
-{
-	return m.data[0] * v.x + m.data[1] * v.y + m.data[2] * v.z + m.data[3] * v.w;
-}
+	public:
 
-// mat4同士の乗算
-inline Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b)
-{
-	Matrix4x4 m;
-	m.data[0] = a * b.data[0];
-	m.data[1] = a * b.data[1];
-	m.data[2] = a * b.data[2];
-	m.data[3] = a * b.data[3];
+		Vector4 data[4];
 
-	return m;
-}
-inline Matrix4x4 operator*=(Matrix4x4& a, const Matrix4x4& b)
-{
-	a = a * b;
-	return a;
+	};
+
+	/**
+	* Matrix3x3とVector3の乗算
+	*/
+	Vector4 operator*(const Matrix4x4& m, const Vector4& v);
+
+	/**
+	* Matrix3x3同士の乗算
+	*/
+	Matrix4x4 operator*(const Matrix4x4& a, const Matrix4x4& b);
+	Matrix4x4 operator*=(Matrix4x4& a, const Matrix4x4& b);
 }
 #endif // !MATRIX4X4_H_INCLUDED

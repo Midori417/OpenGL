@@ -2,399 +2,342 @@
 * @file Vector2.cpp
 */
 #include "Vector2.h"
+#include "Vector3.h"
+#include "Vector4.h"
 #include "Mathf.h"
 
-// スタティック変数の初期化
-const Vector2 Vector2::zero = Vector2(0, 0);
-const Vector2 Vector2::one = Vector2(1, 1);
-const Vector2 Vector2::up = Vector2(0, 1);
-const Vector2 Vector2::down = Vector2(0, -1);
-const Vector2 Vector2::left = Vector2(-1, 0);
-const Vector2 Vector2::right = Vector2(1, 0);
-
-//=======================================
-//
-//  関数
-//
-//=======================================
-
-/**
-* 自身のベクトルを正規化する
-*/
-void Vector2::Normalize()
+namespace FGEngine
 {
-	float num = magnitude();
-	if (num > 0.0f) {
-		*this /= num;
-	}
-	else
+	// スタティック変数の初期化
+	const Vector2 Vector2::zero = Vector2(0, 0);
+	const Vector2 Vector2::one = Vector2(1, 1);
+	const Vector2 Vector2::up = Vector2(0, 1);
+	const Vector2 Vector2::down = Vector2(0, -1);
+	const Vector2 Vector2::left = Vector2(-1, 0);
+	const Vector2 Vector2::right = Vector2(1, 0);
+
+	/**
+	* 2個のfloatからVector2を構築するコンストラクタ
+	* 
+	* @param x X成分
+	* @param y Y成分
+	*/
+	Vector2::Vector2(float x, float y)
+		: x(x), y(y)
 	{
-		*this = Vector2::zero;
 	}
-}
 
-/**
-* 各要素をｖの各要素と乗算する
-* 
-* @param v 乗算する要素
-*/
-void Vector2::Scale(const Vector2& v)
-{
-	x *= v.x;
-	y += v.y;
-}
-
-/**
-* aとbのベクトルの内積を返す
-* 
-* @param a 計算対象その1
-* @param b 計算対象その2
-* 
-* @return 二つのベクトルの内積
-*/
-float Vector2::Dot(const Vector2& a, const Vector2& b)
-{
-	return a.x * b.x + a.y * b.y;
-}
-
-/**
-* aとbのベクトルの距離を返す
-*
-* @param a 計算対象その1
-* @param b 計算対象その2
-*
-* @return 二つのベクトルの距離
-*/
-float Vector2::Distance(const Vector2& a, const Vector2& b)
-{
-	float num = a.x - b.x;
-	float num2 = a.y - b.y;
-	return Mathf::Sqrt(num * num + num2 * num2);
-}
-
-/**
-* aとbの間をt(Clamp0～1)で線形補間する
-*/
-Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, float t)
-{
-	t = Mathf::Clamp01(t);
-	return Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
-}
-
-/**
-* aとbの間をtで線形補間する
-*/
-Vector2 Vector2::LerpUnclamped(const Vector2& a, const Vector2& b, float t)
-{
-	return Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
-}
-
-/**
-* 現在の位置currentからtargetに向けて移動する
-* 
-* @param current	現在位置
-* @param target		ターゲット位置
-* 
-*/
-Vector2 Vector2::MoveTowards(const Vector2& current, const Vector2& target, float maxDistanceDelta)
-{
-	float num = target.x - current.x;
-	float num2 = target.y - current.y;
-	float num3 = num * num + num2 * num2;
-	if (num3 == 0.0f || (maxDistanceDelta >= 0.0f && num3 <= maxDistanceDelta * maxDistanceDelta))
+	/**
+	* Vector3からVector2を構築するコンストラクタ
+	*/
+	Vector2::Vector2(const Vector3& v)
+		:x(v.x), y(v.y)
 	{
-		return target;
+
 	}
 
-	float num4 = Mathf::Sqrt(num3);
-	return Vector2(current.x + num / num4 * maxDistanceDelta, current.y + num2 / num4 * maxDistanceDelta);
-}
+	/**
+	* Vector4からVector2を構築するコンストラクタ
+	*/
+	Vector2::Vector2(const Vector4& v)
+		:x(v.x), y(v.y)
+	{
 
-/**
-* aとbの各要素を乗算して返す
-* 
-* @param a 計算対象その1
-* @param b 計算対象その2
-* 
-* @return aとbを乗算したベクトル
-*/
-Vector2 Vector2::Scale(const Vector2& a, const Vector2& b)
-{
-	return Vector2(a.x * b.x, a.y * b.y);
-}
-
-/**
-* aとbの各要素の最大値のベクトルを返す
-* 
-* @param a 計算対象その1
-* @param b 計算対象その2
-*
-* @return 各要素の最大のベクトル
-*/
-Vector2 Vector2::Max(const Vector2& a, const Vector2& b)
-{
-	return Vector2(Mathf::Max(a.x, b.x), Mathf::Max(a.y, b.y));
-}
-
-/**
-* aとbの各要素の最小値のベクトルを返す
-*
-* @param a 計算対象その1
-* @param b 計算対象その2
-*
-* @return 各要素の最小のベクトル
-*/
-Vector2 Vector2::Min(const Vector2& a, const Vector2& b)
-{
-	return Vector2(Mathf::Min(a.x, b.x), Mathf::Min(a.y, b.y));
-}
-
-/**
-* ベクトルの長さを返す
-* 
-* @returnベクトルの長さ
-*/
-float Vector2::magnitude() const
-{
-	return Mathf::Sqrt(x * x + y * y);
-}
-
-/**
-* ベクトルの長さを二乗して返す
-* 
-* @return ベクトルの二乗した長さ
-*/
-float Vector2::sqrtMagnitude() const
-{
-
-	return x * x + y * y;
-}
-
-/**
-* ベクトルを正規化して返す
-* 
-* @return 正規化したベクトル
-* @return zero 0除算された
-*/
-Vector2 Vector2::normalized() const
-{
-	Vector2 result = Vector2(x, y);
-	result.Normalize();
-	return result;
-}
-
-//=======================================
-//
-//  Operator
-//
-//=======================================
-
-/**
-* -単項演算子
-*/
-Vector2 operator-(const Vector2& a)
-{
-	return Vector2(-a.x, -a.y);
-}
-
-//=======================================
-//  加算
-//=======================================
-
-/**
-* Vector2同士の代入演算
-*/
-Vector2& operator+=(Vector2& a, const Vector2& b)
-{
-	a.x += b.x;
-	a.y += b.y;
-	return a;
-}
-
-/**
-* Vector2同士の演算
-*/
-Vector2 operator+(const Vector2& a, const Vector2& b)
-{
-	return Vector2(a.x + b.x, a.y + b.y);
-}
-
-/**
-* Vector2とfloatの代入演算
-*/
-Vector2& operator+=(Vector2& a, float b)
-{
-	return a += Vector2(b, b);
-}
-
-/**
-* Vector2とfloatの演算
-*/
-Vector2 operator+(const Vector2& a, float b)
-{
-	return a + Vector2(b, b);
-}
-
-/**
-* floatとVector2の演算
-*/
-Vector2 operator+(float a, const Vector2& b)
-{
-	return b + a;
-}
-
-//=======================================
-//  加算
-//=======================================
-
-/**
-* Vector2同士の代入演算
-*/
-Vector2& operator-=(Vector2& a, const Vector2& b)
-{
-	a.x -= b.x;
-	a.y -= b.y;
-	return a;
-}
-
-/**
-* Vector2同士の演算
-*/
-Vector2 operator-(const Vector2& a, const Vector2& b)
-{
-	return Vector2(a.x - b.x, a.y - b.y);
-}
-
-/**
-* Vector2とfloatの代入演算
-*/
-Vector2& operator-=(Vector2& a, float b)
-{
-	return a -= Vector2(b, b);
-}
-
-/**
-* Vector2とfloatの演算
-*/
-Vector2 operator-(const Vector2& a, float b)
-{
-	return a - Vector2(b, b);
-}
-
-/**
-* floatとVector2の演算
-*/
-Vector2 operator-(float a, const Vector2& b)
-{
-	return b - a;
-}
-
-//=======================================
-//  乗算
-//=======================================
-
-/**
-* Vector2同士の代入演算
-*/
-Vector2& operator*=(Vector2& a, const Vector2& b)
-{
-	a.x *= b.x;
-	a.y *= b.y;
-	return a;
-}
-
-/**
-* Vector2同士の演算
-*/
-Vector2 operator*(const Vector2& a, const Vector2& b)
-{
-	return Vector2(a.x * b.x, a.y * b.y);
-}
-
-/**
-* Vector2とfloatの代入演算
-*/
-Vector2& operator*=(Vector2& a, float b)
-{
-	return a *= Vector2(b, b);
-}
-
-/**
-* Vector2とfloatの演算
-*/
-Vector2 operator*(const Vector2& a, float b)
-{
-	return a * Vector2(b, b);
-}
-
-/**
-* floatとVector2の演算
-*/
-Vector2 operator*(float a, const Vector2& b)
-{
-	return b * a;
-}
-
-//=======================================
-//	除算
-//=======================================
-
-/**
-*　Vector2同士の代入演算
-*/
-Vector2& operator/=(Vector2& a, const Vector2& b)
-{
-	if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0) {
 	}
-	a.x /= b.x;
-	a.y /= b.y;
-	return a;
-}
 
-/**
-* Vector2同士の演算
-*/
-Vector2 operator/(const Vector2& a, const Vector2& b)
-{
-	if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0) {
+	/**
+	* ベクトルを正規化されたベクトル(単位ベクトル)にする
+	*/
+	void Vector2::Normalize()
+	{
+		float num = Magnitude();
+		if (num > 0.0f) {
+			*this /= num;
+		}
+		else
+		{
+			*this = Vector2::zero;
+		}
 	}
-	return Vector2(a.x / b.x, a.y / b.y);
-}
 
-/**
-* Vector2とfloatの代入演算
-*/
-Vector2& operator/=(Vector2& a, float b)
-{
-	if (a.x == 0 || a.y == 0 || b == 0) {
+	/**
+	* 正規化されたベクトル(単位ベクトル)を取得
+	*
+	* @return 正規化されたベクトル
+	*/
+	Vector2 Vector2::Normalized() const
+	{
+		Vector2 result = Vector2(x, y);
+		result.Normalize();
+		return result;
 	}
-	return a /= Vector2(b, b);
-}
 
-Vector2 operator/(const Vector2& a, float b)
-{
-	if (a.x == 0 || a.y == 0 || b == 0) {
+	/**
+	* ベクトルの大きさ(長さ)を計算する
+	*
+	* @return ベクトルの大きさ
+	*/
+	float Vector2::Magnitude() const
+	{
+		return Mathf::Sqrt(x * x + y * y);
 	}
-	return a / Vector2(b, b);
-}
 
-Vector2 operator/(float a, const Vector2& b)
-{
-	if (b.x == 0 || b.y == 0 || a == 0) {
+	/**
+	* 2つのベクトルの内積(ドット積)を計算する
+	*
+	* @param a ベクトル1
+	* @param b ベクトル2
+	* 
+	* @return aとbの内積
+	*/
+	float Vector2::Dot(const Vector2& a, const Vector2& b)
+	{
+		return a.x * b.x + a.y * b.y;
 	}
-	return b / a;
-}
 
-//=======================================
-//	比較
-//=======================================
+	/**
+	*  2つのベクトルの距離(長さ)を計算する
+	*
+	* @param a ベクトル1
+	* @param b ベクトル2
+	* 
+	* @return aとbの距離	
+	*/
+	float Vector2::Distance(const Vector2& a, const Vector2& b)
+	{
+		float num = a.x - b.x;
+		float num2 = a.y - b.y;
+		return Mathf::Sqrt(num * num + num2 * num2);
+	}
 
-bool operator==(const Vector2& a, const Vector2& b)
-{
-	return ((a.x == b.x) && (a.y == b.y));
-}
+	/**
+	* ベクトル a と ベクトル b の間を線形補間する
+	* 
+	* @param a 補間の開始ベクトル
+	* @param b 補間の終了ベクトル
+	* @param t 補間パラメータ (0.0 ~ 1.0 の範囲)
+	* 
+	* @return 補間されたベクトル	
+	*/
+	Vector2 Vector2::Lerp(const Vector2& a, const Vector2& b, float t)
+	{
+		t = Mathf::Clamp01(t);
+		return Vector2(a.x + (b.x - a.x) * t, a.y + (b.y - a.y) * t);
+	}
 
-bool operator!=(const Vector2& a, const Vector2& b)
-{
-	return ((a.x != b.x) || (a.y != b.y));
+	//=======================================
+	//
+	//  Operator
+	//
+	//=======================================
+
+	/**
+	* -単項演算子
+	*/
+	Vector2 operator-(const Vector2& a)
+	{
+		return Vector2(-a.x, -a.y);
+	}
+
+	//=======================================
+	//  加算
+	//=======================================
+
+	/**
+	* Vector2同士の代入演算
+	*/
+	Vector2& operator+=(Vector2& a, const Vector2& b)
+	{
+		a.x += b.x;
+		a.y += b.y;
+		return a;
+	}
+
+	/**
+	* Vector2同士の演算
+	*/
+	Vector2 operator+(const Vector2& a, const Vector2& b)
+	{
+		return Vector2(a.x + b.x, a.y + b.y);
+	}
+
+	/**
+	* Vector2とfloatの代入演算
+	*/
+	Vector2& operator+=(Vector2& a, float b)
+	{
+		return a += Vector2(b, b);
+	}
+
+	/**
+	* Vector2とfloatの演算
+	*/
+	Vector2 operator+(const Vector2& a, float b)
+	{
+		return a + Vector2(b, b);
+	}
+
+	/**
+	* floatとVector2の演算
+	*/
+	Vector2 operator+(float a, const Vector2& b)
+	{
+		return b + a;
+	}
+
+	//=======================================
+	//  加算
+	//=======================================
+
+	/**
+	* Vector2同士の代入演算
+	*/
+	Vector2& operator-=(Vector2& a, const Vector2& b)
+	{
+		a.x -= b.x;
+		a.y -= b.y;
+		return a;
+	}
+
+	/**
+	* Vector2同士の演算
+	*/
+	Vector2 operator-(const Vector2& a, const Vector2& b)
+	{
+		return Vector2(a.x - b.x, a.y - b.y);
+	}
+
+	/**
+	* Vector2とfloatの代入演算
+	*/
+	Vector2& operator-=(Vector2& a, float b)
+	{
+		return a -= Vector2(b, b);
+	}
+
+	/**
+	* Vector2とfloatの演算
+	*/
+	Vector2 operator-(const Vector2& a, float b)
+	{
+		return a - Vector2(b, b);
+	}
+
+	/**
+	* floatとVector2の演算
+	*/
+	Vector2 operator-(float a, const Vector2& b)
+	{
+		return b - a;
+	}
+
+	//=======================================
+	//  乗算
+	//=======================================
+
+	/**
+	* Vector2同士の代入演算
+	*/
+	Vector2& operator*=(Vector2& a, const Vector2& b)
+	{
+		a.x *= b.x;
+		a.y *= b.y;
+		return a;
+	}
+
+	/**
+	* Vector2同士の演算
+	*/
+	Vector2 operator*(const Vector2& a, const Vector2& b)
+	{
+		return Vector2(a.x * b.x, a.y * b.y);
+	}
+
+	/**
+	* Vector2とfloatの代入演算
+	*/
+	Vector2& operator*=(Vector2& a, float b)
+	{
+		return a *= Vector2(b, b);
+	}
+
+	/**
+	* Vector2とfloatの演算
+	*/
+	Vector2 operator*(const Vector2& a, float b)
+	{
+		return a * Vector2(b, b);
+	}
+
+	/**
+	* floatとVector2の演算
+	*/
+	Vector2 operator*(float a, const Vector2& b)
+	{
+		return b * a;
+	}
+
+	//=======================================
+	//	除算
+	//=======================================
+
+	/**
+	*　Vector2同士の代入演算
+	*/
+	Vector2& operator/=(Vector2& a, const Vector2& b)
+	{
+		if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0) {
+		}
+		a.x /= b.x;
+		a.y /= b.y;
+		return a;
+	}
+
+	/**
+	* Vector2同士の演算
+	*/
+	Vector2 operator/(const Vector2& a, const Vector2& b)
+	{
+		if (a.x == 0 || b.x == 0 || a.y == 0 || b.y == 0) {
+		}
+		return Vector2(a.x / b.x, a.y / b.y);
+	}
+
+	/**
+	* Vector2とfloatの代入演算
+	*/
+	Vector2& operator/=(Vector2& a, float b)
+	{
+		if (a.x == 0 || a.y == 0 || b == 0) {
+		}
+		return a /= Vector2(b, b);
+	}
+
+	Vector2 operator/(const Vector2& a, float b)
+	{
+		if (a.x == 0 || a.y == 0 || b == 0) {
+		}
+		return a / Vector2(b, b);
+	}
+
+	Vector2 operator/(float a, const Vector2& b)
+	{
+		if (b.x == 0 || b.y == 0 || a == 0) {
+		}
+		return b / a;
+	}
+
+	//=======================================
+	//	比較
+	//=======================================
+
+	bool operator==(const Vector2& a, const Vector2& b)
+	{
+		return ((a.x == b.x) && (a.y == b.y));
+	}
+
+	bool operator!=(const Vector2& a, const Vector2& b)
+	{
+		return ((a.x != b.x) || (a.y != b.y));
+	}
 }

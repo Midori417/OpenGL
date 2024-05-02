@@ -2,6 +2,30 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="FGEngine\Res\Shader\shadowSkeletal3D.vert">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\skeletal3D.vert">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\standard3D.frag">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\standard3D.vert">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\unlit.frag">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\unlit.vert">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\shadow3D.frag">
+      <Filter>FGEngine\Res</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\shadow3D.vert">
+      <Filter>FGEngine\Res</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -10,480 +34,630 @@
     <Filter Include="FGEngine">
       <UniqueIdentifier>{a4230dd3-785a-479f-b919-f1ea7406ceff}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My">
-      <UniqueIdentifier>{1c2c0a5c-3a0b-45c7-9864-045727a57426}</UniqueIdentifier>
+    <Filter Include="Application\Scenes">
+      <UniqueIdentifier>{4f83ed3e-d39d-46c4-ac11-c83c627282cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Package">
-      <UniqueIdentifier>{52b6690e-037b-485d-a8c5-b5d320ebda17}</UniqueIdentifier>
+    <Filter Include="Application\Component">
+      <UniqueIdentifier>{5b596bcb-19a2-4bc4-a8f4-c02ab5ba0467}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Package\glad">
-      <UniqueIdentifier>{44c5d2f1-f16c-433b-8ee7-8b61b06f93b6}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src">
+      <UniqueIdentifier>{88242bbd-40ec-422e-8c57-bbb69d1b7c0f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Package\nlohmann">
-      <UniqueIdentifier>{5405f082-26f9-4b69-b3a7-6eba114fead9}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\Package">
+      <UniqueIdentifier>{b60273ce-25c8-4abb-9a2e-f24ab2830a45}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Package\ImGui">
-      <UniqueIdentifier>{19782256-4f5f-4d89-819f-b1072cccd418}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\Package\glad">
+      <UniqueIdentifier>{d5d9cdb5-0bf6-4542-a3ef-0153b0ea1d02}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Compoent">
-      <UniqueIdentifier>{76a633fd-a188-40a6-b3c2-d6492b94030f}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\Package\ImGui">
+      <UniqueIdentifier>{f47a54df-0e25-4824-b608-57165cdbb8bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Debug">
-      <UniqueIdentifier>{d744bec0-aefb-4ce1-bd87-865ecd005f0c}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\Package\nlohmann">
+      <UniqueIdentifier>{23cac10d-5137-4404-9773-a39a08501e48}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Engine">
-      <UniqueIdentifier>{29060006-9fbf-4bc4-99ed-719892380702}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My">
+      <UniqueIdentifier>{e9e7f88a-2ca2-4edc-a121-144eb8e8eef5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\InpugSystem">
-      <UniqueIdentifier>{b4c30bd0-fba0-4a56-9f99-31c9972ce9a4}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Package">
+      <UniqueIdentifier>{65aa19b0-236e-4959-9e83-88bea5f36ddb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\GameObject">
-      <UniqueIdentifier>{102a8a07-cc82-477d-a103-a2851b5a0fe2}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\SceneSystem">
+      <UniqueIdentifier>{9d7ef94b-ddf5-4998-87f0-92002743a965}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf">
-      <UniqueIdentifier>{572373f6-cbcd-4e90-ac16-d5226add0448}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Debug">
+      <UniqueIdentifier>{4fb523bf-2927-40fb-93d6-6eb278cb0960}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Buffer">
-      <UniqueIdentifier>{f1caa06e-f6f9-41ee-9322-44ef0ac9565d}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object">
+      <UniqueIdentifier>{d5fb19f8-0a67-46d8-8659-26aece529d66}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Resouce">
-      <UniqueIdentifier>{6a9fe302-1392-4f3f-81bb-aa533f34ee22}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component">
+      <UniqueIdentifier>{ece2f248-e832-4421-9899-f875535bf323}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Resouce\Mesh">
-      <UniqueIdentifier>{a1295a5f-03de-4541-b93b-2511a134580f}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider">
+      <UniqueIdentifier>{6d88c5c4-7201-4e24-ab72-d207f15396d1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Resouce\Material">
-      <UniqueIdentifier>{2abf810d-6d36-406c-8c48-4e6f3609fe8d}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\Rigidbody">
+      <UniqueIdentifier>{1ceefb49-ed32-4c38-b3bf-5cb60e6ff15f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Resouce\Texture">
-      <UniqueIdentifier>{8e234927-b744-43c6-81f1-78203582a09e}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\Camera">
+      <UniqueIdentifier>{78299cd8-0668-4db2-98db-2c906ac6daef}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Sound">
-      <UniqueIdentifier>{3f68f84c-1a11-4baf-bc55-9d3b5dfff267}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI">
+      <UniqueIdentifier>{eaeecd97-fba1-42b3-9b72-4014f631662f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\SceneSystem">
-      <UniqueIdentifier>{995c3b4d-4046-4c1c-8bf7-ed122aaaaf83}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\Light">
+      <UniqueIdentifier>{feddbd95-32d1-463a-b2d1-8520e148f653}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Resouce\Shader">
-      <UniqueIdentifier>{bbd7f735-771b-4042-892c-54c2c7af336a}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\Renderer">
+      <UniqueIdentifier>{d61162f2-150c-429f-9d29-67f50d11ab9d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scene">
-      <UniqueIdentifier>{203638f9-77e3-43bf-84be-b09582fb54a6}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Component\Transform">
+      <UniqueIdentifier>{4ed62798-b0c2-4a97-b86d-48cf55f410e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Compoent">
-      <UniqueIdentifier>{d7182190-a8a0-4f3d-aac7-d3cc5ede24d5}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Mesh">
+      <UniqueIdentifier>{e08fea84-29b9-4098-8c5e-093401e6f226}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Mathf">
-      <UniqueIdentifier>{8c2b2737-a88a-49d3-8fad-dd585a8550fe}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Material">
+      <UniqueIdentifier>{84e92b68-24f8-485e-a8da-ba08c8a594bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Quaternion">
-      <UniqueIdentifier>{056f30ca-4d46-45ab-96ee-ed0fe4d19b6c}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\MainSystem">
+      <UniqueIdentifier>{e39286bb-1e8d-40c5-b031-0db1cca200e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Random">
-      <UniqueIdentifier>{5540e44e-c48c-4023-a2d4-f25c655fb0c0}</UniqueIdentifier>
+    <Filter Include="FGEngine\Res">
+      <UniqueIdentifier>{02278ff6-35f4-423a-9043-20a20a7bc1e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Time">
-      <UniqueIdentifier>{0377288d-e523-4a88-b975-02b0fc053568}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Shader">
+      <UniqueIdentifier>{e1e5afdc-f81c-4bf5-b327-21e67d2dc50d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Vector">
-      <UniqueIdentifier>{6ff815aa-f4b8-4c99-aee5-8e895e3c00ac}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\GameObject">
+      <UniqueIdentifier>{4be83752-743a-4182-b85e-9d6fa48e093a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Vector\Vector4">
-      <UniqueIdentifier>{ce328512-ce86-4048-acf2-bb8920262e9a}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\ObjectSystem">
+      <UniqueIdentifier>{c3361a10-f6ab-4464-8f58-78a9f3ec8940}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Vector\Vector3">
-      <UniqueIdentifier>{0df9d790-0847-4973-aa24-0aeb8555f479}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\Object\Texture">
+      <UniqueIdentifier>{a0853ef8-327c-4cd6-88e4-9b768b7da200}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Vector\Vector2">
-      <UniqueIdentifier>{d194bc5c-bab1-448f-8417-b290de7c3dfc}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\InputSystem">
+      <UniqueIdentifier>{4e686e03-e6a6-4d99-92f4-a297ad7d9d41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Matrix">
-      <UniqueIdentifier>{dfcc4850-5eda-4a17-b65f-02da1fe4bdff}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\InputSystem\Key">
+      <UniqueIdentifier>{b20f3d40-7366-4819-b9a3-68440dfce0b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Matrix\Matrix3x3">
-      <UniqueIdentifier>{1f354b62-1dc6-4b83-a4a2-a544d37ece37}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\InputSystem\Mouse">
+      <UniqueIdentifier>{b2d48df0-9b41-4bbd-8afc-aea697ec001a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\My\Mathf\Matrix\Matrix4x4">
-      <UniqueIdentifier>{5422b407-5d89-4a25-8f0d-540fa082e8d9}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\My\InputSystem\GamePad">
+      <UniqueIdentifier>{f73df68c-e44b-41af-a80b-c7eef710cf55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\InputSystem\InputManager">
+      <UniqueIdentifier>{3d56c1ff-f2b8-42bc-a46a-981e09068ece}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Mathf">
+      <UniqueIdentifier>{572a1a43-c070-4c40-bf6c-f6099fe5c781}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Mathf\Vector">
+      <UniqueIdentifier>{ff75a3f3-e3e4-42f4-8378-ac7c81c681aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Mathf\Matrix">
+      <UniqueIdentifier>{b0906244-7e56-497e-80e3-561683e5f8d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Mathf\Time">
+      <UniqueIdentifier>{16123f64-540d-45ef-82f6-b1aa22745357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Mathf\Quaternion">
+      <UniqueIdentifier>{b66665e4-bab9-4363-9493-68c06378b243}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Mathf\Random">
+      <UniqueIdentifier>{b1e418e3-6e12-4395-b90d-4e0d65557ac2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\WindowSystem">
+      <UniqueIdentifier>{94aa4783-7514-43e7-8190-15a72cfa8953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\SoundSystem">
+      <UniqueIdentifier>{bd2cfe1f-0858-400d-8adf-134e464dc315}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\ResouceSystem">
+      <UniqueIdentifier>{8a34f49f-54d9-42f0-ac1b-c09d5152f66f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Other">
+      <UniqueIdentifier>{a392a7ba-dacc-41fd-8599-413b46bc81d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem">
+      <UniqueIdentifier>{33c4093e-f551-4f35-a536-001264b3eefa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\Buffer">
+      <UniqueIdentifier>{03edaab2-ad61-4637-b4ad-ec0cbb939271}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\VAO">
+      <UniqueIdentifier>{59659d28-5fe7-4ff3-b105-0a172df22653}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\MeshBuffer">
+      <UniqueIdentifier>{ba0c6fa0-e448-439d-afba-e4ee006b7231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\RenderingEngine">
+      <UniqueIdentifier>{38d6400e-5626-4722-8653-ff2307d5bc83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\PhysicsSystem">
+      <UniqueIdentifier>{f5a273cb-ede8-42ab-a6af-ac00fe661867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Behaviour">
+      <UniqueIdentifier>{3573da3d-ff23-46d6-8cdd-a7ef810bc485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\PhysicsSystem\Intersect">
+      <UniqueIdentifier>{05d7d45a-3703-47aa-a6c6-c794b6486c2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Shape">
+      <UniqueIdentifier>{e2ae68a8-2ec0-41fb-9299-36e90f6d0997}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider\AabbCollider">
+      <UniqueIdentifier>{2fe7e22d-d58a-4f49-9381-f3e25a143f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider\SphereCollider">
+      <UniqueIdentifier>{b294508f-b7c9-4839-a539-6a2309f3cd41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Collider\BoxCollider">
+      <UniqueIdentifier>{a7328477-db2d-493f-9bb4-d357b78b59ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI\Image">
+      <UniqueIdentifier>{7c08f446-4b3a-41d0-861b-8dffd5178cb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI\Text">
+      <UniqueIdentifier>{af64227c-fda8-4e73-a6ae-f52523f1f1ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\UI\ImGui">
+      <UniqueIdentifier>{86ef3d50-435a-4f77-b2bb-62f45be6fd19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Animator">
+      <UniqueIdentifier>{ece777db-c7ee-497f-82a0-2c3f2ecc03b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Animation">
+      <UniqueIdentifier>{908db9e1-3cfa-4765-80cd-1053ccb49406}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Animation\AnimationClip">
+      <UniqueIdentifier>{682b639b-8eb0-4cdb-b973-1f11b3007def}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FGEngine\Src\My\Collision.h">
-      <Filter>FGEngine\My</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Color.h">
-      <Filter>FGEngine\My</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\Package\glad\include\glad\glad.h">
-      <Filter>FGEngine\Package\glad</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\Package\nlohmann\json.hpp">
-      <Filter>FGEngine\Package\nlohmann</Filter>
+    <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imgui.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_impl_glfw.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_impl_opengl3.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_impl_opengl3_loader.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imgui_internal.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imstb_rectpack.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imstb_textedit.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imstb_truetype.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\Package\nlohmann\json.hpp">
+      <Filter>FGEngine\Src\Package\nlohmann</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\Package\glad\include\glad\glad.h">
+      <Filter>FGEngine\Src\Package\glad</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\Package\glad\include\KHR\khrplatform.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
-      <Filter>FGEngine\Package\ImGui</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\AabbCollider.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\AudioSettings.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Billboard.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\BoxCollider.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Camera.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ChracterMovement.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Collider.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Component.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ComponentHelper.h">
-      <Filter>FGEngine\My\Compoent</Filter>
+      <Filter>FGEngine\Src\Package\glad</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Debug.h">
-      <Filter>FGEngine\My\Debug</Filter>
+      <Filter>FGEngine\Src\My\Debug</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Engine.h">
-      <Filter>FGEngine\My\Engine</Filter>
+    <ClInclude Include="FGEngine\Src\My\Component.h">
+      <Filter>FGEngine\Src\My\Object\Component</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\GamePad.h">
-      <Filter>FGEngine\My\InpugSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\GameObject.h">
-      <Filter>FGEngine\My\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\GltfAnimatednMeshRenderer.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Image.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ImGuiUI.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Light.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Input.h">
-      <Filter>FGEngine\My\InpugSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\InputHelper.h">
-      <Filter>FGEngine\My\InpugSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\KeyCode.h">
-      <Filter>FGEngine\My\InpugSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\BufferObject.h">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\GltfMesh.h">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Text.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Transform.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\GltfMeshRenderer.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Material.h">
-      <Filter>FGEngine\My\Resouce\Material</Filter>
+    <ClInclude Include="FGEngine\Src\My\ComponentHelper.h">
+      <Filter>FGEngine\Src\My\Object\Component</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\EasyAudio.h">
-      <Filter>FGEngine\My\Sound</Filter>
+      <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Mesh.h">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MeshRenderer.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Texture.h">
-      <Filter>FGEngine\My\Resouce\Texture</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\VecMath.h">
-      <Filter>FGEngine\My\Mathf</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Scene.h">
-      <Filter>FGEngine\My\SceneSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\SceneManager.h">
-      <Filter>FGEngine\My\SceneSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\SphereCollider.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ProgramObject.h">
-      <Filter>FGEngine\My\Resouce\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Object.h">
-      <Filter>FGEngine\My\GameObject</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\TitleScene.h">
-      <Filter>Application\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\MainScene.h">
-      <Filter>Application\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BaseMS.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\CameraMove.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\EnemyMs.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Gundam.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\MagunamBullet.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\MyEngine.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\PlayerController.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\PlayerManager.h">
-      <Filter>Application\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\SableAttack.h">
-      <Filter>Application\Compoent</Filter>
+    <ClInclude Include="FGEngine\Src\My\AudioSettings.h">
+      <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Mathf.h">
-      <Filter>FGEngine\My\Mathf\Mathf</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Matrix3x3.h">
-      <Filter>FGEngine\My\Mathf\Matrix\Matrix3x3</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Matrix4x4.h">
-      <Filter>FGEngine\My\Mathf\Matrix\Matrix4x4</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MatrixFrd.h">
-      <Filter>FGEngine\My\Mathf\Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MatrixPoint.h">
-      <Filter>FGEngine\My\Mathf\Matrix</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Random.h">
-      <Filter>FGEngine\My\Mathf\Random</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Time.h">
-      <Filter>FGEngine\My\Mathf\Time</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Quaternion.h">
-      <Filter>FGEngine\My\Mathf\Quaternion</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Renderer.h">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Vector3.h">
-      <Filter>FGEngine\My\Mathf\Vector\Vector3</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Vector4.h">
-      <Filter>FGEngine\My\Mathf\Vector\Vector4</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\VectorFrd.h">
-      <Filter>FGEngine\My\Mathf\Vector</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\VectorPoint.h">
-      <Filter>FGEngine\My\Mathf\Vector</Filter>
+      <Filter>FGEngine\Src\My\Mathf</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Vector2.h">
-      <Filter>FGEngine\My\Mathf\Vector\Vector2</Filter>
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Vector3.h">
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Vector4.h">
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\VectorFrd.h">
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\VectorPoint.h">
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Matrix3x3.h">
+      <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Matrix4x4.h">
+      <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MatrixFrd.h">
+      <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Time.h">
+      <Filter>FGEngine\Src\My\Mathf\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Quaternion.h">
+      <Filter>FGEngine\Src\My\Mathf\Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Texture.h">
+      <Filter>FGEngine\Src\My\Object\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Material.h">
+      <Filter>FGEngine\Src\My\Object\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Scene.h">
+      <Filter>FGEngine\Src\My\SceneSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SceneManager.h">
+      <Filter>FGEngine\Src\My\SceneSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Color.h">
+      <Filter>FGEngine\Src\My\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Package\Glad.h">
+      <Filter>FGEngine\Src\My\Package</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\TitleScene.h">
+      <Filter>Application\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\MainScene.h">
+      <Filter>Application\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\FGEngine.h">
+      <Filter>FGEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\FGEngineSub.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h">
+      <Filter>FGEngine\Src\My\Package</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Package\Nlohmann.h">
+      <Filter>FGEngine\Src\My\Package</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Singleton.h">
+      <Filter>FGEngine\Src\My\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ObjectManager.h">
+      <Filter>FGEngine\Src\My\ObjectSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h">
+      <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SystemFrd.h">
+      <Filter>FGEngine\Src\My</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Camera.h">
+      <Filter>FGEngine\Src\My\Object\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Collider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Light.h">
+      <Filter>FGEngine\Src\My\Object\Component\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Renderer.h">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Rigidbody.h">
+      <Filter>FGEngine\Src\My\Object\Component\Rigidbody</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Transform.h">
+      <Filter>FGEngine\Src\My\Object\Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Mesh.h">
+      <Filter>FGEngine\Src\My\Object\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\WindowManager.h">
+      <Filter>FGEngine\Src\My\WindowSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ShaderObject.h">
+      <Filter>FGEngine\Src\My\Object\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\GameObject.h">
+      <Filter>FGEngine\Src\My\Object\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Object.h">
+      <Filter>FGEngine\Src\My\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ObjectHelper.h">
+      <Filter>FGEngine\Src\My\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\InputKey.h">
+      <Filter>FGEngine\Src\My\InputSystem\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\KeyCode.h">
+      <Filter>FGEngine\Src\My\InputSystem\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\InputMouse.h">
+      <Filter>FGEngine\Src\My\InputSystem\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MouseButton.h">
+      <Filter>FGEngine\Src\My\InputSystem\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\InputGamePad.h">
+      <Filter>FGEngine\Src\My\InputSystem\GamePad</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\InputManager.h">
+      <Filter>FGEngine\Src\My\InputSystem\InputManager</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MatrixPoint.h">
+      <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Random.h">
+      <Filter>FGEngine\Src\My\Mathf\Random</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\EngineCore.h">
+      <Filter>FGEngine\Src\My\MainSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ResouceManager.h">
+      <Filter>FGEngine\Src\My\ResouceSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\LightData.h">
+      <Filter>FGEngine\Src\My\RenderingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ShaderLocationNum.h">
+      <Filter>FGEngine\Src\My\RenderingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\BufferObject.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MapBufferObjecth.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\VertexArrayObject.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\VAO</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MeshBuffer.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\DrawParams.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Vertex.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\RenderingEngine.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\RenderingEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MeshRenderer.h">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\DefalutShader.h">
+      <Filter>FGEngine\Src\My\Object\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\WorldCollider.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\PhysicsEngine.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Collision.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Behaviour.h">
+      <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Intersect.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem\Intersect</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ShapeType.h">
+      <Filter>FGEngine\Src\My\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Shape.h">
+      <Filter>FGEngine\Src\My\Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\AabbCollider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\AabbCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SphereCollider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\BoxCollider.h">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\BoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ImGuiLayout.h">
+      <Filter>FGEngine\Src\My\Object\Component\UI\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Image.h">
+      <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\AnimationClip.h">
+      <Filter>FGEngine\Src\My\Animation\AnimationClip</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FGEngine\Src\My\Collision.cpp">
-      <Filter>FGEngine\My</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Package\glad\src\glad.c">
-      <Filter>FGEngine\Package\glad</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_demo.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_draw.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_impl_glfw.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_impl_opengl3.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_tables.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui_widgets.cpp">
-      <Filter>FGEngine\Package\ImGui</Filter>
+      <Filter>FGEngine\Src\Package\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Package\glad\src\glad.c">
+      <Filter>FGEngine\Src\Package\glad</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Debug.cpp">
-      <Filter>FGEngine\My\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Engine.cpp">
-      <Filter>FGEngine\My\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\GamePad.cpp">
-      <Filter>FGEngine\My\InpugSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\GameObject.cpp">
-      <Filter>FGEngine\My\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\GltfAnimatedMeshRenderer.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Image.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\ImGuiUI.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Light.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Input.cpp">
-      <Filter>FGEngine\My\InpugSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\BufferObject.cpp">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\GltfMesh.cpp">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Text.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\GltfMeshRenderer.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
+      <Filter>FGEngine\Src\My\Debug</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\EasyAudio.cpp">
-      <Filter>FGEngine\My\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Mesh.cpp">
-      <Filter>FGEngine\My\Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp">
-      <Filter>FGEngine\My\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Texture.cpp">
-      <Filter>FGEngine\My\Resouce\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\SceneManager.cpp">
-      <Filter>FGEngine\My\SceneSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\ProgramObject.cpp">
-      <Filter>FGEngine\My\Resouce\Shader</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\TitleScene.cpp">
-      <Filter>Application\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\MainScene.cpp">
-      <Filter>Application\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\CameraMove.cpp">
-      <Filter>Application\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\EnemyMs.cpp">
-      <Filter>Application\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Gundam.cpp">
-      <Filter>Application\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\MagunamBullet.cpp">
-      <Filter>Application\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\PlayerController.cpp">
-      <Filter>Application\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\PlayerManager.cpp">
-      <Filter>Application\Compoent</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\SableAttack.cpp">
-      <Filter>Application\Compoent</Filter>
+      <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Mathf.cpp">
-      <Filter>FGEngine\My\Mathf\Mathf</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Matrix4x4.cpp">
-      <Filter>FGEngine\My\Mathf\Matrix\Matrix4x4</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Quaternion.cpp">
-      <Filter>FGEngine\My\Mathf\Quaternion</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Random.cpp">
-      <Filter>FGEngine\My\Mathf\Random</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Time.cpp">
-      <Filter>FGEngine\My\Mathf\Time</Filter>
+      <Filter>FGEngine\Src\My\Mathf</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Vector2.cpp">
-      <Filter>FGEngine\My\Mathf\Vector\Vector2</Filter>
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Vector3.cpp">
-      <Filter>FGEngine\My\Mathf\Vector\Vector3</Filter>
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Vector4.cpp">
-      <Filter>FGEngine\My\Mathf\Vector\Vector4</Filter>
+      <Filter>FGEngine\Src\My\Mathf\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Matrix4x4.cpp">
+      <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Time.cpp">
+      <Filter>FGEngine\Src\My\Mathf\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Quaternion.cpp">
+      <Filter>FGEngine\Src\My\Mathf\Quaternion</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Texture.cpp">
+      <Filter>FGEngine\Src\My\Object\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\SceneManager.cpp">
+      <Filter>FGEngine\Src\My\SceneSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\TitleScene.cpp">
+      <Filter>Application\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\MainScene.cpp">
+      <Filter>Application\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Main.cpp">
+      <Filter>FGEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ObjectManager.cpp">
+      <Filter>FGEngine\Src\My\ObjectSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Transform.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\WindowManager.cpp">
+      <Filter>FGEngine\Src\My\WindowSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\EngineCore.cpp">
+      <Filter>FGEngine\Src\My\MainSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ShaderObject.cpp">
+      <Filter>FGEngine\Src\My\Object\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\GameObject.cpp">
+      <Filter>FGEngine\Src\My\Object\GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Object.cpp">
+      <Filter>FGEngine\Src\My\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\InputMouse.cpp">
+      <Filter>FGEngine\Src\My\InputSystem\Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\InputKey.cpp">
+      <Filter>FGEngine\Src\My\InputSystem\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\InputGamePad.cpp">
+      <Filter>FGEngine\Src\My\InputSystem\GamePad</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Matrix3x3.cpp">
+      <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Random.cpp">
+      <Filter>FGEngine\Src\My\Mathf\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\InputManager.cpp">
+      <Filter>FGEngine\Src\My\InputSystem\InputManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ResouceManager.cpp">
+      <Filter>FGEngine\Src\My\ResouceSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\BufferObject.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\VertexArrayObjectcpp.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\VAO</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MeshBuffer.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\RenderingEngine.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\RenderingEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\PhysicsEngine.cpp">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Intersect.cpp">
+      <Filter>FGEngine\Src\My\PhysicsSystem\Intersect</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\AabbCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\SphereCollider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Collider.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Rigidbody.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Rigidbody</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ImGuiLayout.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\UI\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Image.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\AnimationClip.cpp">
+      <Filter>FGEngine\Src\My\Animation\AnimationClip</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

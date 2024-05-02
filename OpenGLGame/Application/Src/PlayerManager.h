@@ -3,7 +3,8 @@
 */
 #ifndef PLAYERMANAGER_H_INCLUDED
 #define PLAYERMANAGER_H_INCLUDEED
-#include "MyEngine.h"
+#include "FGEngineSub.h"
+using namespace FGEngine;
 
 // 先行宣言
 class BaseMS;
@@ -14,7 +15,7 @@ using CameraMovePtr = std::shared_ptr<CameraMove>;
 /**
 * プレイヤー管理クラス
 */
-class PlayerManager : public Component
+class PlayerManager : public MonoBehaviour
 {
 public:
 

@@ -1,61 +1,93 @@
 /**
 * @file FrameBufferObject.h
 */
-#ifndef FRAMEBUFFEROBJECT_H_INCLUDED
-#define FRAMEBUFFEROBJECT_H_INCLUDED
-
-#include "glad/glad.h"
+#ifndef FGENGINE_FRAMEBUFFEROBJECT_H_INCLUDED
+#define FGENGINE_FRAMEBUFFEROBJECT_H_INCLUDED
+#include "Package/Glad.h"
 #include "Texture.h"
 
-/**
-* フレームバッファ・オブジェクト(FBO)
-*/
-class FrameBufferObject
+namespace FGEngine::RenderingSystem
 {
-public:
+	// 先行宣言
+	class FrameBufferObject;
+	using FrameBufferObjectPtr = std::shared_ptr<FrameBufferObject>;
 
-	// テクスチャからFBOを作成するコンストラクタ
-	FrameBufferObject(const TexturePtr& color, const TexturePtr& depth);
-	~FrameBufferObject();
 
-	// コピーと代入を禁止
-	FrameBufferObject(const FrameBufferObject&) = delete;
-	FrameBufferObject& operator=(const FrameBufferObject&) = delete;
-
-	// 管理番号を取得
-	operator GLuint() const
+	/**
+	* フレームバッファ・オブジェクト(FBO)
+	*/
+	class FrameBufferObject
 	{
-		return fbo;
-	}
+	public:
 
-	// 幅と高さを取得
-	int GetWidth() const 
-	{
-		return widht;
-	}
-	int GetHeight() const 
-	{
-		return height;
-	}
+		// テクスチャからFBOを作成するコンストラクタ
+		FrameBufferObject(const TexturePtr& color, const TexturePtr& depth);
+		~FrameBufferObject();
 
-	// テクスチャを取得
-	const TexturePtr& GetColorTexture() const
-	{
-		return texColor;
-	}
-	const TexturePtr& GetDepthTexture() const
-	{
-		return texDepth;
-	}
+		// コピーと代入を禁止
+		FrameBufferObject(const FrameBufferObject&) = delete;
+		FrameBufferObject& operator=(const FrameBufferObject&) = delete;
 
-private:
+		/**
+		* フレームバッファオブジェクトを作成
+		* 
+		* @param color カラーバッファ
+		* @param depth 深度バッファ
+		*
+		* @return 作成したフレームバッファオブジェクトポインター
+		*/
+		static FrameBufferObjectPtr Create(const TexturePtr& color, const TexturePtr& depth);
 
-	GLuint fbo;		// FBOの管理番号
-	int widht = 0;	// FBOの幅
-	int height = 0;	// FBOの高さ
-	TexturePtr texColor;	// カラーテクスチャ
-	TexturePtr texDepth;	// 深度テクスチャ
-};
-using FrameBufferObjectPtr = std::shared_ptr<FrameBufferObject>;
+		/**
+		* 管理番号を取得
+		*/
+		operator GLuint() const
+		{
+			return fbo;
+		}
 
+		/**
+		* 幅の取得
+		*/
+		int GetWidth() const
+		{
+			return widht;
+		}
+
+		/**
+		* 高さの取得
+		*/
+		int GetHeight() const
+		{
+			return height;
+		}
+
+		// テクスチャを取得
+		const TexturePtr& GetColorTexture() const
+		{
+			return texColor;
+		}
+		const TexturePtr& GetDepthTexture() const
+		{
+			return texDepth;
+		}
+
+	private:
+
+		// FBOの管理番号
+		GLuint fbo;
+
+		// FBOの幅
+		int widht = 0;
+
+		// FBOの高さ
+		int height = 0;
+
+		// カラーテクスチャ
+		TexturePtr texColor;
+
+		// 深度テクスチャ
+		TexturePtr texDepth;
+	};
+}
 #endif // !FRAMEBUFFEROBJECT_H_INCLUDED

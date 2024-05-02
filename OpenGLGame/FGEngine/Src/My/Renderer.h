@@ -1,52 +1,64 @@
 /**
 * @file Renderer.h
 */
-#ifndef COMPONENT_RENDERER_H_INCLUDED
-#define COMPONENT_RENDERER_H_INCLUDED
+#ifndef FGENGINE_RENDERER_H_INCLUDED
+#define FGENGINE_RENDERER_H_INCLUDED
 #include "Component.h"
-#include "VecMath.h"
 
-// 先行宣言
-class ProgramObject;
-
-/**
-* モデル形式
-*/
-enum class ModelFormat
+namespace FGEngine
 {
-	obj,			// OBJファイル
-	gltfStatic,		// glTF(アニメーション無し)
-	gltfAnimated	// glTF(アニメーションあり)
-};
+	class ShaderObject;
+	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
 
-/**
-* レンダラーコンポーネントの基底クラス
-*/
-class Renderer : public Component
-{
-public:
-	enum class Type
+	/**
+	* 描画の順序
+	*/
+	enum RenderQueue
 	{
-		Standard,
-		Shadow
+		RenderQueue_geometry = 2000,	// 一般的な図形
+		RenderQueue_transparent = 3000,	// 半透明な図形
+		RenderQueue_overlay = 4000,		// UI、全画面エフェクト
+		RenderQueue_max = 5000,			// キューの最大値
 	};
 
+	enum class DrawType
+	{
+		normal,
+		shadow
+	};
 
-	// コンストラクタ・デストラクタ
-	Renderer() = default;
-	virtual ~Renderer() = default;
+	/**
+	* 描画コンポーネントの基底クラス
+	*/
+	class Renderer : public Component
+	{
+	public:
 
-	// モデル形式を取得
-	virtual ModelFormat GetModelFormat() const = 0;
+		friend RenderingSystem::RenderingEngine;
 
-	virtual void PreDraw(){}
-	virtual void Draw(const ProgramObject& program, Type type = Type::Standard) const {}
+		// コンストラクタ・デストラクタ
+		Renderer() = default;
+		virtual ~Renderer() = default;
 
-public:
+	protected:
 
-	//int renderQueue = RenderQueue_geometry;	// 描画順
+		virtual void Draw(DrawType drawType) const{}
 
-};
-using RendererPtr = std::shared_ptr<Renderer>;
+	public:
 
-#endif // !COMPONENT_RENDERER_H_INCLUDED
+		// 描画するするかの有無
+		bool enabled = true;
+
+		// レンダーキュー
+		int renderQueue = RenderQueue_geometry;
+
+		// シェーダ
+		ShaderObjectPtr shader;
+
+		// 影シェーダ
+		ShaderObjectPtr shadowShader;
+	};
+	using RendererPtr = std::shared_ptr<Renderer>;
+}
+
+#endif // !FGENGINE_RENDERER_H_INCLUDED

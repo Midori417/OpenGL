@@ -3,12 +3,13 @@
 */
 #ifndef PLAYERCONTROLLER_H_INCLUDED
 #define PLAYERCONTROLLER_H_INCLUDED
-#include "MyEngine.h"
+#include "FGEngineSub.h"
+using namespace FGEngine;
 
 /**
 * プレイヤーコントローラ入力
 */
-class PlayerController : public Component
+class PlayerController : public MonoBehaviour
 {
 public:
 

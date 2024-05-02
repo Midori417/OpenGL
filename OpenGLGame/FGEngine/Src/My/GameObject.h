@@ -1,198 +1,213 @@
 /**
 * @file GameObject.h
 */
-#ifndef GAMEOBJECT_H_INCLUDED
-#define GAMEOBJECT_H_INCLUDED
-
+#ifndef FGENGINE_GAMEOBJECT_H_INCLUDED
+#define FGENGINE_GAMEOBJECT_H_INCLUDED
 #include "Object.h"
 #include "Component.h"
 #include "Collider.h"
+#include "MonoBehaviour.h"
+#include "Transform.h"
 #include "Renderer.h"
-#include "Collision.h"
-#include "Texture.h"
-#include "VecMath.h"
-#include "Color.h"
+#include "Rigidbody.h"
+#include "Camera.h"
+#include "ImGuiLayout.h"
 
-#include <string>
-#include <vector>
-#include <memory>
-#include <type_traits>
-
-
-// 先行宣言
-class Engine;
-class GameObject;
-using GameObjectPtr = std::shared_ptr<GameObject>;
-using GameObjectList = std::vector<GameObjectPtr>;
-class Transform;
-using TransformPtr = std::shared_ptr<Transform>;
-
-/**
-* 描画の順序
-*/
-enum RenderQueue
+namespace FGEngine
 {
-	RenderQueue_geometry = 2000,	// 一般的な図形
-	RenderQueue_transparent = 3000,	// 半透明な図形
-	RenderQueue_overlay = 4000,		// UI、全画面エフェクト
-	RenderQueue_max = 5000,			// キューの最大値
-};
-
-/**
-* ゲームに登場する様々なオブジェクトの基本クラス
-*/
-class GameObject : public Object
-{
-	friend Engine;
-public:
-
-	GameObject() = default;
-	virtual ~GameObject();
-
-	// コピーと代入を禁止
-	GameObject(GameObject&) = delete;
-	GameObject& operator=(GameObject&) = delete;
-
-	// === イベント制御 === //
-
-	// 最初のUpdateの直前で呼び出される
-	virtual void Start();
-
-	// 毎フレーム一回呼び出す
-	virtual void Update();
-
-	virtual void LateUpdate();
-
-	// 衝突したときに呼び出す
-	virtual void OnCollision(const ComponentPtr& self, const ComponentPtr& other);
-
-	// 削除されたときの呼び出す
-	virtual void OnDestroy();
-
-	// 親オブジェクトを取得する
-	GameObject* GetParent() const {
-		return parent;
-	}
-
-	// 親オブジェクトを設定する
-	void SetParent(GameObject* parent);
-	void SetParent(const GameObjectPtr& parent);
-
-	// 子オブジェクトの数を取得する
-	size_t GetChildCount() const {
-		return children.size();
-	}
-
-	// 子オブジェクトを取得する
-	GameObject* GetChild(size_t index)const {
-		return children[index];
-	}
-
-
-	// ゲームオブジェクトにコンポーネントを追加する
-	template<class T>
-	std::shared_ptr<T> AddComponent() 
+	/**
+	* ゲームに登場する様々なオブジェクトの基本クラス
+	*/
+	class GameObject : public Object
 	{
-		auto p = std::make_shared<T>();
-		if constexpr (std::is_base_of_v<Collider, T>) {
-			colliders.push_back(p);
-		}
-		if constexpr (std::is_base_of_v<Renderer, T>)
+	public:
+		
+		friend ObjectSystem::ObjectManager;
+		friend RenderingSystem::RenderingEngine;
+		friend PhysicsSystem::PhysicsEngine;
+		friend Collider;
+
+		// コンストラクタ・デストラクタ
+		GameObject() = default;
+		virtual ~GameObject() = default;
+
+		// コピーと代入を禁止
+		GameObject(GameObject&) = delete;
+		GameObject& operator=(GameObject&) = delete;
+
+		/**
+		* T型のコンポーネントをゲームオブジェクトに追加
+		*/
+		template<class T>
+		std::shared_ptr<T> AddComponent()
 		{
-			renderer = p;
+			// コンポーネントが基底クラスじゃなければnullptrを返す
+			if constexpr (!std::is_base_of_v<Component, T>)
+			{
+				return nullptr;
+			}
+
+			// コンポーネントを作成
+			auto p = std::make_shared<T>();
+
+			// Colliderが基底クラスの場合
+			if constexpr (std::is_base_of_v<Collider, T>)
+			{
+				colliders.push_back(p);
+			}
+
+			// MonoBehaviourが基底クラスの場合
+			if constexpr (std::is_base_of_v<MonoBehaviour, T>)
+			{
+				monoBehaviours.push_back(p);
+				// 生成処理を実行
+				p->Awake();
+			}
+
+			// Transformが基底クラスの場合
+			if constexpr (std::is_base_of_v<Transform, T>)
+			{
+				transform = p;
+			}
+
+			// Rendererが基底クラスの場合
+			if constexpr (std::is_base_of_v<Renderer, T>)
+			{
+				renderer = p;
+			}
+
+			// Rigidbodyが基底クラスの場合
+			if constexpr (std::is_base_of_v<Rigidbody, T>)
+			{
+				rigidbody = p;
+			}
+			// Cameraが基底クラスの場合
+			if constexpr (std::is_base_of_v<Camera, T>)
+			{
+				camera = p;
+			}
+
+			// ImGuiLayoutが基底クレスの場合
+			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
+			{
+				imGuiLayout = p;
+			}
+
+			// 親オブジェクトを設定
+			p->ownerObject = gameObject;
+
+			// 名前を設定
+			p->SetName(ToString());
+
+			// Transformを設定
+			p->transform = transform;
+
+			// コンポーネント配列に登録
+			components.push_back(p);
+
+			return p;
 		}
-		if constexpr (std::is_base_of_v<Transform, T>)
+
+		/**
+		* T型のコンポーネントを取得
+		*/
+		template<class T>
+		std::shared_ptr<T> GetComponent() const
 		{
-			transform = p;
-		}
-		p->gameObject = this;
-		p->transform = transform.get();
-		components.push_back(p);
-		p->Awake();
-		return p;
-	}
-
-	// コンポーネントを検索する
-	template<class T>
-	std::shared_ptr<T> GetComponent() const {
-		for (auto& e : components) {
-			// shared_ptrの場合はdynamic_castでなくdynamic_pointer_castを使う
-			auto p = std::dynamic_pointer_cast<T>(e);
-			if (p) {
-				return p;
+			// コンポーネントが基底クラスじゃなければnullptrを返す
+			if constexpr (!std::is_base_of_v<Component, T>)
+			{
+				return nullptr;
 			}
-		}
-		return nullptr;
-	}
 
-	// 自分の親のオブジェクトのコンポーネントを検索
-	template<class T>
-	std::shared_ptr<T> GetComponentParent() const {
-		if (parent == nullptr) {
-			return nullptr; // 親がいない
-		}
-		return parent->GetComponent<T>();
-	}
-
-
-	// 自分の子供のオブジェクトのコンポーネントを検索
-	template<class T>
-	std::shared_ptr<T> GetComponenChildren() const {
-		if (children.empty()) {
-			return nullptr; // 子供がいない
-		}
-		for (auto x : children) {
-			
-			auto t = x->GetComponent<T>();
-			// コンポーネントが見つかったら抜ける
-			if (t != nullptr) {
-				return t;
+			for (auto& e : components)
+			{
+				// T型にアップキャストしている場合取得する
+				auto p = std::dynamic_pointer_cast<T>(e);
+				if (p)
+				{
+					// 見つかったコンポーネント
+					return p;
+				}
 			}
+			// 見つかなかった
+			return nullptr;
 		}
-		return nullptr; // 見つからなかった
-	}
 
-	// ゲームオブジェクトから破棄予定のコンポーネントを削除する
-	void RemoveDestroyedComponent();
+		/**
+		* T型のコンポーネントを削除する 
+		*/
+		template<class T>
+		void RemoveComponent() const
+		{
+			// コンポーネントが基底クラスじゃなければnullptrを返す
+			if constexpr (!std::is_base_of_v<Component, T>)
+			{
+				return nullptr;
+			}
 
 
-public:
+			// コンポーネントを取得
+			auto com = GetComponent<T>();
 
-	std::string tag = "Untagged";			// タグ
-	TransformPtr transform;
-	RendererPtr renderer;
-	int renderQueue = RenderQueue_geometry;	// 描画順
-	bool isGrounded = false;			// 足場となる物体の上に載っているとtrue
+			// 破棄予定にする
+			Destory(com);
+		}
 
-private:
+		/**
+		* トランスフォームコンポーネントを取得
+		*/
+		TransformPtr GetTransform() const
+		{
+			return transform;
+		}
 
-	Engine* engine = nullptr;				// エンジンのアドレス
-	bool isActive = true;
-	bool isDestroyed = false;				// 死亡フラグ
-	GameObject* parent = nullptr;			// 親オブジェクト
-	std::vector<GameObject*> children;		// 子オブジェクト
-	std::vector<ComponentPtr> components;	// コンポーネント配列
-	std::vector<ColliderPtr> colliders;	// コライダー配列
+	private:
 
-public:
+		/**
+		* 削除予定のコンポーネントを削除
+		*/
+		void DestroyComponent();
 
-	// ゲームエンジンを取得
-	Engine* GetEngine() const 
-	{
-		return engine;
-	}
+	public:
 
-	// ゲームオブジェクトをエンジンから削除する
-	void Destory()
-	{
-		isDestroyed = true;
-	}
+		// オブジェクトが有効かどうか
+		bool isActive = true;
 
-	// ゲームオブジェクトが破棄されているかを取得 破棄されていたtrue
-	bool IsDestroyed() const
-	{
-		return isDestroyed;
-	}
+		// タグ
+		std::string tag = "Untagged";
 
-};
-#endif // !GAMEOBJECT_H_INCLUDED
+
+	private:
+
+		// 自身を管理するポインター
+		GameObjectPtr gameObject;
+
+		// コンポーネント配列
+		std::vector<ComponentPtr> components;
+
+		// コライダー配列
+		std::vector<ColliderPtr> colliders;
+
+		// 	モノビヘイビア配列
+		std::vector<MonoBehaviourPtr> monoBehaviours;
+
+		// トランスフォームコンポーネントポインター
+		TransformPtr transform;
+
+		// 描画コンポーネントポインター
+		RendererPtr renderer;	
+
+		// 物理コンポーネントポインター
+		RigidbodyPtr rigidbody;
+
+		// カメラコンポーネントポインター
+		CameraPtr camera;
+
+		// UIレイアウトコンポーネントポインター
+		UI::ImGuiLayoutPtr imGuiLayout;
+
+	};
+	using GameObjectList = std::vector<GameObjectPtr>;
+}
+#endif // !FGENGINE_GAMOBJECYT_H_INCLUDED

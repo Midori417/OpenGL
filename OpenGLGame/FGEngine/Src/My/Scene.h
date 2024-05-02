@@ -1,77 +1,69 @@
 /**
 * @file Scene.h
 */
-#ifndef SCENE_H_INCLUDED
-#define SCENE_H_INCLUDED
-
+#ifndef FGENGINE_SCENE_H_INCLUDED
+#define FGENGINE_SCENE_H_INCLUDED
+#include "SystemFrd.h"
 #include <memory>
 #include <string>
 
-// 先行宣言
-class Engine;
-struct Material;
-using MaterialPtr = std::shared_ptr<Material>;
-
-namespace SceneManagment
+namespace FGEngine
 {
-	/**
-	* シーンの基底クラス
-	*/
-	class Scene
+	class Material;
+	using MaterialPtr = std::shared_ptr<Material>;
+
+	namespace SceneSystem
 	{
-		friend class SceneManager;
-	public:
-
-		// コンストラクタ・デストラクタ
-		Scene() = default;
-		virtual ~Scene() = default;
-
 		/**
-		* スカイスフィアマテリアを設定
-		* 
-		* @param skyMaterial 設定するマテリアル
+		* シーンの基底クラス
 		*/
-		void SetSkeyMaterial(MaterialPtr skyMaterial)
+		class Scene
 		{
-			this->skyMaterial = skyMaterial;
-		}
+		public:
 
-	private:
+			friend SceneManager;
 
-		/**
-		* シーンの初期化
-		* 
-		* @param engine エンジン
-		* 
-		* @retval true	初期化成功
-		* @retval false	初期化失敗
-		*/
-		virtual bool Initialize(Engine& engine) 
-		{
-			return true;
-		}
+			// コンストラクタ・デストラクタ
+			Scene() = default;
+			virtual ~Scene() = default;
 
-		/**
-		* シーンの更新
-		* 
-		* @param engine エンジン
-		*/
-		virtual void Update(Engine& engine) {}
+		protected:
 
-		/**
-		* シーンの終了
-		* 
-		* @param engine エンジン
-		*/
-		virtual void Finalize(Engine& engine) {}
+			/**
+			* シーンの初期化
+			*
+			* @param engine エンジン
+			*
+			* @retval true	初期化成功
+			* @retval false	初期化失敗
+			*/
+			virtual bool Initialize()
+			{
+				return true;
+			}
+
+			/**
+			* シーンの更新
+			*
+			* @param engine エンジン
+			*/
+			virtual void Update() {}
+
+			/**
+			* シーンの終了
+			*
+			* @param engine エンジン
+			*/
+			virtual void Finalize() {}
 
 
-	public:
+		public:
 
-		std::string name = "sampleScene";
-		MaterialPtr skyMaterial;	// スカイスフィア用のマテリアル
+			// スカイスフィア用のマテリアル
+			MaterialPtr skyMaterial;	
 
-	};
-	using ScenePtr = std::shared_ptr<Scene>;
+		};
+		using ScenePtr = std::shared_ptr<Scene>;
+	}
 }
 #endif // !SCENEH_INCLUDED

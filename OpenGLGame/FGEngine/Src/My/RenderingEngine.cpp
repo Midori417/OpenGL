@@ -1,0 +1,388 @@
+/**
+* RenderingEngine.cpp
+*/
+#include "RenderingEngine.h"
+#include "WindowManager.h"
+#include "SceneManager.h"
+#include "ResouceManager.h"
+#include "ObjectManager.h"
+#include "ShaderObject.h"
+#include "MeshBuffer.h"
+#include "ShaderLocationNum.h"
+#include <algorithm>
+
+namespace FGEngine::RenderingSystem
+{
+	/**
+	* グラフィックエンジンを初期化
+	*
+	* @retval 0		初期化成功
+	* @retval 0以外	初期化失敗
+	*/
+	int RenderingEngine::Initialize()
+	{
+		// スカイスフィアを設定
+		skySphere = ResouceSystem::ResouceManager::GetInstance()->GetStaticMesh("skySphere");
+
+		// FBOを作成
+		auto texShadow = Texture::Create("FBO(depth)", 2048, 2048, GL_DEPTH_COMPONENT32, GL_CLAMP_TO_EDGE);
+		fboShadow = FrameBufferObject::Create(nullptr, texShadow);
+		return 0;
+	}
+
+	/**
+	* レンダリングエンジンを更新
+	*/
+	void RenderingEngine::Update()
+	{
+	}
+
+	/**
+	* 3Dオブジェクトの描画
+	*
+	* @param レンダーコンポーネント範囲の先端
+	* @param レンダーコンポーネント範囲の終端
+	*/
+	void RenderingEngine::Draw3DGameObject(std::vector<RendererPtr>::iterator begin, std::vector<RendererPtr>::iterator end)
+	{
+		for (auto i = begin; i != end; ++i)
+		{
+			const auto& e = *i;
+			// 描画コンポーネントが機能停止していたら何もしない
+			if (!e->enabled)
+			{
+				continue;
+			}
+			// 描画
+			e->Draw(DrawType::normal);
+		}
+	}
+
+	/**
+	* カメラに近いライトを選んでGPuメモリーにコピーする
+	*/
+	void RenderingEngine::UpdateShaderLight()
+	{
+		// シェーダの仕分け
+		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		std::vector<GLuint> programs;
+		for (auto prog : *resouceManager->GetShaderList())
+		{
+			// ライト用のシェーダ
+			if (prog.second->isLight)
+			{
+				programs.push_back(prog.second->GetProgId());
+			}
+		}
+
+		for (auto prog : programs)
+		{
+			// 環境光をGPUメモリにコピー
+			glProgramUniform3fv(prog, locAmbientLight, 1, &ambientLight.x);
+
+			// 平行光源パラメータをGPUメモリにコピー
+			const Vector3 color = directionLight.color * directionLight.intensity;
+			glProgramUniform3fv(prog, locDirectionalLightColor, 1, &color.x);
+			glProgramUniform3fv(prog, locDirectionalLightDericion, 1, &directionLight.direction.x);
+
+		}
+
+		// コピーするライトがなければライト数を0に設定
+		if (usedLights.empty())
+		{
+			for (auto prog : programs)
+			{
+				if (usedLights.empty())
+				{
+					glProgramUniform1i(prog, locLightCount, 0);
+					return;
+				}
+			}
+		}
+		// 使用中ライトの配列から、未使用になったライトを除外する
+		const auto itrUnsed = std::remove_if(usedLights.begin(), usedLights.end(),
+			[&](int i) {return !lights[i].used; });
+		usedLights.erase(itrUnsed, usedLights.end());
+
+		// 重複する番号を消去する
+		std::sort(usedLights.begin(), usedLights.end());
+		const auto itrUnique = std::unique(usedLights.begin(), usedLights.end());
+		usedLights.erase(itrUnique, usedLights.end());
+
+		auto camera = ObjectSystem::ObjectManager::GetInstance()->GetMainCamera();
+
+		// カメラの正面ベクトルを計算
+		const Vector3 front = camera->transform->Forward();
+
+		// カメラからライトまでの距離を計算
+		struct Distance
+		{
+			float distance;		// カメラからライトの半径までの距離
+			const LightData* p;	// ライトのアドレス
+		};
+		std::vector<Distance> distanceList;
+		distanceList.reserve(lights.size());
+		for (auto index : usedLights)
+		{
+			const auto& light = lights[index];
+			const Vector3 v = light.position - camera->transform->position;
+			// カメラの後ろにあるライトを除外
+			if (Vector3::Dot(front, v) <= -light.radius)
+			{
+				continue;
+			}
+			const float d = v.Magnitude() - light.radius; // カメラからのライトまでの半駅までの距離
+			distanceList.push_back({ d,&light });
+		}
+		// 画面に影響するライトがなければライト数を0に設定
+		if (distanceList.empty())
+		{
+			for (auto prog : programs)
+			{
+				glProgramUniform1i(prog, locLightCount, 0);
+			}
+			return;
+		}
+
+		// カメラに近いライトを優先する
+		std::stable_sort(distanceList.begin(), distanceList.end(),
+			[&](const auto& a, const auto& b) {return a.distance < b.distance; });
+
+		// ライトデータをGPUメモリにコピーする
+		const int lightCount = static_cast<int>(std::min(distanceList.size(), maxShaderLightCount)); // コピーするライト数
+		std::vector<Vector4> colorAndFalloffAngle(lightCount);
+		std::vector<Vector4> positionAndRadius(lightCount);
+		std::vector<Vector4> directionAndConeAngle(lightCount);
+		for (int i = 0; i < lightCount; ++i)
+		{
+			const LightData* p = distanceList[i].p;
+			const Vector3 color = p->color * p->intesity;
+			colorAndFalloffAngle[i] = Vector4{
+				color.x,color.y,color.z, p->fallOffAngle
+			};
+			positionAndRadius[i] = Vector4{
+				p->position.x, p->position.y, p->position.z, p->radius
+			};
+			directionAndConeAngle[i] = Vector4{
+					p->direction.x,p->direction.y,p->direction.z,p->coneAngle
+			};
+		}
+
+		for (auto prog : programs)
+		{
+			glProgramUniform4fv(prog, locLightColorAndFalloffAngle, lightCount, &colorAndFalloffAngle[0].x);
+			glProgramUniform4fv(prog, locLightPositionAndRadius, lightCount, &positionAndRadius[0].x);
+			glProgramUniform4fv(prog, locLightDirectionAndConeAngle, lightCount, &directionAndConeAngle[0].x);
+			glProgramUniform1i(prog, locLightCount, lightCount);
+		}
+	}
+
+	/**
+	* デプスシャドウマップの作成
+	*/
+	void RenderingEngine::CreateShadowMap(std::vector<RendererPtr>::iterator begin, std::vector<RendererPtr>::iterator end)
+	{
+		// 描画先フレームバッファを変更
+		glBindFramebuffer(GL_FRAMEBUFFER, *fboShadow);
+
+		// ビューポートをフレームバッファのサイズに合わせる
+		const auto& texShadow = fboShadow->GetDepthTexture();
+		glViewport(0, 0, texShadow->GetWidth(), texShadow->GetHeight());
+
+		glEnable(GL_DEPTH_TEST);	// 深度テストを有効化
+		glDisable(GL_BLEND);		// 半透明合成を無効化
+
+		// 深度バッファをクリア
+		glClear(GL_DEPTH_BUFFER_BIT);
+
+		// 影の描画パラメータ
+		const float shadowAreaSize = 100;	// 影の描画範囲(XY平面)
+		const float shadowNearZ = 1;		// 影の描画範囲(近Z平面)
+		const float shadowFarZ = 200;		// 影の描画範囲(遠Z平面)
+		const float shadowCenterZ = (shadowNearZ + shadowFarZ) * 0.5f; // 描画範囲の中心
+		const Vector3 target = Vector3{ 0, 0, -50 }; // カメラの注視点
+		const Vector3 eye = target - directionLight.direction * shadowCenterZ; // カメラの位置
+
+		// ビュープロジェクション行列を計算
+		const Matrix4x4 matShadowView = Matrix4x4::LookAt(eye, target, Vector3::up);
+		const Matrix4x4 matShadowProj = Matrix4x4::Orthogonal(
+			-shadowAreaSize / 2, shadowAreaSize / 2,
+			-shadowAreaSize / 2, shadowAreaSize / 2,
+			shadowNearZ, shadowFarZ);
+		const Matrix4x4 matShadow = matShadowProj * matShadowView;
+
+		// シェーダの仕分け
+		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		std::vector<GLuint> shadowPrograms;
+		for (auto prog : *resouceManager->GetShaderList())
+		{
+			// ライト用のシェーダ
+			if (prog.second->isShadow)
+			{
+				shadowPrograms.push_back(prog.second->GetProgId());
+			}
+		}
+
+		// 影を使用するシェーダを取得
+		std::vector<GLuint> programs;
+		for (auto prog : *resouceManager->GetShaderList())
+		{
+			if (prog.second->isUseLight)
+			{
+				programs.push_back(prog.second->GetProgId());
+			}
+		}
+
+
+		// ビュープロジェクション行列をGPUメモリにコピー
+		for (auto prog : shadowPrograms)
+		{
+			glProgramUniformMatrix4fv(prog, locViewProjectionMatrix, 1, GL_FALSE, &matShadow[0].x);
+		}
+
+		// メッシュを描画
+		for (std::vector<RendererPtr>::iterator i = begin; i != end; ++i)
+		{
+			const auto& e = *i;
+			e->Draw(DrawType::shadow);
+		}
+
+		// 深度テクスチャを割り当てる
+		glBindTextureUnit(2, *texShadow);
+
+		// 深度テクスチャ座標への変換行列を作成
+		static const Matrix4x4 matTexture = Matrix4x4{
+			Vector4{0.5f, 0.0f, 0.0f, 0.0f},
+			Vector4{0.0f, 0.5f, 0.0f, 0.0f},
+			Vector4{0.0f, 0.0f, 0.5f, 0.0f},
+			Vector4{0.5f, 0.5f, 0.5f, 1.0f}
+		};
+
+		for (auto prog : programs)
+		{
+			// シャドウテクスチャ行列をGPUメモリにコピー
+			const Matrix4x4 matShadowTexture = matTexture * matShadowProj * matShadowView;
+			glProgramUniformMatrix4fv(prog, locShadowTextureMatrix, 1, GL_FALSE, &matShadowTexture[0].x);
+
+			// 法線方向の設定
+			const float texSize = shadowAreaSize / static_cast<float>(texShadow->GetWidth());
+			glProgramUniform1f(prog, locShadowNormalOffset, texSize);
+		}
+	}
+
+	/**
+	* スカイスフィアを描画
+	*/
+	void RenderingEngine::DrawSkySphere()
+	{
+		// シーンマネージャーを取得
+		auto sceneManger = SceneSystem::SceneManager::GetInstance();
+
+		// リソースマネージャーを取得
+		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		const GLuint progUnlit = resouceManager->GetShader("Unlit")->GetProgId();
+
+		// スカイスフィアが設定されていない場合は描画しない
+		if (!skySphere || !sceneManger->CurrentScene()->skyMaterial)
+		{
+			return;
+		}
+
+		// アンリッドシェーダで描画
+		glUseProgram(progUnlit);
+		glDepthMask(GL_FALSE);	// 深度バッファへの書き込みを禁止
+		glBindVertexArray(*skySphere->vao);
+
+		// スカイスフィアの半径を0.5mと仮定し、描画範囲の95%の大きさに拡大
+		static const float far = 1000;	// 描画範囲の最大値
+		static const float scale = far * 0.95f / 0.5f;
+		static const Matrix4x4 transformMatrix = Matrix4x4{
+			Vector4(scale, 0,		0,		0),
+			Vector4(0,		scale,	0,		0),
+			Vector4(0,		0,		scale,	0),
+			Vector4(0,		0,		0,		1),
+		};
+		glProgramUniformMatrix4fv(progUnlit, locTransformMatrix, 1, GL_FALSE, &transformMatrix[0].x);
+
+		// 色はマテリアルカラーで調整するのでオブジェクトカラーは白に設定
+		static const Color color = Color::white;
+		glProgramUniform4fv(progUnlit, locColor, 1, &color.r);
+
+		// スカイスフィアはカメラを原点として描画
+		static const Vector3 skySphereCameraPosition = Vector3{ 0,0,0 };
+		glProgramUniform3fv(progUnlit, 4, 1, &skySphereCameraPosition.x);
+
+		// スカイスフィアを描画
+		const MaterialList materials(1, sceneManger->CurrentScene()->skyMaterial);
+		Draw(progUnlit, *skySphere, materials);
+
+		auto objectManager = ObjectSystem::ObjectManager::GetInstance();
+
+		glProgramUniform3fv(progUnlit, 4, 1, &objectManager->GetMainCamera()->GetTransform()->position.x);	// カメラ座標を元に戻す
+		glDepthMask(GL_TRUE);	// 深度バッファへの書き込みを許可
+
+		glBindVertexArray(0);
+		glUseProgram(0);
+
+	}
+
+	/**
+	* ゲームオブジェクトの描画
+	*
+	* @param レンダーコンポーネント範囲の先端
+	* @param レンダーコンポーネント範囲の終端
+	*/
+	void RenderingEngine::DrawGameObject(std::vector<RendererPtr> rendererList)
+	{
+
+		// ゲームオブジェクトをレンダーキュー順に並べる
+		std::stable_sort(rendererList.begin(), rendererList.end(),
+			[](const RendererPtr& a, const RendererPtr& b) {
+				return a->renderQueue < b->renderQueue; });
+
+		// transparentキューの先頭を検索
+		const auto transparentBegin = std::lower_bound(
+			rendererList.begin(), rendererList.end(), RenderQueue_transparent,
+			[](const RendererPtr& e, int value) { return e->renderQueue < value; });
+
+		// overlayキューの先頭を検索
+		const auto overlayBegin = std::lower_bound(
+			transparentBegin, rendererList.end(), RenderQueue_overlay,
+			[](const RendererPtr& e, int value) { return e->renderQueue < value; });
+
+		// デプスシャドウマップを作成
+		CreateShadowMap(rendererList.begin(), rendererList.end());
+
+		// 描画先をデフォルトフレームバッファに戻す
+		auto fbSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glViewport(0, 0, (GLsizei)fbSize.x, (GLsizei)fbSize.y);
+
+		glEnable(GL_DEPTH_TEST);	// 深度テストを有効化
+		glEnable(GL_CULL_FACE);		// 裏面カリングを有効化
+
+		// 半透明合成を有効化
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBlendEquation(GL_FUNC_ADD);
+
+		// ライトの更新
+		UpdateShaderLight();
+
+		// transparent以前のキューを描画
+		Draw3DGameObject(rendererList.begin(), transparentBegin);
+
+		// スカイスフィアを描画
+		DrawSkySphere();
+
+		// transparentからoverlayまでのキューを描画
+		glDepthMask(GL_FALSE); // 深度バッファへの書き込みを禁止
+		Draw3DGameObject(transparentBegin, overlayBegin);
+		glDepthMask(GL_TRUE); // 深度バッファへの書き込みを許可
+
+		// overlay以降のキューを描画
+		glDisable(GL_DEPTH_TEST);	// 深度テストを無効化
+		glDisable(GL_CULL_FACE);	// 裏面カリングを無効化
+
+	}
+}
