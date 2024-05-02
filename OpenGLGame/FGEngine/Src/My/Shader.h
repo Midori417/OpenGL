@@ -1,33 +1,32 @@
 /**
-* @file ShaderObject.h
+* @file Shader.h
 */
-#ifndef FGENGINE_SHADEROBJECT_H_INCLUDED
-#define FGENGINE_SHADEROBJECT_H_INCLUDED
+#ifndef FGENGINE_SHADER_H_INCLUDED
+#define FGENGINE_SHADER_H_INCLUDED
 #include "Package/Glad.h"
-#include "Object.h"
 #include <string>
 #include <memory>
 
 namespace FGEngine
 {
 	// 先行宣言
-	class ShaderObject;
-	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
+	class Shader;
+	using ShaderPtr = std::shared_ptr<Shader>;
 
 	/**
 	* シェーダオブジェクト
 	*/
-	class  ShaderObject : public Object
+	class  Shader
 	{
 	public:
 
 		// コンストラクタ・デストラクタ
-		ShaderObject(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
-		~ShaderObject();
+		Shader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
+		~Shader();
 
 		// コピーと代入を禁止
-		ShaderObject(const ShaderObject&) = delete;
-		ShaderObject& operator=(const ShaderObject&) = delete;
+		Shader(const Shader&) = delete;
+		Shader& operator=(const Shader&) = delete;
 
 		/*
 		* シェーダオブジェクトを作成
@@ -38,7 +37,7 @@ namespace FGEngine
 		* 
 		* @return 作成したシェーダオブジェクト
 		*/
-		static ShaderObjectPtr Create(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
+		static ShaderPtr Create(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
 
 		/**
 		* プログラムオブジェクト管理番号を取得
@@ -46,6 +45,14 @@ namespace FGEngine
 		GLuint GetProgId() const
 		{
 			return prog;
+		}
+
+		/**
+		* シェーダの名前を取得
+		*/
+		std::string ToString() const
+		{
+			return name;
 		}
 
 	public:
@@ -59,6 +66,9 @@ namespace FGEngine
 		bool isUseLight = false;
 
 	private:
+
+		// シェーダの名前
+		std::string name;
 
 		// 頂点シェーダ管理番号
 		GLuint vs = 0;

@@ -4,6 +4,7 @@
 #ifndef FGENGINE_DRAWPARAMS_H_INCLUDED
 #define FGENGINE_DRAWPARAMS_H_INCLUDED
 #include "Package/Glad.h"
+#include "VertexArrayObject.h"
 
 namespace FGEngine::RenderingSystem
 {
@@ -26,6 +27,9 @@ namespace FGEngine::RenderingSystem
 
 		// マテリアルインデックス
 		int materialNo = -1;
+
+		// 描画パラメータ用VAO
+		VertexArrayObjectPtr vao;
 	};
 }
 

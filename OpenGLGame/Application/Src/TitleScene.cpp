@@ -26,7 +26,7 @@ bool TitleScene::Initialize()
 	auto col = obj->AddComponent<SphereCollider>();
 	obj->AddComponent<Rigidbody>();
 	auto mesh = obj->AddComponent<MeshRenderer>();
-	mesh->mesh = resouceManager->GetStaticMesh(ShapeType::Sphere);
+	mesh->mesh = resouceManager->GetStaticMesh("Sphere");
 	mesh->shader = resouceManager->GetShader(DefalutShader::Standard3D);
 	mesh->materials = CloneMaterialList(mesh->mesh);
 	mesh->materials[0]->mainTexture = resouceManager->GetTexture("white");
@@ -34,7 +34,7 @@ bool TitleScene::Initialize()
 	auto obj2 = objManager->CreateGameObject("GameObject", Vector3(0,-2,0), Quaternion::identity);
 	auto col2 = obj2->AddComponent<BoxCollider>();
 	auto mesh2 = obj2->AddComponent<MeshRenderer>();
-	mesh2->mesh = resouceManager->GetStaticMesh(ShapeType::Cube);
+	mesh2->mesh = resouceManager->GetStaticMesh("Cube");
 	mesh2->shader = resouceManager->GetShader(DefalutShader::Standard3D);
 	mesh2->materials = CloneMaterialList(mesh2->mesh);
 	mesh2->materials[0]->mainTexture = resouceManager->GetTexture("white");

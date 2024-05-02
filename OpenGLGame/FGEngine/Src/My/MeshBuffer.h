@@ -82,28 +82,11 @@ namespace FGEngine::RenderingSystem
 		StaticMeshPtr GetStaticMesh(const std::string& name) const;
 
 		/**
-		* スケルタルメッシュの取得
-		* 
-		* @param name 取得したいスケルタルメッシュの名前
-		* 
-		* @return nameに対応したスケルタルメッシュ
-		*/
-		SkeletalMeshPtr GetSkeletalMesh(const std::string& name) const;
-
-		/**
 		* VAOの取得
 		*/
 		VertexArrayObjectPtr GetVAO() const
 		{
 			return vao;
-		}
-
-		/**
-		* SkeletalVAOの取得
-		* */
-		VertexArrayObjectPtr GetSkeletalVAO() const
-		{
-			return vaoSkeletal;
 		}
 
 	private:
@@ -145,14 +128,8 @@ namespace FGEngine::RenderingSystem
 		// スタティックメッシュ頂点アトリビュート
 		VertexArrayObjectPtr vao;
 
-		//スケルタルメッシュ頂点アトリビュート
-		VertexArrayObjectPtr vaoSkeletal;
-
 		// スタティックメッシュ配列
 		std::unordered_map<std::string, StaticMeshPtr> meshes;
-
-		// スケルタルメッシュ配列
-		std::unordered_map<std::string, SkeletalMeshPtr> skeletalMeshes;
 
 		// 描画パラメータ配列
 		std::vector<DrawParams> drawParamsList;

@@ -1,15 +1,30 @@
 /**
-* @file Shape.h
+* @file CollisionType.h
 */
-#ifndef FGENGINE_SHAPE_H_INCLUDED
-#define FGENGINE_SHAPE_H_INCLUDED
+#ifndef FGENGINE_COLLISIONTYPE_H_INCLUDED
+#define FGENGINE_COLLISIONTYPE_H_INCLUDED
 #include "Vector3.h"
 
-namespace FGEngine
+namespace FGEngine::PhysicsSystem
 {
 	/**
-* 軸平行ボックス
-*/
+	* コリジョンのタイプ
+	*/
+	enum class CollisionType
+	{
+		// 軸平行境界ボックス
+		AABB,
+
+		// 球体
+		Sphere,
+
+		// 有向境界ボックス
+		Box,
+	};
+
+	/**
+	* 軸平行ボックス
+	*/
 	struct AABB
 	{
 		Vector3 min = Vector3(-0.5f);

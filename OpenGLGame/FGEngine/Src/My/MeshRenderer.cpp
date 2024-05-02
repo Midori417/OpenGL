@@ -4,7 +4,7 @@
 #include "MeshRenderer.h"
 #include "GameObject.h"
 #include "Mesh.h"
-#include "ShaderObject.h"
+#include "Shader.h"
 #include "ShaderLocationNum.h"
 #include "MeshBuffer.h"
 
@@ -27,8 +27,6 @@ namespace FGEngine
 
 			if (drawType == DrawType::normal)
 			{
-				// VAOをバインド
-				glBindVertexArray(*mesh->vao);
 				if (shader)
 				{
 					if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
@@ -57,9 +55,6 @@ namespace FGEngine
 					RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, materials);
 				}
 			}
-
-			// VAOのバインド解除
-			glBindVertexArray(0);
 		}
 	}
 }

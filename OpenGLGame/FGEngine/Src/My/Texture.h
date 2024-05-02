@@ -4,7 +4,8 @@
 #ifndef FFGENGINE_TEXTURE_H_INCLUDED
 #define FFGENGINE_TEXTURE_H_INCLUDED
 #include "Package/Glad.h"
-#include "Object.h"
+#include <string>
+#include <memory>
 
 namespace FGEngine
 {
@@ -15,12 +16,24 @@ namespace FGEngine
 	/**
 	* テクスチャ管理クラス
 	*/
-	class Texture : public Object
+	class Texture
 	{
 	public:
 
+		/**
+		* テクスチャのタイプ
+		*/
+		enum class TextureType
+		{
+			// Obj
+			Obj,
+
+			// Gltf
+			Gltf,
+		};
+
 		// filenameのテクスチャを作成するコンストラクタ
-		explicit Texture(const std::string& name, GLuint object, int width, int height);
+		explicit Texture(const std::string& name, const std::string& filename, TextureType type = TextureType::Obj);
 
 		// 空のテクスチャを作成するコンストラクタ
 		explicit Texture(const std::string& name, int width, int height,
@@ -40,11 +53,12 @@ namespace FGEngine
 		* テクスチャを読み込んで作成
 		*
 		* @param name		テクスチャの名前
-		* @apram filename	テクスチャのファイル
-		*
+		* @param filename	テクスチャのファイル
+		* @param type		テクスチャのタイプ
+		* 
 		* @return 作成したテクスチャポインター
 		*/
-		static std::shared_ptr<Texture> Create(const std::string& name, GLuint object, int width, int height);
+		static std::shared_ptr<Texture> Create(const std::string& name, const std::string& filename, TextureType type = TextureType::Obj);
 
 		/**
 		* 空のテクスチャを作成する
@@ -83,8 +97,18 @@ namespace FGEngine
 			return height;
 		}
 
+		/**
+		* テクスチャの名前を取得
+		*/
+		std::string ToString() const
+		{
+			return name;
+		}
+
 	private:
 
+		// テクスチャの名前
+		std::string name;
 
 		// テクスチャの管理番号
 		GLuint id = 0;

@@ -26,7 +26,7 @@ namespace FGEngine::RenderingSystem
 		Vector3 color = Vector3::one;
 
 
-		// スポットライト用の変数
+		// === スポットライト用の変数 === //
 
 		// 向き
 		Vector3 direction;	

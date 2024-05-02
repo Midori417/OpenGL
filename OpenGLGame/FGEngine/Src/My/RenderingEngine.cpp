@@ -6,7 +6,7 @@
 #include "SceneManager.h"
 #include "ResouceManager.h"
 #include "ObjectManager.h"
-#include "ShaderObject.h"
+#include "Shader.h"
 #include "MeshBuffer.h"
 #include "ShaderLocationNum.h"
 #include <algorithm>
@@ -288,10 +288,7 @@ namespace FGEngine::RenderingSystem
 			return;
 		}
 
-		// アンリッドシェーダで描画
-		glUseProgram(progUnlit);
 		glDepthMask(GL_FALSE);	// 深度バッファへの書き込みを禁止
-		glBindVertexArray(*skySphere->vao);
 
 		// スカイスフィアの半径を0.5mと仮定し、描画範囲の95%の大きさに拡大
 		static const float far = 1000;	// 描画範囲の最大値
@@ -320,10 +317,6 @@ namespace FGEngine::RenderingSystem
 
 		glProgramUniform3fv(progUnlit, 4, 1, &objectManager->GetMainCamera()->GetTransform()->position.x);	// カメラ座標を元に戻す
 		glDepthMask(GL_TRUE);	// 深度バッファへの書き込みを許可
-
-		glBindVertexArray(0);
-		glUseProgram(0);
-
 	}
 
 	/**

@@ -5,25 +5,22 @@
 #define FGENGINE_RESOUCEMANAGER_H_INCLUDED
 #include "SystemFrd.h"
 #include "Singleton.h"
-#include "ShaderObject.h"
-#include "ShapeType.h"
+#include "Shader.h"
 #include "DefalutShader.h"
 #include <string>
 #include <unordered_map>
 
 namespace FGEngine
 {
+	// 先行宣言
 	class Texture;
 	using TexturePtr = std::shared_ptr<Texture>;
-	class StaticMesh;
+	struct StaticMesh;
 	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
-	class SkeletalMesh;
-	using SkeletalMeshPtr = std::shared_ptr<SkeletalMesh>;
-	class ShaderObject;
-	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
-	class Material;
+	class Shader;
+	using ShaderPtr = std::shared_ptr<Shader>;
+	struct Material;
 	using MaterialPtr = std::shared_ptr<Material>;
-
 
 	namespace RenderingSystem
 	{
@@ -56,7 +53,7 @@ namespace FGEngine
 			*/
 			int Initialize();
 
-			std::unordered_map<std::string, ShaderObjectPtr>* GetShaderList()
+			std::unordered_map<std::string, ShaderPtr>* GetShaderList()
 			{
 				return &shaderCache;
 			}
@@ -109,31 +106,13 @@ namespace FGEngine
 			StaticMeshPtr GetStaticMesh(const std::string& name);
 
 			/**
-			* デフォルトスタティックメッシュを取得
-			* 
-			* @param primitiveType	プリミティブのタイプ
-			* 
-			* @returun primitiveTypeにあったスタティックメッシュ
-			*/
-			StaticMeshPtr GetStaticMesh(ShapeType primitiveType);
-
-			/**
-			* スケルタルメッシュを取得
-			* 
-			* @param name スケルタルメッシュの名前
-			* 
-			* @return nameにあったスケルタルメッシュ
-			*/
-			SkeletalMeshPtr GetSkeltalMesh(const std::string& name);
-
-			/**
 			* シェーダーを取得
 			* 
 			* @param name シェーダーの名前
 			* 
 			* @return nameにあったシェーダ
 			*/
-			ShaderObjectPtr GetShader(const std::string& name);
+			ShaderPtr GetShader(const std::string& name);
 
 			/**
 			* デフォルトシェーダーを取得
@@ -142,7 +121,7 @@ namespace FGEngine
 			*
 			* @return shaderにあったシェーダ
 			*/
-			ShaderObjectPtr GetShader(DefalutShader shader);
+			ShaderPtr GetShader(DefalutShader shader);
 
 		private:
 
@@ -150,7 +129,7 @@ namespace FGEngine
 			std::unordered_map<std::string, TexturePtr> textureCache;
 
 			// シェーダキャッシュ
-			std::unordered_map<std::string, ShaderObjectPtr> shaderCache;
+			std::unordered_map<std::string, ShaderPtr> shaderCache;
 
 			// メッシュバッファ
 			RenderingSystem::MeshBufferPtr meshBuffer;

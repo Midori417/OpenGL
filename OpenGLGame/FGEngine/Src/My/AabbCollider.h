@@ -4,7 +4,6 @@
 #ifndef FGENGINE_AABBCOLLIDER_H_INCLUDED
 #define FGENGINE_AABBCOLLIDER_H_INCLUDED
 #include "Collider.h"
-#include "Intersect.h"
 
 namespace FGEngine
 {
@@ -22,12 +21,12 @@ namespace FGEngine
 		/**
 		* コライダーのタイプを取得
 		*/
-		virtual ColliderType GetType() const;
+		virtual PhysicsSystem::CollisionType GetType() const;
 
 		/**
 		* 図形を取得する
 		*/
-		const AABB& GetShape() const;
+		const PhysicsSystem::AABB& GetShape() const;
 
 		/**
 		* 座標を変更する
@@ -56,7 +55,7 @@ namespace FGEngine
 	private:
 
 		// 図形
-		AABB aabb;
+		PhysicsSystem::AABB aabb;
 	};
 }
 

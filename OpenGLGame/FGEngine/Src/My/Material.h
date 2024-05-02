@@ -3,8 +3,8 @@
 */
 #ifndef FGENGINE_MATERIAL_H_INCLUDED
 #define FGENGINE_MATERIAL_H_INCLUDED
-#include "Object.h"
 #include "Color.h"
+#include "Vector2.h"
 #include <memory>
 #include <vector>
 #include <string>
@@ -18,15 +18,10 @@ namespace FGEngine
 	/**
 	* マテリアル
 	*/
-	class Material : public Object
+	struct Material
 	{
-	public:
-
-		// コンストラクタ・デストラクタ
-		Material() = default;
-		virtual ~Material() = default;
-
-	public:
+		// マテリアルの名前
+		std::string name;
 
 		// 基本色+アルファ
 		Color color = Color::white;

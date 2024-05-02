@@ -4,7 +4,6 @@
 #ifndef FGENGINE_BOXCOLLIDER_H_INCLUDED
 #define FGENGINE_BOXCOLLIDER_H_INCLUDED
 #include "Collider.h"
-#include "Shape.h"
 
 namespace FGEngine
 {
@@ -20,14 +19,14 @@ namespace FGEngine
 		virtual ~BoxCollider() = default;
 
 		/**
-		* コライダーのタイプを取得
+		* コリジョンタイプを取得
 		*/
-		virtual ColliderType GetType() const;
+		virtual PhysicsSystem::CollisionType GetType() const;
 
 		/**
 		* 図形を取得
 		*/
-		const Box& GetShape() const;
+		const PhysicsSystem::Box& GetShape() const;
 
 		/**
 		* 座標を変更する
@@ -56,7 +55,7 @@ namespace FGEngine
 	private:
 
 		// 図形
-		Box box;
+		PhysicsSystem::Box box;
 	};
 	using BoxColliderPtr = std::shared_ptr<BoxCollider>;
 }

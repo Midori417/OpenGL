@@ -168,8 +168,5 @@
 // リソースマネージャー
 #include "My/ResouceManager.h"
 
-// 図形の種類
-#include "My/ShapeType.h"
-
 // デフォルトシェーダの種類
 #include "My/DefalutShader.h"

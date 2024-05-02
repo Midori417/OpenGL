@@ -4,6 +4,7 @@
 #ifndef FGENGINE_COLLIDER_H_INCLUDED
 #define FGENGINE_COLLIDER_H_INCLUDED
 #include "Component.h"
+#include "CollisionType.h"
 
 namespace FGEngine
 {
@@ -13,20 +14,6 @@ namespace FGEngine
 	class Collider;
 	using ColliderPtr = std::shared_ptr<Collider>;
 
-	/**
-	* コライダーのタイプ
-	*/
-	enum class ColliderType
-	{
-		// 軸平行境界ボックス
-		AABB,
-
-		// 球体
-		Sphere,
-
-		// 有向境界ボックス
-		Box,
-	};
 
 	/**
 	* コライダーコンポーネント基底クラス
@@ -47,7 +34,7 @@ namespace FGEngine
 		/**
 		* コライダーのタイプを取得
 		*/
-		virtual ColliderType GetType() const = 0;
+		virtual PhysicsSystem::CollisionType GetType() const = 0;
 
 		/**
 		* 座標を変更する

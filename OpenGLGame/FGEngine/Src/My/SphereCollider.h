@@ -4,7 +4,6 @@
 #ifndef FGENGINE_SPHERECOLLIDER_H_INCLUDED
 #define FGENGINE_SPHERECOLLIDER_H_INCLUDED
 #include "Collider.h"
-#include "Shape.h"
 
 namespace FGEngine
 {
@@ -20,14 +19,14 @@ namespace FGEngine
 		virtual ~SphereCollider() = default;
 
 		/**
-		* コライダーのタイプを取得
+		* コリジョンタイプを取得
 		*/
-		virtual ColliderType GetType() const;
+		virtual PhysicsSystem::CollisionType GetType() const;
 
 		/**
 		* 図形を取得
 		*/
-		const Sphere& GetShape() const;
+		const PhysicsSystem::Sphere& GetShape() const;
 
 		/**
 		* 図形を変更する
@@ -56,7 +55,7 @@ namespace FGEngine
 	private:
 
 		// 図形
-		Sphere sphere;
+		PhysicsSystem::Sphere sphere;
 	};
 	using SphereColliderPtr = std::shared_ptr<SphereCollider>;
 }

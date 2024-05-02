@@ -7,9 +7,9 @@
 
 namespace FGEngine
 {
-	class StaticMesh;
+	struct StaticMesh;
 	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
-	class Material;
+	struct Material;
 	using MaterialPtr = std::shared_ptr<Material>;
 
 	/**

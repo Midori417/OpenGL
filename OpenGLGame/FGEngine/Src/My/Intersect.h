@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_INTERSECT_H_INCLUDED
 #define FGENGINE_INTERSECT_H_INCLUDED
-#include "Shape.h"
+#include "CollisionType.h"
 
 namespace FGEngine::PhysicsSystem
 {

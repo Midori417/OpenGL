@@ -46,7 +46,6 @@ namespace FGEngine
 		*/
 		void SetName(const std::string& value);
 
-
 		/**
 		* オブジェクトの状態
 		*/
@@ -60,13 +59,6 @@ namespace FGEngine
 		* オブジェクトの状態を取得する
 		*/
 		HideFlag GetHideFlag() const;
-
-
-		/**
-		* オブジェクトを生成する
-		*/
-		template<typename T>
-		std::shared_ptr<T> Instantate(const std::string& name);
 
 		/**
 		* ゲームオブジェクトを生成する

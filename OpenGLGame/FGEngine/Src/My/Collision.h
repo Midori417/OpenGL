@@ -20,7 +20,6 @@ namespace FGEngine
 
 	namespace PhysicsSystem
 	{
-
 		/**
 		* 衝突したオブジェクトの情報を扱う
 		*/

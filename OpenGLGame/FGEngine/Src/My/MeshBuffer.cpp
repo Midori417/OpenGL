@@ -38,24 +38,6 @@ namespace FGEngine::RenderingSystem
 		vao->SetAttribute(1, 2, sizeof(Vertex), offsetof(Vertex, texcoord));
 		vao->SetAttribute(2, 3, sizeof(Vertex), offsetof(Vertex, normal));
 
-
-		// スケルタルメッシュ用のVAOを作成
-		vaoSkeletal = VertexArrayObject::Create();
-
-		glBindVertexArray(*vaoSkeletal);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, *buffer);
-		glBindBuffer(GL_ARRAY_BUFFER, *buffer);
-
-		vaoSkeletal->SetAttribute(0, 3, sizeof(SkeletalVertex), offsetof(SkeletalVertex, position));
-		vaoSkeletal->SetAttribute(1, 2, sizeof(SkeletalVertex), offsetof(SkeletalVertex, texcoord));
-		vaoSkeletal->SetAttribute(2, 3, sizeof(SkeletalVertex), offsetof(SkeletalVertex, normal));
-		glEnableVertexAttribArray(3);
-		glVertexAttribIPointer(3, 4, GL_UNSIGNED_SHORT, sizeof(SkeletalVertex),
-			reinterpret_cast<const void*>(offsetof(SkeletalVertex, joints)));
-		glEnableVertexAttribArray(4);
-		glVertexAttribPointer(4, 4, GL_UNSIGNED_SHORT, GL_TRUE, sizeof(SkeletalVertex),
-			reinterpret_cast<const void*>(offsetof(SkeletalVertex, weights)));
-
 		// 誤った操作が行われないようにバインドを解除
 		glBindVertexArray(0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -117,8 +99,7 @@ namespace FGEngine::RenderingSystem
 
 		// 次のデータ格納開始位置を計算
 		/// std::lcm(数値その１、数値その２)最小公倍数
-		constexpr size_t a = std::lcm(sizeof(SkeletalVertex),
-			std::lcm(sizeof(uint16_t), sizeof(Vertex)));
+		constexpr size_t a = std::lcm(sizeof(uint16_t), sizeof(Vertex));
 		usedBytes += ((totalBytes + a - 1) / a) * a;
 
 	}
@@ -148,10 +129,9 @@ namespace FGEngine::RenderingSystem
 		// メッシュを作成
 		auto pMesh = std::make_shared<StaticMesh>();
 
+		pMesh->name = name;
 		pMesh->drawParamsList.swap(meshData.drawParamsList);
 		pMesh->materials.swap(meshData.materials);
-		pMesh->SetName(name);
-		pMesh->vao = vao;
 		meshes.emplace(name, pMesh);
 
 		// AddVertexDataでコピーしたデータの位置を、描画パラメータに反映
@@ -161,6 +141,7 @@ namespace FGEngine::RenderingSystem
 		{
 			e.baseVertex = baseVertex;
 			e.indices = reinterpret_cast<const void*>(baseIndexOffset + reinterpret_cast<intptr_t>(e.indices));
+			e.vao = vao;
 		}
 
 		LOG("%sを読み込みました(頂点数=%d, インデックス数=%d)", filename.c_str(), meshData.vertices.size(), meshData.indices.size());
@@ -192,24 +173,6 @@ namespace FGEngine::RenderingSystem
 			return itr->second;
 		}
 		LOG_ERROR("(StaticMesh)%sは登録されていません", name.c_str());
-		return nullptr;
-	}
-
-	/**
-	* スケルタルメッシュを取得
-	*
-	* @param name スケルタルメッシュの名前
-	*
-	* @return 名前がnameと一致するスケルタルメッシュ
-	*/
-	SkeletalMeshPtr MeshBuffer::GetSkeletalMesh(const std::string& name) const
-	{
-		auto itr = skeletalMeshes.find(name);
-		if (itr != skeletalMeshes.end()) 
-		{
-			return itr->second;
-		}
-		LOG_ERROR("(SkeltalMesh)%sは登録されていません", name.c_str());
 		return nullptr;
 	}
 
@@ -246,7 +209,7 @@ namespace FGEngine::RenderingSystem
 			if (sscanf(line.data(), " newmtl %999s", name) == 1) 
 			{
 				pMaterial = std::make_shared<Material>();
-				pMaterial->SetName(name);
+				pMaterial->name = name;
 				materials.push_back(pMaterial);
 				continue;
 			}
@@ -532,7 +495,7 @@ namespace FGEngine::RenderingSystem
 			params.baseVertex = baseVertex;
 			params.materialNo = 0;	// デフォルト値を設定
 			for (int i = 0; i < materials.size(); ++i) {
-				if (materials[i]->ToString() == cur.name) {
+				if (materials[i]->name == cur.name) {
 					params.materialNo = i;	// 名前と一致するマテリアルを設定
 					break;
 				}
@@ -606,9 +569,15 @@ namespace FGEngine::RenderingSystem
 					glProgramUniform1f(program, locAlphaCutoff, material.alphatCutOff);
 				}
 			}
-			// 描画
+			glBindVertexArray(*e.vao);
 			glDrawElementsBaseVertex(e.mode, e.count, GL_UNSIGNED_SHORT, e.indices, e.baseVertex);
 		}
+
+		// 頂点配列を解除
+		glBindVertexArray(0);
+		// テクスチャのバインドを解除
+		glBindTextures(0, 1, nullptr);
+		glBindTextures(1, 1, nullptr);
 		// シェーダプログラムを解除
 		glUseProgram(0);
 	}

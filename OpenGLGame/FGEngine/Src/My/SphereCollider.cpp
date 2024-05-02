@@ -7,17 +7,17 @@
 namespace FGEngine
 {
 	/**
-	* コライダーのタイプを取得
+	* コリジョンタイプを取得
 	*/
-	ColliderType SphereCollider::GetType() const
+	PhysicsSystem::CollisionType SphereCollider::GetType() const
 	{
-		return ColliderType::Sphere;
+		return PhysicsSystem::CollisionType::Sphere;
 	}
 
 	/**
 	* 図形を取得
 	*/
-	const Sphere& SphereCollider::GetShape() const
+	const PhysicsSystem::Sphere& SphereCollider::GetShape() const
 	{
 		return sphere;
 	}

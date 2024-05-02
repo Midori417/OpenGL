@@ -7,8 +7,8 @@
 
 namespace FGEngine
 {
-	class ShaderObject;
-	using ShaderObjectPtr = std::shared_ptr<ShaderObject>;
+	class Shader;
+	using ShaderPtr = std::shared_ptr<Shader>;
 
 	/**
 	* 描画の順序
@@ -53,10 +53,10 @@ namespace FGEngine
 		int renderQueue = RenderQueue_geometry;
 
 		// シェーダ
-		ShaderObjectPtr shader;
+		ShaderPtr shader;
 
 		// 影シェーダ
-		ShaderObjectPtr shadowShader;
+		ShaderPtr shadowShader;
 	};
 	using RendererPtr = std::shared_ptr<Renderer>;
 }

@@ -6,7 +6,7 @@
 #include "PhysicsEngine.h"
 #include "ResouceManager.h"
 #include "WindowManager.h"
-#include "ShaderObject.h"
+#include "Shader.h"
 #include "Time.h"
 #include "WorldCollider.h"
 #include "ShaderLocationNum.h"
