@@ -3,6 +3,7 @@
 */
 #ifndef FGENGINE_GLTFFILE_H_INCLUDED
 #define FGENGINE_GLTFFILE_H_INCLUDED
+#include "Package/Glad.h"
 #include <string>
 #include <memory>
 #include <vector>
@@ -80,6 +81,10 @@ namespace FGEngine
 	struct Material;
 	using MaterialPtr = std::shared_ptr<Material>;
 
+	namespace RenderingSystem
+	{
+		class GltfFileBuffer;
+	}
 	/**
 	* glTfファイル
 	*/
@@ -108,8 +113,22 @@ namespace FGEngine
 
 		// 基本姿勢行列
 		Matrix4x4 matRoot = Matrix4x4(1);
+
+		// GltfFileBuffer
+		RenderingSystem::GltfFileBuffer* gltfFileBuffer;
 	};
 	using GltfFilePtr = std::shared_ptr<GltfFile>;
+
+	/**
+	* 姿勢行列の配列
+	*/
+	struct AnimMatrixRange
+	{
+		GLintptr offset;
+
+		size_t size;
+	};
+
 
 }
 

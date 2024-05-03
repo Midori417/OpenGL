@@ -8,6 +8,7 @@
 #include "ObjectManager.h"
 #include "Shader.h"
 #include "MeshBuffer.h"
+#include "GltfFileBuffer.h"
 #include "ShaderLocationNum.h"
 #include <algorithm>
 
@@ -21,12 +22,19 @@ namespace FGEngine::RenderingSystem
 	*/
 	int RenderingEngine::Initialize()
 	{
+		auto resManager = ResouceSystem::ResouceManager::GetInstance();
+
 		// スカイスフィアを設定
-		skySphere = ResouceSystem::ResouceManager::GetInstance()->GetStaticMesh("skySphere");
+		skySphere = resManager->GetStaticMesh("skySphere");
+
+		// glTFファイルバッファを取得
+		glTFfileBuffer = resManager->gltfFileBuffer.get();
 
 		// FBOを作成
 		auto texShadow = Texture::Create("FBO(depth)", 2048, 2048, GL_DEPTH_COMPONENT32, GL_CLAMP_TO_EDGE);
 		fboShadow = FrameBufferObject::Create(nullptr, texShadow);
+
+
 		return 0;
 	}
 
@@ -327,6 +335,20 @@ namespace FGEngine::RenderingSystem
 	*/
 	void RenderingEngine::DrawGameObject(std::vector<RendererPtr> rendererList)
 	{
+		// アニメーションバッファをクリア
+		glTFfileBuffer->ClearAnimationBuffer();
+
+		// 描画の前処理
+		for (auto& x : rendererList)
+		{
+			if (x->enabled)
+			{
+				x->PreDraw();
+			}
+		}
+
+		// アニメーションバッファをGPUメモリにコピーする
+		glTFfileBuffer->UploadAnimationBuffer();
 
 		// ゲームオブジェクトをレンダーキュー順に並べる
 		std::stable_sort(rendererList.begin(), rendererList.end(),

@@ -3,14 +3,14 @@
 */
 #ifndef TITLESCENE_H_INCLUDED
 #define TITLESCENE_H_INCLUDED
-
-#include "FGEngineSub.h"
+#include "FGEngine.h"
 using namespace FGEngine;
+using namespace FGEngine::SceneSystem;
 
 /**
 * タイトルシーン
 */
-class TitleScene : public FGEngine::SceneSystem::Scene
+class TitleScene : public Scene
 {
 public:
 

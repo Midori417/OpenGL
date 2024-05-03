@@ -3,7 +3,7 @@
 */
 #ifndef APPLICATION_H_INCLUDED
 #define APPLICATION_H_INCLUDED
-#include "FGEngineSub.h"
+#include "FGEngine.h"
 
 /**
 * アプリケーションクラス

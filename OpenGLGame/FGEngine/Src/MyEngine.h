@@ -1,5 +1,5 @@
 /**
-* @file FGEngine.h
+* @file MyEngine.h
 */
 #pragma once
 
@@ -83,6 +83,9 @@
 // マウスの入力
 #include "My/MouseButton.h"
 
+#include "My/InputMouse.h"
+
+#include "My/WindowManager.h"
 
 // ===================
 //
@@ -128,6 +131,8 @@
 // スタティックメッシュレンダラーコンポーネント
 #include "My/MeshRenderer.h"
 
+#include "My/GltfMeshRenderer.h"
+
 // コライダーコンポーネント基底
 #include "My/Collider.h"
 
@@ -148,6 +153,8 @@
 
 // 画像(UI)描画コンポーネント
 #include "My/Image.h"
+
+#include "My/AnimationClip.h"
 
 // ===================
 //

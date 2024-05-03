@@ -57,6 +57,9 @@ namespace FGEngine
 			*/
 			int Initialize();
 
+			/**
+			* シェーダ配列を取得
+			*/
 			std::unordered_map<std::string, ShaderPtr>* GetShaderList()
 			{
 				return &shaderCache;

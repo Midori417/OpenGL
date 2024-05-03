@@ -12,6 +12,8 @@
 
 namespace FGEngine::RenderingSystem
 {
+	class GltfFileBuffer;
+
 	/**
 	* 描画エンジン
 	*/
@@ -92,6 +94,9 @@ namespace FGEngine::RenderingSystem
 		
 		// デプスシャドウ用FBO
 		FrameBufferObjectPtr fboShadow;
+
+		// glTFファイルバッファ
+		GltfFileBuffer* glTFfileBuffer;
 
 	};
 }

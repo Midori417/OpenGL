@@ -176,11 +176,19 @@ namespace FGEngine
 	}
 
 	/**
+	* ローカル座標行列を取得
+	*/
+	Matrix4x4 Transform::GetLocalTransformMatrix() const
+	{
+		return localTransformMatrix;
+	}
+
+	/**
 	* ワールド座標行列を取得
 	*/
-	Matrix4x4 Transform::GetTransformMatrix() const
+	Matrix4x4 Transform::GetWorldTransformMatrix() const
 	{
-		return transformMatrix;
+		return worldTransformMatrix;
 	}
 
 	/**
@@ -199,7 +207,7 @@ namespace FGEngine
 		auto pos = Matrix4x4::Translate(Vector3(position.x, position.y, -position.z));
 		auto rot = Quaternion::QuaternionToRotationMatrix4x4(rotation.Inverse());
 		auto s = Matrix4x4::Scale(scale);
-		transformMatrix = pos * rot * s;
+		localTransformMatrix = pos * rot * s;
 		normalMatrix = Matrix3x3(rot);
 	}
 

@@ -2,7 +2,6 @@
 * @file TitleScene.cpp
 */
 #include "TitleScene.h"
-using namespace FGEngine::SceneSystem;
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
@@ -22,15 +21,10 @@ bool TitleScene::Initialize()
 	camera->AddComponent<Camera>();
 	objManager->SetMainCamera(camera);
 
-	obj = objManager->CreateGameObject("GameObject", Vector3(0,0,0), Quaternion::identity);
-	auto col = obj->AddComponent<SphereCollider>();
-	auto mesh = obj->AddComponent<MeshRenderer>();
-	mesh->mesh = resouceManager->GetGltfFile("Gundam")->meshes[0];
-	mesh->materials = resouceManager->GetGltfFile("Gundam")->materials;
-	mesh->shader = resouceManager->GetShader(DefalutShader::Standard3D);
-	mesh->shadowShader = resouceManager->GetShader(DefalutShader::Shadow3D);
-	//mesh->materials = CloneMaterialList(mesh->mesh);
-	//mesh->materials[0]->mainTexture = resouceManager->GetTexture("white");
+	auto title = objManager->CreateGameObject("title");
+	auto iamge = title->AddComponent<Image>();
+	iamge->texture = resouceManager->GetTexture("Title");
+	iamge->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
 
 	auto material = std::make_shared<Material>();
 	material->mainTexture = resouceManager->GetTexture("sky");
@@ -48,35 +42,10 @@ bool TitleScene::Initialize()
 */
 void TitleScene::Update()
 {
-
-	auto camera = obj;
-
-	if (InputKey::GetKey(KeyCode::E))
+	if (InputKey::GetKeyDown(KeyCode::Enter))
 	{
-		rotY += 1 * Time::DeltaTime();
+		SceneManager::LoadScene("ƒƒCƒ“ƒV[ƒ“");
 	}
-	if (InputKey::GetKey(KeyCode::Q))
-	{
-		rotY -= 1 * Time::DeltaTime();
-	}
-	if (InputKey::GetKey(KeyCode::W))
-	{
-		camera->GetTransform()->position += camera->GetTransform()->Forward() * Time::DeltaTime();
-	}
-	if (InputKey::GetKey(KeyCode::S))
-	{
-		camera->GetTransform()->position -= camera->GetTransform()->Forward() * Time::DeltaTime();
-	}
-	if (InputKey::GetKey(KeyCode::A))
-	{
-		camera->GetTransform()->position -= camera->GetTransform()->Right() * Time::DeltaTime();
-	}
-	if (InputKey::GetKey(KeyCode::D))
-	{
-		camera->GetTransform()->position += camera->GetTransform()->Right() * Time::DeltaTime();
-	}
-
-	camera->GetTransform()->rotation = Quaternion::AngleAxis(rotX, Vector3::right) * Quaternion::AngleAxis(rotY, Vector3::up);
 }
 
 /**
@@ -86,4 +55,5 @@ void TitleScene::Update()
 */
 void TitleScene::Finalize()
 {
+	ObjectManager::GetInstance()->AllClearGameObject();
 }

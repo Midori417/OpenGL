@@ -32,7 +32,7 @@ namespace FGEngine
 					if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
 					{
 						glProgramUniformMatrix4fv(shader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
-							GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
+							GL_FALSE, &GetTransform()->GetWorldTransformMatrix()[0].x);
 					}
 					if (glGetUniformLocation(shader->GetProgId(), "normalMatrix") >= 0)
 					{
@@ -40,7 +40,14 @@ namespace FGEngine
 							GL_FALSE, &GetTransform()->GetNormalMatrix()[0].x);
 					}
 					// •`‰æ
-					RenderingSystem::Draw(shader->GetProgId(), *mesh, materials);
+					if (materials.empty())
+					{
+						RenderingSystem::Draw(shader->GetProgId(), *mesh, mesh->materials);
+					}
+					else
+					{
+						RenderingSystem::Draw(shader->GetProgId(), *mesh, materials);
+					}
 				}
 			}
 			else if (drawType == DrawType::shadow)
@@ -50,9 +57,17 @@ namespace FGEngine
 					if (glGetUniformLocation(shadowShader->GetProgId(), "transformMatrix") >= 0)
 					{
 						glProgramUniformMatrix4fv(shadowShader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
-							GL_FALSE, &GetTransform()->GetTransformMatrix()[0].x);
-					}// •`‰æ
-					RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, materials);
+							GL_FALSE, &GetTransform()->GetWorldTransformMatrix()[0].x);
+					}
+					// •`‰æ
+					if (materials.empty())
+					{
+						RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, mesh->materials);
+					}
+					else
+					{
+						RenderingSystem::Draw(shadowShader->GetProgId(), *mesh, materials);
+					}
 				}
 			}
 		}

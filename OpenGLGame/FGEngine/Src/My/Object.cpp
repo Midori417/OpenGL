@@ -84,7 +84,18 @@ namespace FGEngine
 	* @param obj ”jŠü—\’è‚É‚·‚éƒIƒuƒWƒFƒNƒg
 	* @parma t	”j‰ó‚³‚ê‚éŽžŠÔ
 	*/
-	void Object::Destory(ObjectPtr obj, float t)
+	void Object::Destroy(ObjectPtr obj, float t)
+	{
+		Destroy(obj.get(), t);
+	}
+
+	/**
+	* ƒIƒuƒWƒFƒNƒg‚Ìó‘Ô‚ð”j‰ó—\’è‚É‚·‚é
+	*
+	* @param obj ”jŠü—\’è‚É‚·‚éƒIƒuƒWƒFƒNƒg
+	* @parma t	”j‰ó‚³‚ê‚éŽžŠÔ
+	*/
+	void Object::Destroy(Object* obj, float t)
 	{
 		// ‚·‚Å‚É”jŠü—\’è
 		if (obj->isDestroyed)

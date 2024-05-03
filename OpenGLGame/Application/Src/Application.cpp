@@ -2,12 +2,11 @@
 * @file Application.cpp
 */
 #include "Application.h"
+#include "TitleScene.h"
+#include "MainScene.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 using namespace FGEngine::ResouceSystem;
-
-#include "TitleScene.h"
-#include "MainScene.h"
 
 /**
 * アプリケーションの初期化
@@ -18,11 +17,13 @@ using namespace FGEngine::ResouceSystem;
 int Application::Initialize()
 {
 	auto resouceManager = ResouceManager::GetInstance();
-	// OBJファイルを読み込む
 
-	// 画像読み込み
-	resouceManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
+	// リソースの読み込み
 	resouceManager->LoadGlTF("Gundam", "Application/Res/Gundam/Model/GundamGL.gltf");
+
+	resouceManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
+	resouceManager->LoadTga("BoostbarBack", "Application/Res/UI/Battle/BoostbarBack.tga");
+	resouceManager->LoadTga("Title", "Application/Res/UI/Title/Title.tga");
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");

@@ -12,13 +12,29 @@
 namespace FGEngine
 {
 	// 先行宣言
+	struct GltfNode;
 	struct GltfFile;
 	using GltfFilePtr = std::shared_ptr<GltfFile>;
 	struct Material;
 	using MaterialPtr = std::shared_ptr<Material>;
+	struct AnimationClip;
 
 	// アニメーション用座標変換行列の配列
 	using GltfAnimationMatrices = std::vector<Matrix4x4>;
+	struct AnimMatrixRange;
+
+	/**
+	* アニメーションの姿勢行列を計算する
+	* 
+	* @param file			meshNodeを所有するファイルオブジェクト
+	* @param meshNode		メッシュを持つノード
+	* @param animation		計算の元となるアニメーション
+	* @param time			アニメーションの再生位置
+	*
+	* @return アニメーションを適用した姿勢行列の配列
+	*/ 
+	GltfAnimationMatrices CalcAnimationMatrices(const GltfFilePtr& file, const GltfNode* meshNode,
+		const AnimationClip* animation, float time);
 
 	namespace RenderingSystem
 	{
@@ -75,16 +91,6 @@ namespace FGEngine
 			GltfFilePtr GetGltf(const std::string& name);
 
 			/**
-			* 姿勢行列の配列
-			*/
-			struct Range
-			{
-				GLintptr offset;
-
-				size_t size;
-			};
-
-			/**
 			* アニメーションメッシュの描画用データをすべて削除
 			*/
 			void ClearAnimationBuffer();
@@ -96,7 +102,7 @@ namespace FGEngine
 			*
 			* @return matBonesように割り当てられたSSBOの範囲
 			*/
-			Range AddAnimationMatrices(const GltfAnimationMatrices& matBones);
+			AnimMatrixRange AddAnimationMatrices(const GltfAnimationMatrices& matBones);
 
 			/**
 			* アニメーションメッシュの描画用データをGPUメモリにコピー
@@ -109,7 +115,7 @@ namespace FGEngine
 			* @param bindingPoint	バインディングポイント
 			* @param range			バインドする範囲
 			*/
-			void BindAnimationBuffer(GLuint bindingPoint, const Range& range);
+			void BindAnimationBuffer(GLuint bindingPoint, const AnimMatrixRange& range);
 
 			/**
 			* アニメーションメッシュの描画に使うSSBO両機の割り当てを解除する

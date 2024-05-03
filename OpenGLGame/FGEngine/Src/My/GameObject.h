@@ -10,6 +10,7 @@
 #include "Transform.h"
 #include "Renderer.h"
 #include "Rigidbody.h"
+#include "Animator.h"
 #include "Camera.h"
 #include "ImGuiLayout.h"
 
@@ -50,6 +51,12 @@ namespace FGEngine
 			// コンポーネントを作成
 			auto p = std::make_shared<T>();
 
+			// 親オブジェクトを設定
+			p->ownerObject = gameObject;
+
+			// 名前を設定
+			p->SetName(ToString());
+
 			// Colliderが基底クラスの場合
 			if constexpr (std::is_base_of_v<Collider, T>)
 			{
@@ -86,6 +93,11 @@ namespace FGEngine
 			{
 				camera = p;
 			}
+			// Animatorが基底クラスの場合
+			if constexpr (std::is_base_of_v<Animator, T>)
+			{
+				animator = p;
+			}
 
 			// ImGuiLayoutが基底クレスの場合
 			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
@@ -93,11 +105,6 @@ namespace FGEngine
 				imGuiLayout = p;
 			}
 
-			// 親オブジェクトを設定
-			p->ownerObject = gameObject;
-
-			// 名前を設定
-			p->SetName(ToString());
 
 			// Transformを設定
 			p->transform = transform;
@@ -203,6 +210,9 @@ namespace FGEngine
 
 		// カメラコンポーネントポインター
 		CameraPtr camera;
+
+		// アニメータコンポーネントポインター
+		AnimatorPtr animator;
 
 		// UIレイアウトコンポーネントポインター
 		UI::ImGuiLayoutPtr imGuiLayout;

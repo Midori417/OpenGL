@@ -64,6 +64,10 @@ namespace FGEngine::PhysicsSystem
 			{
 				gameObject->rigidbody->isGrounded = true; // 設置した
 			}
+			else
+			{
+				gameObject->rigidbody->isGrounded = false;
+			}
 		}
 
 		// すべてのワールドコライダーを移動
@@ -321,12 +325,4 @@ namespace FGEngine::PhysicsSystem
 		}
 
 	}
-
-	/**
-	* 物理エンジンを更新
-	*/
-	void PhysicsEngine::Update()
-	{
-	}
-
 }

@@ -73,7 +73,8 @@ namespace FGEngine
 		* @param obj 破棄予定にするオブジェクト
 		* @parma t	破壊される時間
 		*/
-		void Destory(ObjectPtr obj, float t = 0);
+		void Destroy(ObjectPtr obj, float t = 0);
+		void Destroy(Object* obj, float t = 0);
 
 		/**
 		* 破棄予定か取得

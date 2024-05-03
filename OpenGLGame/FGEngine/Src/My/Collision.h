@@ -18,68 +18,65 @@ namespace FGEngine
 	using ColliderPtr = std::shared_ptr<Collider>;
 
 
-	namespace PhysicsSystem
+	/**
+	* 衝突したオブジェクトの情報を扱う
+	*/
+	class Collision
 	{
+	public:
+
+		friend PhysicsSystem::PhysicsEngine;
+
+		// コンストラクタ・デストラクタ
+		Collision() = default;
+		~Collision() = default;
+
 		/**
-		* 衝突したオブジェクトの情報を扱う
+		* ヒットしたゲームオブジェクトの情報を取得
 		*/
-		class Collision
+		GameObjectPtr GetGameObject() const
 		{
-		public:
+			return gameObject;
+		}
 
-			friend PhysicsEngine;
+		/**
+		* ヒットしたTransformの情報を取得
+		*/
+		TransformPtr GetTransform() const
+		{
+			return transform;
+		}
 
-			// コンストラクタ・デストラクタ
-			Collision() = default;
-			~Collision() = default;
+		/**
+		* ヒットしたColliderの情報を取得
+		*/
+		ColliderPtr GetCollider() const
+		{
+			return collider;
+		}
 
-			/**
-			* ヒットしたゲームオブジェクトの情報を取得
-			*/
-			GameObjectPtr GetGameObject() const
-			{
-				return gameObject;
-			}
+		/**
+		* ヒットしたRigidbodyの情報を取得
+		*/
+		RigidbodyPtr GetRigidbody() const
+		{
+			return rigidBody;
+		}
 
-			/**
-			* ヒットしたTransformの情報を取得
-			*/
-			TransformPtr GetTransform() const
-			{
-				return transform;
-			}
+	private:
 
-			/**
-			* ヒットしたColliderの情報を取得
-			*/
-			ColliderPtr GetCollider() const
-			{
-				return collider;
-			}
+		// ヒットしたゲームオブジェクト情報
+		GameObjectPtr gameObject;
 
-			/**
-			* ヒットしたRigidbodyの情報を取得
-			*/
-			RigidbodyPtr GetRigidbody() const
-			{
-				return rigidBody;
-			}
+		// ヒットしたTransform
+		TransformPtr transform;
 
-		private:
+		// ヒットしたCollider情報
+		ColliderPtr collider;
 
-			// ヒットしたゲームオブジェクト情報
-			GameObjectPtr gameObject;
+		// ヒットしたRigidbody情報
+		RigidbodyPtr rigidBody;
 
-			// ヒットしたTransform
-			TransformPtr transform;
-
-			// ヒットしたCollider情報
-			ColliderPtr collider;
-
-			// ヒットしたRigidbody情報
-			RigidbodyPtr rigidBody;
-	
-		};
-	}
+	};
 }
 #endif // !FGENGINE_COLLISION_H_INCLUDED

@@ -121,6 +121,11 @@ namespace FGEngine
 		static float Clamp01(float value);
 
 		/**
+		*
+		*/
+		static float Floor(float value);
+
+		/**
 		* デグリー(度数法)からラジアン(弧度法)に変換する
 		*
 		* @param deg デグリー(度数法)

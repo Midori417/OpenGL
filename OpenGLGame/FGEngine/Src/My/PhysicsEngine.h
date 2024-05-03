@@ -12,12 +12,11 @@ namespace FGEngine::PhysicsSystem
 	/**
 	* 物理エンジン
 	*/
-	class PhysicsEngine : Singleton<PhysicsEngine>
+	class PhysicsEngine : public Singleton<PhysicsEngine>
 	{
 	private:
 
 		friend Singleton<PhysicsEngine>;
-		friend ObjectSystem::ObjectManager;
 		friend MainSystem::EngineCore;
 
 		// コンストラクタ
@@ -28,20 +27,15 @@ namespace FGEngine::PhysicsSystem
 		*/
 		void ApplyPenetration(WorldColliderList* worldColliders, GameObjectPtr gameObject, const Vector3& penetration);
 
+	public:
+
 		/**
 		* ゲームオブジェクトのコライダーの衝突判定
-		* 
+		*
 		* @param a 判定対象のワールドコライダー配列その１
 		* @param b 判定対象のワールドコライダー配列その２
 		*/
 		void HandleWorldColliderCollision(WorldColliderList* a, WorldColliderList* b);
-
-	private:
-
-		/**
-		* 物理エンジンを更新
-		*/
-		void Update();
 
 	};
 }

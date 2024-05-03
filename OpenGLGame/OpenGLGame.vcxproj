@@ -148,17 +148,19 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
-    <ClInclude Include="Application\Src\FGEngineSub.h" />
+    <ClInclude Include="Application\Src\FGEngine.h" />
     <ClInclude Include="Application\Src\MainScene.h" />
     <ClInclude Include="Application\Src\TitleScene.h" />
-    <ClInclude Include="FGEngine\Src\FGEngine.h" />
+    <ClInclude Include="FGEngine\Src\MyEngine.h" />
     <ClInclude Include="FGEngine\Src\My\AabbCollider.h" />
     <ClInclude Include="FGEngine\Src\My\AnimationClip.h" />
+    <ClInclude Include="FGEngine\Src\My\Animator.h" />
     <ClInclude Include="FGEngine\Src\My\Behaviour.h" />
     <ClInclude Include="FGEngine\Src\My\Collision.h" />
     <ClInclude Include="FGEngine\Src\My\DefalutShader.h" />
     <ClInclude Include="FGEngine\Src\My\GltfFile.h" />
     <ClInclude Include="FGEngine\Src\My\GltfFileBuffer.h" />
+    <ClInclude Include="FGEngine\Src\My\GltfMeshRenderer.h" />
     <ClInclude Include="FGEngine\Src\My\Image.h" />
     <ClInclude Include="FGEngine\Src\My\ImGuiLayout.h" />
     <ClInclude Include="FGEngine\Src\My\Intersect.h" />
@@ -246,9 +248,11 @@
     <ClCompile Include="Application\Src\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Main.cpp" />
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Animator.cpp" />
     <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Collider.cpp" />
     <ClCompile Include="FGEngine\Src\My\GltfFileBuffer.cpp" />
+    <ClCompile Include="FGEngine\Src\My\GltfMeshRenderer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Image.cpp" />
     <ClCompile Include="FGEngine\Src\My\ImGuiLayout.cpp" />
     <ClCompile Include="FGEngine\Src\My\Intersect.cpp" />

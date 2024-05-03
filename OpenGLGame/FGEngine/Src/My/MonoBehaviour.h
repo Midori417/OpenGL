@@ -7,12 +7,10 @@
 
 namespace FGEngine
 {
-	namespace PhysicsSystem
-	{
-		// 先行宣言
-		class Collision;
-		using CollisionPtr = std::shared_ptr<Collision>;
-	}
+	// 先行宣言
+	class Collision;
+	using CollisionPtr = std::shared_ptr<Collision>;
+
 	/**
 	* ゲームイベント基底コンポーネント
 	*/
@@ -48,22 +46,22 @@ namespace FGEngine
 		virtual void OnDisable() {}
 
 		// 他のコリジョンに触れたときに実行
-		virtual void OnCollisionEnter(const PhysicsSystem::CollisionPtr other) {}
+		virtual void OnCollisionEnter(const CollisionPtr other) {}
 
 		// 他のコリジョンから離れたときに実行
-		virtual void OnCollisionExit(const PhysicsSystem::CollisionPtr other) {}
+		virtual void OnCollisionExit(const CollisionPtr other) {}
 
 		// 他のコリジョンに触れ続けているときに実行
-		virtual void OnCollisionStay(const PhysicsSystem::CollisionPtr ohter) {}
+		virtual void OnCollisionStay(const CollisionPtr ohter) {}
 
 		// (Trigger)他のコリジョンに触れたときに実行
-		virtual void OnTriggerEnter(const PhysicsSystem::CollisionPtr other) {}
+		virtual void OnTriggerEnter(const CollisionPtr other) {}
 
 		// (Trigger)他のコリジョンから離れたときに実行
-		virtual void OnTriggerExit(const PhysicsSystem::CollisionPtr other) {}
+		virtual void OnTriggerExit(const CollisionPtr other) {}
 
 		// (Trigger)他のコリジョンに触れ続けているときに実行
-		virtual void OnTriggerStay(const PhysicsSystem::CollisionPtr ohter) {}
+		virtual void OnTriggerStay(const CollisionPtr ohter) {}
 
 		// オブジェクト状態を設定する
 		void SetEnable(bool value)

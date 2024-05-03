@@ -51,6 +51,9 @@ namespace FGEngine::ObjectSystem
 		// 物理処理
 		UpdateRigidbody();
 
+		// アニメータ処理
+		UpdateAnimator();
+
 		// オブジェクトの破壊処理
 		DestoryGameObject();
 
@@ -95,7 +98,7 @@ namespace FGEngine::ObjectSystem
 				Matrix3x3 rot;
 
 				// カメラの座標変換行列を分解
-				Matrix4x4::Decompose(mainCamera->transform->transformMatrix, pos, scale, rot);
+				Matrix4x4::Decompose(mainCamera->transform->GetWorldTransformMatrix(), pos, scale, rot);
 
 				// クォータニオンに一度変換
 				Quaternion q = Quaternion::RotationMatrixToQuaternion(rot);
@@ -183,7 +186,7 @@ namespace FGEngine::ObjectSystem
 				list[i].origin = e->colliders[i];
 
 				//コライダーの座標をワールド座標に変換
-				list[i].world = e->colliders[i]->GetTransformedCollider(e->transform->GetTransformMatrix());
+				list[i].world = e->colliders[i]->GetTransformedCollider(e->transform->GetWorldTransformMatrix());
 			}
 			colliders.push_back(list);
 		}
@@ -206,7 +209,8 @@ namespace FGEngine::ObjectSystem
 					{
 						continue;	// 削除済みなので飛ばす
 					}
-					PhysicsSystem::PhysicsEngine::GetInstance()->HandleWorldColliderCollision(&*a, &*b); // コライダー単位の衝突判定
+					// コライダー単位の衝突判定
+					PhysicsSystem::PhysicsEngine::GetInstance()->HandleWorldColliderCollision(&*a, &*b);
 				}
 			}
 		}
@@ -237,11 +241,11 @@ namespace FGEngine::ObjectSystem
 			TransformPtr e = gameObjects[i]->transform;
 			if (e != nullptr)
 			{
-				Matrix4x4 m = e->GetTransformMatrix();
+				Matrix4x4 m = e->GetLocalTransformMatrix();
 				Matrix3x3 n = e->GetNormalMatrix();
 				for (e = e->GetParent(); e; e = e->GetParent())
 				{
-					m = e->GetTransformMatrix() * m;
+					m = e->GetLocalTransformMatrix() * m;
 					n = e->GetNormalMatrix() * n;
 				}
 				worldTransforms[i] = m;
@@ -252,7 +256,7 @@ namespace FGEngine::ObjectSystem
 		// ワールド座標変換行列をゲームオブジェクトに設定
 		for (int i = 0; i < gameObjects.size(); ++i)
 		{
-			gameObjects[i]->transform->transformMatrix = worldTransforms[i];
+			gameObjects[i]->transform->worldTransformMatrix = worldTransforms[i];
 			gameObjects[i]->transform->normalMatrix = worldNormals[i];
 		}
 
@@ -328,6 +332,20 @@ namespace FGEngine::ObjectSystem
 			if (x->rigidbody)
 			{
 				x->rigidbody->GravityUpdate();
+			}
+		}
+	}
+
+	/**
+	* アニメーターを更新
+	*/
+	void ObjectManager::UpdateAnimator()
+	{
+		for (auto x : gameObjects)
+		{
+			if (x->animator)
+			{
+				x->animator->Update();
 			}
 		}
 	}

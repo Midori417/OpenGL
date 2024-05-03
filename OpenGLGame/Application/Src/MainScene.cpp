@@ -2,7 +2,6 @@
 * @file MainScene.cpp
 */
 #include "MainScene.h"
-
 #include <thread>
 #include <chrono>
 
@@ -16,6 +15,19 @@
 */
 bool MainScene::Initialize()
 {
+    auto objManager = ObjectSystem::ObjectManager::GetInstance();
+    auto resManager = ResouceSystem::ResouceManager::GetInstance();
+
+    auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
+    camera->AddComponent<Camera>();
+    objManager->SetMainCamera(camera);
+
+
+    auto material = std::make_shared<Material>();
+    material->mainTexture = resManager->GetTexture("sky");
+
+    skyMaterial = material;
+
 
 	return true;
 }

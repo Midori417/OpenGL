@@ -38,4 +38,12 @@ namespace FGEngine
 		// ‘¬“x‚ğÀ•W‚É”½‰f‚·‚é
 		GetTransform()->position += velocity * Time::DeltaTime();
 	}
+
+	/**
+	* ’n–Ê‚ÉG‚ê‚Ä‚¢‚é‚©‚ğæ“¾
+	*/
+	bool Rigidbody::GetGrounded() const
+	{
+		return isGrounded;
+	}
 }

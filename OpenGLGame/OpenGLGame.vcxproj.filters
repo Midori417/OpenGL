@@ -94,29 +94,17 @@
     <Filter Include="FGEngine\Src\My\Object\Component\Transform">
       <UniqueIdentifier>{4ed62798-b0c2-4a97-b86d-48cf55f410e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Mesh">
-      <UniqueIdentifier>{e08fea84-29b9-4098-8c5e-093401e6f226}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Material">
-      <UniqueIdentifier>{84e92b68-24f8-485e-a8da-ba08c8a594bc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\MainSystem">
       <UniqueIdentifier>{e39286bb-1e8d-40c5-b031-0db1cca200e7}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Res">
       <UniqueIdentifier>{02278ff6-35f4-423a-9043-20a20a7bc1e5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Shader">
-      <UniqueIdentifier>{e1e5afdc-f81c-4bf5-b327-21e67d2dc50d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\Object\GameObject">
       <UniqueIdentifier>{4be83752-743a-4182-b85e-9d6fa48e093a}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Src\My\ObjectSystem">
       <UniqueIdentifier>{c3361a10-f6ab-4464-8f58-78a9f3ec8940}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Texture">
-      <UniqueIdentifier>{a0853ef8-327c-4cd6-88e4-9b768b7da200}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Src\My\InputSystem">
       <UniqueIdentifier>{4e686e03-e6a6-4d99-92f4-a297ad7d9d41}</UniqueIdentifier>
@@ -187,9 +175,6 @@
     <Filter Include="FGEngine\Src\My\PhysicsSystem\Intersect">
       <UniqueIdentifier>{05d7d45a-3703-47aa-a6c6-c794b6486c2a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Shape">
-      <UniqueIdentifier>{e2ae68a8-2ec0-41fb-9299-36e90f6d0997}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\Object\Component\Collider\AabbCollider">
       <UniqueIdentifier>{2fe7e22d-d58a-4f49-9381-f3e25a143f44}</UniqueIdentifier>
     </Filter>
@@ -216,6 +201,33 @@
     </Filter>
     <Filter Include="FGEngine\Src\My\Animation\AnimationClip">
       <UniqueIdentifier>{682b639b-8eb0-4cdb-b973-1f11b3007def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Renderer\MeshRenderer">
+      <UniqueIdentifier>{1b4b97ff-fa2c-4012-9dd8-d414a818c28d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Renderer\GltfMeshRenderere">
+      <UniqueIdentifier>{afe33a34-1642-472e-8480-358fec319528}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\RenderingSystem\GltfFileBuffer">
+      <UniqueIdentifier>{7ed6d40a-0be9-4c98-b255-964ef676e001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce">
+      <UniqueIdentifier>{74109273-95b9-47df-a274-20ba2bcba459}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce\Material">
+      <UniqueIdentifier>{84e92b68-24f8-485e-a8da-ba08c8a594bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce\Mesh">
+      <UniqueIdentifier>{e08fea84-29b9-4098-8c5e-093401e6f226}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce\Shader">
+      <UniqueIdentifier>{e1e5afdc-f81c-4bf5-b327-21e67d2dc50d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce\Texture">
+      <UniqueIdentifier>{a0853ef8-327c-4cd6-88e4-9b768b7da200}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce\GltfFile">
+      <UniqueIdentifier>{1ef5580a-595b-4c3e-852b-75c1aaec01c3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -304,10 +316,10 @@
       <Filter>FGEngine\Src\My\Mathf\Quaternion</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Texture.h">
-      <Filter>FGEngine\Src\My\Object\Texture</Filter>
+      <Filter>FGEngine\Src\My\Resouce\Texture</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Material.h">
-      <Filter>FGEngine\Src\My\Object\Material</Filter>
+      <Filter>FGEngine\Src\My\Resouce\Material</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Scene.h">
       <Filter>FGEngine\Src\My\SceneSystem</Filter>
@@ -327,10 +339,10 @@
     <ClInclude Include="Application\Src\MainScene.h">
       <Filter>Application\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\FGEngine.h">
+    <ClInclude Include="FGEngine\Src\MyEngine.h">
       <Filter>FGEngine</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\FGEngineSub.h">
+    <ClInclude Include="Application\Src\FGEngine.h">
       <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h">
@@ -372,22 +384,13 @@
     <ClInclude Include="FGEngine\Src\My\Transform.h">
       <Filter>FGEngine\Src\My\Object\Component\Transform</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Mesh.h">
-      <Filter>FGEngine\Src\My\Object\Mesh</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\WindowManager.h">
       <Filter>FGEngine\Src\My\WindowSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ShaderObject.h">
-      <Filter>FGEngine\Src\My\Object\Shader</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\GameObject.h">
       <Filter>FGEngine\Src\My\Object\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Object.h">
-      <Filter>FGEngine\Src\My\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ObjectHelper.h">
       <Filter>FGEngine\Src\My\Object</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\InputKey.h">
@@ -438,23 +441,14 @@
     <ClInclude Include="FGEngine\Src\My\MeshBuffer.h">
       <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\DrawParams.h">
-      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Vertex.h">
-      <Filter>FGEngine\Src\My\RenderingSystem\MeshBuffer</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h">
       <Filter>FGEngine\Src\My\RenderingSystem\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\RenderingEngine.h">
       <Filter>FGEngine\Src\My\RenderingSystem\RenderingEngine</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MeshRenderer.h">
-      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\DefalutShader.h">
-      <Filter>FGEngine\Src\My\Object\Shader</Filter>
+      <Filter>FGEngine\Src\My\Resouce\Shader</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\WorldCollider.h">
       <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
@@ -462,20 +456,11 @@
     <ClInclude Include="FGEngine\Src\My\PhysicsEngine.h">
       <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Collision.h">
-      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Behaviour.h">
       <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Intersect.h">
       <Filter>FGEngine\Src\My\PhysicsSystem\Intersect</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ShapeType.h">
-      <Filter>FGEngine\Src\My\Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Shape.h">
-      <Filter>FGEngine\Src\My\Shape</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\AabbCollider.h">
       <Filter>FGEngine\Src\My\Object\Component\Collider\AabbCollider</Filter>
@@ -494,6 +479,39 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\AnimationClip.h">
       <Filter>FGEngine\Src\My\Animation\AnimationClip</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\MeshRenderer.h">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer\MeshRenderer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\GltfMeshRenderer.h">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer\GltfMeshRenderere</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Vertex.h">
+      <Filter>FGEngine\Src\My\RenderingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\DrawParams.h">
+      <Filter>FGEngine\Src\My\RenderingSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\GltfFileBuffer.h">
+      <Filter>FGEngine\Src\My\RenderingSystem\GltfFileBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\StaticMesh.h">
+      <Filter>FGEngine\Src\My\Resouce\Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\GltfFile.h">
+      <Filter>FGEngine\Src\My\Resouce\GltfFile</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\CollisionType.h">
+      <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Shader.h">
+      <Filter>FGEngine\Src\My\Resouce\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Animator.h">
+      <Filter>FGEngine\Src\My\Object\Component\Animator</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Collision.h">
+      <Filter>FGEngine\Src\My\Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -549,7 +567,7 @@
       <Filter>FGEngine\Src\My\Mathf\Quaternion</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Texture.cpp">
-      <Filter>FGEngine\Src\My\Object\Texture</Filter>
+      <Filter>FGEngine\Src\My\Resouce\Texture</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\SceneManager.cpp">
       <Filter>FGEngine\Src\My\SceneSystem</Filter>
@@ -577,9 +595,6 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\EngineCore.cpp">
       <Filter>FGEngine\Src\My\MainSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\ShaderObject.cpp">
-      <Filter>FGEngine\Src\My\Object\Shader</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp">
       <Filter>FGEngine\Src\My\Object\GameObject</Filter>
@@ -626,9 +641,6 @@
     <ClCompile Include="FGEngine\Src\My\RenderingEngine.cpp">
       <Filter>FGEngine\Src\My\RenderingSystem\RenderingEngine</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp">
-      <Filter>FGEngine\Src\My\Object\Component\Renderer</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\My\PhysicsEngine.cpp">
       <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
     </ClCompile>
@@ -656,8 +668,20 @@
     <ClCompile Include="FGEngine\Src\My\Image.cpp">
       <Filter>FGEngine\Src\My\Object\Component\UI\Image</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\AnimationClip.cpp">
-      <Filter>FGEngine\Src\My\Animation\AnimationClip</Filter>
+    <ClCompile Include="FGEngine\Src\My\MeshRenderer.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer\MeshRenderer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\GltfMeshRenderer.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Renderer\GltfMeshRenderere</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\GltfFileBuffer.cpp">
+      <Filter>FGEngine\Src\My\RenderingSystem\GltfFileBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Shader.cpp">
+      <Filter>FGEngine\Src\My\Resouce\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Animator.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Animator</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

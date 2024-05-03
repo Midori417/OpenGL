@@ -189,6 +189,14 @@ namespace FGEngine
     }
 
     /**
+    *
+    */
+    float Mathf::Floor(float value)
+    {
+        return std::floorf(value);
+    }
+
+    /**
     * デグリー(度数法)からラジアン(弧度法)に変換する
     *
     * @param deg デグリー(度数法)

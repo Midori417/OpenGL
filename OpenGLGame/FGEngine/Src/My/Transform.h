@@ -100,9 +100,14 @@ namespace FGEngine
 		void AllChildrenPurge();
 
 		/**
+		* ローカル座標変換行列を取得
+		*/
+		Matrix4x4 GetLocalTransformMatrix() const;
+
+		/**
 		* ワールド座標行列を取得
 		*/
-		Matrix4x4 GetTransformMatrix() const;
+		Matrix4x4 GetWorldTransformMatrix() const;
 
 		/**
 		* 法線行列を取得
@@ -129,8 +134,11 @@ namespace FGEngine
 
 	private:
 
-		// ワールド座標からローカル座標に変換した行列
-		Matrix4x4 transformMatrix = Matrix4x4(1);
+		// ローカル座標行列
+		Matrix4x4 localTransformMatrix = Matrix4x4(1);
+
+		// ワールド座標行列
+		Matrix4x4 worldTransformMatrix = Matrix4x4(1);
 
 		// 法線変換行列
 		Matrix3x3 normalMatrix = Matrix3x3(1);

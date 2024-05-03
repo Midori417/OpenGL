@@ -35,6 +35,13 @@ namespace FGEngine
 
 	public:
 
+		/**
+		* ’n–Ê‚É‚Â‚¢‚Ä‚¢‚é‚©‚ðŽæ“¾
+		*/
+		bool GetGrounded() const;
+
+	public:
+
 		// •¨‘Ì‚Ì‘¬“x
 		Vector3 velocity = Vector3::zero;
 

@@ -305,17 +305,14 @@ namespace FGEngine
 		// テクスチャを読み込む
 		return Texture::Create(filename.string(), filename.string(), Texture::TextureType::Gltf);
 	}
-}
 
-namespace FGEngine::RenderingSystem
-{
 	/**
-	* JSONの配列データをVector3に変換する
-	*
-	* @param json 変換元となる配列データ
-	*
-	* @return jsonを変換してできたVector3の値
-	*/
+* JSONの配列データをVector3に変換する
+*
+* @param json 変換元となる配列データ
+*
+* @return jsonを変換してできたVector3の値
+*/
 	Vector3 GetVector3(const json& json)
 	{
 		if (json.size() < 3)
@@ -651,6 +648,11 @@ namespace FGEngine::RenderingSystem
 		}
 		return matBones;
 	}
+}
+
+namespace FGEngine::RenderingSystem
+{
+
 
 	/**
 	* コンストラクタ
@@ -744,6 +746,7 @@ namespace FGEngine::RenderingSystem
 		}
 
 		// 作成したファイルを連想配列に追加
+		p->gltfFileBuffer = this;
 		p->name = name;
 		glTFfiles.emplace(name, p);
 
@@ -801,7 +804,7 @@ namespace FGEngine::RenderingSystem
 	*
 	* @return matBonesように割り当てられたSSBOの範囲
 	*/
-	GltfFileBuffer::Range GltfFileBuffer::AddAnimationMatrices(const GltfAnimationMatrices& matBones)
+	AnimMatrixRange GltfFileBuffer::AddAnimationMatrices(const GltfAnimationMatrices& matBones)
 	{
 		const GLintptr offset = static_cast<GLintptr>(tmpAnimationBuffer.size() * sizeof(Matrix4x4));
 		tmpAnimationBuffer.insert(tmpAnimationBuffer.end(), matBones.begin(), matBones.end());
@@ -833,7 +836,7 @@ namespace FGEngine::RenderingSystem
 	* @param bindingPoint	バインディングポイント
 	* @param range			バインドする範囲
 	*/
-	void GltfFileBuffer::BindAnimationBuffer(GLuint bindingPoint, const Range& range)
+	void GltfFileBuffer::BindAnimationBuffer(GLuint bindingPoint, const AnimMatrixRange& range)
 	{
 		if (range.size > 0)
 		{

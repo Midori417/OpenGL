@@ -5,6 +5,7 @@
 #define FGENGINE_LIHGT_H_INCLUDED
 #include "Component.h"
 #include "Color.h"
+#include "Mathf.h"
 
 namespace FGEngine
 {

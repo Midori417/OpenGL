@@ -70,6 +70,11 @@ namespace FGEngine::ObjectSystem
 		*/
 		void UpdateRigidbody();
 
+		/**
+		* Animatorを更新
+		*/
+		void UpdateAnimator();
+
 
 		/**
 		* ゲームオブジェクトを取得
@@ -77,14 +82,6 @@ namespace FGEngine::ObjectSystem
 		GameObjectList& GetGameObjects()
 		{
 			return gameObjects;
-		}
-
-		/**
-		* 全てのゲームオブジェクトを削除
-		*/
-		void AllClearGameObject()
-		{
-			gameObjects.clear();
 		}
 
 
@@ -111,6 +108,14 @@ namespace FGEngine::ObjectSystem
 		void SetMainCamera(GameObjectPtr camera)
 		{
 			mainCamera = camera;
+		}
+
+		/**
+		* 全てのゲームオブジェクトを削除
+		*/
+		void AllClearGameObject()
+		{
+			gameObjects.clear();
 		}
 
 

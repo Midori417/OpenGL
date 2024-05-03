@@ -42,6 +42,16 @@ namespace FGEngine
 
 	protected:
 
+		/**
+		* 描画の前処理
+		*/
+		virtual void PreDraw(){}
+
+		/**
+		* 描画
+		* 
+		* @param 描画のタイプ
+		*/
 		virtual void Draw(DrawType drawType) const{}
 
 	public:

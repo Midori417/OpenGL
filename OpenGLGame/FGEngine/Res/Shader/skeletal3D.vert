@@ -17,9 +17,6 @@ layout(location=2) out vec3 outNormal;		// 法線ベクトル
 layout(location=3) out vec3 outShadowTexcoord;	// シャドウテクスチャ座標
 
 // プログラムからの入力
-layout(location=0) uniform mat4 transformMatrix;
-layout(location=1) uniform mat3 normalMatrix;
-layout(location=2) uniform mat4 viewProjectionMatrix;	// ビュープロジェクト行列
 layout(location=3) uniform vec2 aspectRatioAndScaleFov;	// アスペクト比
 layout(location=4) uniform vec3 cameraPosition;	// カメラの位置
 layout(location=5) uniform mat3 cameraRotationMatrix;
