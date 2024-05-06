@@ -3,7 +3,7 @@
 */
 #ifndef MAINSCENE_H_INCLUDED
 #define MAINSCENE_H_INCLUDED
-#include "FGEngine.h"
+#include "../FGEngine.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 

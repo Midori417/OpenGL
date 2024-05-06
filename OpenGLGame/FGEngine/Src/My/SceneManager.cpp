@@ -2,6 +2,7 @@
 * @file SceneManager.cpp
 */
 #include "SceneManager.h"
+#include "ObjectManager.h"
 
 namespace FGEngine::SceneSystem
 {
@@ -42,6 +43,8 @@ namespace FGEngine::SceneSystem
 			if (scene)
 			{
 				scene->Finalize();
+				// オブジェクトを全削除
+				ObjectSystem::ObjectManager::GetInstance()->AllClearGameObject();
 			}
 			nextScene->Initialize();
 			scene = std::move(nextScene);

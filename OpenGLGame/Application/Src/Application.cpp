@@ -2,8 +2,9 @@
 * @file Application.cpp
 */
 #include "Application.h"
-#include "TitleScene.h"
-#include "MainScene.h"
+#include "Scene/TitleScene.h"
+#include "Scene/MainScene.h"
+#include "Scene/GameChoiceScene.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 using namespace FGEngine::ResouceSystem;
@@ -16,17 +17,20 @@ using namespace FGEngine::ResouceSystem;
 */
 int Application::Initialize()
 {
-	auto resouceManager = ResouceManager::GetInstance();
+	auto resManager = ResouceManager::GetInstance();
 
 	// リソースの読み込み
-	resouceManager->LoadGlTF("Gundam", "Application/Res/Gundam/Model/GundamGL.gltf");
-
-	resouceManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
-	resouceManager->LoadTga("BoostbarBack", "Application/Res/UI/Battle/BoostbarBack.tga");
-	resouceManager->LoadTga("Title", "Application/Res/UI/Title/Title.tga");
+	resManager->LoadTga("TitleBack", "Application/Res/UI/Title/TitleBack.tga");
+	resManager->LoadTga("TitleGundam", "Application/Res/UI/Title/TitleGundam.tga");
+	resManager->LoadTga("TitleGundamEye", "Application/Res/UI/Title/GundamEye.tga");
+	resManager->LoadTga("TitleLogo", "Application/Res/UI/Title/TitleLogo.tga");
+	resManager->LoadTga("TitleLogoWhite", "Application/Res/UI/Title/TitleLogoWhite.tga");
+	resManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
+	resManager->LoadTga("PleaseButton", "Application/Res/UI/Title/PleaseButton.tga");
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");
+	SceneManager::AddScene<GameChiecScene>("ゲーム選択シーン");
 	SceneManager::AddScene<MainScene>("メインシーン");
 
 	return 0;

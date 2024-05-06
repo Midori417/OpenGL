@@ -69,13 +69,6 @@ namespace FGEngine
 				return scene;
 			}
 
-			// 次のシーンを設定する
-			template<typename T>
-			static void SetNextScene()
-			{
-				nextScene = std::make_shared<T>();
-			}
-
 		private:
 
 			// 実行中のシーン

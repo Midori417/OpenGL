@@ -3,9 +3,12 @@
 */
 #ifndef TITLESCENE_H_INCLUDED
 #define TITLESCENE_H_INCLUDED
-#include "FGEngine.h"
+#include "../FGEngine.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
+
+class FadeOut;
+using FadeOutPtr = std::shared_ptr<FadeOut>;
 
 /**
 * タイトルシーン
@@ -33,8 +36,11 @@ private:
 
 private:
 
-	float rotY = 0;
-	float rotX = 0;
-	GameObjectPtr obj;
+	// フェードコンポーネント
+	FadeOutPtr fadeOut;
+
+	// ボタンが押されたら
+	bool isStart = false;
+
 };
 #endif // !TITLESCENE_H_INCLUDED

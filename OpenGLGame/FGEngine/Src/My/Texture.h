@@ -6,6 +6,7 @@
 #include "Package/Glad.h"
 #include <string>
 #include <memory>
+#include "Vector2.h"
 
 namespace FGEngine
 {
@@ -95,6 +96,11 @@ namespace FGEngine
 		int GetHeight() const
 		{
 			return height;
+		}
+
+		Vector2 GetSize() const
+		{
+			return Vector2(static_cast<float>(width), static_cast<float>(height));
 		}
 
 		/**

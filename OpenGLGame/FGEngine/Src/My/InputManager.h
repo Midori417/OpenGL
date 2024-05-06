@@ -5,6 +5,8 @@
 #define FGENGINE_INPUTMANAGER_H_INCLUDED
 #include "SystemFrd.h"
 #include "Singleton.h"
+#include <string>
+#include <unordered_map>
 
 struct GLFWwindow;
 
@@ -29,6 +31,20 @@ namespace FGEngine::InputSystem
 		* @param window オブジェクトオブジェクト
 		*/
 		void Update(GLFWwindow* window);
+
+	public:
+
+		/**
+		* Axisを取得
+		* 
+		* @parma axis アクシズ名
+		*/
+		static float GetAxis(const std::string& axis);
+
+	private:
+
+		// axis配列
+		std::unordered_map<std::string, float> axisList;
 	};
 }
 

@@ -7,6 +7,7 @@ namespace FGEngine::InputSystem
 {
 	// スタティック変数の初期
 	InputKey::KeyState InputKey::keyState[] = { InputKey::KeyState() };
+	bool InputKey::anyKey = false;
 
 	/**
 	* キーボードの状態を更新
@@ -15,9 +16,14 @@ namespace FGEngine::InputSystem
 	*/
 	void InputKey::Update(GLFWwindow* window)
 	{
+		anyKey = false;
 		for (int i = 0; i < (int)KeyCode::Max; ++i)
 		{
 			const bool now = glfwGetKey(window, KEY_ASSIGN[i]) == GLFW_PRESS;
+			if (now)
+			{
+				anyKey = true;
+			}
 
 			keyState[i].on = now;
 			keyState[i].down = now && !keyState[i].old;
@@ -58,7 +64,7 @@ namespace FGEngine::InputSystem
 		{
 			return false;
 		}
-		return keyState[int(keyCode)].down;
+		return keyState[int(keyCode)].up;
 	}
 
 	/**
@@ -74,6 +80,17 @@ namespace FGEngine::InputSystem
 		if (keyCode == KeyCode::Max) {
 			return false;
 		}
-		return keyState[int(keyCode)].up;
+		return keyState[int(keyCode)].down;
+	}
+
+	/**
+	* 何かしらのキーが押されているか取得
+	*
+	* @retval true 押されている
+	* @retval false 押されていない
+	*/
+	bool InputKey::AnyKey()
+	{
+		return anyKey;
 	}
 }

@@ -29,13 +29,13 @@ namespace FGEngine::UI
 
 		// ImGUIを描画開始
 		ImGui::Begin(name.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground |
-			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse);
+			ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse |
+			ImGuiWindowFlags_NoInputs);
 
 		// UIの設定を更新
 		UISetting();
 
 		// ImBUiの描画終了
 		ImGui::End();
-
 	}
 }

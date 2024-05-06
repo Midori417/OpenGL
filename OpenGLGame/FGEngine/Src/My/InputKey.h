@@ -62,6 +62,14 @@ namespace FGEngine::InputSystem
 		*/
 		static bool GetKeyDown(KeyCode keyCode);
 
+		/**
+		* 何かしらのキーが押されているか取得
+		* 
+		* @retval true 押されている
+		* @retval false 押されていない
+		*/
+		static bool AnyKey();
+
 	private:
 
 		/**
@@ -89,6 +97,9 @@ namespace FGEngine::InputSystem
 
 		// キーの状態配列
 		static KeyState keyState[(int)KeyCode::Max];
+
+		// 何かしらのキーが押されていたらtrue:何も押されていなければfasle
+		static bool anyKey;
 	};
 }
 

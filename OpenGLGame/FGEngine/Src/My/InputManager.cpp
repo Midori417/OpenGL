@@ -21,4 +21,14 @@ namespace FGEngine::InputSystem
 		// マウスを更新
 		InputMouse::Update(window);
 	}
+
+	/**
+	* Axisを取得
+	* 
+	* @param axis アクシズ名
+	*/
+	float InputManager::GetAxis(const std::string& axis)
+	{
+		return 0.0f;
+	}
 }

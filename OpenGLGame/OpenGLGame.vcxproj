@@ -148,9 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
+    <ClInclude Include="Application\Src\FadeOut.h" />
     <ClInclude Include="Application\Src\FGEngine.h" />
-    <ClInclude Include="Application\Src\MainScene.h" />
-    <ClInclude Include="Application\Src\TitleScene.h" />
+    <ClInclude Include="Application\Src\ImageBlinking.h" />
+    <ClInclude Include="Application\Src\Scene\GameChoiceScene.h" />
+    <ClInclude Include="Application\Src\Scene\MainScene.h" />
+    <ClInclude Include="Application\Src\Scene\TitleScene.h" />
     <ClInclude Include="FGEngine\Src\MyEngine.h" />
     <ClInclude Include="FGEngine\Src\My\AabbCollider.h" />
     <ClInclude Include="FGEngine\Src\My\AnimationClip.h" />
@@ -244,8 +247,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Src\Application.cpp" />
-    <ClCompile Include="Application\Src\MainScene.cpp" />
-    <ClCompile Include="Application\Src\TitleScene.cpp" />
+    <ClCompile Include="Application\Src\FadeOut.cpp" />
+    <ClCompile Include="Application\Src\ImageBlinking.cpp" />
+    <ClCompile Include="Application\Src\Scene\GameChoiceScene.cpp" />
+    <ClCompile Include="Application\Src\Scene\MainScene.cpp" />
+    <ClCompile Include="Application\Src\Scene\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Main.cpp" />
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Animator.cpp" />

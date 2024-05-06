@@ -229,6 +229,24 @@
     <Filter Include="FGEngine\Src\My\Resouce\GltfFile">
       <UniqueIdentifier>{1ef5580a-595b-4c3e-852b-75c1aaec01c3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Component\Title">
+      <UniqueIdentifier>{66c46088-de3e-4132-a2b5-86e7d08660f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\ImageBlinking">
+      <UniqueIdentifier>{e1608e06-657c-4269-9044-8187e7e6f8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\FadeOut">
+      <UniqueIdentifier>{09d8baa4-207f-4447-998d-e45d3cf73578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\Title">
+      <UniqueIdentifier>{9172b195-73d6-4f84-9be4-19ef96b4f25e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\Main">
+      <UniqueIdentifier>{a8c04c80-af1a-4ee1-a447-0b1963bb62b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\GameChoice">
+      <UniqueIdentifier>{36821f01-1d41-4339-8e65-609170564cb2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
@@ -332,12 +350,6 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Package\Glad.h">
       <Filter>FGEngine\Src\My\Package</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\TitleScene.h">
-      <Filter>Application\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\MainScene.h">
-      <Filter>Application\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\MyEngine.h">
       <Filter>FGEngine</Filter>
@@ -513,6 +525,21 @@
     <ClInclude Include="FGEngine\Src\My\Collision.h">
       <Filter>FGEngine\Src\My\Other</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Src\ImageBlinking.h">
+      <Filter>Application\Component\ImageBlinking</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\FadeOut.h">
+      <Filter>Application\Component\FadeOut</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\TitleScene.h">
+      <Filter>Application\Scenes\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\MainScene.h">
+      <Filter>Application\Scenes\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\GameChoiceScene.h">
+      <Filter>Application\Scenes\GameChoice</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -571,12 +598,6 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\SceneManager.cpp">
       <Filter>FGEngine\Src\My\SceneSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\TitleScene.cpp">
-      <Filter>Application\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\MainScene.cpp">
-      <Filter>Application\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Main.cpp">
       <Filter>FGEngine</Filter>
@@ -682,6 +703,21 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Animator.cpp">
       <Filter>FGEngine\Src\My\Object\Component\Animator</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ImageBlinking.cpp">
+      <Filter>Application\Component\ImageBlinking</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\FadeOut.cpp">
+      <Filter>Application\Component\FadeOut</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\MainScene.cpp">
+      <Filter>Application\Scenes\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\TitleScene.cpp">
+      <Filter>Application\Scenes\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\GameChoiceScene.cpp">
+      <Filter>Application\Scenes\GameChoice</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

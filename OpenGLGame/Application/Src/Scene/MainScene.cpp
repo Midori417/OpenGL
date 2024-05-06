@@ -18,16 +18,16 @@ bool MainScene::Initialize()
     auto objManager = ObjectSystem::ObjectManager::GetInstance();
     auto resManager = ResouceSystem::ResouceManager::GetInstance();
 
+    // カメラを作成
     auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
     camera->AddComponent<Camera>();
     objManager->SetMainCamera(camera);
 
 
+    // スカイスフィアを設定
     auto material = std::make_shared<Material>();
     material->mainTexture = resManager->GetTexture("sky");
-
     skyMaterial = material;
-
 
 	return true;
 }

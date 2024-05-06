@@ -29,6 +29,7 @@ namespace FGEngine::UI
 
 	public:
 
+
 		// 表示するテクスチャポインター
 		TexturePtr texture;
 
@@ -38,8 +39,20 @@ namespace FGEngine::UI
 		// カラー
 		Color color = Color::white;
 
+		enum class FillType
+		{
+			Horizontal,
+
+			Vertical,
+
+		};
+		FillType fillType = FillType::Horizontal;
+
 		// 画像埋め(0～1)
 		float fillAmout = 1;
+
+	private:
+
 	};
 	using ImagePtr = std::shared_ptr<Image>;
 }

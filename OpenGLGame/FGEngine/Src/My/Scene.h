@@ -60,7 +60,7 @@ namespace FGEngine
 		public:
 
 			// スカイスフィア用のマテリアル
-			MaterialPtr skyMaterial;	
+			MaterialPtr skyMaterial;
 
 		};
 		using ScenePtr = std::shared_ptr<Scene>;

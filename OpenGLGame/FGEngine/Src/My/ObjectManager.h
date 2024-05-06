@@ -92,7 +92,7 @@ namespace FGEngine::ObjectSystem
 		*/
 		GameObjectPtr CreateGameObject(const std::string& name);
 		GameObjectPtr CreateGameObject(const std::string& name, const Transform& transform);
-		GameObjectPtr CreateGameObject(const std::string& name, const Vector3& position, const Quaternion& rotation);
+		GameObjectPtr CreateGameObject(const std::string& name, const Vector3& position, const Quaternion& rotation = Quaternion::identity);
 
 		/**
 		* ƒƒCƒ“ƒJƒƒ‰‚ğæ“¾
