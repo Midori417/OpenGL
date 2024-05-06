@@ -62,6 +62,11 @@ namespace FGEngine::WindowSystem
 		bool IsClose(size_t index = 0);
 
 		/**
+		* ウィンドウを終了
+		*/
+		void WindowClose(size_t index = 0);
+
+		/**
 		* ウィンドウオブジェクトを取得
 		*/
 		GLFWwindow& GetWindow(size_t index = 0);

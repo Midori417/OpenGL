@@ -229,9 +229,6 @@
     <Filter Include="FGEngine\Src\My\Resouce\GltfFile">
       <UniqueIdentifier>{1ef5580a-595b-4c3e-852b-75c1aaec01c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Component\Title">
-      <UniqueIdentifier>{66c46088-de3e-4132-a2b5-86e7d08660f9}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Component\ImageBlinking">
       <UniqueIdentifier>{e1608e06-657c-4269-9044-8187e7e6f8dd}</UniqueIdentifier>
     </Filter>
