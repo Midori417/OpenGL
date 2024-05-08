@@ -197,14 +197,11 @@ namespace FGEngine::RenderingSystem
 		const auto& texShadow = fboShadow->GetDepthTexture();
 		glViewport(0, 0, texShadow->GetWidth(), texShadow->GetHeight());
 
-		glEnable(GL_DEPTH_TEST);	// 深度テストを有効化
-		glDisable(GL_BLEND);		// 半透明合成を無効化
-
 		// 深度バッファをクリア
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		// 影の描画パラメータ
-		const float shadowAreaSize = 100;	// 影の描画範囲(XY平面)
+		const float shadowAreaSize = 200;	// 影の描画範囲(XY平面)
 		const float shadowNearZ = 1;		// 影の描画範囲(近Z平面)
 		const float shadowFarZ = 200;		// 影の描画範囲(遠Z平面)
 		const float shadowCenterZ = (shadowNearZ + shadowFarZ) * 0.5f; // 描画範囲の中心
@@ -365,14 +362,6 @@ namespace FGEngine::RenderingSystem
 			transparentBegin, rendererList.end(), RenderQueue_overlay,
 			[](const RendererPtr& e, int value) { return e->renderQueue < value; });
 
-		// デプスシャドウマップを作成
-		CreateShadowMap(rendererList.begin(), rendererList.end());
-
-		// 描画先をデフォルトフレームバッファに戻す
-		auto fbSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glViewport(0, 0, (GLsizei)fbSize.x, (GLsizei)fbSize.y);
-
 		glEnable(GL_DEPTH_TEST);	// 深度テストを有効化
 		glEnable(GL_CULL_FACE);		// 裏面カリングを有効化
 
@@ -383,6 +372,14 @@ namespace FGEngine::RenderingSystem
 
 		// ライトの更新
 		UpdateShaderLight();
+
+		// デプスシャドウマップを作成
+		CreateShadowMap(rendererList.begin(), rendererList.end());
+
+		// 描画先をデフォルトフレームバッファに戻す
+		auto fbSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		glViewport(0, 0, (GLsizei)fbSize.x, (GLsizei)fbSize.y);
 
 		// transparent以前のキューを描画
 		Draw3DGameObject(rendererList.begin(), transparentBegin);

@@ -84,7 +84,7 @@ namespace FGEngine
 	*/
 	Quaternion Quaternion::AngleAxis(float angle, const Vector3& axis)
 	{
-		float halfAngle = angle * 0.5f;
+		float halfAngle = Mathf::DegToRad(angle) * 0.5f;
 		Vector3 normalAxis = axis.Normalized();
 		Quaternion result(
 			Mathf::Sin(halfAngle) * normalAxis.x,

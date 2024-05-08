@@ -1,16 +1,18 @@
 /**
-* @file GameChoiceScene.cpp
+* @file ChoiceScene.cpp
 */
-#include "GameChoiceScene.h"
+#include "ChoiceScene.h"
+#include "../ChoiceManager.h"
+#include "../FadeOut.h"
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
-using namespace FGEngine::InputSystem;
+using namespace FGEngine::WindowSystem;
 using namespace FGEngine::UI;
 
 /**
 * ゲーム選択シーンの初期化
 */
-bool GameChiecScene::Initialize()
+bool ChoiceScene::Initialize()
 {
 	// マネージャーを取得
 	auto objManager = ObjectManager::GetInstance();
@@ -26,6 +28,10 @@ bool GameChiecScene::Initialize()
 	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
 	camera->AddComponent<Camera>();
 	objManager->SetMainCamera(camera);
+
+	// 選択シーン管理マネージャーを作成
+	auto choiceManagerObj = objManager->CreateGameObject("ChoiceManager");
+	auto choiceManager = choiceManagerObj->AddComponent<ChoiceManager>();
 
 	// タイトル背景を作成
 	{
@@ -66,7 +72,7 @@ bool GameChiecScene::Initialize()
 		auto image = battleButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("BattleButton");
 		image->size = image->texture->GetSize() * 1.3f;
-		imgButtons.push_back(image);
+		choiceManager->imgButtons.push_back(image);
 	}
 
 	// オプションボタンを作成
@@ -75,7 +81,7 @@ bool GameChiecScene::Initialize()
 		auto image = optionButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("OptionButton");
 		image->size = image->texture->GetSize() * 1.3f;
-		imgButtons.push_back(image);
+		choiceManager->imgButtons.push_back(image);
 	}
 
 	// やめるボタンを作成
@@ -84,7 +90,17 @@ bool GameChiecScene::Initialize()
 		auto image = exitButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("ExitButton");
 		image->size = image->texture->GetSize() * 1.3f;
-		imgButtons.push_back(image);
+		choiceManager->imgButtons.push_back(image);
+	}
+
+	// フェードオブジェクトを作成
+	{
+		auto fadeObject = objManager->CreateGameObject("FadeObjectA");
+		auto image = fadeObject->AddComponent<Image>();
+		image->texture = resManager->GetTexture("white");
+		image->color = Color::black;
+		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		choiceManager->fadeOut = fadeObject->AddComponent<FadeOut>();
 	}
 
 	return false;
@@ -93,38 +109,13 @@ bool GameChiecScene::Initialize()
 /**
 * ゲーム選択シーンの更新
 */
-void GameChiecScene::Update()
+void ChoiceScene::Update()
 {
-	// 選択を移動
-	if (InputKey::GetKeyDown(KeyCode::DownArrow))
-	{
-		choiceNum++;
-		choiceNum = Mathf::Clamp(choiceNum, (int)Choice::Battle, (int)Choice::Exit);
-	}
-	else if (InputKey::GetKeyDown(KeyCode::UpArrow))
-	{
-		choiceNum--;
-		choiceNum = Mathf::Clamp(choiceNum, (int)Choice::Battle, (int)Choice::Exit);
-	}
-
-	for (int i = 0; i < imgButtons.size(); ++i)
-	{
-		// 選択されてたら色を暗くする
-		if (i == choiceNum)
-		{
-			imgButtons[i]->color = Color::white;
-		}
-		else
-		{
-			imgButtons[i]->color = Color(0.7f, 0.7f, 0.7f, 1.0f);
-		}
-	}
-
 }
 
 /**
 * ゲーム選択シーンの終了
 */
-void GameChiecScene::Finalize()
+void ChoiceScene::Finalize()
 {
 }

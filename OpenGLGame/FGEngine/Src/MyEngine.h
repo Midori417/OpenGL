@@ -75,17 +75,20 @@
 //
 // ===================
 
+// 入力管理
 #include "My/InputManager.h"
+
+// キーボード配列
+#include "My/KeyCode.h"
 
 // キーボードの入力
 #include "My/InputKey.h"
 
-// マウスの入力
+// マウスのボタン
 #include "My/MouseButton.h"
 
+// マウスの入力
 #include "My/InputMouse.h"
-
-#include "My/WindowManager.h"
 
 // ===================
 //
@@ -179,3 +182,13 @@
 
 // デフォルトシェーダの種類
 #include "My/DefalutShader.h"
+
+// ===================
+//
+// WindowSystem | ウィンドウシステム
+//
+// ===================
+
+
+#include "My/WindowManager.h"
+

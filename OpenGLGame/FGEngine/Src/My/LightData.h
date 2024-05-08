@@ -54,7 +54,7 @@ namespace FGEngine::RenderingSystem
 		float intensity = 5.0f;					
 
 		// Œü‚«
-		Vector3 direction = Vector3{ 0.58f, -0.58f, 0.58f };
+		Vector3 direction = Vector3{ 0.58f, -0.58f, -0.58f };
 	};
 
 }

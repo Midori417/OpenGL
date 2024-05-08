@@ -249,8 +249,16 @@ namespace FGEngine::ResouceSystem
 		return GetShader(name);
 	}
 
+	/**
+	* 共有マテリアルを複製
+	*/
 	std::vector<MaterialPtr> CloneMaterialList(const StaticMeshPtr& original)
 	{
+		if (!original)
+		{
+			return {};
+		}
+
 		MaterialList clone(original->materials.size());
 		for (int i = 0; i < clone.size(); ++i)
 		{

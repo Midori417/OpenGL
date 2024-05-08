@@ -87,10 +87,10 @@ bool TitleScene::Initialize()
 */
 void TitleScene::Update()
 {
-	if (InputKey::AnyKey() && !isStart)
+	if (InputKey::AnyKey() && !isFadeStart)
 	{
 		fadeOut->isStart = true;
-		isStart = true;
+		isFadeStart = true;
 	}
 	// フェードが終了したらシーン移動
 	if (fadeOut->IsFadeOut())

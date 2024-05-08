@@ -4,7 +4,7 @@
 #include "ImageBlinking.h"
 
 /**
-* 更新
+* 毎フレーム実行
 */
 void ImageBlinking::Update()
 {

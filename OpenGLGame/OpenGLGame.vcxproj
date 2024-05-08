@@ -148,11 +148,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
+    <ClInclude Include="Application\Src\BaseMs.h" />
+    <ClInclude Include="Application\Src\BattleManager.h" />
+    <ClInclude Include="Application\Src\ChoiceManager.h" />
+    <ClInclude Include="Application\Src\ControlOwner.h" />
+    <ClInclude Include="Application\Src\CpuControl.h" />
     <ClInclude Include="Application\Src\FadeOut.h" />
     <ClInclude Include="Application\Src\FGEngine.h" />
+    <ClInclude Include="Application\Src\Gundam.h" />
     <ClInclude Include="Application\Src\ImageBlinking.h" />
-    <ClInclude Include="Application\Src\Scene\GameChoiceScene.h" />
-    <ClInclude Include="Application\Src\Scene\MainScene.h" />
+    <ClInclude Include="Application\Src\LookOnCamera.h" />
+    <ClInclude Include="Application\Src\MsLilst.h" />
+    <ClInclude Include="Application\Src\PlayerControl.h" />
+    <ClInclude Include="Application\Src\Scene\ChoiceScene.h" />
+    <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h" />
     <ClInclude Include="Application\Src\Scene\TitleScene.h" />
     <ClInclude Include="FGEngine\Src\MyEngine.h" />
     <ClInclude Include="FGEngine\Src\My\AabbCollider.h" />
@@ -247,10 +256,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Src\Application.cpp" />
+    <ClCompile Include="Application\Src\BaseMs.cpp" />
+    <ClCompile Include="Application\Src\BattleManager.cpp" />
+    <ClCompile Include="Application\Src\ChoiceManager.cpp" />
     <ClCompile Include="Application\Src\FadeOut.cpp" />
+    <ClCompile Include="Application\Src\Gundam.cpp" />
     <ClCompile Include="Application\Src\ImageBlinking.cpp" />
-    <ClCompile Include="Application\Src\Scene\GameChoiceScene.cpp" />
-    <ClCompile Include="Application\Src\Scene\MainScene.cpp" />
+    <ClCompile Include="Application\Src\LookOnCamera.cpp" />
+    <ClCompile Include="Application\Src\PlayerControl.cpp" />
+    <ClCompile Include="Application\Src\Scene\ChoiceScene.cpp" />
+    <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp" />
     <ClCompile Include="Application\Src\Scene\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Main.cpp" />
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />

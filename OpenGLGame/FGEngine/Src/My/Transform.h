@@ -68,6 +68,7 @@ namespace FGEngine
 		* @param target		向ける対象オブジェクトのTransform
 		* @param worldUp	上方ベクトル
 		*/
+		void LookAt(const Transform* target, const Vector3& worldUp = Vector3::up);
 		void LookAt(const TransformPtr target, const Vector3& worldUp = Vector3::up);
 
 		/**

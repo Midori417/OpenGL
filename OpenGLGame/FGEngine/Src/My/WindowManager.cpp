@@ -95,6 +95,18 @@ namespace FGEngine::WindowSystem
 		return glfwWindowShouldClose(windows[index]);
 	}
 
+	/**
+	* ウィンドウを終了
+	*/
+	void WindowManager::WindowClose(size_t index)
+	{
+		if (!windows[index])
+		{
+			return;
+		}
+		glfwSetWindowShouldClose(windows[index], GLFW_TRUE);
+	}
+
 
 	/**
 	* ウィンドウオブジェクトを取得

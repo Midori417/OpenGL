@@ -40,7 +40,7 @@ private:
 	FadeOutPtr fadeOut;
 
 	// ƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½‚ç
-	bool isStart = false;
+	bool isFadeStart = false;
 
 };
 #endif // !TITLESCENE_H_INCLUDED

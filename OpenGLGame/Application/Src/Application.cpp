@@ -3,8 +3,8 @@
 */
 #include "Application.h"
 #include "Scene/TitleScene.h"
-#include "Scene/MainScene.h"
-#include "Scene/GameChoiceScene.h"
+#include "Scene/BattleMap01Scene.h"
+#include "Scene/ChoiceScene.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 using namespace FGEngine::ResouceSystem;
@@ -30,8 +30,9 @@ int Application::Initialize()
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");
-	SceneManager::AddScene<GameChiecScene>("ゲーム選択シーン");
-	SceneManager::AddScene<MainScene>("メインシーン");
+	SceneManager::AddScene<ChoiceScene>("ゲーム選択シーン");
+	SceneManager::AddScene<BattleMap01Scene>("バトルマップ01シーン");
+	SceneManager::LoadScene("バトルマップ01シーン");
 
 	return 0;
 }

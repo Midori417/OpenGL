@@ -23,7 +23,7 @@ private:
 	virtual void Start() override;
 
 	/**
-	* 更新
+	* 毎フレーム実行
 	*/
 	virtual void Update() override;
 

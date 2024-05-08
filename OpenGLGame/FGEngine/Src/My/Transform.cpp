@@ -78,7 +78,7 @@ namespace FGEngine
 	* @param target		向ける対象オブジェクトのTransform
 	* @param worldUp	上方ベクトル
 	*/
-	void Transform::LookAt(const TransformPtr target, const Vector3& worldUp)
+	void Transform::LookAt(const Transform* target, const Vector3& worldUp)
 	{
 		// ワールド座標系における始点座標系のXYZの向きを計算
 		const Vector3 axisZ = Vector3(position - target->position).Normalized();
@@ -96,6 +96,17 @@ namespace FGEngine
 
 		rotation = Quaternion::RotationMatrixToQuaternion(Matrix3x3(m));
 
+	}
+
+	/**
+	* 対象のTransformを設定し、その方向へ向く
+	*
+	* @param target		向ける対象オブジェクトのTransform
+	* @param worldUp	上方ベクトル
+	*/
+	void Transform::LookAt(const TransformPtr target, const Vector3& worldUp)
+	{
+		LookAt(target.get(), worldUp);
 	}
 
 	/**

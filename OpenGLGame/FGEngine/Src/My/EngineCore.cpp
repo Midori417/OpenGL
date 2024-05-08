@@ -69,7 +69,6 @@ namespace FGEngine::MainSystem
 			ImGui_ImplOpenGL3_NewFrame();
 			ImGui::NewFrame();
 
-
 			// エンジンコアの更新
 			Update();
 

@@ -10,6 +10,13 @@
 
 struct GLFWwindow;
 
+enum class Axis
+{
+	Horizontal,
+
+	Vertical,
+};
+
 namespace FGEngine::InputSystem
 {
 	/**
@@ -26,11 +33,21 @@ namespace FGEngine::InputSystem
 		InputManager() = default;
 
 		/**
+		* インプットマネージャーを初期化
+		*/
+		int Initialize();
+
+		/**
 		* 入力を更新
 		* 
 		* @param window オブジェクトオブジェクト
 		*/
 		void Update(GLFWwindow* window);
+
+		/**
+		* Axisの更新
+		*/
+		static void AxisUpdate();
 
 	public:
 
@@ -44,7 +61,7 @@ namespace FGEngine::InputSystem
 	private:
 
 		// axis配列
-		std::unordered_map<std::string, float> axisList;
+		static std::unordered_map<Axis, float> axisList;
 	};
 }
 

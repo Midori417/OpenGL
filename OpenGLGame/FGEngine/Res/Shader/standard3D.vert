@@ -42,7 +42,6 @@ void main()
 
 	// ワールド座標系からビュー座標系に変換
 	vec3 pos = (gl_Position.xyz - cameraPosition) * cameraRotationMatrix;
-//	gl_Position.xyz = RotateXYZ(pos, cameraSin, cameraCos);
 	gl_Position.xyz = pos;
 
 	// ビュー座標系からクリップ座標系に変換

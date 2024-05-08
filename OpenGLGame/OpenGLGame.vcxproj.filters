@@ -37,9 +37,6 @@
     <Filter Include="Application\Scenes">
       <UniqueIdentifier>{4f83ed3e-d39d-46c4-ac11-c83c627282cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Component">
-      <UniqueIdentifier>{5b596bcb-19a2-4bc4-a8f4-c02ab5ba0467}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src">
       <UniqueIdentifier>{88242bbd-40ec-422e-8c57-bbb69d1b7c0f}</UniqueIdentifier>
     </Filter>
@@ -229,20 +226,56 @@
     <Filter Include="FGEngine\Src\My\Resouce\GltfFile">
       <UniqueIdentifier>{1ef5580a-595b-4c3e-852b-75c1aaec01c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Component\ImageBlinking">
-      <UniqueIdentifier>{e1608e06-657c-4269-9044-8187e7e6f8dd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Component\FadeOut">
-      <UniqueIdentifier>{09d8baa4-207f-4447-998d-e45d3cf73578}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Scenes\Title">
       <UniqueIdentifier>{9172b195-73d6-4f84-9be4-19ef96b4f25e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scenes\Main">
+    <Filter Include="Application\Scenes\Choice">
+      <UniqueIdentifier>{36821f01-1d41-4339-8e65-609170564cb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\Battle">
       <UniqueIdentifier>{a8c04c80-af1a-4ee1-a447-0b1963bb62b6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scenes\GameChoice">
-      <UniqueIdentifier>{36821f01-1d41-4339-8e65-609170564cb2}</UniqueIdentifier>
+    <Filter Include="Application\Src">
+      <UniqueIdentifier>{5b596bcb-19a2-4bc4-a8f4-c02ab5ba0467}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms">
+      <UniqueIdentifier>{e0633c67-af68-46a3-b47c-3d0a7d2d3fc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\BaseMs">
+      <UniqueIdentifier>{3ff193ec-65e5-4ce8-b2db-278e182f0ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Gundam">
+      <UniqueIdentifier>{5d797193-c10c-439b-a63e-ea39aae1bf88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Other">
+      <UniqueIdentifier>{74211a13-5dd0-4e5a-988b-7ef1acafb24c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Other\FadeOut">
+      <UniqueIdentifier>{09d8baa4-207f-4447-998d-e45d3cf73578}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Other\ImageBlinking">
+      <UniqueIdentifier>{e1608e06-657c-4269-9044-8187e7e6f8dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Manager">
+      <UniqueIdentifier>{064aef3f-be51-4092-bbaa-091624dc0136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Manager\BattleManager">
+      <UniqueIdentifier>{475e9738-5f99-478d-b6ed-2c1fc6c7e51a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Manager\ChoiceManager">
+      <UniqueIdentifier>{b39b2ba8-2b3f-415d-a2b4-fce3ee6e5ba9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\ControlOwner">
+      <UniqueIdentifier>{11035202-b277-4bce-aa04-cb12991623a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\ControlOwner\Player">
+      <UniqueIdentifier>{84275c86-e7a0-44a7-91df-eb513fa8984f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\CameraMove">
+      <UniqueIdentifier>{7b7cf36e-8c6d-4c88-8a6f-72449481e23b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\ControlOwner\CPU">
+      <UniqueIdentifier>{98d18f94-d017-4637-9be4-1e0287349e1a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -523,19 +556,46 @@
       <Filter>FGEngine\Src\My\Other</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\ImageBlinking.h">
-      <Filter>Application\Component\ImageBlinking</Filter>
+      <Filter>Application\Src\Other\ImageBlinking</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\FadeOut.h">
-      <Filter>Application\Component\FadeOut</Filter>
+      <Filter>Application\Src\Other\FadeOut</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Scene\TitleScene.h">
       <Filter>Application\Scenes\Title</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\Scene\MainScene.h">
-      <Filter>Application\Scenes\Main</Filter>
+    <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h">
+      <Filter>Application\Scenes\Battle</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\Scene\GameChoiceScene.h">
-      <Filter>Application\Scenes\GameChoice</Filter>
+    <ClInclude Include="Application\Src\Scene\ChoiceScene.h">
+      <Filter>Application\Scenes\Choice</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\ChoiceManager.h">
+      <Filter>Application\Src\Manager\ChoiceManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BattleManager.h">
+      <Filter>Application\Src\Manager\BattleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BaseMs.h">
+      <Filter>Application\Src\Ms\BaseMs</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Gundam.h">
+      <Filter>Application\Src\Ms\Gundam</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\PlayerControl.h">
+      <Filter>Application\Src\ControlOwner\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\MsLilst.h">
+      <Filter>Application\Src\Ms</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\ControlOwner.h">
+      <Filter>Application\Src\ControlOwner</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\LookOnCamera.h">
+      <Filter>Application\Src\CameraMove</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\CpuControl.h">
+      <Filter>Application\Src\ControlOwner\CPU</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -702,19 +762,37 @@
       <Filter>FGEngine\Src\My\Object\Component\Animator</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\ImageBlinking.cpp">
-      <Filter>Application\Component\ImageBlinking</Filter>
+      <Filter>Application\Src\Other\ImageBlinking</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\FadeOut.cpp">
-      <Filter>Application\Component\FadeOut</Filter>
+      <Filter>Application\Src\Other\FadeOut</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Scene\MainScene.cpp">
-      <Filter>Application\Scenes\Main</Filter>
+    <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp">
+      <Filter>Application\Scenes\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Scene\TitleScene.cpp">
       <Filter>Application\Scenes\Title</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Scene\GameChoiceScene.cpp">
-      <Filter>Application\Scenes\GameChoice</Filter>
+    <ClCompile Include="Application\Src\Scene\ChoiceScene.cpp">
+      <Filter>Application\Scenes\Choice</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ChoiceManager.cpp">
+      <Filter>Application\Src\Manager\ChoiceManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BattleManager.cpp">
+      <Filter>Application\Src\Manager\BattleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BaseMs.cpp">
+      <Filter>Application\Src\Ms\BaseMs</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Gundam.cpp">
+      <Filter>Application\Src\Ms\Gundam</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\PlayerControl.cpp">
+      <Filter>Application\Src\ControlOwner\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\LookOnCamera.cpp">
+      <Filter>Application\Src\CameraMove</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

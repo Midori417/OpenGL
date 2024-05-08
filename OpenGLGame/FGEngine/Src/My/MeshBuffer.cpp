@@ -317,7 +317,7 @@ namespace FGEngine::RenderingSystem
 		std::ifstream file(filename);
 		if (!file)
 		{
-			LOG_ERROR("%sを開けません", filename);
+			LOG_ERROR("%sを開けません", filename.c_str());
 			return {}; // 空のオブジェクトを返す
 		}
 

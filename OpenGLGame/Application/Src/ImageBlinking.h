@@ -17,7 +17,7 @@ public:
 private:
 
 	/**
-	* 更新
+	* 毎フレーム更新
 	*/
 	virtual void Update() override;
 

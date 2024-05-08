@@ -21,7 +21,7 @@ void FadeOut::Start()
 }
 
 /**
-* 更新
+* 毎フレーム実行
 */
 void FadeOut::Update()
 {
