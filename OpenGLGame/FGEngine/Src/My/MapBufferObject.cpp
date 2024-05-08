@@ -44,12 +44,13 @@ namespace FGEngine::RenderingSystem
 		}
 
 		// バッファオブジェクトを作成
-		glCreateBuffers(1, &id);
-		glNamedBufferStorage(id, bufferSize * 2, // ダブルバッファ用に2倍確保
-			nullptr, flags);
+		glCreateBuffers(2, id);
+		glNamedBufferStorage(id[0], bufferSize, nullptr, flags);
+		glNamedBufferStorage(id[1], bufferSize, nullptr, flags);
 
 		// GPUメモリをCPUメモリアドレスにマップする
-		p = static_cast<uint8_t*>(glMapNamedBuffer(id, access));
+		p[0] = static_cast<uint8_t*>(glMapNamedBuffer(id[0], access));
+		p[1] = static_cast<uint8_t*>(glMapNamedBuffer(id[1], access));
 	}
 
 	/**
@@ -57,7 +58,7 @@ namespace FGEngine::RenderingSystem
 	*/
 	MappedBufferObject::~MappedBufferObject()
 	{
-		glDeleteBuffers(1, &id);
+		glDeleteBuffers(2, id);
 	}
 
 	/**
@@ -82,7 +83,7 @@ namespace FGEngine::RenderingSystem
 	*/
 	MappedBufferObject::operator GLuint() const
 	{
-		return id;
+		return id[bufferIndex];
 	}
 
 	/**
@@ -119,7 +120,7 @@ namespace FGEngine::RenderingSystem
 	*/
 	uint8_t* MappedBufferObject::GetMappedAddress() const
 	{
-		return p + bufferIndex * bufferSize;
+		return p[bufferIndex];
 	}
 
 	/**
@@ -131,8 +132,7 @@ namespace FGEngine::RenderingSystem
 	*/
 	void MappedBufferObject::Bind(GLuint index, size_t offset, size_t size)
 	{
-		offset += bufferIndex * bufferSize;
-		glBindBufferRange(type, index, id, offset, size);
+		glBindBufferRange(type, index, id[bufferIndex], offset, size);
 	}
 
 	/**

@@ -827,7 +827,6 @@ namespace FGEngine::RenderingSystem
 		animationBuffer->WaitSync();
 		uint8_t* p = animationBuffer->GetMappedAddress();
 		memcpy(p, tmpAnimationBuffer.data(), tmpAnimationBuffer.size() * sizeof(Matrix4x4));
-		animationBuffer->SwapBuffers();
 	}
 
 	/**
@@ -852,6 +851,7 @@ namespace FGEngine::RenderingSystem
 	void GltfFileBuffer::UnbindAnimationBuffer(GLuint bindingPoint)
 	{
 		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, bindingPoint, 0, 0, 0);
+		animationBuffer->SwapBuffers();
 	}
 
 	/**

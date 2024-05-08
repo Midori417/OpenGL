@@ -91,13 +91,13 @@ namespace FGEngine::RenderingSystem
 	private:
 
 		// 管理Id
-		GLuint id = 0;
+		GLuint id[2] = { 0, 0 };
 
 		// バッファサイズ
 		GLsizeiptr bufferSize = 0;
 
 		// データコピー先アドレス
-		uint8_t* p = nullptr;
+		uint8_t* p[2] = { nullptr, nullptr };
 
 		// コピー先バッファのインデックス
 		size_t bufferIndex = 0;		
