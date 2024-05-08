@@ -178,6 +178,11 @@ namespace FGEngine::ObjectSystem
 				continue; // コライダーを持っていなかったら何もしない
 			}
 
+			if (e->rigidbody)
+			{
+				e->rigidbody->isGrounded = false;
+			}
+
 			// 衝突判定を作成
 			PhysicsSystem::WorldColliderList list(e->colliders.size());
 			for (int i = 0; i < e->colliders.size(); ++i)

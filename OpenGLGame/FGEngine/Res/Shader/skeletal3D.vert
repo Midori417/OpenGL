@@ -23,6 +23,8 @@ layout(location=5) uniform mat3 cameraRotationMatrix;
 layout(location=10) uniform mat4 shadowTextureMatrix;	// シャドウテクスチャ行列
 layout(location=11) uniform float shadowNormalOffset;	// 座標を法線方向にずらす量
 
+//layout(location=30) mat4 matBones[];
+//
 // スケルタルアニメーション用SSBO
 layout(std430, binding=0) buffer AnimationDataBlock
 {

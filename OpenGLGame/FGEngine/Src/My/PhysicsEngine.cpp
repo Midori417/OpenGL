@@ -51,11 +51,11 @@ namespace FGEngine::PhysicsSystem
 	/**
 	* 貫通ベクトルをゲームオブジェクトに反映する
 	*/
-	void PhysicsEngine::ApplyPenetration(WorldColliderList* worldColliders, GameObjectPtr gameObject, const Vector3& penetration)
+	void PhysicsEngine::ApplyPenetration(WorldColliderList* worldColliders, GameObject* gameObject, const Vector3& penetration)
 	{
 		// 設置判定
 		// 衝突ベクトルが垂直に近い場合、床と触れたとみなす
-		static const float cosGround = Mathf::Cos(Mathf::DegToRad(90)); //　床とみなす角度
+		static const float cosGround = Mathf::Cos(Mathf::DegToRad(75)); //　床とみなす角度
 		if (penetration.y > 0 && gameObject->rigidbody)
 		{
 			// 対象が単位垂直ベクトルであることを利用して、内積による角度の比較を単純化
@@ -63,10 +63,6 @@ namespace FGEngine::PhysicsSystem
 			if (penetration.y >= d * cosGround)
 			{
 				gameObject->rigidbody->isGrounded = true; // 設置した
-			}
-			else
-			{
-				gameObject->rigidbody->isGrounded = false;
 			}
 		}
 
@@ -140,18 +136,18 @@ namespace FGEngine::PhysicsSystem
 						if (!colA.origin->GetAttachedRigidbody())
 						{
 							// Aは動かないのでBを移動させる
-							ApplyPenetration(b, goB, penetration);
+							ApplyPenetration(b, goB.get(), penetration);
 						}
 						else if (!colB.origin->GetAttachedRigidbody())
 						{
 							// Bは動かないのでAを移動させる
-							ApplyPenetration(a, goA, -penetration);
+							ApplyPenetration(a, goA.get(), -penetration);
 						}
 						else
 						{
 							// AとBを均等に移動させる
-							ApplyPenetration(b, goB, penetration * 0.5f);
-							ApplyPenetration(a, goA, penetration * -0.5f);
+							ApplyPenetration(b, goB.get(), penetration * 0.5f);
+							ApplyPenetration(a, goA.get(), penetration * -0.5f);
 						}
 					}
 
@@ -295,21 +291,6 @@ namespace FGEngine::PhysicsSystem
 						}
 					}
 
-					// Rigidbodyの設置処理
-					if (goA->rigidbody)
-					{
-						if (goA->rigidbody->isGrounded)
-						{
-							goA->rigidbody->isGrounded = false;
-						}
-					}
-					if (goB->rigidbody)
-					{
-						if (goB->rigidbody->isGrounded)
-						{
-							goB->rigidbody->isGrounded = false;
-						}
-					}
 
 					// コライダー前回の状態を衝突していないにする
 					colA.origin->old = false;

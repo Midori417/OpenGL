@@ -67,8 +67,8 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("Grass");
             auto col = ground->AddComponent<AabbCollider>();
-            col->min = Vector3(-75, -1, -60);
-            col->max = Vector3(75, 0.5f, 60);
+            col->min = Vector3(-150, -0.5f, -120);
+            col->max = Vector3(150, 0.5f, 120);
         }
 
         // “¹‚ğì¬

@@ -201,7 +201,7 @@ namespace FGEngine::RenderingSystem
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		// 影の描画パラメータ
-		const float shadowAreaSize = 200;	// 影の描画範囲(XY平面)
+		const float shadowAreaSize = 400;	// 影の描画範囲(XY平面)
 		const float shadowNearZ = 1;		// 影の描画範囲(近Z平面)
 		const float shadowFarZ = 200;		// 影の描画範囲(遠Z平面)
 		const float shadowCenterZ = (shadowNearZ + shadowFarZ) * 0.5f; // 描画範囲の中心
@@ -332,21 +332,6 @@ namespace FGEngine::RenderingSystem
 	*/
 	void RenderingEngine::DrawGameObject(std::vector<RendererPtr> rendererList)
 	{
-		// アニメーションバッファをクリア
-		glTFfileBuffer->ClearAnimationBuffer();
-
-		// 描画の前処理
-		for (auto& x : rendererList)
-		{
-			if (x->enabled)
-			{
-				x->PreDraw();
-			}
-		}
-
-		// アニメーションバッファをGPUメモリにコピーする
-		glTFfileBuffer->UploadAnimationBuffer();
-
 		// ゲームオブジェクトをレンダーキュー順に並べる
 		std::stable_sort(rendererList.begin(), rendererList.end(),
 			[](const RendererPtr& a, const RendererPtr& b) {
@@ -380,6 +365,22 @@ namespace FGEngine::RenderingSystem
 		auto fbSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, (GLsizei)fbSize.x, (GLsizei)fbSize.y);
+
+		// アニメーションバッファをクリア
+		glTFfileBuffer->ClearAnimationBuffer();
+
+		// 描画の前処理
+		for (auto& x : rendererList)
+		{
+			if (x->enabled)
+			{
+				x->PreDraw();
+			}
+		}
+
+		// アニメーションバッファをGPUメモリにコピーする
+		glTFfileBuffer->UploadAnimationBuffer();
+
 
 		// transparent以前のキューを描画
 		Draw3DGameObject(rendererList.begin(), transparentBegin);

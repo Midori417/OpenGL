@@ -24,7 +24,7 @@ void BattleManager::Start()
 
 		// プレイヤーの機体を作成
 		{
-			auto playerMs = Instantate("MyMs", Vector3(0, 10, mapZ), Quaternion::AngleAxis(180, Vector3::up));;
+			auto playerMs = Instantate("MyMs", Vector3(0, 10, 50), Quaternion::AngleAxis(180, Vector3::up));;
 			// 対応するコンポーネントを追加
 			playerControl->myMs = SetMs(playerMs, playerControl->ms);
 		}
@@ -41,7 +41,7 @@ void BattleManager::Start()
 		cpuControl->ms = MsList::Gundam;
 		// CPUの機体を作成
 		{
-			auto cpuMs = Instantate("CpuMs", Vector3(0, 10, -mapZ));
+			auto cpuMs = Instantate("CpuMs", Vector3(0, 10, -50));
 			cpuControl->myMs = SetMs(cpuMs, cpuControl->ms);
 		}
 	}

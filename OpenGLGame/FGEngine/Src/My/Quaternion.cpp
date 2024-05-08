@@ -5,6 +5,7 @@
 #include "VectorPoint.h"
 #include "MatrixPoint.h"
 #include "Mathf.h"
+#include <cmath>
 
 namespace FGEngine
 {
@@ -313,22 +314,30 @@ namespace FGEngine
 	Vector3 Quaternion::QuaternionToEuler(const Quaternion& qua)
 	{
 		Vector3 axis;
-		// X²
-		float t0 = 2.0f * (qua.w * qua.x + qua.y * qua.z);
-		float t1 = 1.0f - 2.0f * (qua.x * qua.x + qua.y * qua.y);
-		axis.x = Mathf::Atan2(t0, t1);
+
+		// ƒ[ƒ‹Šp (x ²ü‚è‚Ì‰ñ“])
+		float sinr_cosp = 2 * (qua.w * qua.x + qua.y * qua.z);
+		float cosr_cosp = 1 - 2 * (qua.x * qua.x + qua.y * qua.y);
+		axis.x = Mathf::Atan2(sinr_cosp, cosr_cosp);
 		axis.x = Mathf::RadToDeg(axis.x);
 
-		// Y²
-		float t2 = 2.0f * (qua.w * qua.y - qua.z * qua.x);
-		t2 = Mathf::Min(Mathf::Max(t2, -1.0f), 1.0f); 
-		axis.y = Mathf::Asin(t2);
-		axis.y = Mathf::RadToDeg(axis.y);
+		// ƒsƒbƒ`Šp (y ²ü‚è‚Ì‰ñ“])
+		float sinp = 2 * (qua.w * qua.y - qua.z * qua.x);
+		if (Mathf::Abs(sinp) >= 1)
+		{
+			axis.y = std::copysign(Mathf::PI / 2, sinp); // ƒsƒbƒ`Šp‚Ì“ÁˆÙ“_‚ğˆ—
+			axis.y = Mathf::RadToDeg(axis.y);
+		}
+		else
+		{
+			axis.y = Mathf::Asin(sinp);
+			axis.y = Mathf::RadToDeg(axis.y);
+		}
 
-		// Z²
-		float t3 = 2.0f * (qua.w * qua.z + qua.x * qua.y);
-		float t4 = 1.0f - 2.0f * (qua.y * qua.y + qua.z * qua.z);
-		axis.z = Mathf::Atan2(t3, t4);
+		// ƒˆ[Šp (z ²ü‚è‚Ì‰ñ“])
+		float siny_cosp = 2 * (qua.w * qua.z + qua.x * qua.y);
+		float cosy_cosp = 1 - 2 * (qua.y * qua.y + qua.z * qua.z);
+		axis.z = Mathf::Atan2(siny_cosp, cosy_cosp);
 		axis.z = Mathf::RadToDeg(axis.z);
 
 		return axis;

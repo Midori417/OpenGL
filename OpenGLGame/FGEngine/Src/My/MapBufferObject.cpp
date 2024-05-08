@@ -141,7 +141,6 @@ namespace FGEngine::RenderingSystem
 	void MappedBufferObject::SwapBuffers()
 	{
 		syncList[bufferIndex] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
-
 		bufferIndex = (bufferIndex + 1) % 2;
 	}
 }

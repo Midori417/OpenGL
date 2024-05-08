@@ -25,7 +25,7 @@ namespace FGEngine::PhysicsSystem
 		/**
 		* 貫通ベクトルをゲームオブジェクトに反映する
 		*/
-		void ApplyPenetration(WorldColliderList* worldColliders, GameObjectPtr gameObject, const Vector3& penetration);
+		void ApplyPenetration(WorldColliderList* worldColliders, GameObject* gameObject, const Vector3& penetration);
 
 	public:
 

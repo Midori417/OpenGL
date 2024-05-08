@@ -103,7 +103,7 @@ namespace FGEngine::RenderingSystem
 		size_t bufferIndex = 0;		
 
 		// 同期オブジェクト
-		GLsync syncList[2] = { 0,0 };
+		GLsync syncList[2] = { 0, 0};
 
 		// バッファの種類
 		GLenum type = GL_ARRAY_BUFFER;	

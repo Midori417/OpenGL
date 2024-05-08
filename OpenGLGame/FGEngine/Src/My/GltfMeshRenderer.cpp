@@ -122,9 +122,9 @@ namespace FGEngine
 				}
 
 				// 変換座標変換行列をGPUにコピー
-				if (glGetUniformLocation(shader->GetProgId(), "transformMatrix") >= 0)
+				if (glGetUniformLocation(shadowShader->GetProgId(), "transformMatrix") >= 0)
 				{
-					glProgramUniformMatrix4fv(shader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
+					glProgramUniformMatrix4fv(shadowShader->GetProgId(), RenderingSystem::locTransformMatrix, 1,
 						GL_FALSE, &GetTransform()->GetWorldTransformMatrix()[0].x);
 				}
 
@@ -155,6 +155,7 @@ namespace FGEngine
 
 				// SSBOをバインディングポイント0番に割り当てる
 				glTFfile->gltfFileBuffer->BindAnimationBuffer(0, ssboRanges[i]);
+				
 
 				// マテリアルが指定されていない場合、共有マテリアルを使って描画する
 				const auto* pMaterials = &materials;

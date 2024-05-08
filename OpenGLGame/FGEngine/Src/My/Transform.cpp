@@ -69,7 +69,7 @@ namespace FGEngine
 	*/
 	void Transform::Rotate(const Vector3& eulers)
 	{
-		rotation = Quaternion::EulerToQuaternion(eulers + rotation.EulerAngle());
+		rotation = Quaternion::EulerToQuaternion(eulers) * rotation;
 	}
 
 	/**

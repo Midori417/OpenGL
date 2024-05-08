@@ -39,7 +39,7 @@ public:
 
 private:
 
-	float angle = 0;
+	float angle = 180;
 
 	// ƒŠƒMƒ{
 	RigidbodyPtr rb;
