@@ -44,8 +44,9 @@ public:
 	// プレイヤーMsのトランスフォーム
 	Transform* playerMs;
 
-	// カメラのオフセット
-	Vector3 cameraOffset = Vector3(0, 13, 10);
+	// カメラのオフセット位置
+	Vector3 offsetMinPos = Vector3(0, 5, -10);
+	Vector3 offsetMaxPos = Vector3(0, 13, -15);
 
 private:
 

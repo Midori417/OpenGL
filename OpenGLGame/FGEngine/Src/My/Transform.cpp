@@ -216,7 +216,7 @@ namespace FGEngine
 	void Transform::LocalTransformUpdate()
 	{
 		auto pos = Matrix4x4::Translate(Vector3(position.x, position.y, -position.z));
-		auto rot = Quaternion::QuaternionToRotationMatrix4x4(rotation.Inverse());
+		auto rot = Quaternion::QuaternionToRotationMatrix4x4(Quaternion(-rotation.x, -rotation.y, rotation.z, rotation.w));
 		auto s = Matrix4x4::Scale(scale);
 		localTransformMatrix = pos * rot * s;
 		normalMatrix = Matrix3x3(rot);

@@ -37,22 +37,40 @@ void LookOnCamera::PositionCamera()
 	// ターゲットが未設定ならロックオンカメラにしない
 	if (!currentTarget)
 	{
-		GetTransform()->position = playerMs->position + cameraOffset;
+		GetTransform()->position = playerMs->position + offsetMaxPos;
 		GetTransform()->LookAt(playerMs);
 	}
 	else
 	{
+		// 自身とターゲットのMSの位置を取得
 		Vector3 playerMsPos = playerMs->position;
+		Vector3 targetMsPos = currentTarget->position;
+
 		// ターゲットへのベクトル
-		Vector3 targetVector = currentTarget->position - playerMsPos;
+		Vector3 targetVector = targetMsPos - playerMsPos;
 
 		// ターゲットへのベクトルを前方とするクォータニオン
 		Quaternion targetRotation = Quaternion::LookRotation(targetVector);
 
-		// 位置と回転
-		Vector3 position = playerMsPos + targetRotation * cameraOffset;
-		Quaternion rotation = Quaternion::LookRotation(currentTarget->position - position);
 
+		// 距離を求める
+		float distance = Vector3::Distance(targetMsPos, playerMsPos);
+
+		// 高さを招請
+		float posY = offsetMaxPos.y * (1 - (distance / offsetMaxPos.y));
+
+		// オフセット位置を補正
+		Vector3 offsetPos(
+			0.0f,
+			Mathf::Clamp(posY, offsetMinPos.y, offsetMaxPos.y),
+			Mathf::Clamp(distance, offsetMinPos.z, offsetMaxPos.z)
+		);
+
+		// 位置と回転
+		Vector3 position = playerMsPos + targetRotation * offsetPos;
+		Quaternion rotation = Quaternion::LookRotation(targetMsPos - position);
+
+		
 		// 位置と回転をsってい
 		GetTransform()->SetPositionAndRotation(position, rotation);
 	}

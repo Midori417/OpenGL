@@ -117,56 +117,59 @@ namespace FGEngine
 	*
 	* @return 作成したクォータニオン
 	*/
-	Quaternion Quaternion::LookRotation(const Vector3& foward, const Vector3& upward)
+	Quaternion Quaternion::LookRotation(const Vector3& forward, const Vector3& upward)
 	{
-		Quaternion result = identity;
+		// 前方ベクトルの正規化
+		Vector3 forwardNormalized = forward.Normalized();
 
-		Vector3 forwardNormalized = foward.Normalized();
+		// 右方ベクトルを計算
 		Vector3 right = Vector3::Cross(upward, forwardNormalized).Normalized();
-		Vector3 upAdjusted = Vector3::Cross(forwardNormalized, right).Normalized();
-		float trace = right.x + upAdjusted.y + forwardNormalized.z;
 
-		if (trace > 0)
+		// 上方ベクトルを再計算
+		Vector3 upwardNormalized = Vector3::Cross(forwardNormalized, right).Normalized();
+
+		// 回転行列を作成
+		Matrix3x3 rot(right, upwardNormalized, forwardNormalized);
+
+		float tmp = (rot[0][0] + rot[1][1]) + rot[2][2];
+		Quaternion result = identity;
+		if (tmp > 0) 
 		{
-			float s = 0.5f / Mathf::Sqrt(trace + 1.0f);
-			result = Quaternion(
-				(upAdjusted.z - forwardNormalized.y) * s,
-				(forwardNormalized.x - right.z) * s,
-				(right.y - upAdjusted.x) * s,
-				0.25f / s
-			);
+			float num = 0.5f / Mathf::Sqrt(tmp + 1.0f);
+			result.x = (rot[1][2] - rot[2][1]) * num;
+			result.y = (rot[2][0] - rot[0][2]) * num;
+			result.z = (rot[0][1] - rot[1][0]) * num;
+			result.w = 0.25f / num;
+			return result;
 		}
-		else if (right.x > upAdjusted.y && right.x > forwardNormalized.z) 
+		else if ((rot[0][0] >= rot[1][1]) && (rot[0][0] >= rot[2][2]))
 		{
-			float s = 2.0f * Mathf::Sqrt(1.0f + right.x - upAdjusted.y - forwardNormalized.z);
-			result = Quaternion(
-				0.25f * s,
-				(upAdjusted.x + right.y) / s,
-				(forwardNormalized.x + right.z) / s,
-				(upAdjusted.z - forwardNormalized.y) / s
-			);
+			float num = 2.0f * Mathf::Sqrt(((1.0f + rot[0][0]) - rot[1][1]) - rot[2][2]);
+			result.x = 0.25f * num;
+			result.y = (rot[0][1] + rot[1][0]) / num;
+			result.z = (rot[0][2] + rot[2][0]) / num;
+			result.w = (rot[1][2] - rot[2][1]) / num;
+			return result;
 		}
-		else if (upAdjusted.y > forwardNormalized.z)
+		else if (rot[1][1] > rot[2][2])
 		{
-			float s = 2.0f * Mathf::Sqrt(1.0f + upAdjusted.y - right.x - forwardNormalized.z);
-			result = Quaternion(
-				(upAdjusted.x + right.y) / s,
-				0.25f * s,
-				(forwardNormalized.y + upAdjusted.z) / s,
-				(forwardNormalized.x - right.z) / s
-			);
+			float num = 2.0f * Mathf::Sqrt(((1.0f + rot[1][1]) - rot[0][0]) - rot[2][2]);
+			result.x = (rot[1][0] + rot[0][1]) / num;
+			result.y = 0.25f * num;
+			result.z = (rot[2][1] + rot[1][2]) / num;
+			result.w = (rot[2][0] - rot[0][2]) / num;
+			return result;
 		}
-		else 
+		else
 		{
-			float s = 2.0f * Mathf::Sqrt(1.0f + forwardNormalized.z - right.x - upAdjusted.y);
-			result = Quaternion(
-				(forwardNormalized.x + right.z) / s,
-				(forwardNormalized.y + upAdjusted.z) / s,
-				0.25f * s,
-				(right.y - upAdjusted.x) / s
-			);
+			float num = 2.0f * Mathf::Sqrt(((1.0f + rot[2][2]) - rot[0][0]) - rot[1][1]);
+			result.x = (rot[2][0] + rot[0][2]) / num;
+			result.y = (rot[2][1] + rot[1][2]) / num;
+			result.z = 0.25f * num;
+			result.w = (rot[0][1] - rot[1][0]) / num;
+			return result;
 		}
-		return result.Normalized();
+		return result;
 	}
 
 	/**
