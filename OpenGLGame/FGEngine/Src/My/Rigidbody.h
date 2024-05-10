@@ -38,7 +38,7 @@ namespace FGEngine
 		/**
 		* ’n–Ê‚É‚Â‚¢‚Ä‚¢‚é‚©‚ðŽæ“¾
 		*/
-		bool GetGrounded() const;
+		bool IsGrounded() const;
 
 	public:
 

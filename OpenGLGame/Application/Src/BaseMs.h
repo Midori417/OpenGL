@@ -61,7 +61,22 @@ public:
 	*
 	* @param moveAxis 入力軸
 	*/
-	virtual void Move(const Vector2&) {}
+	virtual void Move(const Vector2& moveAxis) {}
+
+	/**
+	* CPU移動
+	*/
+	virtual void CpuMove(){}
+
+	/**
+	* ジャンプ
+	*/
+	virtual void Jump(bool isJump){}
+
+	/**
+	* ダッシュ
+	*/
+	virtual void Dash(bool isDash, const Vector2& mvoeAxis){}
 
 	// 攻撃
 	virtual void Attack1() {}
@@ -74,12 +89,33 @@ public:
 	*/
 	virtual void Damage(float damage) {}
 
+	/**
+	* カメラトランスフォームの設定
+	*/
+	void SetCamera(Transform* camera);
+
+	/**
+	* カメラのトランスフォームを取得
+	*/
+	Transform* GetCameraTransform() const;
+
+	/**
+	* ターゲットMSの設定
+	*/
+	void SetTargetMS(BaseMs* baseMS);
+
+	/**
+	* ターゲットMSの取得
+	*/
+	BaseMs* GetTargetMs() const;
+
 public:
 
 	// MSの名前
 	std::string name;
 
 protected:
+
 
 	Teum teum = Teum::None;
 
@@ -103,14 +139,46 @@ protected:
 	*/
 	struct MoveParamater
 	{
-		// 地上での速度
-		float groundSpeed = 0;
+	private:
 
-		// ダッシュの速度
-		float dashSpeed = 0;
+		/**
+		* ダッシュパラメータ
+		*/
+		struct DashParamater
+		{
+			// 移動速度
+			float speed = 0;
 
-		// ジャンプ力
-		float jumpPower = 0;
+			// 旋回速度
+			float rotationSpeed = 0;
+
+			// ダッシュ中か
+			bool isNow = false;
+		};
+
+		/**
+		* ジャンプパラメータ
+		*/
+		struct JumpPramter
+		{
+			// ジャンプ力
+			float power = 0;
+
+			// ジャンプ中か
+			bool isNow = false;
+		};
+
+	public:
+
+		// 通常速度
+		float speed = 0;
+
+		// 通常時の旋回速度
+		float rotationSpeed = 0;
+
+		DashParamater dash;
+
+		JumpPramter jump;
 	};
 	MoveParamater moveParamater;
 
@@ -118,6 +186,12 @@ private:
 
 	// 敵との距離
 	float distance = 0;
+
+	// カメラの位置
+	Transform* cameraTrasform;
+
+	// ターゲットのMS
+	BaseMs* targetMs;
 
 };
 

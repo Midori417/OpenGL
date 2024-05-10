@@ -44,3 +44,29 @@ float BaseMs::GetDistance() const
 {
 	return distance;
 }
+
+/**
+* カメラのトランスフォームを設定
+*/
+void BaseMs::SetCamera(Transform* camera)
+{
+	this->cameraTrasform = camera;
+}
+
+/**
+* カメラのトランスフォームを取得
+*/
+Transform* BaseMs::GetCameraTransform() const
+{
+	return cameraTrasform;
+}
+
+void BaseMs::SetTargetMS(BaseMs* baseMS)
+{
+	this->targetMs = baseMS;
+}
+
+BaseMs* BaseMs::GetTargetMs() const
+{
+	return targetMs;
+}

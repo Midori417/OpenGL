@@ -56,7 +56,7 @@ namespace FGEngine::InputSystem
 		* 
 		* @parma axis アクシズ名
 		*/
-		static float GetAxis(const std::string& axis);
+		static float GetAxis(Axis axis);
 
 	private:
 

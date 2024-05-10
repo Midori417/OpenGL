@@ -51,8 +51,72 @@ bool BattleMap01Scene::Initialize()
         battleManager->mapZ = mapZ;
     }
 
-    // テスト
+    // 壁を作成
     {
+        // 前
+        {
+            auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, 121));
+            wall->GetTransform()->scale = Vector3(151, 100, 1);
+            auto col = wall->AddComponent<AabbCollider>();
+
+            auto line = objManager->CreateGameObject("Line", Vector3(0, -5.8f, 121));
+            line->GetTransform()->scale = Vector3(151, 1, 1);
+            auto render = line->AddComponent<MeshRenderer>();
+            render->mesh = resManager->GetStaticMesh("Cube");
+            render->shader = resManager->GetShader(DefalutShader::Unlit);
+            render->materials = CloneMaterialList(render->mesh);
+            render->materials[0]->mainTexture = resManager->GetTexture("white");
+            render->materials[0]->color = Color::red;
+        }
+        // 後ろ
+        {
+            auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, -121));
+            wall->GetTransform()->scale = Vector3(151, 100, 1);
+            auto col = wall->AddComponent<AabbCollider>();
+
+            auto line = objManager->CreateGameObject("Line", Vector3(0, -5.8f, -121));
+            line->GetTransform()->scale = Vector3(151, 1, 1);
+            auto render = line->AddComponent<MeshRenderer>();
+            render->mesh = resManager->GetStaticMesh("Cube");
+            render->shader = resManager->GetShader(DefalutShader::Unlit);
+            render->materials = CloneMaterialList(render->mesh);
+            render->materials[0]->mainTexture = resManager->GetTexture("white");
+            render->materials[0]->color = Color::red;
+
+        }
+
+        // 右
+        {
+            auto wall = objManager->CreateGameObject("Wall", Vector3(151, -6.0f, 0));
+            wall->GetTransform()->scale = Vector3(1, 100, 121);
+            auto col = wall->AddComponent<AabbCollider>();
+
+            auto line = objManager->CreateGameObject("Line", Vector3(151, -5.8f, 0));
+            line->GetTransform()->scale = Vector3(1, 1, 121);
+            auto render = line->AddComponent<MeshRenderer>();
+            render->mesh = resManager->GetStaticMesh("Cube");
+            render->shader = resManager->GetShader(DefalutShader::Unlit);
+            render->materials = CloneMaterialList(render->mesh);
+            render->materials[0]->mainTexture = resManager->GetTexture("white");
+            render->materials[0]->color = Color::red;
+
+        }
+        // 左
+        {
+            auto wall = objManager->CreateGameObject("Wall", Vector3(-151, -6.0f, 0));
+            wall->GetTransform()->scale = Vector3(1, 100, 121);
+            auto col = wall->AddComponent<AabbCollider>();
+
+            auto line = objManager->CreateGameObject("Line", Vector3(-151, -5.8f, 0));
+            line->GetTransform()->scale = Vector3(1, 1, 121);
+            auto render = line->AddComponent<MeshRenderer>();
+            render->mesh = resManager->GetStaticMesh("Cube");
+            render->shader = resManager->GetShader(DefalutShader::Unlit);
+            render->materials = CloneMaterialList(render->mesh);
+            render->materials[0]->mainTexture = resManager->GetTexture("white");
+            render->materials[0]->color = Color::red;
+        }
+
     }
 
     // ステージを作成
@@ -93,6 +157,9 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("white");
             renderer->materials[0]->color = Color(0.3f, 0.3f, 0.3f, 1);
+            auto collider = biru01->AddComponent<AabbCollider>();
+            collider->min = Vector3(-8.0f, -6.0f, -12.0f);
+            collider->max = Vector3(8.0f, 10.0f, 12.0f);
         }
         // 建物01Bを作成
         {
@@ -105,6 +172,9 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("white");
             renderer->materials[0]->color = Color(0.3f, 0.3f, 0.3f, 1);
+            auto collider = biru01->AddComponent<AabbCollider>();
+            collider->min = Vector3(-8.0f, -6.0f, -12.0f);
+            collider->max = Vector3(8.0f, 10.0f, 12.0f);
         }
         // 建物02Aを作成
         {
@@ -117,6 +187,9 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("white");
             renderer->materials[0]->color = Color(0.3f, 0.3f, 0.3f, 1);
+            auto collider = biru02->AddComponent<AabbCollider>();
+            collider->min = Vector3(-16.5f, -6.0f, -12.0f);
+            collider->max = Vector3(16.5f, 6.0f, 12.0f);
         }
         // 建物02Bを作成
         {
@@ -129,10 +202,13 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("white");
             renderer->materials[0]->color = Color(0.3f, 0.3f, 0.3f, 1);
+            auto collider = biru02->AddComponent<AabbCollider>();
+            collider->min = Vector3(-16.5f, -6.0f, -12.0f);
+            collider->max = Vector3(16.5f, 6.0f, 12.0f);
         }
         // 建物03Aを作成
         {
-            auto biru03 = objManager->CreateGameObject("Biru03A", Vector3(-37.0f, 6.0f, 38.0f));
+            auto biru03 = objManager->CreateGameObject("Biru03A", Vector3(-37.0f, 6.0f, 38.0f), Quaternion::AngleAxis(90, Vector3::up));
             biru03->GetTransform()->SetParent(ground->GetTransform());
             auto renderer = biru03->AddComponent<MeshRenderer>();
             renderer->mesh = resManager->GetStaticMesh("Biru03");
@@ -141,10 +217,13 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("white");
             renderer->materials[0]->color = Color(0.3f, 0.3f, 0.3f, 1);
+            auto collider = biru03->AddComponent<AabbCollider>();
+            collider->min = Vector3(-16.5f, -6.0f, -9.0f);
+            collider->max = Vector3(16.5f, 11.0f, 9.0f);
         }
         // 建物03Bを作成
         {
-            auto biru03 = objManager->CreateGameObject("Biru03B", Vector3(-95.0f, 6.0f, 78.0f), Quaternion::AngleAxis(90, Vector3::up));
+            auto biru03 = objManager->CreateGameObject("Biru03B", Vector3(-95.0f, 6.0f, 78.0f));
             biru03->GetTransform()->SetParent(ground->GetTransform());
             auto renderer = biru03->AddComponent<MeshRenderer>();
             renderer->mesh = resManager->GetStaticMesh("Biru03");
@@ -153,6 +232,9 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("white");
             renderer->materials[0]->color = Color(0.3f, 0.3f, 0.3f, 1);
+            auto collider = biru03->AddComponent<AabbCollider>();
+            collider->min = Vector3(-16.5f, -6.0f, -9.0f);
+            collider->max = Vector3(16.5f, 11.0f, 9.0f);
         }
 
     }

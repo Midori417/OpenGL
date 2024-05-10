@@ -42,7 +42,7 @@ namespace FGEngine
 	/**
 	* ’n–Ê‚ÉG‚ê‚Ä‚¢‚é‚©‚ğæ“¾
 	*/
-	bool Rigidbody::GetGrounded() const
+	bool Rigidbody::IsGrounded() const
 	{
 		return isGrounded;
 	}

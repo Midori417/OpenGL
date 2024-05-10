@@ -42,15 +42,7 @@ namespace FGEngine
 		/**
 		* トランスフォームを取得
 		*/
-		TransformPtr GetTransform() const
-		{
-			auto ptr = transform.lock();
-			if (!ptr)
-			{
-				return nullptr;
-			}
-			return ptr;
-		}
+		TransformPtr GetTransform() const;
 
 		/**
 		* T型のコンポーネントを取得
@@ -79,9 +71,6 @@ namespace FGEngine
 
 		// コンポーネントの所有オブジェクト
 		std::weak_ptr<GameObject> ownerObject;
-
-		// 所有オブジェクトのTransform
-		std::weak_ptr<Transform> transform;
 	};
 }
 #endif // !FGENGINE_COMPONENT_H_INCLUDED

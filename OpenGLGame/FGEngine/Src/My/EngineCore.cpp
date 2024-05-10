@@ -170,6 +170,9 @@ namespace FGEngine::MainSystem
 		// シーンマネージャーを初期化
 		sceneManager->Initialize();
 
+		// インプットマネージャを初期化
+		inputManager->Initialize();
+
 		return 0;
 	}
 

@@ -58,6 +58,11 @@ namespace FGEngine::InputSystem
 				{
 					horizontal->second = 1;
 				}
+				else if (!InputKey::GetKey(KeyCode::A) && !InputKey::GetKey(KeyCode::LeftArrow) &&
+					!InputKey::GetKey(KeyCode::D) && !InputKey::GetKey(KeyCode::RightArrow))
+				{
+					horizontal->second = 0;
+				}
 			}
 		}
 		// Vertical
@@ -73,6 +78,11 @@ namespace FGEngine::InputSystem
 				{
 					vertical->second = 1;
 				}
+				else if(!InputKey::GetKey(KeyCode::S) && !InputKey::GetKey(KeyCode::DownArrow) && 
+					!InputKey::GetKey(KeyCode::W) && !InputKey::GetKey(KeyCode::UpArrow))
+				{
+					vertical->second = 0;
+				}
 			}
 		}
 
@@ -83,8 +93,16 @@ namespace FGEngine::InputSystem
 	* 
 	* @param axis アクシズ名
 	*/
-	float InputManager::GetAxis(const std::string& axis)
+	float InputManager::GetAxis(Axis axis)
 	{
-		return 0.0f;
+		// axisを検索
+		auto tmp = axisList.find(axis);
+		if (tmp == axisList.end())
+		{
+			// アクシズが対応していない
+			return 0.0f;
+		}
+
+		return tmp->second;
 	}
 }

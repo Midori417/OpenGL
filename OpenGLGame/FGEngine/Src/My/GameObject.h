@@ -57,6 +57,12 @@ namespace FGEngine
 			// 名前を設定
 			p->SetName(ToString());
 
+			// Transformが基底クラスの場合
+			if constexpr (std::is_base_of_v<Transform, T>)
+			{
+				transform = p;
+			}
+
 			// Colliderが基底クラスの場合
 			if constexpr (std::is_base_of_v<Collider, T>)
 			{
@@ -71,11 +77,6 @@ namespace FGEngine
 				p->Awake();
 			}
 
-			// Transformが基底クラスの場合
-			if constexpr (std::is_base_of_v<Transform, T>)
-			{
-				transform = p;
-			}
 
 			// Rendererが基底クラスの場合
 			if constexpr (std::is_base_of_v<Renderer, T>)
@@ -105,9 +106,6 @@ namespace FGEngine
 				imGuiLayout = p;
 			}
 
-
-			// Transformを設定
-			p->transform = transform;
 
 			// コンポーネント配列に登録
 			components.push_back(p);

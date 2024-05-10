@@ -259,6 +259,7 @@
     <ClCompile Include="Application\Src\BaseMs.cpp" />
     <ClCompile Include="Application\Src\BattleManager.cpp" />
     <ClCompile Include="Application\Src\ChoiceManager.cpp" />
+    <ClCompile Include="Application\Src\CpuControl.cpp" />
     <ClCompile Include="Application\Src\FadeOut.cpp" />
     <ClCompile Include="Application\Src\Gundam.cpp" />
     <ClCompile Include="Application\Src\ImageBlinking.cpp" />

@@ -435,10 +435,10 @@ namespace FGEngine::ObjectSystem
 		// 名前を設定
 		obj->SetName(name);
 
+		obj->gameObject = obj;
+
 		// Transformを追加
 		obj->AddComponent<Transform>();
-
-		obj->gameObject = obj;
 
 		// ゲームオブジェクト配列に登録
 		gameObjects.push_back(obj);

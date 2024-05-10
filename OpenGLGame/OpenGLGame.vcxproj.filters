@@ -794,5 +794,8 @@
     <ClCompile Include="Application\Src\LookOnCamera.cpp">
       <Filter>Application\Src\CameraMove</Filter>
     </ClCompile>
+    <ClCompile Include="Application\Src\CpuControl.cpp">
+      <Filter>Application\Src\ControlOwner\CPU</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

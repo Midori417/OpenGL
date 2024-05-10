@@ -31,7 +31,7 @@ namespace FGEngine::RenderingSystem
 		glTFfileBuffer = resManager->gltfFileBuffer.get();
 
 		// FBO‚ğì¬
-		auto texShadow = Texture::Create("FBO(depth)", 2048, 2048, GL_DEPTH_COMPONENT32, GL_CLAMP_TO_EDGE);
+		auto texShadow = Texture::Create("FBO(depth)", 4096, 4096, GL_DEPTH_COMPONENT32, GL_CLAMP_TO_EDGE);
 		fboShadow = FrameBufferObject::Create(nullptr, texShadow);
 
 
@@ -201,9 +201,9 @@ namespace FGEngine::RenderingSystem
 		glClear(GL_DEPTH_BUFFER_BIT);
 
 		// ‰e‚Ì•`‰æƒpƒ‰ƒ[ƒ^
-		const float shadowAreaSize = 400;	// ‰e‚Ì•`‰æ”ÍˆÍ(XY•½–Ê)
+		const float shadowAreaSize = 450;	// ‰e‚Ì•`‰æ”ÍˆÍ(XY•½–Ê)
 		const float shadowNearZ = 1;		// ‰e‚Ì•`‰æ”ÍˆÍ(‹ßZ•½–Ê)
-		const float shadowFarZ = 200;		// ‰e‚Ì•`‰æ”ÍˆÍ(‰“Z•½–Ê)
+		const float shadowFarZ = 400;		// ‰e‚Ì•`‰æ”ÍˆÍ(‰“Z•½–Ê)
 		const float shadowCenterZ = (shadowNearZ + shadowFarZ) * 0.5f; // •`‰æ”ÍˆÍ‚Ì’†S
 		const Vector3 target = Vector3{ 0, 0, -50 }; // ƒJƒƒ‰‚Ì’‹“_
 		const Vector3 eye = target - directionLight.direction * shadowCenterZ; // ƒJƒƒ‰‚ÌˆÊ’u

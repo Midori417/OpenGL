@@ -16,12 +16,13 @@ public:
 	Gundam() = default;
 	virtual ~Gundam() = default;
 
-private:
-
 	/**
 	* 最初に実行
 	*/
-	virtual void Start() override;
+	virtual void Awake() override;
+
+private:
+
 
 	/**
 	* 毎フレーム実行
@@ -35,11 +36,21 @@ public:
 	* 
 	* @param moveAxis 入力軸
 	*/
-	virtual void Move(const Vector2& moveAxis);
+	virtual void Move(const Vector2& moveAxis) override;
+
+	virtual void CpuMove() override;
+
+	/**
+	* ジャンプ
+	*/
+	virtual void Jump(bool isJump) override;
+
+	/**
+	* ダッシュ
+	*/
+	virtual void Dash(bool isDash, const Vector2& moveAxis) override;
 
 private:
-
-	float angle = 180;
 
 	// リギボ
 	RigidbodyPtr rb;

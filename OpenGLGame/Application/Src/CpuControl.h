@@ -16,6 +16,22 @@ public:
 	CpuControl() = default;
 	virtual ~CpuControl() = default;
 
+private:
+
+	/**
+	* 最初に実行
+	*/
+	virtual void Start() override;
+
+	/**
+	* 毎フレーム実行
+	*/
+	virtual void Update() override;
+
+	/**
+	* 毎フレーム実行(Updateより後)
+	*/
+	virtual void LateUpdate() override;
 
 };
 

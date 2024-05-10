@@ -50,6 +50,14 @@ namespace FGEngine
 	//}
 
 	/**
+	* Transform‚ğæ“¾
+	*/
+	inline TransformPtr Component::GetTransform() const
+	{
+		return OwnerObject()->GetTransform();
+	}
+
+	/**
 	* Tag‚ğæ“¾
 	*/
 	inline std::string Component::GetTag() const
