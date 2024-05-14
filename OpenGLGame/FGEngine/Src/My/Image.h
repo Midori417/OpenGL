@@ -43,15 +43,16 @@ namespace FGEngine::UI
 		{
 			Horizontal,
 
+			HorizontalInverse,
+
 			Vertical,
 
+			VerticalInverse,
 		};
 		FillType fillType = FillType::Horizontal;
 
 		// âÊëúñÑÇﬂ(0Å`1)
 		float fillAmout = 1;
-
-	private:
 
 	};
 	using ImagePtr = std::shared_ptr<Image>;

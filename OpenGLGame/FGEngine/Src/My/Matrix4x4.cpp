@@ -138,7 +138,7 @@ namespace FGEngine
 	Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up)
 	{
 		// ワールド座標系における始点座標系のXYZの向きを計算
-		const Vector3 axisZ = Vector3(eye - target).Normalized();
+		const Vector3 axisZ = -Vector3(eye - target).Normalized();
 		const Vector3 axisX = Vector3::Cross(up, axisZ).Normalized();
 		const Vector3 axisY = Vector3::Cross(axisZ, axisX).Normalized();
 

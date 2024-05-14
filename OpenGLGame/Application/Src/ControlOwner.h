@@ -23,6 +23,9 @@ public:
 
 public:
 
+	// 処理を開始するか
+	bool isStart = false;
+
 	// 使う機体
 	MsList ms = MsList::None;
 
@@ -31,9 +34,6 @@ public:
 
 	// 自分の機体
 	BaseMsPtr myMs;
-
-	// 相手の機体
-	BaseMsPtr enemyMs;
 };
 
 

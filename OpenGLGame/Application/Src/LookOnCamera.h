@@ -19,8 +19,17 @@ public:
 
 	/**
 	* ターゲットを設定
+	* 
+	* @param target ターゲットのTrs
 	*/
-	void SelectTarget(Transform* target);
+	void SelectTarget(Transform* targetMs);
+
+	/**
+	* とりつくMSのトランスフォームを設定
+	* 
+	* @param msTrs とりつくMsのTrs
+	*/
+	void SetMsTransform(Transform* myMs);
 
 private:
 
@@ -41,8 +50,6 @@ private:
 
 public:
 
-	// プレイヤーMsのトランスフォーム
-	Transform* playerMs;
 
 	// カメラのオフセット位置
 	Vector3 offsetMinPos = Vector3(0, 5, -10);
@@ -50,8 +57,11 @@ public:
 
 private:
 
+	// プレイヤーMsのトランスフォーム
+	Transform* myMs;
+
 	// ターゲットのトランスフォーム
-	Transform* currentTarget;
+	Transform* targetMs;
 
 	// カメラの旋回速度
 	float rotationSpeed = 0.5f;

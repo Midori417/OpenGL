@@ -222,7 +222,7 @@ namespace FGEngine::PhysicsSystem
 					colA.origin->old = true;
 					colB.origin->old = true;
 					// イベントの結果、どちらかのゲームオブジェクトが破壊されたらループ終了
-					if (goA->IsDestroyed() || goB->IsDestroyed())
+					if (goA->GetHideFlag() == Object::HideFlag::Destory || goB->GetHideFlag() == Object::HideFlag::Destory)
 					{
 						return;	// 関数終了
 					}
@@ -297,7 +297,7 @@ namespace FGEngine::PhysicsSystem
 					colB.origin->old = false;
 
 					// イベントの結果、どちらかのゲームオブジェクトが破壊されたらループ終了
-					if (goA->IsDestroyed() || goB->IsDestroyed())
+					if (goA->GetHideFlag() == Object::HideFlag::Destory || goB->GetHideFlag() == Object::HideFlag::Destory)
 					{
 						return;	// 関数終了
 					}

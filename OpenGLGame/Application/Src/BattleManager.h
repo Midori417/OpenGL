@@ -6,6 +6,7 @@
 #include "FGEngine.h"
 #include "MsLilst.h"
 using namespace FGEngine;
+using namespace FGEngine::UI;
 
 class BaseMs;
 using BaseMsPtr = std::shared_ptr<BaseMs>;
@@ -59,16 +60,39 @@ private:
 		// 準備
 		Ready,
 
+		// 待機
+		Standbay,
+
+		// スタート
+		GO,
+
 		// 戦闘中
 		Battle,
 	};
-	GameState state = GameState::Ready;
+	GameState state = GameState::GO;
+
+	// タイマー
+	float timer = 0;
+
+	float readyTime = 1.5f;
+
+	// スタンバイ時間
+	const float standbayTime = 2;
+
+	// ゴータイム
+	const float goTime = 1;
+
 
 	// プレイヤー
 	PlayerControlPtr playerControl;
 
 	// 敵
 	CpuControlPtr cpuControl;
+
+	// UI
+	ImagePtr imgStandbay;
+	ImagePtr imgGo;
+	ImagePtr imgGoBack;
 };
 
 

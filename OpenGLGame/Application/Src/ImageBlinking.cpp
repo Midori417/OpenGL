@@ -26,7 +26,7 @@ void ImageBlinking::Update()
 	}
 	else
 	{
-		image->color.a -= 0.5f * Time::DeltaTime();
+		image->color.a -= speed * Time::DeltaTime();
 		if (image->color.a <= 0)
 		{
 			image->color.a = 0;

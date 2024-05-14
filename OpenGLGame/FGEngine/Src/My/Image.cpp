@@ -25,7 +25,7 @@ namespace FGEngine::UI
 
 		// F
 		ImVec4 basecolor(color.r, color.g, color.b, color.a);
-
+		
 		switch (fillType)
 		{
 		case FGEngine::UI::Image::FillType::Horizontal:
@@ -35,11 +35,23 @@ namespace FGEngine::UI
 			// ‰æ‘œ‚ğ•`‰æ
 			ImGui::Image(texId, ImVec2(imageW, size.y), ImVec2(0, 1), ImVec2(fillAmout, 0), basecolor);
 		}
-			break;
+		break;
+		case FGEngine::UI::Image::FillType::HorizontalInverse:
+
+		{
+			float imageW = size.x * fillAmout;
+			float imagetWInverse = size.x - imageW;
+			offsetPos.x = imagetWInverse;
+
+			// ‰æ‘œ‚ğ•`‰æ
+			ImGui::Image(texId, ImVec2(imageW, size.y), ImVec2((1 - fillAmout), 1), ImVec2(1, 0), basecolor);
+		}
+
+		break;
 		case FGEngine::UI::Image::FillType::Vertical:
 
 		{
-			float imageH = size.x * fillAmout;
+			float imageH = size.y * fillAmout;
 			// ‰æ‘œ‚ğ•`‰æ
 			ImGui::Image(texId, ImVec2(size.x, imageH), ImVec2(0, fillAmout), ImVec2(1, 0), basecolor);
 		}

@@ -184,9 +184,6 @@
     <Filter Include="FGEngine\Src\My\Object\Component\UI\Image">
       <UniqueIdentifier>{7c08f446-4b3a-41d0-861b-8dffd5178cb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Component\UI\Text">
-      <UniqueIdentifier>{af64227c-fda8-4e73-a6ae-f52523f1f1ee}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\Object\Component\UI\ImGui">
       <UniqueIdentifier>{86ef3d50-435a-4f77-b2bb-62f45be6fd19}</UniqueIdentifier>
     </Filter>
@@ -276,6 +273,12 @@
     </Filter>
     <Filter Include="Application\Src\ControlOwner\CPU">
       <UniqueIdentifier>{98d18f94-d017-4637-9be4-1e0287349e1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Other\ImageNum">
+      <UniqueIdentifier>{b21795ac-a565-4a5d-a39f-2c3c6ec33d37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Bullet">
+      <UniqueIdentifier>{1a2f93ed-c034-473c-ad74-70cbe003800b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -597,6 +600,12 @@
     <ClInclude Include="Application\Src\CpuControl.h">
       <Filter>Application\Src\ControlOwner\CPU</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Src\ImageNum.h">
+      <Filter>Application\Src\Other\ImageNum</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Bullet.h">
+      <Filter>Application\Src\Ms\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -796,6 +805,12 @@
     </ClCompile>
     <ClCompile Include="Application\Src\CpuControl.cpp">
       <Filter>Application\Src\ControlOwner\CPU</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ImageNum.cpp">
+      <Filter>Application\Src\Other\ImageNum</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Bullet.cpp">
+      <Filter>Application\Src\Ms\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

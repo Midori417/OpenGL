@@ -154,6 +154,8 @@
 // UIレイアウトの基底クラス
 #include "My/ImGuiLayout.h"
 
+#include "My/Collision.h"
+
 // 画像(UI)描画コンポーネント
 #include "My/Image.h"
 

@@ -38,19 +38,46 @@ public:
 	*/
 	virtual void Move(const Vector2& moveAxis) override;
 
+	/**
+	* CPU移動
+	*/
 	virtual void CpuMove() override;
 
 	/**
 	* ジャンプ
 	*/
-	virtual void Jump(bool isJump) override;
+	virtual void Jump(bool isJump, const Vector2& moveAxis) override;
 
 	/**
 	* ダッシュ
 	*/
 	virtual void Dash(bool isDash, const Vector2& moveAxis) override;
 
+	/**
+	* 攻撃(ビームライフル)
+	*/
+	virtual void Attack1(bool attackKey) override;
+
+	/**
+	* ダメージ
+	* 
+	* @param damage 与えるダメージ
+	*/
+	virtual void Damage(float damage) override;
+
 private:
+
+	struct Rifle : NumWeapon
+	{
+		bool isShot = false;
+
+		// メッシュ
+		StaticMeshPtr mesh;
+
+		//シェーダ
+		ShaderPtr shader;
+	};
+	std::shared_ptr<Rifle> rifle;
 
 	// リギボ
 	RigidbodyPtr rb;

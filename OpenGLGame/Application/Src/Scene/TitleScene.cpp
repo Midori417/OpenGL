@@ -46,6 +46,7 @@ bool TitleScene::Initialize()
 		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
 		auto eyeBlinking = gundamEye->AddComponent<ImageBlinking>();
 		eyeBlinking->image = image;
+		eyeBlinking->speed = 0.5f;
 	}
 
 	// PleaseButton‚ğì¬

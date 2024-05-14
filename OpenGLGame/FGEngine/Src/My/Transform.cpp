@@ -81,7 +81,7 @@ namespace FGEngine
 	void Transform::LookAt(const Transform* target, const Vector3& worldUp)
 	{
 		// ワールド座標系における始点座標系のXYZの向きを計算
-		const Vector3 axisZ = Vector3(position - target->position).Normalized();
+		const Vector3 axisZ = -Vector3(position - target->position).Normalized();
 		const Vector3 axisX = Vector3::Cross(worldUp, axisZ).Normalized();
 		const Vector3 axisY = Vector3::Cross(axisZ, axisX).Normalized();
 

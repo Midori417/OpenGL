@@ -18,6 +18,13 @@ namespace FGEngine
 		Behaviour() = default;
 		virtual ~Behaviour() = default;
 
+		// オブジェクト状態を設定する
+		void SetEnable(bool value)
+		{
+			enabled = value;
+		}
+
+
 	protected:
 
 		// 有効であれば更新され、無効であれば更新されません

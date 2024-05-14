@@ -36,14 +36,16 @@ namespace FGEngine::UI
 
 	public:
 
-		// •`‰æ‚Ì‡”Ô
-		int layer = 0;
-
 		// UI‚Ì‰¡•
 		float w = 0;
 
 		// UI‚Ìc•
 		float h = 0;
+
+	protected:
+
+		// UI‚ÌˆÊ’u
+		Vector2 offsetPos = Vector2::zero;
 	};
 	using ImGuiLayoutPtr = std::shared_ptr<ImGuiLayout>;
 }

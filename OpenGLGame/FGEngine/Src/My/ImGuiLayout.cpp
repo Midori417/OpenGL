@@ -19,13 +19,13 @@ namespace FGEngine::UI
 
 		Vector2 windowSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
 
-		Vector2 uiPos = Vector2(pos.x - (w / 2), pos.y - (h / 2)) + (windowSize / 2);
+		auto uiPos = Vector2(pos.x - (w / 2), pos.y - (h / 2)) + (windowSize / 2);
 
 		// ウィンドウのサイズを設定
 		ImGui::SetNextWindowSize(ImVec2(w, h));
 
 		// ウィンドウの位置を設定
-		ImGui::SetNextWindowPos(ImVec2(uiPos.x, uiPos.y));
+		ImGui::SetNextWindowPos(ImVec2(uiPos.x + offsetPos.x, uiPos.y + offsetPos.y));
 
 		// ImGUIを描画開始
 		ImGui::Begin(name.c_str(), nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoBackground |

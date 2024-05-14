@@ -17,10 +17,22 @@ void LookOnCamera::LateUpdate()
 
 /**
 * ターゲットを設定
+*
+* @param target ターゲットのTrs
 */
-void LookOnCamera::SelectTarget(Transform* target)
+void LookOnCamera::SelectTarget(Transform* targetMs)
 {
-	currentTarget = target;
+	this->targetMs = targetMs;
+}
+
+/**
+* とりつくMSのトランスフォームを設定
+*
+* @param msTrs とりつくMsのTrs
+*/
+void LookOnCamera::SetMsTransform(Transform* myMs)
+{
+	this->myMs = myMs;
 }
 
 /**
@@ -29,22 +41,22 @@ void LookOnCamera::SelectTarget(Transform* target)
 void LookOnCamera::PositionCamera()
 {
 	// とりつくMSがなければ何もしない
-	if (!playerMs)
+	if (!myMs)
 	{
 		return;
 	}
 
 	// ターゲットが未設定ならロックオンカメラにしない
-	if (!currentTarget)
+	if (!targetMs)
 	{
-		GetTransform()->position = playerMs->position + offsetMaxPos;
-		GetTransform()->LookAt(playerMs);
+		GetTransform()->position = myMs->position + offsetMaxPos;
+		GetTransform()->LookAt(myMs);
 	}
 	else
 	{
 		// 自身とターゲットのMSの位置を取得
-		Vector3 playerMsPos = playerMs->position;
-		Vector3 targetMsPos = currentTarget->position;
+		Vector3 playerMsPos = myMs->position;
+		Vector3 targetMsPos = targetMs->position;
 
 		// ターゲットへのベクトル
 		Vector3 targetVector = targetMsPos - playerMsPos;

@@ -149,16 +149,11 @@ namespace FGEngine::ObjectSystem
 			return;
 		}
 
-		// レイヤー順に並び替える
-		std::stable_sort(imguiList.begin(), imguiList.end(),
-			[](const UI::ImGuiLayoutPtr& a, const UI::ImGuiLayoutPtr& b) {
-				return a->layer < b->layer; });
-
-		for (auto x : gameObjects)
+		for (auto x : imguiList)
 		{
-			if (x->imGuiLayout)
+			if (x && x->enabled)
 			{
-				x->imGuiLayout->UIUpdate();
+				x->UIUpdate();
 			}
 		}
 	}
@@ -203,14 +198,14 @@ namespace FGEngine::ObjectSystem
 			for (auto a = colliders.begin(); a != colliders.end() - 1; ++a)
 			{
 				const GameObjectPtr goA = a->at(0).origin->OwnerObject();
-				if (goA->IsDestroyed())
+				if (goA->GetHideFlag() == Object::HideFlag::Destory)
 				{
 					continue;	// 削除済みなので飛ばす
 				}
 				for (auto b = a + 1; b != colliders.end(); ++b)
 				{
 					const GameObjectPtr goB = b->at(0).origin->OwnerObject();
-					if (goB->IsDestroyed())
+					if (goB->GetHideFlag() == Object::HideFlag::Destory)
 					{
 						continue;	// 削除済みなので飛ばす
 					}
@@ -300,7 +295,7 @@ namespace FGEngine::ObjectSystem
 			}
 			for (auto mono : x->monoBehaviours)
 			{
-				if (mono->enabled)
+				if (mono->enabled && mono->isStart)
 				{
 					mono->Update();
 				}
@@ -317,7 +312,7 @@ namespace FGEngine::ObjectSystem
 			}
 			for (auto mono : x->monoBehaviours)
 			{
-				if (mono->enabled)
+				if (mono->enabled && mono->isStart)
 				{
 					mono->LateUpdate();
 				}
@@ -386,16 +381,10 @@ namespace FGEngine::ObjectSystem
 			}
 		}
 
-		// 破棄状態のオブジェクトがなければ何もしない
-		if (!isDestoryObject)
-		{
-			return;
-		}
-
 		// 破棄状態の有無でオブジェクトを分ける
 		auto iter2 = std::stable_partition(
 			gameObjects.begin(), gameObjects.end(),
-			[](const GameObjectPtr p) { return p->GetHideFlag() == Object::HideFlag::Destory; });
+			[](const GameObjectPtr p) { return p->GetHideFlag() != Object::HideFlag::Destory; });
 
 		// 破棄状態のゲームオブジェクトを別の配列に移動
 		GameObjectList destroyList(

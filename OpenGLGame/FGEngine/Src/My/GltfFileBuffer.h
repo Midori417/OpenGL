@@ -36,6 +36,16 @@ namespace FGEngine
 	GltfAnimationMatrices CalcAnimationMatrices(const GltfFilePtr& file, const GltfNode* meshNode,
 		const AnimationClip* animation, float time);
 
+	/**
+	* 二つのアニメーションの姿勢行列を補間する
+	* 
+	* @param file 
+	* @param nextAnimation
+	* @param currentAnimation
+	*/
+	GltfAnimationMatrices InterpolationAnimationMatrices(const GltfFilePtr& file, const GltfNode* meshNode,
+		const AnimationClip* currentAnimation, float time, const AnimationClip* nextAnimation);
+
 	namespace RenderingSystem
 	{
 		class BufferObject;

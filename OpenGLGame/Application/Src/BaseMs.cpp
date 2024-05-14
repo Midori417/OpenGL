@@ -16,15 +16,23 @@ Teum BaseMs::GetTeum() const
 */
 int BaseMs::GetHP() const
 {
-	return hp;
+	return static_cast<int>(hp);
 }
 
 /**
-* エネルギーの残量(0～1)を取得
+* HPを取得(0～1)
 */
-float BaseMs::GetBoostPower() const
+float BaseMs::GetHP01()
 {
-	return Mathf::Clamp01((boostPowerMax - boostPower) / (boostPowerMax));
+	return Mathf::Clamp01((hpMax - (hpMax - hp)) / hpMax);
+}
+
+/**
+* エネルギー残量の取得(0～1)
+*/
+float BaseMs::GetBoostEnergy() const
+{
+	return Mathf::Clamp01((boostEnergyMax - (boostEnergyMax - boostEnergy)) / boostEnergyMax);
 }
 
 /**
@@ -70,3 +78,4 @@ BaseMs* BaseMs::GetTargetMs() const
 {
 	return targetMs;
 }
+

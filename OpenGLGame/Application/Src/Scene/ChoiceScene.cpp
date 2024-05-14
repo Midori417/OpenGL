@@ -18,12 +18,6 @@ bool ChoiceScene::Initialize()
 	auto objManager = ObjectManager::GetInstance();
 	auto resManager = ResouceManager::GetInstance();
 
-	// リソースの読み込み
-	resManager->LoadTga("BattleButton", "Application/Res/UI/Title/BattleButton.tga");
-	resManager->LoadTga("OptionButton", "Application/Res/UI/Title/OptionButton.tga");
-	resManager->LoadTga("ExitButton", "Application/Res/UI/Title/ExitButton.tga");
-
-
 	// カメラの作成
 	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
 	camera->AddComponent<Camera>();

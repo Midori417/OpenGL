@@ -19,6 +19,9 @@ namespace FGEngine
 		// 2個のfloatからVector2を構築するコンストラクタ
 		explicit Vector2(float x, float y);
 
+		// 1個のfloatからVector2を構築するコンストラクタ
+		explicit Vector2(float f);
+
 		// Vector3からVector2を構築するコンストラクタ
 		explicit Vector2(const Vector3& v);
 
