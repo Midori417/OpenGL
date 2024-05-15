@@ -61,14 +61,17 @@ public:
 private:
 
 	ImagePtr imgPlayerInfo;
-	ImageNumPtr numPlayerImage;
+	ImageNumPtr numMyMSHP;
 	ImagePtr imgBoostBar;
 	ImagePtr imgBoostBarBack;
 	ImagePtr imgBoostBarOverHeat;
 	ImageBlinkingPtr ibBoostBarOverHeat;
 	ImagePtr imgBurstBar;
 	ImagePtr imgBurstBarBack;
-	std::vector<ImagePtr> imgWeaponBack;
+	std::vector<ImagePtr> imgWeaponBacks;
+	std::vector<ImageNumPtr> imgWeaponAmos;
+	std::vector<ImagePtr> imgWeaponBars;
+	std::vector<ImagePtr> imgWeapnIcons;
 	ImagePtr imgTargetMark;
 	TexturePtr texTargetMark01;
 	TexturePtr texTargetMark02;

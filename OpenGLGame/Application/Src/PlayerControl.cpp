@@ -25,9 +25,10 @@ void PlayerControl::Start()
 	}
 	// MyMSHP
 	{
-		auto playerHp = Instantate("PlayerHP", Vector3(-700, 280, 0));
-		numPlayerImage = playerHp->AddComponent<ImageNum>();
-		numPlayerImage->scale = 1.2f;
+		auto playerHp = Instantate("PlayerHP", Vector3(-670, 280, 0));
+		numMyMSHP = playerHp->AddComponent<ImageNum>();
+		numMyMSHP->space = -70;
+		numMyMSHP->scale = 1.35f;
 	}
 	// BoostBarBack
 	{
@@ -70,12 +71,12 @@ void PlayerControl::Start()
 		imgBurstBar->fillType = Image::FillType::HorizontalInverse;
 		imgBurstBar->fillAmout = 0.5f;
 	}
-	// WeaponBack
+	// Weapon
 	{
 		if (!myMs->numWeapons.empty())
 		{
 			// サイズを予約
-			imgWeaponBack.reserve(myMs->numWeapons.size());
+			imgWeaponBacks.reserve(myMs->numWeapons.size());
 			int i = 0;
 			for (auto x : myMs->numWeapons)
 			{
@@ -84,8 +85,26 @@ void PlayerControl::Start()
 				image->texture = resManager->GetTexture("WeaponBack");
 				image->size = image->texture->GetSize() * 1.3f;
 
+				auto numWeapon = Instantate("NumWeapn" + std::to_string(i), Vector3(715.0f, 410.0f + (-160.0f * i), 0));
+				auto imgNum = numWeapon->AddComponent<ImageNum>();
+				imgNum->scale = 0.8f;
+				imgNum->space = -45;
+
+				auto weaponBar = Instantate("WeapnBar" + std::to_string(i), Vector3(665.0f, 448.0f + (-160 * i), 0));
+				auto imgBar = weaponBar->AddComponent<Image>();
+				imgBar->texture = resManager->GetTexture("WeaponBar");
+				imgBar->size = imgBar->texture->GetSize() * 1.3f;
+
+				auto weaponIcon = Instantate(x->name, Vector3(830, 410, 0));
+				auto imgIcon = weaponIcon->AddComponent<Image>();
+				imgIcon->texture = x->iconTexture;
+				imgIcon->size = imgIcon->texture->GetSize() * 1.3f;
+
 				// 配列に追加
-				imgWeaponBack.push_back(image);
+				imgWeaponBacks.push_back(image);
+				imgWeaponAmos.push_back(imgNum);
+				imgWeaponBars.push_back(imgBar);
+				imgWeapnIcons.push_back(imgIcon);
 				i++;
 			}
 		}
@@ -150,26 +169,39 @@ void PlayerControl::Start()
 		imgTimer->size = imgTimer->texture->GetSize() * 1.2f;
 	}
 
-	// UIを全てひひょうじにする
-	imgPlayerInfo->SetEnable(false);
-	numPlayerImage->SetEnable(false);
-	imgBoostBarBack->SetEnable(false);
-	imgBoostBar->SetEnable(false);
-	imgBoostBarOverHeat->SetEnable(false);
-	imgBurstBarBack->SetEnable(false);
-	imgBurstBar->SetEnable(false);
-	for (auto x : imgWeaponBack)
+	// UIを非表示にする
 	{
-		x->SetEnable(false);
+		imgPlayerInfo->SetEnable(false);
+		numMyMSHP->SetEnable(false);
+		imgBoostBarBack->SetEnable(false);
+		imgBoostBar->SetEnable(false);
+		imgBoostBarOverHeat->SetEnable(false);
+		imgBurstBarBack->SetEnable(false);
+		imgBurstBar->SetEnable(false);
+		for (auto x : imgWeaponBacks)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : imgWeaponAmos)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : imgWeaponBars)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : imgWeapnIcons)
+		{
+			x->SetEnable(false);
+		}
+		imgTargetMark->SetEnable(false);
+		imgTargetInfo->SetEnable(false);
+		imgTargetHPBar->SetEnable(false);
+		imgTeumFrame->SetEnable(false);
+		imgTeumHpBar->SetEnable(false);
+		imgTeumEnemyBar->SetEnable(false);
+		imgTimer->SetEnable(false);
 	}
-	imgTargetMark->SetEnable(false);
-	imgTargetInfo->SetEnable(false);
-	imgTargetHPBar->SetEnable(false);
-	imgTeumFrame->SetEnable(false);
-	imgTeumHpBar->SetEnable(false);
-	imgTeumEnemyBar->SetEnable(false);
-	imgTimer->SetEnable(false);
-
 
 	// カメラに自身のMSを設定
 	lookOnCamera->SetMsTransform(myMs->GetTransform().get());
@@ -181,6 +213,9 @@ void PlayerControl::Start()
 	myMs->SetCamera(lookOnCamera->GetTransform().get());
 }
 
+/**
+* 毎フレーム実行
+*/
 void PlayerControl::Update()
 {
 	if (!isStart)
@@ -191,12 +226,24 @@ void PlayerControl::Update()
 	{
 		// UIを表示
 		imgPlayerInfo->SetEnable(true);
-		numPlayerImage->SetEnable(true);
+		numMyMSHP->SetEnable(true);
 		imgBoostBarBack->SetEnable(true);
 		imgBoostBar->SetEnable(true);
 		imgBurstBarBack->SetEnable(true);
 		imgBurstBar->SetEnable(true);
-		for (auto x : imgWeaponBack)
+		for (auto x : imgWeaponBacks)
+		{
+			x->SetEnable(true);
+		}
+		for (auto x : imgWeaponAmos)
+		{
+			x->SetEnable(true);
+		}
+		for (auto x : imgWeaponBars)
+		{
+			x->SetEnable(true);
+		}
+		for (auto x : imgWeapnIcons)
 		{
 			x->SetEnable(true);
 		}
@@ -250,21 +297,63 @@ void PlayerControl::MsUpdate()
 	// ダッシュ
 	bool dashKey = InputKey::GetKey(KeyCode::LeftShift);
 	myMs->Dash(dashKey, moveAxis);
-	
+
 	// 攻撃1
 	bool attackKey = InputMouse::GetMouseButton(MouseButton::LeftButton);
 	myMs->Attack1(attackKey);
 }
 
+/**
+* UIの更新
+*/
 void PlayerControl::UIUpdate()
 {
-	// ターゲットマークの処理
-	if (imgTargetMark)
+	// MyMs
 	{
-		// 近ければ小さくし、遠ければ大きくする
-		imgTargetMark->size = Vector2(Mathf::Clamp(distance, 100.0f, 200.0f));
 		if (myMs)
 		{
+			// Hp
+			if (numMyMSHP)
+			{
+				numMyMSHP->num = myMs->GetHP();
+			}
+
+			// BoostBar
+			if (myMs->GetBoostEnergy() > 0)
+			{
+				imgBoostBar->fillAmout = myMs->GetBoostEnergy();
+				imgBoostBarOverHeat->SetEnable(false);
+			}
+			else if (myMs->GetBoostEnergy() <= 0)
+			{
+				imgBoostBarOverHeat->SetEnable(true);
+			}
+
+			// WeponAmo
+			for (int i = 0; i < imgWeaponAmos.size(); ++i)
+			{
+				imgWeaponAmos[i]->num = myMs->numWeapons[i]->amo;
+			}
+			// WeaponBar
+			for (int i = 0; i < imgWeaponBars.size(); ++i)
+			{
+				float amo = static_cast<float>(myMs->numWeapons[i]->amo);
+				float amoMax = static_cast<float>(myMs->numWeapons[i]->amoMax);
+				imgWeaponBars[i]->fillAmout = Mathf::Clamp01((amoMax - (amoMax - amo)) / amoMax);
+			}
+		}
+
+	}
+
+	auto targetMs = otherOwner->myMs;
+	if (myMs && targetMs)
+	{
+		// ターゲットマークの処理
+		if (imgTargetMark)
+		{
+			// 近ければ小さくし、遠ければ大きくする
+			imgTargetMark->size = Vector2(Mathf::Clamp(distance, 100.0f, 200.0f));
+
 			// 距離によってテクスチャを変える
 			if (distance <= myMs->proximityDistance)
 			{
@@ -279,30 +368,11 @@ void PlayerControl::UIUpdate()
 				imgTargetMark->texture = texTargetMark01;
 			}
 		}
-	}
-
-	// BoostBarの処理
-	{
-		if (myMs)
-		{
-			if (myMs->GetBoostEnergy() > 0)
-			{
-				imgBoostBar->fillAmout = myMs->GetBoostEnergy();
-				imgBoostBarOverHeat->SetEnable(false);
-			}
-			else if (myMs->GetBoostEnergy() <= 0)
-			{
-				imgBoostBarOverHeat->SetEnable(true);
-			}
-		}
-	}
-
-	// TargetHPBar
-	{
-		auto targetMs = otherOwner->myMs;
-		if (targetMs)
+		// ターゲットHPの処理
+		if (imgTargetHPBar)
 		{
 			imgTargetHPBar->fillAmout = targetMs->GetHP01();
+
 		}
 	}
 }

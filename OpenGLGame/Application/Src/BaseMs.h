@@ -37,6 +37,9 @@ struct NumWeapon
 
 	// リロードタイム
 	float reloadTime = 0;
+
+	// 武器アイコン
+	TexturePtr iconTexture;
 };
 using NumWeaponPtr = std::shared_ptr<NumWeapon>;
 

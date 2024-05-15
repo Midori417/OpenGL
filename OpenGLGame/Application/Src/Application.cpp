@@ -55,6 +55,7 @@ int Application::Initialize()
 	resManager->LoadTga("TeumHpBar", "Application/Res/UI/Battle/TeumHpBar.tga");
 	resManager->LoadTga("TeumEnemyHpBar", "Application/Res/UI/Battle/TeumEnemyBar.tga");
 	resManager->LoadTga("WeaponBack", "Application/Res/UI/Battle/WeaponBack.tga");
+	resManager->LoadTga("WeaponBar", "Application/Res/UI/Battle/WeaponBar.tga");
 
 
 	// ƒV[ƒ“‚Ì“o˜^

@@ -43,11 +43,10 @@ public:
 	Vector2 offsetPos = Vector2::zero;
 
 	// ŠÔŠu
-	float space = -70;
+	float space = 50;
 
 	// ”š‚Ì‘å‚«‚³
 	float scale = 1;
-
 
 private:
 	

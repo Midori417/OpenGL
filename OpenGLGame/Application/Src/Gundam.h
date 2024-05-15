@@ -29,6 +29,11 @@ private:
 	*/
 	virtual void Update() override;
 
+	/**
+	* リロード更新
+	*/
+	void ReloadUpdate();
+
 public:
 
 	/**

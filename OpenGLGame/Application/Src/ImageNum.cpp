@@ -30,7 +30,7 @@ void ImageNum::Start()
 {
 	for(int i = 0; i < 3; ++i)
 	{
-		std::string name = "Num" + std::to_string(i);
+		std::string name = OwnerObject()->ToString() + "Num" + std::to_string(i);
 		auto num = Instantate(name, GetTransform()->position + Vector3(space * i, 0, 0));
 		auto image = num->AddComponent<Image>();
 		image->texture = texNums[0];
@@ -42,4 +42,42 @@ void ImageNum::Start()
 
 void ImageNum::Update()
 {
+	int number = num;
+	std::vector<int> digits;
+
+	while (number > 0)
+	{
+		int digit = number % 10;
+		digits.push_back(digit);
+		number /= 10;
+	}
+
+	// ‹ó‚¾‚Á‚½ê‡•`‰æ‚µ‚È‚¢
+	if (digits.empty())
+	{
+		for (int i = 1; i < imgNums.size(); ++i)
+		{
+			imgNums[i]->SetEnable(false);
+		}
+		imgNums[0]->texture = texNums[0];
+		return;
+	}
+
+	if (space > 0)
+	{
+		// ”z—ñ‚ğ‹t‚É‚·‚é
+		std::reverse(digits.begin(), digits.end());
+	}
+	for (int i = 0; i < imgNums.size(); ++i)
+	{
+		if (i < digits.size())
+		{
+			imgNums[i]->SetEnable(true);
+			imgNums[i]->texture = texNums[digits[i]];
+		}
+		else
+		{
+			imgNums[i]->SetEnable(false);
+		}
+	}
 }

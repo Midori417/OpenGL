@@ -14,6 +14,7 @@ void Gundam::Awake()
 	// リソースマネージャーを取得
 	auto resManager = ResouceManager::GetInstance();
 	resManager->LoadObj("Gundam/BeumRifleBullet", "Application/Res/Ms/Gundam/Model/BeumRifleBullet.obj");
+	resManager->LoadTga("Gundam/BeumRifleIcon", "Application/Res/Ms/Gundam/UI/BeumRifleIcon.tga");
 
 	// 描画コンポーネントを追加
 	auto renderer = OwnerObject()->AddComponent<GltfMeshRenderer>();
@@ -69,6 +70,8 @@ void Gundam::Awake()
 	rifle->name = "BeumRifle";
 	rifle->amoMax = 7;
 	rifle->amo = rifle->amoMax;
+	rifle->reloadTime = 3;
+	rifle->iconTexture = resManager->GetTexture("Gundam/BeumRifleIcon");
 	rifle->mesh = resManager->GetStaticMesh("Gundam/BeumRifleBullet");
 	rifle->shader = resManager->GetShader(DefalutShader::Unlit);
 	numWeapons.push_back(rifle);
@@ -97,6 +100,29 @@ void Gundam::Update()
 		}
 	}
 	boostEnergy = Mathf::Clamp(boostEnergy, 0.0f, boostEnergyMax);
+
+	// リロードを更新
+	ReloadUpdate();
+}
+
+/**
+* リロード更新
+*/
+void Gundam::ReloadUpdate()
+{
+	for (auto x : numWeapons)
+	{
+		// 弾が減っていればリロード
+		if (x->amo < x->amoMax)
+		{
+			x->reloadTimer += Time::DeltaTime();
+			if (x->reloadTimer > x->reloadTime)
+			{
+				x->reloadTimer = 0;
+				x->amo++;
+			}
+		}
+	}
 }
 
 /**
