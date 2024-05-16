@@ -14,165 +14,174 @@ using namespace FGEngine::ResouceSystem;
 */
 void PlayerControl::Start()
 {
+	// リソースマネージャーを取得
 	auto resManager = ResouceManager::GetInstance();
 
 	// UIの作成
 	{
-		auto playerInfo = Instantate("PlayerInfo", Vector3(-725, 330, 0));
-		imgPlayerInfo = playerInfo->AddComponent<Image>();
-		imgPlayerInfo->texture = resManager->GetTexture("PlayerInfo");
-		imgPlayerInfo->size = Vector2(imgPlayerInfo->texture->GetWidth() * 1.4f, imgPlayerInfo->texture->GetHeight() * 1.1f);
-	}
-	// MyMSHP
-	{
-		auto playerHp = Instantate("PlayerHP", Vector3(-670, 280, 0));
-		numMyMSHP = playerHp->AddComponent<ImageNum>();
-		numMyMSHP->space = -70;
-		numMyMSHP->scale = 1.35f;
-	}
-	// BoostBarBack
-	{
-		auto boostBarBack = Instantate("BoostBarBack", Vector3(250, 450, 0));
-		imgBoostBarBack = boostBarBack->AddComponent<Image>();
-		imgBoostBarBack->texture = resManager->GetTexture("BoostBarBack");
-		imgBoostBarBack->size = imgBoostBarBack->texture->GetSize() * 1.2f;
-	}
-	// BoostBarOverHeat
-	{
-		auto boostBarOverHeat = Instantate("BoosetBarOverHeat", Vector3(245, 435, 0));
-		imgBoostBarOverHeat = boostBarOverHeat->AddComponent<Image>();
-		imgBoostBarOverHeat->texture = resManager->GetTexture("BoostBarOVERHEAT");
-		imgBoostBarOverHeat->size = imgBoostBarOverHeat->texture->GetSize() * 1.2f;
-		ibBoostBarOverHeat = boostBarOverHeat->AddComponent<ImageBlinking>();
-		ibBoostBarOverHeat->image = imgBoostBarOverHeat;
-		ibBoostBarOverHeat->speed = 5.0f;
-	}
-	// BoostBar
-	{
-		auto boostBar = Instantate("BoostBar", Vector3(245, 435, 0));
-		imgBoostBar = boostBar->AddComponent<Image>();
-		imgBoostBar->texture = resManager->GetTexture("BoostBar");
-		imgBoostBar->size = imgBoostBar->texture->GetSize() * 1.2f;
-		imgBoostBar->fillAmout = 0.5f;
-	}
-	// BurstBarBack
-	{
-		auto burstBarBack = Instantate("burstBarBack", Vector3(-250, 450, 0));
-		imgBurstBarBack = burstBarBack->AddComponent<Image>();
-		imgBurstBarBack->texture = resManager->GetTexture("BurstBarBack");
-		imgBurstBarBack->size = imgBurstBarBack->texture->GetSize() * 1.2f;
-	}
-	// BurstBar
-	{
-		auto burstBar = Instantate("burstBar", Vector3(-253, 428, 0));
-		imgBurstBar = burstBar->AddComponent<Image>();
-		imgBurstBar->texture = resManager->GetTexture("BurstBar");
-		imgBurstBar->size = imgBurstBar->texture->GetSize() * 1.2f;
-		imgBurstBar->fillType = Image::FillType::HorizontalInverse;
-		imgBurstBar->fillAmout = 0.5f;
-	}
-	// Weapon
-	{
-		if (!myMs->numWeapons.empty())
+		// 自身の情報背景を作成
 		{
-			// サイズを予約
-			imgWeaponBacks.reserve(myMs->numWeapons.size());
-			int i = 0;
-			for (auto x : myMs->numWeapons)
+			auto myInfoBack = Instantate("MysInfo", Vector3(-725, 330, 0));
+			imgMyInfoBack = myInfoBack->AddComponent<Image>();
+			imgMyInfoBack->texture = resManager->GetTexture("PlayerInfo");
+			imgMyInfoBack->size = Vector2(imgMyInfoBack->texture->GetWidth() * 1.4f,
+				imgMyInfoBack->texture->GetHeight() * 1.1f);
+		}
+		// 自身の機体の体力を作成
+		{
+			auto myMsHp = Instantate("MyMsHp", Vector3(-670, 280, 0));
+			inMyMsHp = myMsHp->AddComponent<ImageNum>();
+			inMyMsHp->space = -70;
+			inMyMsHp->scale = 1.35f;
+		}
+		// ブーストバーの背景を作成
+		{
+			auto boostBarBack = Instantate("BoostBarBack", Vector3(250, 450, 0));
+			imgBoostBarBack = boostBarBack->AddComponent<Image>();
+			imgBoostBarBack->texture = resManager->GetTexture("BoostBarBack");
+			imgBoostBarBack->size = imgBoostBarBack->texture->GetSize() * 1.2f;
+		}
+		// ブーストバーのオーバーヒートを作成
+		{
+			auto boostBarOverHeat = Instantate("BoosetBarOverHeat", Vector3(245, 435, 0));
+			imgBoostBarOverHeat = boostBarOverHeat->AddComponent<Image>();
+			imgBoostBarOverHeat->texture = resManager->GetTexture("BoostBarOVERHEAT");
+			imgBoostBarOverHeat->size = imgBoostBarOverHeat->texture->GetSize() * 1.2f;
+			// 点滅コンポーネント
+			ibBoostBarOverHeat = boostBarOverHeat->AddComponent<ImageBlinking>();
+			ibBoostBarOverHeat->image = imgBoostBarOverHeat;
+			ibBoostBarOverHeat->speed = 5.0f;
+		}
+		// ブーストバーを作成
+		{
+			auto boostBar = Instantate("BoostBar", Vector3(245, 435, 0));
+			imgBoostBar = boostBar->AddComponent<Image>();
+			imgBoostBar->texture = resManager->GetTexture("BoostBar");
+			imgBoostBar->size = imgBoostBar->texture->GetSize() * 1.2f;
+			imgBoostBar->fillAmout = 0.5f;
+		}
+		// 覚醒バーの背景を作成
+		{
+			auto burstBarBack = Instantate("burstBarBack", Vector3(-250, 450, 0));
+			imgBurstBarBack = burstBarBack->AddComponent<Image>();
+			imgBurstBarBack->texture = resManager->GetTexture("BurstBarBack");
+			imgBurstBarBack->size = imgBurstBarBack->texture->GetSize() * 1.2f;
+		}
+		// 覚醒バーを作成
+		{
+			auto burstBar = Instantate("burstBar", Vector3(-253, 428, 0));
+			imgBurstBar = burstBar->AddComponent<Image>();
+			imgBurstBar->texture = resManager->GetTexture("BurstBar");
+			imgBurstBar->size = imgBurstBar->texture->GetSize() * 1.2f;
+			imgBurstBar->fillType = Image::FillType::HorizontalInverse;
+			imgBurstBar->fillAmout = 0.5f;
+		}
+		// 武器UI
+		{
+			// 自身のMSの武器が空なら何もしない
+			if (!myMs->numWeapons.empty())
 			{
-				auto weaponBack = Instantate("WeaponBack" + std::to_string(i), Vector3(765.0f, 400.0f + (-160.0f * i), 0));
-				auto image = weaponBack->AddComponent<Image>();
-				image->texture = resManager->GetTexture("WeaponBack");
-				image->size = image->texture->GetSize() * 1.3f;
-
-				auto numWeapon = Instantate("NumWeapn" + std::to_string(i), Vector3(715.0f, 410.0f + (-160.0f * i), 0));
-				auto imgNum = numWeapon->AddComponent<ImageNum>();
-				imgNum->scale = 0.8f;
-				imgNum->space = -45;
-
-				auto weaponBar = Instantate("WeapnBar" + std::to_string(i), Vector3(665.0f, 448.0f + (-160 * i), 0));
-				auto imgBar = weaponBar->AddComponent<Image>();
-				imgBar->texture = resManager->GetTexture("WeaponBar");
-				imgBar->size = imgBar->texture->GetSize() * 1.3f;
-
-				auto weaponIcon = Instantate(x->name, Vector3(830, 410, 0));
-				auto imgIcon = weaponIcon->AddComponent<Image>();
-				imgIcon->texture = x->iconTexture;
-				imgIcon->size = imgIcon->texture->GetSize() * 1.3f;
-
-				// 配列に追加
-				imgWeaponBacks.push_back(image);
-				imgWeaponAmos.push_back(imgNum);
-				imgWeaponBars.push_back(imgBar);
-				imgWeapnIcons.push_back(imgIcon);
-				i++;
+				// サイズを予約
+				imgWeaponBacks.reserve(myMs->numWeapons.size());
+				int i = 0;
+				for (auto x : myMs->numWeapons)
+				{
+					// 武器アイコンの背景
+					{
+						auto weaponBack = Instantate("WeaponBack" + std::to_string(i), Vector3(765.0f, 400.0f + (-160.0f * i), 0));
+						auto image = weaponBack->AddComponent<Image>();
+						image->texture = resManager->GetTexture("WeaponBack");
+						image->size = image->texture->GetSize() * 1.3f;
+						imgWeaponBacks.push_back(image);
+					}
+					// 武器の残弾
+					{
+						auto weaponAmo = Instantate("WeapnAmo" + std::to_string(i), Vector3(715.0f, 410.0f + (-160.0f * i), 0));
+						auto imageNum = weaponAmo->AddComponent<ImageNum>();
+						imageNum->scale = 0.8f;
+						imageNum->space = -45;
+						inWeaponAmos.push_back(imageNum);
+					}
+					// 武器の残弾バー
+					{
+						auto weaponAmoBar = Instantate("WeapnAmoBar" + std::to_string(i), Vector3(665.0f, 448.0f + (-160 * i), 0));
+						auto image = weaponAmoBar->AddComponent<Image>();
+						image->texture = resManager->GetTexture("WeaponBar");
+						image->size = image->texture->GetSize() * 1.3f;
+						imgWeaponBars.push_back(image);
+					}
+					// 武器のアイコン
+					{
+						auto weaponIcon = Instantate(x->name, Vector3(830, 410, 0));
+						auto image= weaponIcon->AddComponent<Image>();
+						image->texture = x->iconTexture;
+						image->size = image->texture->GetSize() * 1.3f;
+						imgWeapnIcons.push_back(image);
+					}
+					i++;
+				}
 			}
 		}
-	}
-	// TargetMark
-	{
-		// リソースを保存
-		texTargetMark01 = resManager->GetTexture("TargetMark01");
-		texTargetMark02 = resManager->GetTexture("TargetMark02");
-		texTargetMark03 = resManager->GetTexture("TargetMark03");
+		// ターゲットマークを作成
+		{
+			// ターゲットマークのテクスチャを取得
+			texTargetMark01 = resManager->GetTexture("TargetMark01");
+			texTargetMark02 = resManager->GetTexture("TargetMark02");
+			texTargetMark03 = resManager->GetTexture("TargetMark03");
 
-		auto targetMark = Instantate("TargetMark");
-		imgTargetMark = targetMark->AddComponent<Image>();
-		imgTargetMark->texture = texTargetMark01;
-		imgTargetMark->size = imgTargetMark->texture->GetSize();
-	}
-	// TargetInfo
-	{
-		auto targetMark = Instantate("TargetMsInfo", Vector3(120, -70, 0));
-		imgTargetInfo = targetMark->AddComponent<Image>();
-		imgTargetInfo->texture = resManager->GetTexture("TargetMsInfo");
-		imgTargetInfo->size = imgTargetInfo->texture->GetSize();
-	}
-	// TargetHp
-	{
-		auto targetHP = Instantate("TargetMsHpBar", Vector3(162, -75, 0));
-		imgTargetHPBar = targetHP->AddComponent<Image>();
-		imgTargetHPBar->texture = resManager->GetTexture("TargetMsHpBar");
-		imgTargetHPBar->size = imgTargetHPBar->texture->GetSize();
+			auto targetMark = Instantate("TargetMark");
+			imgTargetMark = targetMark->AddComponent<Image>();
+			imgTargetMark->texture = texTargetMark01;
+			imgTargetMark->size = imgTargetMark->texture->GetSize();
+		}
+		// ターゲットの情報を作成
+		{
+			auto targetMark = Instantate("TargetMsInfo", Vector3(120, -70, 0));
+			imgTargetInfo = targetMark->AddComponent<Image>();
+			imgTargetInfo->texture = resManager->GetTexture("TargetMsInfo");
+			imgTargetInfo->size = imgTargetInfo->texture->GetSize();
+		}
+		// ターゲットの体力バーを作成
+		{
+			auto targetHP = Instantate("TargetMsHpBar", Vector3(162, -75, 0));
+			imgTargetHPBar = targetHP->AddComponent<Image>();
+			imgTargetHPBar->texture = resManager->GetTexture("TargetMsHpBar");
+			imgTargetHPBar->size = imgTargetHPBar->texture->GetSize();
+		}
+		// 自チームの体力バーを作成
+		{
+			auto myTeumHpBar = Instantate("TeumHpBar", Vector3(-640, -465, 0));
+			imgMyTeumHpBar = myTeumHpBar->AddComponent<Image>();
+			imgMyTeumHpBar->texture = resManager->GetTexture("TeumHpBar");
+			imgMyTeumHpBar->size = imgMyTeumHpBar->texture->GetSize() * 1.2f;
+		}
+		// 相手チームの体力バーを作成
+		{
+			auto teumEnemyBar = Instantate("TeumEnemyBar", Vector3(-620, -420, 0));
+			imgEnemyTeumHpBar = teumEnemyBar->AddComponent<Image>();
+			imgEnemyTeumHpBar->texture = resManager->GetTexture("TeumEnemyHpBar");
+			imgEnemyTeumHpBar->size = imgEnemyTeumHpBar->texture->GetSize() * 1.2f;
 
+		}
+		// チーム体力フレームを作成
+		{
+			auto teumHp = Instantate("TeumHpFrame", Vector3(-635, -430, 0));
+			imgTeumHpFrame = teumHp->AddComponent<Image>();
+			imgTeumHpFrame->texture = resManager->GetTexture("TeumFrame");
+			imgTeumHpFrame->size = imgTeumHpFrame->texture->GetSize() * 1.2f;
+		}
+		// 時間(張りぼて)
+		{
+			auto timer = Instantate("Timer", Vector3(800, -450, 0));
+			imgTimer = timer->AddComponent<Image>();
+			imgTimer->texture = resManager->GetTexture("Timer");
+			imgTimer->size = imgTimer->texture->GetSize() * 1.2f;
+		}
 	}
-
-	// TeumHPBar
-	{
-		auto teumHpBar = Instantate("TeumHpBar", Vector3(-640, -465, 0));
-		imgTeumHpBar = teumHpBar->AddComponent<Image>();
-		imgTeumHpBar->texture = resManager->GetTexture("TeumHpBar");
-		imgTeumHpBar->size = imgTeumHpBar->texture->GetSize() * 1.2f;
-		imgTeumHpBar->fillAmout = 0.4f;
-	}
-	// TeumEnemyBar
-	{
-		auto teumEnemyBar = Instantate("TeumEnemyBar", Vector3(-620, -420, 0));
-		imgTeumEnemyBar = teumEnemyBar->AddComponent<Image>();
-		imgTeumEnemyBar->texture = resManager->GetTexture("TeumEnemyHpBar");
-		imgTeumEnemyBar->size = imgTeumEnemyBar->texture->GetSize() * 1.2f;
-		imgTeumEnemyBar->fillAmout = 0.8f;
-
-	}
-	// TeumFrame
-	{
-		auto teumHp = Instantate("TeumFrame", Vector3(-635, -430, 0));
-		imgTeumFrame = teumHp->AddComponent<Image>();
-		imgTeumFrame->texture = resManager->GetTexture("TeumFrame");
-		imgTeumFrame->size = imgTeumFrame->texture->GetSize() * 1.2f;
-	}
-	// Timer
-	{
-		auto timer = Instantate("Timer", Vector3(800, -450, 0));
-		imgTimer = timer->AddComponent<Image>();
-		imgTimer->texture = resManager->GetTexture("Timer");
-		imgTimer->size = imgTimer->texture->GetSize() * 1.2f;
-	}
-
 	// UIを非表示にする
 	{
-		imgPlayerInfo->SetEnable(false);
-		numMyMSHP->SetEnable(false);
+		imgMyInfoBack->SetEnable(false);
+		inMyMsHp->SetEnable(false);
 		imgBoostBarBack->SetEnable(false);
 		imgBoostBar->SetEnable(false);
 		imgBoostBarOverHeat->SetEnable(false);
@@ -182,7 +191,7 @@ void PlayerControl::Start()
 		{
 			x->SetEnable(false);
 		}
-		for (auto x : imgWeaponAmos)
+		for (auto x : inWeaponAmos)
 		{
 			x->SetEnable(false);
 		}
@@ -197,9 +206,9 @@ void PlayerControl::Start()
 		imgTargetMark->SetEnable(false);
 		imgTargetInfo->SetEnable(false);
 		imgTargetHPBar->SetEnable(false);
-		imgTeumFrame->SetEnable(false);
-		imgTeumHpBar->SetEnable(false);
-		imgTeumEnemyBar->SetEnable(false);
+		imgTeumHpFrame->SetEnable(false);
+		imgMyTeumHpBar->SetEnable(false);
+		imgEnemyTeumHpBar->SetEnable(false);
 		imgTimer->SetEnable(false);
 	}
 
@@ -225,8 +234,8 @@ void PlayerControl::Update()
 	else
 	{
 		// UIを表示
-		imgPlayerInfo->SetEnable(true);
-		numMyMSHP->SetEnable(true);
+		imgMyInfoBack->SetEnable(true);
+		inMyMsHp->SetEnable(true);
 		imgBoostBarBack->SetEnable(true);
 		imgBoostBar->SetEnable(true);
 		imgBurstBarBack->SetEnable(true);
@@ -235,7 +244,7 @@ void PlayerControl::Update()
 		{
 			x->SetEnable(true);
 		}
-		for (auto x : imgWeaponAmos)
+		for (auto x : inWeaponAmos)
 		{
 			x->SetEnable(true);
 		}
@@ -250,9 +259,9 @@ void PlayerControl::Update()
 		imgTargetMark->SetEnable(true);
 		imgTargetInfo->SetEnable(true);
 		imgTargetHPBar->SetEnable(true);
-		imgTeumFrame->SetEnable(true);
-		imgTeumHpBar->SetEnable(true);;
-		imgTeumEnemyBar->SetEnable(true);
+		imgTeumHpFrame->SetEnable(true);
+		imgMyTeumHpBar->SetEnable(true);;
+		imgEnemyTeumHpBar->SetEnable(true);
 		imgTimer->SetEnable(true);
 	}
 
@@ -313,9 +322,9 @@ void PlayerControl::UIUpdate()
 		if (myMs)
 		{
 			// Hp
-			if (numMyMSHP)
+			if (inMyMsHp)
 			{
-				numMyMSHP->num = myMs->GetHP();
+				inMyMsHp->num = myMs->GetHP();
 			}
 
 			// BoostBar
@@ -330,9 +339,9 @@ void PlayerControl::UIUpdate()
 			}
 
 			// WeponAmo
-			for (int i = 0; i < imgWeaponAmos.size(); ++i)
+			for (int i = 0; i < inWeaponAmos.size(); ++i)
 			{
-				imgWeaponAmos[i]->num = myMs->numWeapons[i]->amo;
+				inWeaponAmos[i]->num = myMs->numWeapons[i]->amo;
 			}
 			// WeaponBar
 			for (int i = 0; i < imgWeaponBars.size(); ++i)

@@ -72,9 +72,13 @@ public:
 
 private:
 
+	/**
+	* ライフル構造体
+	*/
 	struct Rifle : NumWeapon
 	{
-		bool isShot = false;
+		// 射撃状態か
+		bool isNow = false;
 
 		// メッシュ
 		StaticMeshPtr mesh;

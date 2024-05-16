@@ -82,6 +82,23 @@ void Gundam::Awake()
 */
 void Gundam::Update()
 {
+	// 死んでいれば何もしない
+	if (isDeath)
+	{
+		return;
+	}
+
+	// HPがなければ死亡状態にする
+	if (hp <= 0)
+	{
+		anim->SetAnimation("RifleDown");
+		anim->Play();
+
+		// 死亡状態にする
+		isDeath = true;
+		return;
+	}
+
 	// 地面についているとき
 	if (rb->IsGrounded() && !boostEnergyChageLock)
 	{
@@ -103,6 +120,8 @@ void Gundam::Update()
 
 	// リロードを更新
 	ReloadUpdate();
+
+
 }
 
 /**
@@ -132,9 +151,15 @@ void Gundam::ReloadUpdate()
 */
 void Gundam::Move(const Vector2& moveAxis)
 {
+	// カメラの位置を取得
 	auto cameraTrs = GetCameraTransform();
-	// カメラの位置を設定されていない
-	if (!cameraTrs || moveParamater.dash.isNow || moveParamater.jump.isNow)
+	// カメラの位置を取得できなければ何もしない
+	if (!cameraTrs)
+	{
+		return;
+	}
+	// ジャンプとダッシュ状態なら何もしない
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow)
 	{
 		return;
 	}
@@ -157,16 +182,17 @@ void Gundam::Move(const Vector2& moveAxis)
 			GetTransform()->position += GetTransform()->Forward() * moveParamater.speed * Time::DeltaTime();
 
 		}
-		if (!rifle->isShot)
+		if (!rifle->isNow)
 		{
 			if (moveAxis != Vector2::zero)
 			{
-				// 歩くアニメーションをさせる
+				// 歩くアニメーションを再生する
 				anim->SetAnimation("RifleRun", true);
 				anim->Play();
 			}
 			else
 			{
+				// 移動入力がなければIdleアニメーションを再生する
 				anim->SetAnimation("RifleIdle", true);
 				anim->Play();
 			}
@@ -184,11 +210,9 @@ void Gundam::CpuMove()
 		auto targetFoward = GetTargetMs()->GetTransform()->position * Vector3(1, 0, 1);
 		auto targetRot = Matrix4x4::LookAt(GetTransform()->position * Vector3(1, 0, 1), targetFoward, Vector3::up);
 
-		// ターゲットの方向を取得
-		auto rot = GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
+		// ターゲットの方向を向く
+		GetTransform()->rotation = GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
 			Quaternion::RotationMatrixToQuaternion(targetRot), moveParamater.rotationSpeed);
-
-		GetTransform()->rotation = Quaternion(rot.x, rot.y, rot.z, rot.w);
 
 		// 前方向に進む
 		GetTransform()->position += moveParamater.speed * GetTransform()->Forward() * Time::DeltaTime();
@@ -204,13 +228,14 @@ void Gundam::CpuMove()
 */
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
+	// ダッシュ状態なら何もしない
 	if (moveParamater.dash.isNow)
 	{
 		return;
 	}
 	if (isJump)
 	{
-		// エネルギーがあれば
+		// エネルギーがあればジャンプさせる
 		if (boostEnergy > 0)
 		{
 			// 重力の速度を0にして　
@@ -236,28 +261,37 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 			// 上昇
 			GetTransform()->position.y += moveParamater.jump.power * Time::DeltaTime();
 
+			// エネルギーを消費
 			boostEnergy += moveParamater.jump.useEnergy * Time::DeltaTime();
 
-			// ジャンプした最初にアニメーションをさせる
+			// ジャンプアニメーションを再生
 			if (!moveParamater.jump.isNow)
 			{
 				anim->SetAnimation("RifleJump");
 				anim->Play();
 			}
-			moveParamater.jump.isNow = true;
 
 			//ブーストエネルギーの回復をロック
 			boostEnergyChageLock = true;
+
+			// ジャンプ状態に変更
+			moveParamater.jump.isNow = true;
 		}
 		else
 		{
+			// エネルギーがなくなればジャンプ状態を終わる
 			if (moveParamater.jump.isNow)
 			{
-				moveParamater.jump.isNow = false;
+				// エネルギーチャージのロックを解除
 				boostEnergyChageLock = false;
+				// エネルギーチャージのタイマーを代入
 				boostEnergyChageTimer = boostEnergyChageOverHeatStartTime;
+
 				anim->SetAnimation("RifleIdle", true);
 				anim->Play();
+
+				// ジャンプ状態を終了
+				moveParamater.jump.isNow = false;
 			}
 		}
 	}
@@ -265,11 +299,20 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 	{
 		if (moveParamater.jump.isNow)
 		{
-			moveParamater.jump.isNow = false;
+			// エネルギーチャージのロックを解除
 			boostEnergyChageLock = false;
+			// エネルギーチャージのタイマーを代入
 			boostEnergyChageTimer = boostEnergyChageStartTime;
-			anim->SetAnimation("RifleIdle", true);
-			anim->Play();
+
+			if (!rifle->isNow)
+			{
+				// 通常状態のアニメーションに変更
+				anim->SetAnimation("RifleIdle", true);
+				anim->Play();
+			}
+
+			// ジャンプ状態を終了
+			moveParamater.jump.isNow = false;
 		}
 	}
 }
@@ -281,6 +324,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
 	if (isDash)
 	{
+		// エネルギーがあればダッシュさせる
 		if (boostEnergy > 0)
 		{
 			rb->velocity.y = 0;
@@ -304,25 +348,43 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// オブジェクトの向いてる方向に進む
 			GetTransform()->position += GetTransform()->Forward() * moveParamater.dash.speed * Time::DeltaTime();
 
+			// エネルギーを消費
 			boostEnergy += moveParamater.dash.useEnergy * Time::DeltaTime();
 
-			if (!moveParamater.dash.isNow)
+			// 射撃状態ならアニメーションをキャンセル
+			if (!rifle->isNow)
 			{
-				anim->SetAnimation("RifleDash", true);
-				anim->Play();
+				if (!moveParamater.dash.isNow)
+				{
+					// ダッシュアニメーションを再生
+					anim->SetAnimation("RifleDash", true);
+					anim->Play();
+				}
 			}
+			// ダッシュ中に変更
 			moveParamater.dash.isNow = true;
+			// エネルギーチャージをロック
 			boostEnergyChageLock = true;
 		}
 		else
 		{
+			// エネルギーがなくなればダッシュ状態を終わる
 			if (moveParamater.dash.isNow)
 			{
-				moveParamater.dash.isNow = false;
+				// エネルギーチャージのロックを解除
 				boostEnergyChageLock = false;
+				// エネルギーチャージのタイマーを代入
 				boostEnergyChageTimer = boostEnergyChageOverHeatStartTime;
-				anim->SetAnimation("RifleIdle", true);
-				anim->Play();
+
+				if (!rifle->isNow)
+				{
+					// 通常状態のアニメーションに変更
+					anim->SetAnimation("RifleIdle", true);
+					anim->Play();
+				}
+
+				// ダッシュ状態を終了
+				moveParamater.dash.isNow = false;
 			}
 		}
 	}
@@ -330,11 +392,20 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 	{
 		if (moveParamater.dash.isNow)
 		{
-			moveParamater.dash.isNow = false;
+			// エネルギーチャージのロックを解除
 			boostEnergyChageLock = false;
+			// エネルギーチャージのタイマーを代入
 			boostEnergyChageTimer = boostEnergyChageStartTime;
-			anim->SetAnimation("RifleIdle", true);
-			anim->Play();
+
+			if (!rifle->isNow)
+			{
+				// 通常状態のアニメーションに変更
+				anim->SetAnimation("RifleIdle", true);
+				anim->Play();
+			}
+
+			// ダッシュ状態を終了
+			moveParamater.dash.isNow = false;
 		}
 	}
 }
@@ -347,7 +418,7 @@ void Gundam::Attack1(bool attackKey)
 	if (attackKey)
 	{
 		// ビームライフルの弾があるときだけ打つ
-		if (rifle->amo > 0 && !rifle->isShot)
+		if (rifle->amo > 0 && !rifle->isNow)
 		{
 			// 残弾を減らす
 			rifle->amo -= 1;
@@ -357,6 +428,8 @@ void Gundam::Attack1(bool attackKey)
 			{
 				GetTransform()->LookAt(GetTargetMs()->GetTransform());
 			}
+
+			// 弾の生成位置を計算
 			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.5f, 0.8f, 11.0f));
 
 			// 弾を作成
@@ -367,41 +440,60 @@ void Gundam::Attack1(bool attackKey)
 			auto bulletMove = bullet->AddComponent<Bullet>();
 			bulletMove->targetMS = GetTargetMs();
 
-			if (anim->GetAnimationClip()->name == "RifleIdle")
-			{
-				anim->SetAnimation("RifleShot");
-				anim->Play();
-			}
-			else if (anim->GetAnimationClip()->name == "RifleRun")
+			// アニメーションを再生
+			if (anim->GetAnimationClip()->name == "RifleRun" || anim->GetAnimationClip()->name == "SableRun")
 			{
 				anim->SetAnimation("RunRifleShot");
 				anim->Play();
 			}
+			else if(anim->GetAnimationClip()->name == "RifleDash")
+			{
+				anim->SetAnimation("DashRifleShot");
+				anim->Play();
+			}
+			else
+			{
+				anim->SetAnimation("RifleShot");
+				anim->Play();
+			}
 
 
-			rifle->isShot = true;
+			rifle->isNow = true;
 		}
 	}
-	if (rifle->isShot)
+	if (rifle->isNow)
 	{
+		// 射撃アニメーションが終われば射撃状態を解除する
 		if (anim->time >= anim->GetAnimationClip()->totalTime)
 		{
-			rifle->isShot = false;
+			// アニメーションを再生
+			if (anim->GetAnimationClip()->name == "RunRifleShot")
+			{
+				anim->SetAnimation("RifleRun");
+				anim->Play();
+			}
+			else if (anim->GetAnimationClip()->name == "DashRifleShot")
+			{
+				anim->SetAnimation("RifleDash");
+				anim->Play();
+			}
+			else
+			{
+				anim->SetAnimation("RifleIdle");
+				anim->Play();
+			}
+
+			rifle->isNow = false;
 		}
 	}
 }
 
 /**
 * ダメージ
-* 
+*
 * @param damage 与えるダメージ
 */
 void Gundam::Damage(float damage)
 {
 	hp -= static_cast<int>(damage);
-	if (hp <= 0)
-	{
-		anim->SetAnimation("RifleDown");
-		anim->Play();
-	}
 }

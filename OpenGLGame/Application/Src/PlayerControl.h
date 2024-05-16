@@ -60,28 +60,67 @@ public:
 
 private:
 
-	ImagePtr imgPlayerInfo;
-	ImageNumPtr numMyMSHP;
+	// 自身の情報背景
+	ImagePtr imgMyInfoBack;
+
+	// 自身の機体の体力
+	ImageNumPtr inMyMsHp;
+
+	// ブーストバー
 	ImagePtr imgBoostBar;
+
+	// ブーストバーの背景
 	ImagePtr imgBoostBarBack;
+
+	// ブーストバーのオーバーヒート
 	ImagePtr imgBoostBarOverHeat;
+
+	// ブーストバーオーバーヒートーの点滅
 	ImageBlinkingPtr ibBoostBarOverHeat;
+
+	// 覚醒バー
 	ImagePtr imgBurstBar;
+
+	// 覚醒バーの背景
 	ImagePtr imgBurstBarBack;
+
+	// 武器アイコンの背景
 	std::vector<ImagePtr> imgWeaponBacks;
-	std::vector<ImageNumPtr> imgWeaponAmos;
+
+	// 武器の残弾
+	std::vector<ImageNumPtr> inWeaponAmos;
+
+	// 武器の残弾バー
 	std::vector<ImagePtr> imgWeaponBars;
+
+	// 武器のアイコン
 	std::vector<ImagePtr> imgWeapnIcons;
+
+	// ターゲットマーク
 	ImagePtr imgTargetMark;
+
+	// ターゲットマークのテクスチャ
 	TexturePtr texTargetMark01;
 	TexturePtr texTargetMark02;
 	TexturePtr texTargetMark03;
+
+	// ターゲットの情報
 	ImagePtr imgTargetInfo;
+
+	// ターゲットの体力バー
 	ImagePtr imgTargetHPBar;
+
+	// 時間
 	ImagePtr imgTimer;
-	ImagePtr imgTeumFrame;
-	ImagePtr imgTeumHpBar;
-	ImagePtr imgTeumEnemyBar;
+
+	// チーム体力のフレーム
+	ImagePtr imgTeumHpFrame;
+
+	// 自チームの体力バー
+	ImagePtr imgMyTeumHpBar;
+
+	// 相手チームの体力バー
+	ImagePtr imgEnemyTeumHpBar;
 
 	// 距離
 	float distance = 0;

@@ -167,6 +167,9 @@ protected:
 	// 機体のHP
 	float hp = 0;
 
+	// 死んでるかの有無
+	bool isDeath = false;
+
 	// エネルギー最大量
 	const float boostEnergyMax = 100;
 
@@ -174,13 +177,13 @@ protected:
 	float boostEnergy = 100;
 
 	// エネルギー回復速度
-	float boostEnergyChage = 100;
+	float boostEnergyChage = 500;
 
 	// 地面についてからのチャージ速度
 	float boostEnergyChageTimer = 0;
 
 	// 地面についてからのチャージ開始までの速度
-	float boostEnergyChageStartTime = 0.4f;
+	float boostEnergyChageStartTime = 0.3f;
 
 	// 地面についてからのチャージ開始までの速度(OVERHEATの場合)
 	float boostEnergyChageOverHeatStartTime = 1;
