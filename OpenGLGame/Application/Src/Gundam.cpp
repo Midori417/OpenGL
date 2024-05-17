@@ -55,7 +55,7 @@ void Gundam::Awake()
 	redLookDistace = 90.0f;
 
 	// 移動パラメータ
-	moveParamater.speed = 35.0f;
+	moveParamater.speed = 20.0f;
 	moveParamater.rotationSpeed = 0.05f;
 
 	// ダッシュ
@@ -107,7 +107,7 @@ void Gundam::Update()
 	}
 
 	// 地面についているとき
-	if (rb->IsGrounded() && !boostEnergyChageLock)
+	if (rb->IsGround() && !boostEnergyChageLock)
 	{
 		if (boostEnergyChageTimer <= 0)
 		{
@@ -175,7 +175,7 @@ void Gundam::Move(const Vector2& moveAxis)
 	Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
 	Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
 
-	if (rb->IsGrounded())
+	if (rb->IsGround())
 	{
 		// 進行方向に回転
 		if (moveForward != Vector3::zero)
@@ -212,37 +212,24 @@ void Gundam::Move(const Vector2& moveAxis)
 */
 void Gundam::CpuMove(const Vector2& moveAxis)
 {
-	//if (rb->IsGrounded())
-	//{
-	//	// ジャンプとダッシュ状態なら何もしない
-	//	if (moveParamater.dash.isNow || moveParamater.jump.isNow)
-	//	{
-	//		return;
-	//	}
-
-	//	auto targetFoward = GetTargetMs()->GetTransform()->position * Vector3(1, 0, 1);
-	//	auto targetRot = Matrix4x4::LookAt(GetTransform()->position * Vector3(1, 0, 1), targetFoward, Vector3::up);
-
-	//	// ターゲットの方向を向く
-	//	GetTransform()->rotation = GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
-	//		Quaternion::RotationMatrixToQuaternion(targetRot), moveParamater.rotationSpeed);
-
-	//	// 前方向に進む
-	//	GetTransform()->position += moveParamater.speed * GetTransform()->Forward() * Time::DeltaTime();
-
-	//	if (!rifle->isNow)
-	//	{
-	//		// 歩くアニメーションを再生する
-	//		anim->SetAnimation("RifleRun", true);
-	//		anim->Play();
-	//	}
-	//}
+	// カメラの位置を取得
+	auto cameraTrs = GetCameraTransform();
+	// カメラの位置を取得できなければ何もしない
+	if (!cameraTrs)
+	{
+		return;
+	}
+	// ジャンプとダッシュ状態なら何もしない
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow)
+	{
+		return;
+	}
 
 	// カメラの方向から、X-Z単位ベクトル(正規化)を取得
-	//Vector3 cameraForward = GetTransform()->Forward() * Vector3(1, 0, 1).Normalized();
-	Vector3 moveForward = GetTransform()->Forward() * moveAxis.y + GetTransform()->Right() * moveAxis.x;
+	Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
+	Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
 
-	if (rb->IsGrounded())
+	if (rb->IsGround())
 	{
 		// 進行方向に回転
 		if (moveForward != Vector3::zero)
@@ -291,7 +278,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 		if (boostEnergy > 0)
 		{
 			// 重力の速度を0にして　
-			rb->velocity.y = 0;
+			rb->velocity = Vector3(0);
 
 			auto cameraTrs = GetCameraTransform();
 			// カメラの方向から、X-Z単位ベクトル(正規化)を取得
@@ -379,6 +366,8 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 		// エネルギーがあればダッシュさせる
 		if (boostEnergy > 0)
 		{
+			rb->isVelocity = false;
+
 			rb->velocity.y = 0;
 			auto cameraTrs = GetCameraTransform();
 			// カメラの位置を設定されていない
@@ -398,7 +387,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 					Quaternion::LookRotation(moveForward), moveParamater.dash.rotationSpeed);
 			}
 			// オブジェクトの向いてる方向に進む
-			GetTransform()->position += GetTransform()->Forward() * moveParamater.dash.speed * Time::DeltaTime();
+			rb->velocity = GetTransform()->Forward() * moveParamater.dash.speed;
 
 			// エネルギーを消費
 			boostEnergy += moveParamater.dash.useEnergy * Time::DeltaTime();
@@ -423,6 +412,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// エネルギーがなくなればダッシュ状態を終わる
 			if (moveParamater.dash.isNow)
 			{
+				rb->isVelocity = true;
 				// エネルギーチャージのロックを解除
 				boostEnergyChageLock = false;
 				// エネルギーチャージのタイマーを代入
@@ -444,6 +434,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 	{
 		if (moveParamater.dash.isNow)
 		{
+			rb->isVelocity = true;
 			// エネルギーチャージのロックを解除
 			boostEnergyChageLock = false;
 			// エネルギーチャージのタイマーを代入

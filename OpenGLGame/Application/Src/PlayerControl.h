@@ -8,8 +8,6 @@ using namespace FGEngine::UI;
 
 class BaseMs;
 using BaseMsPtr = std::shared_ptr<BaseMs>;
-class LookOnCamera;
-using LookOnCameraPtr = std::shared_ptr<LookOnCamera>;
 class ImageBlinking;
 using ImageBlinkingPtr = std::shared_ptr<ImageBlinking>;
 class ImageNum;
@@ -58,12 +56,6 @@ private:
 	* UIˆ—‚ÌXV
 	*/
 	void UIUpdate();
-
-
-public:
-	
-	// ƒJƒƒ‰
-	LookOnCameraPtr lookOnCamera;
 
 private:
 

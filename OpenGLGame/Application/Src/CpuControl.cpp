@@ -4,11 +4,30 @@
 #include "CpuControl.h"
 #include "BaseMs.h"
 #include "Global.h"
+#include "LookOnCamera.h"
 
 void CpuControl::Start()
 {
-	cpuTime = 2;
-	moveTime = 5;
+	cpuTime = 1;
+	moveTime = 2;
+
+	moveAxiss.push_back(Vector2::right);
+	moveAxiss.push_back(Vector2::left);
+	moveAxiss.push_back(Vector2::up);
+	moveAxiss.push_back(Vector2::down);
+	moveAxiss.push_back(Vector2(1, 1));
+	moveAxiss.push_back(Vector2(-1, 1));
+	moveAxiss.push_back(Vector2(-1, -1));
+	moveAxiss.push_back(Vector2(1, -1));
+
+	// カメラに自身のMSを設定
+	lookOnCamera->SetMsTransform(myMs->GetTransform().get());
+
+	// カメラにターゲットを設定
+	lookOnCamera->SelectTarget(otherOwner->myMs->GetTransform().get());
+
+	// プレイヤーにカメラ設定
+	myMs->SetCamera(lookOnCamera->GetTransform().get());
 }
 
 void CpuControl::Update()
@@ -63,27 +82,47 @@ void CpuControl::MsUpdate()
 	cpuTimer -= Time::DeltaTime();
 	if (cpuTimer <= 0)
 	{
-		cpuState = (int)Random::Range(CpuState::None, CpuState::Attack);
+		cpuState = (int)Random::Range(CpuState::None, CpuState::Max - 1);
 		cpuTimer = cpuTime;
 		LOG("%d", cpuState);
 	}
 	moveTimer -= Time::DeltaTime();
 	if (moveTimer <= 0)
 	{
-		cpuMoveAxis.x = Random::Range(-1.0f, 1.0f);
-		cpuMoveAxis.y = Random::Range(-1.0f, 1.0f);
+		int index = Random::Range(0, (int)moveAxiss.size() - 1);
+		cpuMoveAxis = moveAxiss[index];
 		moveTimer = moveTime;
 	}
 	// Cpuの移動処理
 	myMs->CpuMove(cpuMoveAxis);
 
-	bool attack = cpuState == CpuState::Attack ? true : false;
-	myMs->Attack1(attack);
-	if (attack)
+	// ジャンプ
+	bool jumpBtn = false;
+	if (cpuState == CpuState::Jump)
 	{
-		cpuState = 0;
+		jumpBtn = true;
 	}
+	myMs->Jump(jumpBtn, cpuMoveAxis);
 
+	// ダッシュ
+	bool dashBtn = false;
+	if (cpuState == CpuState::Dash || cpuState == CpuState::DashAttack)
+	{
+		dashBtn = true;
+	}
+	myMs->Dash(dashBtn, cpuMoveAxis);
+
+	// 攻撃1
+	bool attackBtn = false;
+	if (cpuState == CpuState::Attack || cpuState == CpuState::DashAttack)
+	{
+		attackBtn = true;
+	}
+	myMs->Attack1(attackBtn);
+	if (attackBtn)
+	{
+		myMs->Attack1(false);
+	}
 }
 
 void CpuControl::Finish()

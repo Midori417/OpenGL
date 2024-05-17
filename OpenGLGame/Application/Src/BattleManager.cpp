@@ -48,6 +48,10 @@ void BattleManager::Awake()
 		{
 			auto cpuMs = Instantate("CpuMs", Vector3(0, 6, -50));
 			cpuControl->myMs = SetMs(cpuMs, cpuControl->ms);
+			{
+				auto camera = Instantate("virtualCamera");
+				cpuControl->lookOnCamera = camera->AddComponent<LookOnCamera>();
+			}
 		}
 	}
 

@@ -28,12 +28,29 @@ namespace FGEngine
 			{
 				// 接地フラグが立っていたら、下方向への加速度を0にする
 				velocity.y = Mathf::Max(velocity.y, 0.0f);
+
+				if (isVelocity)
+				{
+					velocity.x = 0;
+					velocity.z = 0;
+				}
+
+
+				isGround = true;
+				noGroundTimer = 0;
 			}
 			else 
 			{
 				// 重力加速度によって速度を更新する
 				velocity.y -= gravity * gravityScale * Time::DeltaTime();
+				
+				noGroundTimer += Time::DeltaTime();
+				if (noGroundTimer > noGroundTime)
+				{
+					isGround = false;
+				}
 			}
+
 		}
 		// 速度を座標に反映する
 		GetTransform()->position += velocity * Time::DeltaTime();
@@ -42,8 +59,8 @@ namespace FGEngine
 	/**
 	* 地面に触れているかを取得
 	*/
-	bool Rigidbody::IsGrounded() const
+	bool Rigidbody::IsGround() const
 	{
-		return isGrounded;
+		return isGround;
 	}
 }

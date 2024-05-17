@@ -48,11 +48,25 @@ private:
 		// 何もしない
 		None,
 
+		// ダッシュ
+		Dash,
+
+		// ジャンプ
+		Jump,
+
+		// ライフル
 		Attack,
+
+		// ダッシュライフル
+		DashAttack,
+
+		Max,
 	};
 	int cpuState = 0;
 
 	Vector2 cpuMoveAxis = Vector2::zero;
+
+	std::vector<Vector2> moveAxiss;
 	float moveTimer = 0;
 	float moveTime = 0;
 

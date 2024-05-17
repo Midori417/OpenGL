@@ -38,7 +38,7 @@ namespace FGEngine
 		/**
 		* 地面についているかを取得
 		*/
-		bool IsGrounded() const;
+		bool IsGround() const;
 
 	public:
 
@@ -51,10 +51,21 @@ namespace FGEngine
 		// 重力の影響を制御する係数
 		float gravityScale = 1;
 
+		bool isVelocity = true;
+
 	private:
 
 		// 地面に設置の有無
 		bool isGrounded = false;
+
+		// 地面についてるか(処理速度の関係の救済処置)
+		bool isGround = false;
+
+		// 地面についていない時間
+		float noGroundTimer = 0;
+
+		// この時間を超えたら地面についていない
+		float noGroundTime = 0.2f;
 
 		// 重力加速度
 		static constexpr float gravity = 9.81f;

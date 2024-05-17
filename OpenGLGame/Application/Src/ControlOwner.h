@@ -9,6 +9,8 @@ using namespace FGEngine;
 
 class BaseMs;
 using BaseMsPtr = std::shared_ptr<BaseMs>;
+class LookOnCamera;
+using LookOnCameraPtr = std::shared_ptr<LookOnCamera>;
 
 /**
 * ‘€ì
@@ -57,6 +59,8 @@ protected:
 
 public:
 
+	// ƒJƒƒ‰
+	LookOnCameraPtr lookOnCamera;
 
 	// ‹——£
 	float distance = 0;
