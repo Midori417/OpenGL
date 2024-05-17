@@ -9,13 +9,15 @@
 */
 void Bullet::Awake()
 {
+	auto rb = OwnerObject()->AddComponent<Rigidbody>();
+	rb->isGravity = false;
 	auto col = OwnerObject()->AddComponent<SphereCollider>();
 	col->isTrigger = true;
 }
 
 void Bullet::Start()
 {
-	//Destroy(OwnerObject(), 3);
+	Destroy(OwnerObject(), 3);
 }
 
 void Bullet::Update()
@@ -26,17 +28,15 @@ void Bullet::Update()
 	}
 	else
 	{
+
 		// •ûŒüƒxƒNƒgƒ‹‚ðŒvŽZ
 		Vector3 direction = (targetMS->GetTransform()->position - GetTransform()->position);
-		direction.Normalize();
 
-		// —U“±‹ï‡‚ðl—¶‚µ‚½•ûŒüƒxƒNƒgƒ‹‚ÌŒvŽZ
-		Vector3 disiredDirection = Vector3::Lerp(GetTransform()->Forward(), direction, homingPower);
-		disiredDirection.Normalize();
+		// –Ú•W‚Ì‰ñ“]‚ðŒvŽZ
+		Quaternion targetRotation = Quaternion::LookRotation(direction);
 
-		// ‰ñ“]
-		Quaternion toRotation = Quaternion::LookRotation(disiredDirection);
-		GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation, toRotation, rotationSpeed);
+		// ƒ~ƒTƒCƒ‹‚Ì‰ñ“]‚ð–Ú•W‚Ì‰ñ“]‚É‹ß‚Ã‚¯‚é
+		GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation, targetRotation, rotationSpeed * Time::DeltaTime());
 
 		GetTransform()->position += GetTransform()->Forward() * speed * Time::DeltaTime();
 	}

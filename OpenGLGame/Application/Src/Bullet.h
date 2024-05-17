@@ -31,19 +31,16 @@ public:
 	// ターゲットMs
 	BaseMs* targetMS;
 
-	// ホーミングの強さ
-	float homingPower = 1;
-
-	float rotationSpeed = 0.5f;
+	float rotationSpeed = 0;
 
 	// ホーミングの有無
 	bool isHoming = true;
 
 	// 弾の速度
-	float speed = 100.0f;
+	float speed = 0;
 
 	// 与えるダメージ
-	float damage = 100;
+	float damage = 0;
 };
 
 

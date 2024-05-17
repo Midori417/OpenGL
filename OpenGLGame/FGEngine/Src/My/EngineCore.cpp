@@ -184,6 +184,9 @@ namespace FGEngine::MainSystem
 		// ウィンドウの描画開始
 		windowManager->Begin();
 
+		// 乱数の初期化
+		Random::Initialize((int)time(NULL));
+
 		// 時間ライブラリを更新
 		Time::Update();
 

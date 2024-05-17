@@ -97,6 +97,12 @@ namespace FGEngine
 	*/
 	void Object::Destroy(Object* obj, float t)
 	{
+		if (t <= 0)
+		{
+			obj->hideFlag = HideFlag::Destory;
+			return;
+		}
+
 		// ‚·‚Å‚É”jŠü—\’è
 		if (obj->isDestroyed)
 		{

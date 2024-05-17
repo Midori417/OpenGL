@@ -7,15 +7,17 @@
 #include "LookOnCamera.h"
 #include "BaseMs.h"
 #include "Gundam.h"
+#include "Global.h"
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
-
+using namespace FGEngine::InputSystem;
+using namespace FGEngine::SceneSystem;
 
 /**
-* 最初に実行
+* 生成時に実行
 */
-void BattleManager::Start()
+void BattleManager::Awake()
 {
 	// プレイヤーを作成
 	{
@@ -49,36 +51,76 @@ void BattleManager::Start()
 		}
 	}
 
+	// チームHpを設定
+	{
+		teum1Hp = std::make_shared<int>(teumMaxHp);
+		teum2Hp = std::make_shared<int>(teumMaxHp);
+
+		playerControl->SetTeumHP(teum1Hp.get());
+		cpuControl->SetTeumHP(teum2Hp.get());
+	}
+
 	// お互いのコントローラーの情報を設定
 	playerControl->otherOwner = cpuControl.get();
 	cpuControl->otherOwner = playerControl.get();
+}
+
+/**
+* 最初に実行
+*/
+void BattleManager::Start()
+{
 
 	auto resManager = ResouceManager::GetInstance();
 	auto winManager = WindowManager::GetInstance();
-	// StadByUI
-	{
-		auto standbay = Instantate("Standbay");
-		imgStandbay = standbay->AddComponent<Image>();
-		imgStandbay->texture = resManager->GetTexture("STANDBAY");
-		imgStandbay->size = winManager->GetWindowSize();
-	}
-	{
-		auto goBack = Instantate("GoBack");
-		imgGoBack = goBack->AddComponent<Image>();
-		imgGoBack->texture = resManager->GetTexture("GoBack");
-		imgGoBack->size = winManager->GetWindowSize();
-	}
-	{
-		auto go = Instantate("Go");
-		imgGo = go->AddComponent<Image>();
-		imgGo->texture = resManager->GetTexture("GO");
-		imgGo->size = winManager->GetWindowSize() * 0.9f;
-	}
 
+	// UI
+	{
+		// STANBAYを作成
+		{
+			auto standbay = Instantate("Standbay");
+			imgStandbay = standbay->AddComponent<Image>();
+			imgStandbay->texture = resManager->GetTexture("STANDBAY");
+			imgStandbay->size = winManager->GetWindowSize();
+		}
+		// GOの背景を作成
+		{
+			auto goBack = Instantate("GoBack");
+			imgGoBack = goBack->AddComponent<Image>();
+			imgGoBack->texture = resManager->GetTexture("GoBack");
+			imgGoBack->size = winManager->GetWindowSize();
+		}
+		// GOを作成
+		{
+			auto go = Instantate("Go");
+			imgGo = go->AddComponent<Image>();
+			imgGo->texture = resManager->GetTexture("GO");
+			imgGo->size = winManager->GetWindowSize() * 0.9f;
+		}
+		// WINを作成
+		{
+			auto win = Instantate("Win");
+			imgWin = win->AddComponent<Image>();
+			imgWin->texture = resManager->GetTexture("Win");
+			imgWin->size = winManager->GetWindowSize();
+		}
+		// Loseを作成
+		{
+			auto lose = Instantate("Lose");
+			imgLose = lose->AddComponent<Image>();
+			imgLose->texture = resManager->GetTexture("Lose");
+			imgLose->size = winManager->GetWindowSize();
+		}
+
+	}
 	// UIを非表示
 	imgStandbay->SetEnable(false);
 	imgGoBack->SetEnable(false);
 	imgGo->SetEnable(false);
+	imgWin->SetEnable(false);
+	imgLose->SetEnable(false);
+
+
 }
 
 /**
@@ -129,6 +171,30 @@ void BattleManager::Update()
 	}
 		break;
 	case BattleManager::GameState::Battle:
+
+		if (*teum1Hp <= 0)
+		{
+			imgLose->SetEnable(true);
+			state = GameState::Victory;
+		}
+		else if(*teum2Hp <= 0)
+		{
+			imgWin->SetEnable(true);
+			state = GameState::Victory;
+		}
+		break;
+	case BattleManager::GameState::Victory:
+
+		playerControl->SetEnable(false);
+		playerControl->Finish();
+		cpuControl->SetEnable(false);
+
+		if (InputKey::GetKey(KeyCode::Enter))
+		{
+			SceneManager::LoadScene("タイトルシーン");
+		}
+
+
 		break;
 	default:
 		break;

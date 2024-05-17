@@ -6,6 +6,7 @@
 #include "BaseMs.h"
 #include "ImageBlinking.h"
 #include "ImageNum.h"
+#include "Global.h"
 using namespace FGEngine::InputSystem;
 using namespace FGEngine::ResouceSystem;
 
@@ -113,7 +114,7 @@ void PlayerControl::Start()
 					// 武器のアイコン
 					{
 						auto weaponIcon = Instantate(x->name, Vector3(830, 410, 0));
-						auto image= weaponIcon->AddComponent<Image>();
+						auto image = weaponIcon->AddComponent<Image>();
 						image->texture = x->iconTexture;
 						image->size = image->texture->GetSize() * 1.3f;
 						imgWeapnIcons.push_back(image);
@@ -154,6 +155,10 @@ void PlayerControl::Start()
 			imgMyTeumHpBar = myTeumHpBar->AddComponent<Image>();
 			imgMyTeumHpBar->texture = resManager->GetTexture("TeumHpBar");
 			imgMyTeumHpBar->size = imgMyTeumHpBar->texture->GetSize() * 1.2f;
+
+			float max = static_cast<float>(teumMaxHp);
+			float hp = static_cast<float>(*myTeumHp);
+			imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
 		}
 		// 相手チームの体力バーを作成
 		{
@@ -162,6 +167,9 @@ void PlayerControl::Start()
 			imgEnemyTeumHpBar->texture = resManager->GetTexture("TeumEnemyHpBar");
 			imgEnemyTeumHpBar->size = imgEnemyTeumHpBar->texture->GetSize() * 1.2f;
 
+			float max = static_cast<float>(teumMaxHp);
+			float hp = static_cast<float>(otherOwner->GetTeumHp());
+			imgEnemyTeumHpBar->fillAmout = (max - (max - hp)) / max;
 		}
 		// チーム体力フレームを作成
 		{
@@ -266,17 +274,52 @@ void PlayerControl::Update()
 	}
 
 	// ターゲットのMSを取得
-	auto targetMs = otherOwner->myMs;
-	myMs->SetTargetMS(targetMs.get());
-
-	// 距離を求める
-	if (targetMs)
+	if (otherOwner)
 	{
-		distance = Vector3::Distance(targetMs->GetTransform()->position, myMs->GetTransform()->position);
-	}
-	// Ms更新
-	MsUpdate();
+		auto targetMs = otherOwner->myMs;
+		myMs->SetTargetMS(targetMs.get());
 
+		// 距離を求める
+		if (targetMs && myMs)
+		{
+			distance = Vector3::Distance(targetMs->GetTransform()->position, myMs->GetTransform()->position);
+		}
+	}
+	// HPがゼロになったら機能停止
+	if (myMs->IsDeath())
+	{
+		if (!isMsDeath)
+		{
+			TeumHpSud();
+			isMsDeath = true;
+
+			// チーム体力があれば復帰する
+			if (*myTeumHp > 0)
+			{
+				// 自チームの体力が自身の機体のコストより高ければそのままの体力で復活
+				if (*myTeumHp > myMs->GetCost())
+				{
+					myMs->Remove(Vector3(0, 6, 50), 1);
+				}
+				// 自チームの体力が自身の機体のコストより低ければコストに対して
+				else
+				{
+					float hp = static_cast<float>(*myTeumHp);
+					float cost = static_cast<float>(myMs->GetCost());
+					float hpCut = (cost -(cost - hp)) / cost;
+					myMs->Remove(Vector3(0, 6, -50), hpCut);
+				}
+				isMsDeath = false;
+			}
+		}
+		return;
+	}
+
+	if (!isMsDeath)
+	{
+		// Ms更新
+		MsUpdate();
+	}
 	// UI更新
 	UIUpdate();
 }
@@ -312,12 +355,49 @@ void PlayerControl::MsUpdate()
 	myMs->Attack1(attackKey);
 }
 
+void PlayerControl::Finish()
+{
+	// UIを非表示にする
+	{
+		imgMyInfoBack->SetEnable(false);
+		inMyMsHp->Stop();
+		imgBoostBarBack->SetEnable(false);
+		imgBoostBar->SetEnable(false);
+		imgBoostBarOverHeat->SetEnable(false);
+		imgBurstBarBack->SetEnable(false);
+		imgBurstBar->SetEnable(false);
+		for (auto x : imgWeaponBacks)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : inWeaponAmos)
+		{
+			x->Stop();
+		}
+		for (auto x : imgWeaponBars)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : imgWeapnIcons)
+		{
+			x->SetEnable(false);
+		}
+		imgTargetMark->SetEnable(false);
+		imgTargetInfo->SetEnable(false);
+		imgTargetHPBar->SetEnable(false);
+		imgTeumHpFrame->SetEnable(false);
+		imgMyTeumHpBar->SetEnable(false);
+		imgEnemyTeumHpBar->SetEnable(false);
+		imgTimer->SetEnable(false);
+	}
+}
+
 /**
 * UIの更新
 */
 void PlayerControl::UIUpdate()
 {
-	// MyMs
+	// 自チームの処理
 	{
 		if (myMs)
 		{
@@ -350,38 +430,63 @@ void PlayerControl::UIUpdate()
 				float amoMax = static_cast<float>(myMs->numWeapons[i]->amoMax);
 				imgWeaponBars[i]->fillAmout = Mathf::Clamp01((amoMax - (amoMax - amo)) / amoMax);
 			}
+
+			// 自チームHPの処理
+			if (imgMyTeumHpBar)
+			{
+				float max = static_cast<float>(teumMaxHp);
+				float hp = static_cast<float>(*myTeumHp);
+				imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
+			}
+		}
+
+		if (myTeumHp)
+		{
+			float max = static_cast<float>(teumMaxHp);
+			float hp = static_cast<float>(*myTeumHp);
+			imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
 		}
 
 	}
 
-	auto targetMs = otherOwner->myMs;
-	if (myMs && targetMs)
+	// 相手がいれば処理をする
+	if (otherOwner)
 	{
-		// ターゲットマークの処理
-		if (imgTargetMark)
+		auto targetMs = otherOwner->myMs;
+		if (myMs && targetMs)
 		{
-			// 近ければ小さくし、遠ければ大きくする
-			imgTargetMark->size = Vector2(Mathf::Clamp(distance, 100.0f, 200.0f));
+			// ターゲットマークの処理
+			if (imgTargetMark)
+			{
+				// 近ければ小さくし、遠ければ大きくする
+				imgTargetMark->size = Vector2(Mathf::Clamp(distance, 100.0f, 200.0f));
 
-			// 距離によってテクスチャを変える
-			if (distance <= myMs->proximityDistance)
-			{
-				imgTargetMark->texture = texTargetMark03;
+				// 距離によってテクスチャを変える
+				if (distance <= myMs->proximityDistance)
+				{
+					imgTargetMark->texture = texTargetMark03;
+				}
+				else if (distance <= myMs->redLookDistace)
+				{
+					imgTargetMark->texture = texTargetMark02;
+				}
+				else
+				{
+					imgTargetMark->texture = texTargetMark01;
+				}
 			}
-			else if (distance <= myMs->redLookDistace)
+			// ターゲットHPの処理
+			if (imgTargetHPBar)
 			{
-				imgTargetMark->texture = texTargetMark02;
-			}
-			else
-			{
-				imgTargetMark->texture = texTargetMark01;
+				imgTargetHPBar->fillAmout = targetMs->GetHP01();
 			}
 		}
-		// ターゲットHPの処理
-		if (imgTargetHPBar)
-		{
-			imgTargetHPBar->fillAmout = targetMs->GetHP01();
 
-		}
+		// 相手チームのHP処理
+		float max = static_cast<float>(teumMaxHp);
+		float hp = static_cast<float>(otherOwner->GetTeumHp());
+		imgEnemyTeumHpBar->fillAmout = (max - (max - hp)) / max;
+
 	}
+
 }

@@ -40,6 +40,8 @@ struct NumWeapon
 
 	// 武器アイコン
 	TexturePtr iconTexture;
+
+	virtual void Initialize(){}
 };
 using NumWeaponPtr = std::shared_ptr<NumWeapon>;
 
@@ -71,6 +73,16 @@ public:
 	*/
 	float GetBoostEnergy() const;
 
+	/**
+	* 機体コストを取得
+	*/
+	int GetCost() const;
+
+	/**
+	* 死亡か取得
+	*/
+	bool IsDeath() const;
+
 
 	/**
 	* 敵との距離を設定
@@ -94,7 +106,7 @@ public:
 	/**
 	* CPU移動
 	*/
-	virtual void CpuMove(){}
+	virtual void CpuMove(const Vector2& moveAxis){}
 
 	/**
 	* ジャンプ
@@ -109,6 +121,11 @@ public:
 	// 攻撃
 	virtual void Attack1(bool attackKey) {}
 	virtual void Attack2(bool attackKey2) {}
+
+	/**
+	* 生き返る
+	*/
+	virtual void Remove(const Vector3& removePos, float hp){}
 
 	/**
 	* ダメージを与える
@@ -183,10 +200,10 @@ protected:
 	float boostEnergyChageTimer = 0;
 
 	// 地面についてからのチャージ開始までの速度
-	float boostEnergyChageStartTime = 0.3f;
+	float boostEnergyChageStartTime = 0.2f;
 
 	// 地面についてからのチャージ開始までの速度(OVERHEATの場合)
-	float boostEnergyChageOverHeatStartTime = 1;
+	float boostEnergyChageOverHeatStartTime = 0.5f;
 
 	// エネルギー回復のロックの有無
 	bool boostEnergyChageLock = false;

@@ -34,6 +34,8 @@ namespace FGEngine
 		* @return ¶¬‚µ‚½—”
 		*/
 		static float Range(float min, float max);
+
+		static int Range(int min, int max);
 	};
 }
 #endif // !RANDOM_H_INCLUDED

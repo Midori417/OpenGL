@@ -29,10 +29,37 @@ private:
 	virtual void Update() override;
 
 	/**
-	* 毎フレーム実行(Updateより後)
+	* 機体の更新
 	*/
-	virtual void LateUpdate() override;
+	virtual void MsUpdate() override;
 
+	/**
+	* 終了
+	*/
+	virtual void Finish() override;
+
+private:
+
+	/**
+	* CPUの行動
+	*/
+	enum CpuState
+	{
+		// 何もしない
+		None,
+
+		Attack,
+	};
+	int cpuState = 0;
+
+	Vector2 cpuMoveAxis = Vector2::zero;
+	float moveTimer = 0;
+	float moveTime = 0;
+
+	float cpuTimer = 0;
+
+	// 次の行動を決めるまでの時間
+	float cpuTime = 0;
 };
 
 #endif // !CPU_H_INCLUDED

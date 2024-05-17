@@ -120,6 +120,7 @@ namespace FGEngine
 		*/
 		static float Clamp01(float value);
 
+
 		/**
 		*
 		*/

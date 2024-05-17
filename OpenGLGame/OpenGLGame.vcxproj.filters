@@ -606,6 +606,9 @@
     <ClInclude Include="Application\Src\Bullet.h">
       <Filter>Application\Src\Ms\Bullet</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Src\Global.h">
+      <Filter>Application\Src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -811,6 +814,9 @@
     </ClCompile>
     <ClCompile Include="Application\Src\Bullet.cpp">
       <Filter>Application\Src\Ms\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ControlOwner.cpp">
+      <Filter>Application\Src\ControlOwner</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

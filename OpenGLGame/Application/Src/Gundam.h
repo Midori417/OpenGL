@@ -46,7 +46,7 @@ public:
 	/**
 	* CPU移動
 	*/
-	virtual void CpuMove() override;
+	virtual void CpuMove(const Vector2& moveAxis) override;
 
 	/**
 	* ジャンプ
@@ -70,6 +70,11 @@ public:
 	*/
 	virtual void Damage(float damage) override;
 
+	/**
+	* 生き返る
+	*/
+	virtual void Remove(const Vector3& removePos, float hp) override;
+
 private:
 
 	/**
@@ -77,6 +82,15 @@ private:
 	*/
 	struct Rifle : NumWeapon
 	{
+		// 与えるダメージ
+		float damage = 0;
+
+		// 誘導力
+		float homingPower = 0;
+
+		// 速度
+		float speed = 0;
+
 		// 射撃状態か
 		bool isNow = false;
 
@@ -85,6 +99,12 @@ private:
 
 		//シェーダ
 		ShaderPtr shader;
+
+		virtual void Initialize() override
+		{
+			amo = amoMax;
+			isNow = false;
+		}
 	};
 	std::shared_ptr<Rifle> rifle;
 

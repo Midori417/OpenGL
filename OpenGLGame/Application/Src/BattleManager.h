@@ -24,6 +24,12 @@ public:
 	BattleManager() = default;
 	virtual ~BattleManager() = default;
 
+
+	/**
+	* 生成時に実行
+	*/
+	virtual void Awake() override;
+
 private:
 
 	/**
@@ -68,6 +74,9 @@ private:
 
 		// 戦闘中
 		Battle,
+
+		// 勝敗
+		Victory,
 	};
 	GameState state = GameState::GO;
 
@@ -82,17 +91,24 @@ private:
 	// ゴータイム
 	const float goTime = 1;
 
-
 	// プレイヤー
 	PlayerControlPtr playerControl;
 
 	// 敵
 	CpuControlPtr cpuControl;
 
+	// チーム1体力
+	std::shared_ptr<int> teum1Hp = 0;
+
+	// チーム2体力
+	std::shared_ptr<int> teum2Hp = 0;
+
 	// UI
 	ImagePtr imgStandbay;
 	ImagePtr imgGo;
 	ImagePtr imgGoBack;
+	ImagePtr imgWin;
+	ImagePtr imgLose;
 };
 
 

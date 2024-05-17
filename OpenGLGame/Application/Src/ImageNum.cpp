@@ -81,3 +81,13 @@ void ImageNum::Update()
 		}
 	}
 }
+
+void ImageNum::Stop()
+{
+	for (auto x : imgNums)
+	{
+		x->SetEnable(false);
+	}
+
+	SetEnable(false);
+}

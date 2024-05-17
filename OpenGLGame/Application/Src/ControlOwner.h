@@ -21,7 +21,45 @@ public:
 	ControlOwner() = default;
 	virtual ~ControlOwner() = default;
 
+	/**
+	* 自チームのHpを取得
+	*/
+	int& GetTeumHp() const
+	{
+		return *myTeumHp;
+	}
+
+	/**
+	* 自チームのHpを設定
+	*/
+	void SetTeumHP(int* teumHP)
+	{
+		myTeumHp = teumHP;
+	}
+
+	/**
+	* チーム体力を減らす
+	*/
+	void TeumHpSud();
+
+	/**
+	* 終了
+	*/
+	virtual void Finish(){}
+
+
+protected:
+
+	/**
+	* 機体の更新
+	*/
+	virtual void MsUpdate() {}
+
 public:
+
+
+	// 距離
+	float distance = 0;
 
 	// 処理を開始するか
 	bool isStart = false;
@@ -34,6 +72,14 @@ public:
 
 	// 自分の機体
 	BaseMsPtr myMs;
+
+protected:
+
+	// 自分のMSの死亡の有無
+	bool isMsDeath = false;
+
+	// 自チームの体力
+	int* myTeumHp;
 };
 
 

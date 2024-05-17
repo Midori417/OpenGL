@@ -16,6 +16,9 @@ using namespace FGEngine::UI;
 */
 bool TitleScene::Initialize()
 {
+	// ƒƒ“ƒo[•Ï”‚Ì‰Šú‰»
+	isFadeStart = false;
+
 	auto objManager = ObjectManager::GetInstance();
 	auto resManager = ResouceManager::GetInstance();
 

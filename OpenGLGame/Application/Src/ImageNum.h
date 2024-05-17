@@ -22,6 +22,8 @@ public:
 	*/
 	virtual void Awake() override;
 
+	void Stop();
+
 private:
 
 	/**
@@ -33,6 +35,7 @@ private:
 	* –ˆƒtƒŒ[ƒ€Às
 	*/
 	virtual void Update() override;
+
 
 public:
 

@@ -27,9 +27,14 @@ void Gundam::Awake()
 	rb->gravityScale = 2;
 
 	// コライダーを追加
-	auto col = OwnerObject()->AddComponent<AabbCollider>();
-	col->min = Vector3(-1, -5.2f, -1);
-	col->max = Vector3(1, 2.4f, 1);
+	auto col = OwnerObject()->AddComponent<SphereCollider>();
+	col->radius = 2.4f;
+	col->ceneter = Vector3(0, -2.7f, 0);
+	auto col2 = OwnerObject()->AddComponent<SphereCollider>();
+	col2->radius = 2.5f;
+	col2->ceneter = Vector3(0, -0.4f, -0.2f);
+	//col->min = Vector3(-3, -5.2f, -2);
+	//col->max = Vector3(3, 2.4f, 2);
 
 	// アニメータを追加
 	anim = OwnerObject()->AddComponent<Animator>();
@@ -50,11 +55,11 @@ void Gundam::Awake()
 	redLookDistace = 90.0f;
 
 	// 移動パラメータ
-	moveParamater.speed = 30.0f;
+	moveParamater.speed = 35.0f;
 	moveParamater.rotationSpeed = 0.05f;
 
 	// ダッシュ
-	moveParamater.dash.speed = 35.0f;
+	moveParamater.dash.speed = 40.0f;
 	moveParamater.dash.rotationSpeed = 0.01f;
 	moveParamater.dash.useEnergy = -30.0f;
 
@@ -64,12 +69,14 @@ void Gundam::Awake()
 	moveParamater.jump.rotationSpeed = 0.05f;
 	moveParamater.jump.useEnergy = -30.0f;
 
-	// 残弾武器を追加
-	numWeapons.reserve(3);
+	// ライフルの生成
 	rifle = std::make_shared<Rifle>();
 	rifle->name = "BeumRifle";
 	rifle->amoMax = 7;
 	rifle->amo = rifle->amoMax;
+	rifle->damage = 70.0f;
+	rifle->homingPower = 0.05f;
+	rifle->speed = 200.0f;
 	rifle->reloadTime = 3;
 	rifle->iconTexture = resManager->GetTexture("Gundam/BeumRifleIcon");
 	rifle->mesh = resManager->GetStaticMesh("Gundam/BeumRifleBullet");
@@ -203,24 +210,69 @@ void Gundam::Move(const Vector2& moveAxis)
 /**
 * CPUの移動
 */
-void Gundam::CpuMove()
+void Gundam::CpuMove(const Vector2& moveAxis)
 {
+	//if (rb->IsGrounded())
+	//{
+	//	// ジャンプとダッシュ状態なら何もしない
+	//	if (moveParamater.dash.isNow || moveParamater.jump.isNow)
+	//	{
+	//		return;
+	//	}
+
+	//	auto targetFoward = GetTargetMs()->GetTransform()->position * Vector3(1, 0, 1);
+	//	auto targetRot = Matrix4x4::LookAt(GetTransform()->position * Vector3(1, 0, 1), targetFoward, Vector3::up);
+
+	//	// ターゲットの方向を向く
+	//	GetTransform()->rotation = GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
+	//		Quaternion::RotationMatrixToQuaternion(targetRot), moveParamater.rotationSpeed);
+
+	//	// 前方向に進む
+	//	GetTransform()->position += moveParamater.speed * GetTransform()->Forward() * Time::DeltaTime();
+
+	//	if (!rifle->isNow)
+	//	{
+	//		// 歩くアニメーションを再生する
+	//		anim->SetAnimation("RifleRun", true);
+	//		anim->Play();
+	//	}
+	//}
+
+	// カメラの方向から、X-Z単位ベクトル(正規化)を取得
+	//Vector3 cameraForward = GetTransform()->Forward() * Vector3(1, 0, 1).Normalized();
+	Vector3 moveForward = GetTransform()->Forward() * moveAxis.y + GetTransform()->Right() * moveAxis.x;
+
 	if (rb->IsGrounded())
 	{
-		auto targetFoward = GetTargetMs()->GetTransform()->position * Vector3(1, 0, 1);
-		auto targetRot = Matrix4x4::LookAt(GetTransform()->position * Vector3(1, 0, 1), targetFoward, Vector3::up);
+		// 進行方向に回転
+		if (moveForward != Vector3::zero)
+		{
+			GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
+				Quaternion::LookRotation(moveForward), moveParamater.rotationSpeed);
+		}
+		if (moveAxis != Vector2::zero)
+		{
+			// オブジェクトの向いてる方向に進む
+			GetTransform()->position += GetTransform()->Forward() * moveParamater.speed * Time::DeltaTime();
 
-		// ターゲットの方向を向く
-		GetTransform()->rotation = GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
-			Quaternion::RotationMatrixToQuaternion(targetRot), moveParamater.rotationSpeed);
-
-		// 前方向に進む
-		GetTransform()->position += moveParamater.speed * GetTransform()->Forward() * Time::DeltaTime();
-
-		// 歩くアニメーションをさせる
-		anim->SetAnimation("RifleRun", true);
-		anim->Play();
+		}
+		if (!rifle->isNow)
+		{
+			if (moveAxis != Vector2::zero)
+			{
+				// 歩くアニメーションを再生する
+				anim->SetAnimation("RifleRun", true);
+				anim->Play();
+			}
+			else
+			{
+				// 移動入力がなければIdleアニメーションを再生する
+				anim->SetAnimation("RifleIdle", true);
+				anim->Play();
+			}
+		}
 	}
+
 }
 
 /**
@@ -354,7 +406,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// 射撃状態ならアニメーションをキャンセル
 			if (!rifle->isNow)
 			{
-				if (!moveParamater.dash.isNow)
+				if (!moveParamater.dash.isNow || anim->GetAnimationClip()->name != "RifleDash")
 				{
 					// ダッシュアニメーションを再生
 					anim->SetAnimation("RifleDash", true);
@@ -430,7 +482,7 @@ void Gundam::Attack1(bool attackKey)
 			}
 
 			// 弾の生成位置を計算
-			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.5f, 0.8f, 11.0f));
+			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.5f, 0.8f, 8.0f));
 
 			// 弾を作成
 			auto bullet = Instantate("Bullet", pos, GetTransform()->rotation);
@@ -438,7 +490,13 @@ void Gundam::Attack1(bool attackKey)
 			renderer->mesh = rifle->mesh;
 			renderer->shader = rifle->shader;
 			auto bulletMove = bullet->AddComponent<Bullet>();
-			bulletMove->targetMS = GetTargetMs();
+			bulletMove->speed = rifle->speed;
+			bulletMove->rotationSpeed = rifle->homingPower;
+			bulletMove->damage = rifle->damage;
+			if (GetDistance() < redLookDistace)
+			{
+				bulletMove->targetMS = GetTargetMs();
+			}
 
 			// アニメーションを再生
 			if (anim->GetAnimationClip()->name == "RifleRun" || anim->GetAnimationClip()->name == "SableRun")
@@ -446,7 +504,7 @@ void Gundam::Attack1(bool attackKey)
 				anim->SetAnimation("RunRifleShot");
 				anim->Play();
 			}
-			else if(anim->GetAnimationClip()->name == "RifleDash")
+			else if (anim->GetAnimationClip()->name == "RifleDash")
 			{
 				anim->SetAnimation("DashRifleShot");
 				anim->Play();
@@ -469,7 +527,7 @@ void Gundam::Attack1(bool attackKey)
 			// アニメーションを再生
 			if (anim->GetAnimationClip()->name == "RunRifleShot")
 			{
-				anim->SetAnimation("RifleRun");
+				anim->SetAnimation("RifleRun", true);
 				anim->Play();
 			}
 			else if (anim->GetAnimationClip()->name == "DashRifleShot")
@@ -496,4 +554,23 @@ void Gundam::Attack1(bool attackKey)
 void Gundam::Damage(float damage)
 {
 	hp -= static_cast<int>(damage);
+}
+
+/**
+* 生き返る
+*/
+void Gundam::Remove(const Vector3& removePos, float hp)
+{
+	// 蘇生位置を設定
+	GetTransform()->position = removePos;
+
+	// ステータスの設定
+	this->hp = hpMax * hp;
+
+	// 武装の初期化
+	rifle->Initialize();
+
+	// 死亡状態を解除
+	isDeath = false;
+	anim->SetAnimation("RifleIdle");
 }

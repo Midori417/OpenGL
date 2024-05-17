@@ -36,6 +36,22 @@ float BaseMs::GetBoostEnergy() const
 }
 
 /**
+* ‹@‘ÌƒRƒXƒg‚ğæ“¾
+*/
+int BaseMs::GetCost() const
+{
+	return cost;
+}
+
+/**
+* €–S‚©æ“¾
+*/
+bool BaseMs::IsDeath() const
+{
+	return isDeath;
+}
+
+/**
 * “G‚Æ‚Ì‹——£‚ğİ’è
 * 
 * @param distance “G‚Æ‚Ì‹——£

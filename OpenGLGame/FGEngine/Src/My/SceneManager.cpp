@@ -43,6 +43,7 @@ namespace FGEngine::SceneSystem
 			if (scene)
 			{
 				scene->Finalize();
+				scene.reset();
 				// オブジェクトを全削除
 				ObjectSystem::ObjectManager::GetInstance()->AllClearGameObject();
 			}

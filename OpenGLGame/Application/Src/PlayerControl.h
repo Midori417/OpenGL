@@ -26,6 +26,11 @@ public:
 	PlayerControl() = default;
 	virtual ~PlayerControl() = default;
 
+	/**
+	* 終了
+	*/
+	virtual void Finish() override;
+
 private:
 
 	/**
@@ -44,14 +49,16 @@ private:
 	virtual void LateUpdate() override;
 
 	/**
-	* MSの更新
+	* 機体の更新
 	*/
-	void MsUpdate();
+	virtual void MsUpdate() override;
+
 
 	/**
 	* UI処理の更新
 	*/
 	void UIUpdate();
+
 
 public:
 	
@@ -59,6 +66,7 @@ public:
 	LookOnCameraPtr lookOnCamera;
 
 private:
+
 
 	// 自身の情報背景
 	ImagePtr imgMyInfoBack;
@@ -122,8 +130,6 @@ private:
 	// 相手チームの体力バー
 	ImagePtr imgEnemyTeumHpBar;
 
-	// 距離
-	float distance = 0;
 };
 
 

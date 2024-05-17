@@ -43,4 +43,17 @@ namespace FGEngine
 	{
 		return std::uniform_real_distribution<float>(min, max)(randomEngine);
 	}
+
+	/**
+	* 指定された範囲の一様乱数を取得する
+	*
+	* @param min 生成範囲の最小値
+	* @param max 生成範囲の最大値
+	*
+	* @return 生成した乱数
+	*/
+	int Random::Range(int min, int max)
+	{
+		return std::uniform_int_distribution<int>(min, max)(randomEngine);
+	}
 }
