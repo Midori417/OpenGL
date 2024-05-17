@@ -64,7 +64,6 @@ int Application::Initialize()
 	SceneManager::AddScene<TitleScene>("タイトルシーン");
 	SceneManager::AddScene<ChoiceScene>("ゲーム選択シーン");
 	SceneManager::AddScene<BattleMap01Scene>("バトルマップ01シーン");
-	//SceneManager::LoadScene("バトルマップ01シーン");
 
 	return 0;
 }
