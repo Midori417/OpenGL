@@ -421,13 +421,13 @@ void PlayerControl::UIUpdate()
 			// WeponAmo
 			for (int i = 0; i < inWeaponAmos.size(); ++i)
 			{
-				inWeaponAmos[i]->num = myMs->numWeapons[i]->amo;
+				inWeaponAmos[i]->num = static_cast<int>(myMs->numWeapons[i]->amo);
 			}
 			// WeaponBar
 			for (int i = 0; i < imgWeaponBars.size(); ++i)
 			{
-				float amo = static_cast<float>(myMs->numWeapons[i]->amo);
-				float amoMax = static_cast<float>(myMs->numWeapons[i]->amoMax);
+				float amo = (myMs->numWeapons[i]->amo);
+				float amoMax = (myMs->numWeapons[i]->amoMax);
 				imgWeaponBars[i]->fillAmout = Mathf::Clamp01((amoMax - (amoMax - amo)) / amoMax);
 			}
 

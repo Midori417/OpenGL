@@ -12,7 +12,7 @@
 #include "StaticMesh.h"
 #include "Material.h"
 #include "Texture.h"
-//#include "ResouceManager.h"
+#include "ResouceManager.h"
 #include "ShaderLocationNum.h"
 
 #include <numeric>
@@ -56,6 +56,19 @@ namespace FGEngine::RenderingSystem
 
 		// 描画パラメータ配列の容量を確保
 		drawParamsList.reserve(100);
+
+		// デフォルトマテリアルを作成
+		defaultMaterial = std::make_shared<Material>();
+		defaultMaterial->name = "defaultMaterial";
+		defaultMaterial->mainTexture = Texture::Create("defaultTexture", 4, 4);
+		static const uint32_t img[4 * 4] = { // テクスチャデータ
+			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
+			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
+			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
+			0xffff'ffff, 0xffff'ffff, 0xffff'ffff, 0xffff'ffff,
+		};
+		glTextureSubImage2D(*defaultMaterial->mainTexture, 0, 0, 0,
+			+4, 4, GL_BGRA, GL_UNSIGNED_BYTE, img);
 
 	}
 
@@ -276,7 +289,10 @@ namespace FGEngine::RenderingSystem
 				}
 				continue;
 			}
-
+			else
+			{
+				pMaterial->mainTexture = ResouceSystem::ResouceManager::GetInstance()->GetTexture("white");
+			}
 			// 発光色の読み取りを試みる
 			if (sscanf(line.data(), " Ke %f %f %f", &pMaterial->emissionColor.r,
 				&pMaterial->emissionColor.g, &pMaterial->emissionColor.b) == 3)

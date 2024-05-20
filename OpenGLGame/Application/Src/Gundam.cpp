@@ -33,15 +33,13 @@ void Gundam::Awake()
 	auto col2 = OwnerObject()->AddComponent<SphereCollider>();
 	col2->radius = 2.5f;
 	col2->ceneter = Vector3(0, -0.4f, -0.2f);
-	//col->min = Vector3(-3, -5.2f, -2);
-	//col->max = Vector3(3, 2.4f, 2);
 
 	// アニメータを追加
 	anim = OwnerObject()->AddComponent<Animator>();
 	anim->animationClips = renderer->glTFfile->animationClips;
 
 	// 最初のアニメーションを追加
-	anim->SetAnimation("RifleIdle", true);
+	anim->SetAnimation("Idle.Rifle", true);
 	anim->Play();
 
 	// ステータスを設定
@@ -75,7 +73,7 @@ void Gundam::Awake()
 	rifle->amoMax = 7;
 	rifle->amo = rifle->amoMax;
 	rifle->damage = 70.0f;
-	rifle->homingPower = 0.05f;
+	rifle->homingPower = 0.09f;
 	rifle->speed = 200.0f;
 	rifle->reloadTime = 3;
 	rifle->iconTexture = resManager->GetTexture("Gundam/BeumRifleIcon");
@@ -166,7 +164,7 @@ void Gundam::Move(const Vector2& moveAxis)
 		return;
 	}
 	// ジャンプとダッシュ状態なら何もしない
-	if (moveParamater.dash.isNow || moveParamater.jump.isNow)
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot)
 	{
 		return;
 	}
@@ -194,13 +192,13 @@ void Gundam::Move(const Vector2& moveAxis)
 			if (moveAxis != Vector2::zero)
 			{
 				// 歩くアニメーションを再生する
-				anim->SetAnimation("RifleRun", true);
+				anim->SetAnimation("Run.Rifle", true);
 				anim->Play();
 			}
 			else
 			{
 				// 移動入力がなければIdleアニメーションを再生する
-				anim->SetAnimation("RifleIdle", true);
+				anim->SetAnimation("Idle.Rifle", true);
 				anim->Play();
 			}
 		}
@@ -220,7 +218,7 @@ void Gundam::CpuMove(const Vector2& moveAxis)
 		return;
 	}
 	// ジャンプとダッシュ状態なら何もしない
-	if (moveParamater.dash.isNow || moveParamater.jump.isNow)
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot)
 	{
 		return;
 	}
@@ -248,13 +246,13 @@ void Gundam::CpuMove(const Vector2& moveAxis)
 			if (moveAxis != Vector2::zero)
 			{
 				// 歩くアニメーションを再生する
-				anim->SetAnimation("RifleRun", true);
+				anim->SetAnimation("Run.Rifle", true);
 				anim->Play();
 			}
 			else
 			{
 				// 移動入力がなければIdleアニメーションを再生する
-				anim->SetAnimation("RifleIdle", true);
+				anim->SetAnimation("Idle.Rifle", true);
 				anim->Play();
 			}
 		}
@@ -268,7 +266,7 @@ void Gundam::CpuMove(const Vector2& moveAxis)
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
 	// ダッシュ状態なら何もしない
-	if (moveParamater.dash.isNow)
+	if (moveParamater.dash.isNow || rifle->isStopShot)
 	{
 		return;
 	}
@@ -297,18 +295,25 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				GetTransform()->position += GetTransform()->Forward() * moveParamater.jump.speed * Time::DeltaTime();
 			}
 
-			// 上昇
-			GetTransform()->position.y += moveParamater.jump.power * Time::DeltaTime();
-
-			// エネルギーを消費
-			boostEnergy += moveParamater.jump.useEnergy * Time::DeltaTime();
-
 			// ジャンプアニメーションを再生
 			if (!moveParamater.jump.isNow)
 			{
-				anim->SetAnimation("RifleJump");
+				if (rb->IsGround())
+				{
+					anim->SetAnimation("Jump.Rifle.Ground");
+				}
+				else
+				{
+
+					anim->SetAnimation("Jump.Rifle");
+				}
 				anim->Play();
 			}
+
+			// 上昇
+			GetTransform()->position.y += moveParamater.jump.power * Time::DeltaTime();
+			// エネルギーを消費
+			boostEnergy += moveParamater.jump.useEnergy * Time::DeltaTime();
 
 			//ブーストエネルギーの回復をロック
 			boostEnergyChageLock = true;
@@ -326,7 +331,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				// エネルギーチャージのタイマーを代入
 				boostEnergyChageTimer = boostEnergyChageOverHeatStartTime;
 
-				anim->SetAnimation("RifleIdle", true);
+				anim->SetAnimation("Idle.Rifle", true);
 				anim->Play();
 
 				// ジャンプ状態を終了
@@ -346,7 +351,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 			if (!rifle->isNow)
 			{
 				// 通常状態のアニメーションに変更
-				anim->SetAnimation("RifleIdle", true);
+				anim->SetAnimation("Idle.Rifle", true);
 				anim->Play();
 			}
 
@@ -361,6 +366,10 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 */
 void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
+	if (rifle->isStopShot)
+	{
+		return;
+	}
 	if (isDash)
 	{
 		// エネルギーがあればダッシュさせる
@@ -395,10 +404,10 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// 射撃状態ならアニメーションをキャンセル
 			if (!rifle->isNow)
 			{
-				if (!moveParamater.dash.isNow || anim->GetAnimationClip()->name != "RifleDash")
+				if (!moveParamater.dash.isNow || anim->GetAnimationClip()->name != "Dash.Rifle")
 				{
 					// ダッシュアニメーションを再生
-					anim->SetAnimation("RifleDash", true);
+					anim->SetAnimation("Dash.Rifle", true);
 					anim->Play();
 				}
 			}
@@ -421,7 +430,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 				if (!rifle->isNow)
 				{
 					// 通常状態のアニメーションに変更
-					anim->SetAnimation("RifleIdle", true);
+					anim->SetAnimation("Idle.Rifle", true);
 					anim->Play();
 				}
 
@@ -443,7 +452,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			if (!rifle->isNow)
 			{
 				// 通常状態のアニメーションに変更
-				anim->SetAnimation("RifleIdle", true);
+				anim->SetAnimation("Idle.Rifle", true);
 				anim->Play();
 			}
 
@@ -463,20 +472,135 @@ void Gundam::Attack1(bool attackKey)
 		// ビームライフルの弾があるときだけ打つ
 		if (rifle->amo > 0 && !rifle->isNow)
 		{
+			// ターゲットが自分から見てどの方向にいるか調べる
+			Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+			Vector3 perendicular = Vector3::Cross(directionToTarget, GetTransform()->Forward());
+			float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
+
+			// アニメーションを再生
+
+			// 後ろ向き射撃だけ共通
+			if (dot < -0.5f)
+			{
+				// 動きを止める
+				rifle->isStopShot = true;
+				// 重力を使わない
+				rb->isGravity = false;
+				rb->velocity = Vector3(0);
+
+				// 相手の逆方向を向く
+				GetTransform()->rotation = Quaternion::LookRotation(-directionToTarget * Vector3(1, 0, 1));
+
+				anim->SetAnimation("Rifle.Shot.Idle.B");
+				anim->Play();
+			}
+			else if (anim->GetAnimationClip()->name == "Idle.Rifle")
+			{
+				rb->velocity = Vector3(0, 1, 0);
+				// 動きを止める
+				rifle->isStopShot = true;
+
+				// 前方
+				if (dot > 0.9f)
+				{
+					anim->SetAnimation("Rifle.Shot.Idle.F");
+					anim->Play();
+				}
+				// 右方
+				else if (perendicular.y < 0)
+				{
+					if (dot > 0.6f)
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.FR");
+						anim->Play();
+					}
+					else
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.R");
+						anim->Play();
+					}
+				}
+				// 左
+				else if(perendicular.y > 0)
+				{
+					if (dot > 0.6f)
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.FL");
+						anim->Play();
+					}
+					else
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.L");
+						anim->Play();
+					}
+				}
+			}
+			else if (anim->GetAnimationClip()->name == "Run.Rifle")
+			{
+				// 前方
+				if (dot > 0.9f)
+				{
+					anim->SetAnimation("Rifle.Shot.Run.F");
+					anim->Play();
+				}
+				// 右方
+				else if (perendicular.y < 0)
+				{
+					if (dot > 0.4f)
+					{
+						anim->SetAnimation("Rifle.Shot.Run.FR");
+						anim->Play();
+					}
+					else
+					{
+						anim->SetAnimation("Rifle.Shot.Run.R");
+						anim->Play();
+					}
+				}
+				// 左
+				else if (perendicular.y > 0)
+				{
+					if (dot > 0.4f)
+					{
+						anim->SetAnimation("Rifle.Shot.Run.FL");
+						anim->Play();
+					}
+					else
+					{
+						anim->SetAnimation("Rifle.Shot.Run.L");
+						anim->Play();
+					}
+				}
+			}
+			else
+			{
+				anim->SetAnimation("Rifle.Shot.Idle.F");
+				anim->Play();
+			}
+
+			// 射撃中
+			rifle->isNow = true;
+		}
+	}
+	// 射撃中
+	if (rifle->isNow)
+	{
+		if (anim->time >= 0.2f && !rifle->isShot)
+		{
 			// 残弾を減らす
 			rifle->amo -= 1;
 
-			// ターゲットがいてたらそちらを向く
-			if (GetTargetMs())
-			{
-				GetTransform()->LookAt(GetTargetMs()->GetTransform());
-			}
+			// ターゲットの方向のトランスフォームを作成
+			TransformPtr trs = std::make_shared<Transform>();
+			trs->position = GetTransform()->position;
+			trs->rotation = GetTransform()->rotation;
+			trs->LookAt(GetTargetMs()->GetTransform());
 
 			// 弾の生成位置を計算
-			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.5f, 0.8f, 8.0f));
+			auto pos = GetTransform()->position + (trs->rotation * Vector3(0, 0, 5));
 
 			// 弾を作成
-			auto bullet = Instantate("Bullet", pos, GetTransform()->rotation);
+			auto bullet = Instantate("Bullet", pos, trs->rotation);
 			auto renderer = bullet->AddComponent<MeshRenderer>();
 			renderer->mesh = rifle->mesh;
 			renderer->shader = rifle->shader;
@@ -484,55 +608,44 @@ void Gundam::Attack1(bool attackKey)
 			bulletMove->speed = rifle->speed;
 			bulletMove->rotationSpeed = rifle->homingPower;
 			bulletMove->damage = rifle->damage;
+
+			// 距離によって誘導をつける
 			if (GetDistance() < redLookDistace)
 			{
 				bulletMove->targetMS = GetTargetMs();
 			}
 
-			// アニメーションを再生
-			if (anim->GetAnimationClip()->name == "RifleRun" || anim->GetAnimationClip()->name == "SableRun")
-			{
-				anim->SetAnimation("RunRifleShot");
-				anim->Play();
-			}
-			else if (anim->GetAnimationClip()->name == "RifleDash")
-			{
-				anim->SetAnimation("DashRifleShot");
-				anim->Play();
-			}
-			else
-			{
-				anim->SetAnimation("RifleShot");
-				anim->Play();
-			}
-
-
-			rifle->isNow = true;
+			// 撃った
+			rifle->isShot = true;
 		}
-	}
-	if (rifle->isNow)
-	{
+
 		// 射撃アニメーションが終われば射撃状態を解除する
 		if (anim->time >= anim->GetAnimationClip()->totalTime)
 		{
 			// アニメーションを再生
-			if (anim->GetAnimationClip()->name == "RunRifleShot")
+			if (anim->GetAnimationClip()->name == "Rifle.Shot.Idle.F" || anim->GetAnimationClip()->name == "Rifle.Shot.Idle.B" ||
+				anim->GetAnimationClip()->name == "Rifle.Shot.Idle.R" || anim->GetAnimationClip()->name == "Rifle.Shot.Idle.L" ||
+				anim->GetAnimationClip()->name == "Rifle.Shot.Idle.FR" || anim->GetAnimationClip()->name == "Rifle.Shot.Idle.FL")
 			{
-				anim->SetAnimation("RifleRun", true);
+				anim->SetAnimation("Idle.Rifle");
+				anim->Play();
+				rb->isGravity = true;
+			}
+			else if (anim->GetAnimationClip()->name == "Rifle.Shot.Run.F" ||
+				anim->GetAnimationClip()->name == "Rifle.Shot.Run.R" || anim->GetAnimationClip()->name == "Rifle.Shot.Run.L" ||
+				anim->GetAnimationClip()->name == "Rifle.Shot.Run.FR" || anim->GetAnimationClip()->name == "Rifle.Shot.Run.FL")
+			{
+				anim->SetAnimation("Run.Rifle", true);
 				anim->Play();
 			}
-			else if (anim->GetAnimationClip()->name == "DashRifleShot")
+			else if (anim->GetAnimationClip()->name == "Rifle.Shot.Dash.F")
 			{
-				anim->SetAnimation("RifleDash");
+				anim->SetAnimation("Dash.Rifle");
 				anim->Play();
 			}
-			else
-			{
-				anim->SetAnimation("RifleIdle");
-				anim->Play();
-			}
-
 			rifle->isNow = false;
+			rifle->isShot = false;
+			rifle->isStopShot = false;
 		}
 	}
 }

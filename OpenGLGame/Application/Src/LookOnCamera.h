@@ -52,8 +52,8 @@ public:
 
 
 	// カメラのオフセット位置
-	Vector3 offsetMinPos = Vector3(0, 5, -10);
-	Vector3 offsetMaxPos = Vector3(0, 13, -15);
+	Vector3 offsetMinPos = Vector3(0, 4, -12);
+	Vector3 offsetMaxPos = Vector3(0, 10, -15);
 
 private:
 

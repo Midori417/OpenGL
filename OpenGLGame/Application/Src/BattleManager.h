@@ -10,11 +10,9 @@ using namespace FGEngine::UI;
 
 class BaseMs;
 using BaseMsPtr = std::shared_ptr<BaseMs>;
-class PlayerControl;
-using PlayerControlPtr = std::shared_ptr<PlayerControl>;
 
-class CpuControl;
-using CpuControlPtr = std::shared_ptr<CpuControl>;
+class ControlOwner;
+using ControlOwnerPtr = std::shared_ptr<ControlOwner>;
 
 class BattleManager : public MonoBehaviour
 {
@@ -78,7 +76,7 @@ private:
 		// 勝敗
 		Victory,
 	};
-	GameState state = GameState::GO;
+	GameState state = GameState::Ready;
 
 	// タイマー
 	float timer = 0;
@@ -92,10 +90,10 @@ private:
 	const float goTime = 1;
 
 	// プレイヤー
-	PlayerControlPtr playerControl;
+	ControlOwnerPtr playerControl;
 
 	// 敵
-	CpuControlPtr cpuControl;
+	ControlOwnerPtr cpuControl;
 
 	// チーム1体力
 	std::shared_ptr<int> teum1Hp = 0;

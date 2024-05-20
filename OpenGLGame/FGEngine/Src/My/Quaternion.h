@@ -60,6 +60,16 @@ namespace FGEngine
 		static Quaternion AngleAxis(float angle, const Vector3& axis);
 
 		/**
+		* aとbの角度を調べる
+		* 
+		* @param a クォータニオン1
+		* @param b クォータニオン2
+		* 
+		* @return aとbの角度(度数法)
+		*/
+		static float Angle(const Quaternion& a, const Quaternion& b);
+
+		/**
 		* 2つのクォータニオンの内積を計算する
 		* 
 		* @param a	クォータニオン1

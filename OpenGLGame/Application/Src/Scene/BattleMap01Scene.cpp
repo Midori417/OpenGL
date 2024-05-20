@@ -22,7 +22,7 @@ bool BattleMap01Scene::Initialize()
     auto objManager = ObjectManager::GetInstance();
     auto resManager = ResouceManager::GetInstance();
 
-    resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/GundamGL.gltf");
+    resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/Gundam.gltf");
 
     // マップ01のリソース読み込み
     resManager->LoadObj("Biru01", "Application/Res/Map/Map01/Biru01.obj");

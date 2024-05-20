@@ -27,10 +27,10 @@ struct NumWeapon
 	std::string name;
 
 	// 残弾マックス
-	int amoMax = 0;
+	float amoMax = 0;
 
 	// 残弾
-	int amo = 0;
+	float amo = 0;
 
 	// リロードタイマー
 	float reloadTimer = 0;

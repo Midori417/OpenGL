@@ -161,7 +161,6 @@ void BattleManager::Update()
 	case BattleManager::GameState::GO:
 	{
 		timer += Time::DeltaTime();;
-		imgGo->size += 10000 * Time::DeltaTime();
 		if (timer > goTime)
 		{
 			imgGo->SetEnable(false);
@@ -189,8 +188,9 @@ void BattleManager::Update()
 		break;
 	case BattleManager::GameState::Victory:
 
-		playerControl->SetEnable(false);
 		playerControl->Finish();
+		cpuControl->Finish();
+		playerControl->SetEnable(false);
 		cpuControl->SetEnable(false);
 
 		if (InputKey::GetKey(KeyCode::Enter))

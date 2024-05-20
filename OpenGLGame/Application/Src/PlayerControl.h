@@ -24,10 +24,6 @@ public:
 	PlayerControl() = default;
 	virtual ~PlayerControl() = default;
 
-	/**
-	* 終了
-	*/
-	virtual void Finish() override;
 
 private:
 
@@ -51,11 +47,15 @@ private:
 	*/
 	virtual void MsUpdate() override;
 
-
 	/**
 	* UI処理の更新
 	*/
 	void UIUpdate();
+
+	/**
+	* 終了
+	*/
+	virtual void Finish() override;
 
 private:
 

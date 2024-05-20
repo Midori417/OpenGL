@@ -146,6 +146,9 @@ namespace FGEngine
 			// バッファの使用済み容量(バイト)
 			size_t usedBytes = 0;
 
+			// マテリアル未設定時に使用するマテリアル
+			MaterialPtr defaultMaterial;
+
 		};
 
 		/**

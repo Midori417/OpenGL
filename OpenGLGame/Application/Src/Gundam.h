@@ -94,6 +94,12 @@ private:
 		// ËŒ‚ó‘Ô‚©
 		bool isNow = false;
 
+		// Œ‚‚Á‚½‚©
+		bool isShot = false;
+
+		// ’â~‚µ‚Ä‘Å‚Â‚©
+		bool isStopShot = false;
+
 		// ƒƒbƒVƒ…
 		StaticMeshPtr mesh;
 
@@ -104,6 +110,7 @@ private:
 		{
 			amo = amoMax;
 			isNow = false;
+			isShot = false;
 		}
 	};
 	std::shared_ptr<Rifle> rifle;

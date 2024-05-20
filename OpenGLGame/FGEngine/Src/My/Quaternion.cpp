@@ -97,6 +97,21 @@ namespace FGEngine
 	}
 
 	/**
+	* aとbの角度を調べる
+	*
+	* @param a クォータニオン1
+	* @param b クォータニオン2
+	*
+	* @return aとbの角度(度数法)
+	*/
+	float Quaternion::Angle(const Quaternion& a, const Quaternion& b)
+	{
+		// 内積の絶対値を取得
+		float dot = Mathf::Abs(Quaternion::Dot(a, b));
+		return Mathf::RadToDeg(Mathf::Acos(dot) * 2.0f);
+	}
+
+	/**
 	* 2つのクォータニオンの内積を計算する
 	*
 	* @param a	クォータニオン1

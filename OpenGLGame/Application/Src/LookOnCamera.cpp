@@ -80,6 +80,7 @@ void LookOnCamera::PositionCamera()
 
 		// ˆÊ’u‚Æ‰ñ“]
 		Vector3 position = playerMsPos + targetRotation * offsetPos;
+		position.y = Mathf::Clamp(position.y, playerMsPos.y, position.y);
 		Quaternion rotation = Quaternion::LookRotation(targetMsPos - position);
 
 		

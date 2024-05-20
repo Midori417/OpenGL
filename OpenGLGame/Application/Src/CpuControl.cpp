@@ -74,6 +74,7 @@ void CpuControl::Update()
 */
 void CpuControl::MsUpdate()
 {
+	return;
 	auto targetMs = otherOwner->myMs;
 
 	// ©g‚ÌMS‚É‘Šè‚ÌMs‚Ìî•ñ‚ğ“`‚¦‚é
@@ -114,7 +115,7 @@ void CpuControl::MsUpdate()
 
 	// UŒ‚1
 	bool attackBtn = false;
-	if (cpuState == CpuState::Attack || cpuState == CpuState::DashAttack)
+	if (cpuState == CpuState::Attack)
 	{
 		attackBtn = true;
 	}
