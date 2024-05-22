@@ -18,6 +18,10 @@ void PlayerControl::Start()
 	// リソースマネージャーを取得
 	auto resManager = ResouceManager::GetInstance();
 
+	// 初期ターゲットを設定
+	targetOwner = otherTeumOwner[0];
+
+
 	// UIの作成
 	{
 		// 自身の情報背景を作成
@@ -168,7 +172,7 @@ void PlayerControl::Start()
 			imgEnemyTeumHpBar->size = imgEnemyTeumHpBar->texture->GetSize() * 1.2f;
 
 			float max = static_cast<float>(teumMaxHp);
-			float hp = static_cast<float>(otherOwner->GetTeumHp());
+			float hp = static_cast<float>(targetOwner->GetTeumHp());
 			imgEnemyTeumHpBar->fillAmout = (max - (max - hp)) / max;
 		}
 		// チーム体力フレームを作成
@@ -220,11 +224,12 @@ void PlayerControl::Start()
 		imgTimer->SetEnable(false);
 	}
 
+
 	// カメラに自身のMSを設定
 	lookOnCamera->SetMsTransform(myMs->GetTransform().get());
 
 	// カメラにターゲットを設定
-	lookOnCamera->SelectTarget(otherOwner->myMs->GetTransform().get());
+	lookOnCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
 
 	// プレイヤーにカメラ設定
 	myMs->SetCamera(lookOnCamera->GetTransform().get());
@@ -274,9 +279,9 @@ void PlayerControl::Update()
 	}
 
 	// ターゲットのMSを取得
-	if (otherOwner)
+	if (targetOwner)
 	{
-		auto targetMs = otherOwner->myMs;
+		auto targetMs = targetOwner->myMs;
 		myMs->SetTargetMS(targetMs.get());
 
 		// 距離を求める
@@ -408,9 +413,9 @@ void PlayerControl::UIUpdate()
 	}
 
 	// 相手がいれば処理をする
-	if (otherOwner)
+	if (targetOwner)
 	{
-		auto targetMs = otherOwner->myMs;
+		auto targetMs = targetOwner->myMs;
 		if (myMs && targetMs)
 		{
 			// ターゲットマークの処理
@@ -442,7 +447,7 @@ void PlayerControl::UIUpdate()
 
 		// 相手チームのHP処理
 		float max = static_cast<float>(teumMaxHp);
-		float hp = static_cast<float>(otherOwner->GetTeumHp());
+		float hp = static_cast<float>(targetOwner->GetTeumHp());
 		imgEnemyTeumHpBar->fillAmout = (max - (max - hp)) / max;
 
 	}

@@ -2,6 +2,8 @@
 * @file BattleSettingManager.cpp
 */
 #include "BattleSettingManager.h"
+#include "BattleManager.h"
+#include "Global.h"
 #include "FadeOut.h"
 using namespace FGEngine::UI;
 using namespace FGEngine::SceneSystem;
@@ -31,6 +33,24 @@ void BattleSettingManager::Awake()
 		auto fadeObject = Instantate("FadeObjectB");
 		fadeOut = fadeObject->AddComponent<FadeOut>();
 	}
+
+	// バトル情報を作成
+	battleInfo = std::make_shared<BattleInfo>();
+	// 配列を予約
+	battleInfo->controlInfo.reserve(playerMax);
+	for (int i = 0; i < playerMax; ++i)
+	{
+		battleInfo->controlInfo.push_back(std::make_shared<ControlInfo>());
+	}
+
+	// テスト
+	battleInfo->controlInfo[0]->teumId = 1;
+	battleInfo->controlInfo[0]->playerId = 0;
+	battleInfo->controlInfo[0]->ms = MsList::Gundam;
+
+	battleInfo->controlInfo[1]->teumId = 2;
+	battleInfo->controlInfo[1]->playerId = 1;
+	battleInfo->controlInfo[1]->ms = MsList::Gundam;
 }
 
 /**
@@ -41,7 +61,16 @@ void BattleSettingManager::Update()
 	// フェードアウトが終わったら
 	if (fadeOut->IsFadeOut())
 	{
-		SceneManager::LoadScene("バトルマップ01シーン");
+		switch (select)
+		{
+		case BattleSettingManager::Select::BattleStart:
+			SceneManager::LoadScene("バトルマップ01シーン");
+			BattleManager::SetBattleInfo(battleInfo);
+			break;
+		case BattleSettingManager::Select::Back:
+			SceneManager::LoadScene("ゲーム選択シーン");
+			break;
+		}
 	}
 
 	/**
@@ -56,5 +85,12 @@ void BattleSettingManager::Update()
 	if (InputKey::GetKey(KeyCode::Enter))
 	{
 		fadeOut->FadeStart();
+		select = Select::BattleStart;
+
+	}
+	else if (InputKey::GetKey(KeyCode::Escape))
+	{
+		fadeOut->FadeStart();
+		select = Select::Back;
 	}
 }

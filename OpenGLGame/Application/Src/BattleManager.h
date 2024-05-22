@@ -15,14 +15,25 @@ class ControlOwner;
 using ControlOwnerPtr = std::shared_ptr<ControlOwner>;
 class FadeOut;
 using FadeOutPtr = std::shared_ptr<FadeOut>;
+struct BattleInfo;
+using BattleInfoPtr = std::shared_ptr<BattleInfo>;
 
+/**
+* バトルマネージャ
+*/
 class BattleManager : public MonoBehaviour
+
 {
 public:
 
 	// コンストラクタ・デストラクタ
 	BattleManager() = default;
 	virtual ~BattleManager() = default;
+
+	/**
+	* バトル情報を設定
+	*/
+	static void SetBattleInfo(BattleInfoPtr _battleInfo);
 
 private:
 
@@ -51,7 +62,9 @@ private:
 
 private:
 
-	// ゲーム状態
+	/**
+	* バトル状態
+	*/
 	enum class GameState
 	{
 		// 準備
@@ -74,6 +87,7 @@ private:
 	// タイマー
 	float timer = 0;
 
+	// 準備時間
 	float readyTime = 1.5f;
 
 	// スタンバイ時間
@@ -82,27 +96,40 @@ private:
 	// ゴータイム
 	const float goTime = 1;
 
-	// プレイヤー
-	ControlOwnerPtr playerControl;
+	// バトル情報
+	static BattleInfoPtr battleInfo;
 
-	// 敵
-	ControlOwnerPtr cpuControl;
+	// チーム１コントロール配列
+	std::vector<ControlOwnerPtr> teum1ControlOwners;
 
+	// チーム2コントロール配列
+	std::vector<ControlOwnerPtr> teum2ControlOwners;
+	
 	// チーム1体力
 	std::shared_ptr<int> teum1Hp = 0;
 
 	// チーム2体力
 	std::shared_ptr<int> teum2Hp = 0;
 
-	// UI
-	ImagePtr imgStandbay;
-	ImagePtr imgGo;
-	ImagePtr imgGoBack;
-	ImagePtr imgWin;
-	ImagePtr imgLose;
+	// バトルタイム
+	float battleTime = 0;
 
-	// フェードコンポーネント
-	FadeOutPtr fadeOut;
+	// === UI === //
+
+	// スタンバイ
+	ImagePtr imgStandbay;
+
+	// ゴー
+	ImagePtr imgGo;
+
+	// ゴーの背景
+	ImagePtr imgGoBack;
+
+	// 勝利
+	ImagePtr imgWin;
+
+	// 敗北
+	ImagePtr imgLose;
 };
 
 

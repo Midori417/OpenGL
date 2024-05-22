@@ -9,6 +9,8 @@ using namespace FGEngine;
 // 先行宣言
 class FadeOut;
 using FadeOutPtr = std::shared_ptr<FadeOut>;
+struct BattleInfo;
+using BattleInfoPtr = std::shared_ptr<BattleInfo>;
 
 /**
 * バトル設定マネージャ
@@ -34,6 +36,22 @@ private:
 	virtual void Update() override;
 
 private:
+
+	/**
+	* 選択項目
+	*/
+	enum class Select
+	{
+		// バトル開始
+		BattleStart,
+
+		// 戻る
+		Back,
+	};
+	Select select = Select::BattleStart;
+
+	// バトル情報
+	BattleInfoPtr battleInfo;
 
 	// フェードコンポーネント
 	FadeOutPtr fadeOut;

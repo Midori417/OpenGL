@@ -34,7 +34,7 @@ public:
 	/**
 	* 自チームのHpを設定
 	*/
-	void SetTeumHP(int* teumHP)
+	void SetMyTeumHP(int* teumHP)
 	{
 		myTeumHp = teumHP;
 	}
@@ -68,11 +68,14 @@ public:
 	// 処理を開始するか
 	bool isStart = false;
 
-	// 使う機体
-	MsList ms = MsList::None;
+	// 現在のターゲットオーナー
+	ControlOwner* targetOwner;
 
-	// 自分以外のオーナー
-	ControlOwner* otherOwner;
+	// 自チームの別オーナ
+	ControlOwner* myTeumOtherOwner;
+
+	// 相手チームのオーナ配列
+	std::vector<ControlOwner*> otherTeumOwner;
 
 	// 自分の機体
 	BaseMsPtr myMs;

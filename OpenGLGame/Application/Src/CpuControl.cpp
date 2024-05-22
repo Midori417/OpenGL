@@ -24,11 +24,14 @@ void CpuControl::Start()
 	moveAxiss.push_back(Vector2(-1, -1));
 	moveAxiss.push_back(Vector2(1, -1));
 
+	// 初期ターゲットを設定
+	targetOwner = otherTeumOwner[0];
+
 	// カメラに自身のMSを設定
 	lookOnCamera->SetMsTransform(myMs->GetTransform().get());
 
 	// カメラにターゲットを設定
-	lookOnCamera->SelectTarget(otherOwner->myMs->GetTransform().get());
+	lookOnCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
 
 	// プレイヤーにカメラ設定
 	myMs->SetCamera(lookOnCamera->GetTransform().get());
@@ -84,7 +87,7 @@ void CpuControl::Update()
 */
 void CpuControl::MsUpdate()
 {
-	auto targetMs = otherOwner->myMs;
+	auto targetMs = targetOwner->myMs;
 
 	// 自身のMSに相手のMsの情報を伝える
 	myMs->SetTargetMS(targetMs.get());
