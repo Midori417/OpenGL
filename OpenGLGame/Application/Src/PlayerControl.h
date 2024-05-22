@@ -38,11 +38,6 @@ private:
 	virtual void Update() override;
 
 	/**
-	* 毎フレーム実行(Updateより後)
-	*/
-	virtual void LateUpdate() override;
-
-	/**
 	* 機体の更新
 	*/
 	virtual void MsUpdate() override;
@@ -53,7 +48,7 @@ private:
 	void UIUpdate();
 
 	/**
-	* 終了
+	* 終了処理
 	*/
 	virtual void Finish() override;
 
@@ -121,7 +116,6 @@ private:
 
 	// 相手チームの体力バー
 	ImagePtr imgEnemyTeumHpBar;
-
 };
 
 

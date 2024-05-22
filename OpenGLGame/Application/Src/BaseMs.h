@@ -6,17 +6,7 @@
 #include "FGEngine.h"
 using namespace FGEngine;
 
-enum class Teum
-{
-	// チーム無し
-	None,
-
-	// 赤チーム
-	Red,
-
-	// 青チーム
-	Blue,
-};
+struct DamageInfo;
 
 /**
 * UIに表記する武装
@@ -41,6 +31,10 @@ struct NumWeapon
 	// 武器アイコン
 	TexturePtr iconTexture;
 
+
+	/**
+	* 射撃
+	*/
 	virtual void Initialize(){}
 };
 using NumWeaponPtr = std::shared_ptr<NumWeapon>;
@@ -57,15 +51,9 @@ public:
 	virtual ~BaseMs() = default;
 
 	/**
-	* チームを取得
-	*/
-	Teum GetTeum() const;
-
-	/**
 	* Hpを取得
 	*/
 	int GetHP() const;
-
 	float GetHP01();
 
 	/**
@@ -82,7 +70,6 @@ public:
 	* 死亡か取得
 	*/
 	bool IsDeath() const;
-
 
 	/**
 	* 敵との距離を設定
@@ -104,11 +91,6 @@ public:
 	virtual void Move(const Vector2& moveAxis) {}
 
 	/**
-	* CPU移動
-	*/
-	virtual void CpuMove(const Vector2& moveAxis){}
-
-	/**
 	* ジャンプ
 	*/
 	virtual void Jump(bool isJump, const Vector2& moveAxis){}
@@ -120,19 +102,22 @@ public:
 
 	// 攻撃
 	virtual void Attack1(bool attackKey) {}
-	virtual void Attack2(bool attackKey2) {}
+	virtual void Attack2(bool attackKey) {}
 
 	/**
 	* 生き返る
+	* 
+	* @param removePos	生き返る位置
+	* @param hpCut		体力のカット率
 	*/
-	virtual void Remove(const Vector3& removePos, float hp){}
+	virtual void Remove(const Vector3& removePos, float hpCut){}
 
 	/**
 	* ダメージを与える
 	*
-	* @param damage 与えるダメージ
+	* @param damageInfo ダメージ情報
 	*/
-	virtual void Damage(float damage) {}
+	virtual void Damage(const DamageInfo& damgeInfo) {}
 
 	/**
 	* カメラトランスフォームの設定
@@ -172,9 +157,6 @@ public:
 
 protected:
 
-	// チーム
-	Teum teum = Teum::None;
-
 	// 機体のコスト
 	int cost = 0;
 
@@ -184,7 +166,13 @@ protected:
 	// 機体のHP
 	float hp = 0;
 
-	// 死んでるかの有無
+	// ダウン値
+	float downValue = 0;
+
+	// ダメージ状態の有無
+	bool isDamage = false;
+
+	// 死亡状態の有無
 	bool isDeath = false;
 
 	// エネルギー最大量

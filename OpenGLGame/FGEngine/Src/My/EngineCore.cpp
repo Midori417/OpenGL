@@ -185,7 +185,7 @@ namespace FGEngine::MainSystem
 		windowManager->Begin();
 
 		// 乱数の初期化
-		Random::Initialize((int)time(NULL));
+		Random::Initialize((unsigned int)time(NULL));
 
 		// 時間ライブラリを更新
 		Time::Update();

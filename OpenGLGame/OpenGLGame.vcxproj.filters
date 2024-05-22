@@ -229,9 +229,6 @@
     <Filter Include="Application\Scenes\Choice">
       <UniqueIdentifier>{36821f01-1d41-4339-8e65-609170564cb2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Scenes\Battle">
-      <UniqueIdentifier>{a8c04c80-af1a-4ee1-a447-0b1963bb62b6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Src">
       <UniqueIdentifier>{5b596bcb-19a2-4bc4-a8f4-c02ab5ba0467}</UniqueIdentifier>
     </Filter>
@@ -279,6 +276,21 @@
     </Filter>
     <Filter Include="Application\Src\Ms\Bullet">
       <UniqueIdentifier>{1a2f93ed-c034-473c-ad74-70cbe003800b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Manager\TitleManager">
+      <UniqueIdentifier>{81dd0e68-a868-465f-8c03-edf07402e0fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\BattleMap">
+      <UniqueIdentifier>{f983a28d-0923-41bd-bd95-e8a0735f11c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\BattleMap\BattleMap01">
+      <UniqueIdentifier>{a8c04c80-af1a-4ee1-a447-0b1963bb62b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scenes\BattleSetting">
+      <UniqueIdentifier>{3b45fa66-0c6f-49c3-a06e-2980fa390655}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Manager\BattleSettingManager">
+      <UniqueIdentifier>{b615120e-a2b7-4001-97e5-f45294ffb7cc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -568,7 +580,7 @@
       <Filter>Application\Scenes\Title</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h">
-      <Filter>Application\Scenes\Battle</Filter>
+      <Filter>Application\Scenes\BattleMap\BattleMap01</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Scene\ChoiceScene.h">
       <Filter>Application\Scenes\Choice</Filter>
@@ -608,6 +620,18 @@
     </ClInclude>
     <ClInclude Include="Application\Src\Global.h">
       <Filter>Application\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\DamageInfo.h">
+      <Filter>Application\Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\TitleManager.h">
+      <Filter>Application\Src\Manager\TitleManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\BattleSettingScene.h">
+      <Filter>Application\Scenes\BattleSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BattleSettingManager.h">
+      <Filter>Application\Src\Manager\BattleSettingManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -780,7 +804,7 @@
       <Filter>Application\Src\Other\FadeOut</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp">
-      <Filter>Application\Scenes\Battle</Filter>
+      <Filter>Application\Scenes\BattleMap\BattleMap01</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Scene\TitleScene.cpp">
       <Filter>Application\Scenes\Title</Filter>
@@ -817,6 +841,15 @@
     </ClCompile>
     <ClCompile Include="Application\Src\ControlOwner.cpp">
       <Filter>Application\Src\ControlOwner</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\TitleManager.cpp">
+      <Filter>Application\Src\Manager\TitleManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\BattleSettingScene.cpp">
+      <Filter>Application\Scenes\BattleSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BattleSettingManager.cpp">
+      <Filter>Application\Src\Manager\BattleSettingManager</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

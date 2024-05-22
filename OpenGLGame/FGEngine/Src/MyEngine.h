@@ -38,6 +38,7 @@
 
 // ŠÔ
 #include "My/Time.h"
+#include <time.h>
 
 // —”
 #include "My/Random.h"

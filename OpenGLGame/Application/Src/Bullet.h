@@ -8,19 +8,30 @@ using namespace FGEngine;
 
 class BaseMs;
 
+// 弾の基底クラス
 class Bullet : public MonoBehaviour
 {
 public:
 
+	// コンストラクタ・デストラクタ
 	Bullet() = default;
 	virtual ~Bullet() = default;
 
-	virtual void Awake() override;
-
 private:
 
+	/**
+	* 生成時に実行
+	*/
+	virtual void Awake() override;
+
+	/**
+	* 最初に実行
+	*/
 	virtual void Start() override;
 
+	/**
+	* 毎フレーム実行
+	*/
 	virtual void Update()override;
 
 	// 他のコリジョンに触れたときに実行
@@ -29,7 +40,7 @@ private:
 public:
 
 	// ターゲットMs
-	BaseMs* targetMS;
+	BaseMs* targetMS = nullptr;
 
 	float rotationSpeed = 0;
 
@@ -41,6 +52,9 @@ public:
 
 	// 与えるダメージ
 	float damage = 0;
+
+	// 与えるダウン値
+	float downPower = 0;
 };
 
 

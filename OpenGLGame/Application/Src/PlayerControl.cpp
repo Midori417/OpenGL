@@ -113,7 +113,7 @@ void PlayerControl::Start()
 					}
 					// 武器のアイコン
 					{
-						auto weaponIcon = Instantate(x->name, Vector3(830, 410, 0));
+						auto weaponIcon = Instantate(x->name, Vector3(830, 410 + (-160.0f * i), 0));
 						auto image = weaponIcon->AddComponent<Image>();
 						image->texture = x->iconTexture;
 						image->size = image->texture->GetSize() * 1.3f;
@@ -299,7 +299,7 @@ void PlayerControl::Update()
 				// 自チームの体力が自身の機体のコストより高ければそのままの体力で復活
 				if (*myTeumHp > myMs->GetCost())
 				{
-					myMs->Remove(Vector3(0, 6, 50), 1);
+					myMs->Remove(Vector3(0, 10, 50), 1);
 				}
 				// 自チームの体力が自身の機体のコストより低ければコストに対して
 				else
@@ -315,7 +315,7 @@ void PlayerControl::Update()
 		return;
 	}
 
-	if (!isMsDeath)
+	if (!myMs->IsDeath())
 	{
 		// Ms更新
 		MsUpdate();
@@ -324,20 +324,11 @@ void PlayerControl::Update()
 	UIUpdate();
 }
 
-void PlayerControl::LateUpdate()
-{
-
-}
-
 /**
 * MSの更新
 */
 void PlayerControl::MsUpdate()
 {
-	if (!myMs)
-	{
-		return;
-	}
 	// 移動
 	Vector2 moveAxis = Vector2(InputManager::GetAxis(Axis::Horizontal), InputManager::GetAxis(Axis::Vertical));
 	myMs->Move(moveAxis);
@@ -353,43 +344,10 @@ void PlayerControl::MsUpdate()
 	// 攻撃1
 	bool attackKey = InputMouse::GetMouseButton(MouseButton::LeftButton);
 	myMs->Attack1(attackKey);
-}
 
-void PlayerControl::Finish()
-{
-	// UIを非表示にする
-	{
-		imgMyInfoBack->SetEnable(false);
-		inMyMsHp->Stop();
-		imgBoostBarBack->SetEnable(false);
-		imgBoostBar->SetEnable(false);
-		imgBoostBarOverHeat->SetEnable(false);
-		imgBurstBarBack->SetEnable(false);
-		imgBurstBar->SetEnable(false);
-		for (auto x : imgWeaponBacks)
-		{
-			x->SetEnable(false);
-		}
-		for (auto x : inWeaponAmos)
-		{
-			x->Stop();
-		}
-		for (auto x : imgWeaponBars)
-		{
-			x->SetEnable(false);
-		}
-		for (auto x : imgWeapnIcons)
-		{
-			x->SetEnable(false);
-		}
-		imgTargetMark->SetEnable(false);
-		imgTargetInfo->SetEnable(false);
-		imgTargetHPBar->SetEnable(false);
-		imgTeumHpFrame->SetEnable(false);
-		imgMyTeumHpBar->SetEnable(false);
-		imgEnemyTeumHpBar->SetEnable(false);
-		imgTimer->SetEnable(false);
-	}
+	// 攻撃2
+	bool attackKey2 = InputKey::GetKey(KeyCode::E);
+	myMs->Attack2(attackKey2);
 }
 
 /**
@@ -489,4 +447,45 @@ void PlayerControl::UIUpdate()
 
 	}
 
+}
+
+
+/**
+* 終了処理
+*/
+void PlayerControl::Finish()
+{
+	// UIを非表示にする
+	{
+		imgMyInfoBack->SetEnable(false);
+		inMyMsHp->Stop();
+		imgBoostBarBack->SetEnable(false);
+		imgBoostBar->SetEnable(false);
+		imgBoostBarOverHeat->SetEnable(false);
+		imgBurstBarBack->SetEnable(false);
+		imgBurstBar->SetEnable(false);
+		for (auto x : imgWeaponBacks)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : inWeaponAmos)
+		{
+			x->Stop();
+		}
+		for (auto x : imgWeaponBars)
+		{
+			x->SetEnable(false);
+		}
+		for (auto x : imgWeapnIcons)
+		{
+			x->SetEnable(false);
+		}
+		imgTargetMark->SetEnable(false);
+		imgTargetInfo->SetEnable(false);
+		imgTargetHPBar->SetEnable(false);
+		imgTeumHpFrame->SetEnable(false);
+		imgMyTeumHpBar->SetEnable(false);
+		imgEnemyTeumHpBar->SetEnable(false);
+		imgTimer->SetEnable(false);
+	}
 }

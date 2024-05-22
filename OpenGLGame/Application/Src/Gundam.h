@@ -44,11 +44,6 @@ public:
 	virtual void Move(const Vector2& moveAxis) override;
 
 	/**
-	* CPU移動
-	*/
-	virtual void CpuMove(const Vector2& moveAxis) override;
-
-	/**
 	* ジャンプ
 	*/
 	virtual void Jump(bool isJump, const Vector2& moveAxis) override;
@@ -64,16 +59,24 @@ public:
 	virtual void Attack1(bool attackKey) override;
 
 	/**
-	* ダメージ
-	* 
-	* @param damage 与えるダメージ
+	* 攻撃2(バズーカ)
 	*/
-	virtual void Damage(float damage) override;
+	virtual void Attack2(bool attackKey) override;
+
+	/**
+	* ダメージを与える
+	*
+	* @param damageInfo ダメージ情報
+	*/
+	virtual void Damage(const DamageInfo& damgeInfo)override;
 
 	/**
 	* 生き返る
+	*
+	* @param removePos	生き返る位置
+	* @param hpCut		体力のカット率
 	*/
-	virtual void Remove(const Vector3& removePos, float hp) override;
+	virtual void Remove(const Vector3& removePos, float hpCut) override;
 
 private:
 
@@ -87,6 +90,8 @@ private:
 
 		// 誘導力
 		float homingPower = 0;
+
+		float downPower = 0;
 
 		// 速度
 		float speed = 0;
@@ -106,6 +111,53 @@ private:
 		//シェーダ
 		ShaderPtr shader;
 
+		/**
+		* 初期化
+		*/
+		virtual void Initialize() override
+		{
+			amo = amoMax;
+			isNow = false;
+			isShot = false;
+			isStopShot = false;
+		}
+	};
+	std::shared_ptr<Rifle> rifle;
+
+	/**
+	* バズーカ構造体
+	*/
+	struct Bazooka : NumWeapon
+	{
+		// 与えるダメージ
+		float damage = 0;
+
+		float downPower = 0;
+
+		// 誘導力
+		float homingPower = 0;
+
+		// 速度
+		float speed = 0;
+
+		// 射撃状態か
+		bool isNow = false;
+
+		// 撃ったか
+		bool isShot = false;
+
+		// メッシュ
+		StaticMeshPtr mesh;
+
+		//シェーダ
+		ShaderPtr shader;
+
+		// 影シェーダ
+		ShaderPtr shadowShader;
+
+		/**
+		* 初期化
+		*/
 		virtual void Initialize() override
 		{
 			amo = amoMax;
@@ -113,7 +165,7 @@ private:
 			isShot = false;
 		}
 	};
-	std::shared_ptr<Rifle> rifle;
+	std::shared_ptr<Bazooka> bazooka;
 
 	// リギボ
 	RigidbodyPtr rb;

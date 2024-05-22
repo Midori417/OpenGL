@@ -6,8 +6,12 @@
 #include "Global.h"
 #include "LookOnCamera.h"
 
+/**
+* 最初に実行
+*/
 void CpuControl::Start()
 {
+	// CPUの行動切り替え時間を設定
 	cpuTime = 1;
 	moveTime = 2;
 
@@ -30,6 +34,9 @@ void CpuControl::Start()
 	myMs->SetCamera(lookOnCamera->GetTransform().get());
 }
 
+/**
+* 毎フレーム実行
+*/
 void CpuControl::Update()
 {
 	if (!isStart)
@@ -42,15 +49,16 @@ void CpuControl::Update()
 	{
 		if (!isMsDeath)
 		{
+			// 自チームのHpを減らす
 			TeumHpSud();
 			isMsDeath = true;
-			
+
 			if (*myTeumHp > 0)
 			{
 				// 自チームの体力が自身の機体のコストより高ければそのままの体力で復活
 				if (*myTeumHp > myMs->GetCost())
 				{
-					myMs->Remove(Vector3(0, 6, -50), 1);		
+					myMs->Remove(Vector3(0, 10, -50), 1);
 				}
 				// 自チームの体力が自身の機体のコストより低ければコストに対して
 				else
@@ -63,10 +71,12 @@ void CpuControl::Update()
 				isMsDeath = false;
 			}
 		}
-		return;
 	}
 
-	MsUpdate();
+	if (!myMs->IsDeath())
+	{
+		MsUpdate();
+	}
 }
 
 /**
@@ -74,7 +84,6 @@ void CpuControl::Update()
 */
 void CpuControl::MsUpdate()
 {
-	return;
 	auto targetMs = otherOwner->myMs;
 
 	// 自身のMSに相手のMsの情報を伝える
@@ -95,7 +104,7 @@ void CpuControl::MsUpdate()
 		moveTimer = moveTime;
 	}
 	// Cpuの移動処理
-	myMs->CpuMove(cpuMoveAxis);
+	myMs->Move(cpuMoveAxis);
 
 	// ジャンプ
 	bool jumpBtn = false;
@@ -115,15 +124,19 @@ void CpuControl::MsUpdate()
 
 	// 攻撃1
 	bool attackBtn = false;
-	if (cpuState == CpuState::Attack)
+	if (cpuState == CpuState::Attack || cpuState == CpuState::DashAttack)
 	{
 		attackBtn = true;
 	}
 	myMs->Attack1(attackBtn);
-	if (attackBtn)
+
+	// 攻撃2
+	bool attackBtn2 = false;
+	if (cpuState == CpuState::Attack2)
 	{
-		myMs->Attack1(false);
+		attackBtn2 = true;
 	}
+	myMs->Attack2(attackBtn);
 }
 
 void CpuControl::Finish()

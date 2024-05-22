@@ -54,8 +54,11 @@ private:
 		// ジャンプ
 		Jump,
 
-		// ライフル
+		// 攻撃
 		Attack,
+
+		// 攻撃2
+		Attack2,
 
 		// ダッシュライフル
 		DashAttack,

@@ -1,0 +1,43 @@
+/**
+* @file BattleSettingManager.h
+*/
+#ifndef BATTLESETTINGMANAGER_H_INCLUDED
+#define BATTLESETTINGMANAGER_H_INCLUDED
+#include "FGEngine.h"
+using namespace FGEngine;
+
+// 先行宣言
+class FadeOut;
+using FadeOutPtr = std::shared_ptr<FadeOut>;
+
+/**
+* バトル設定マネージャ
+*/
+class BattleSettingManager : public MonoBehaviour
+{
+public:
+
+	// コンストラクタ・デストラクタ
+	BattleSettingManager() = default;
+	virtual ~BattleSettingManager() = default;
+
+private:
+
+	/**
+	* 生成時に実行
+	*/
+	virtual void Awake() override;
+
+	/**
+	* 毎フレーム実行
+	*/
+	virtual void Update() override;
+
+private:
+
+	// フェードコンポーネント
+	FadeOutPtr fadeOut;
+
+};
+
+#endif // !BATTLESETTINGMANAGER_H_INCLUDED

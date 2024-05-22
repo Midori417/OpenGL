@@ -8,7 +8,10 @@ using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 
 /**
-* 戦闘シーン
+* 戦闘シーンの初期化
+*
+* @return true  初期化成功
+* @return false 初期化失敗
 */
 class BattleMap01Scene : public Scene
 {
@@ -25,19 +28,9 @@ private:
 	// 戦闘シーンの初期化
 	virtual bool Initialize() override;
 
-	// 戦闘シーンの更新
-	virtual void Update() override;
+private:
 
-	// 戦闘シーンの終了処理
-	virtual void Finalize() override;
-
-public:
-
-	// マップの大きさ横
-	float mapX = 0;
-
-	// マップの大きさ縦
-	float mapZ = 0;
-
+	// マップの大きさ
+	Vector2 mapSize = Vector2::zero;
 };
 #endif // !MAINSCENE_H_INCLUDED

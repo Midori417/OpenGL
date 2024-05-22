@@ -7,6 +7,9 @@
 using namespace FGEngine;
 using namespace FGEngine::UI;
 
+/**
+* フェードアウトコンポーネント
+*/
 class FadeOut : public MonoBehaviour
 {
 public:
@@ -14,6 +17,27 @@ public:
 	// コンストラクタ・デストラクタ
 	FadeOut() = default;
 	virtual ~FadeOut() = default;
+
+	/**
+	* フェードを開始する
+	*/
+	void FadeStart();
+
+	/**
+	* フェードが始まっているかを取得
+	* 
+	* @retval true 始まっている
+	* @retval false 始まっていない
+	*/
+	bool IsFadeStart() const;
+
+	/**
+	* フェードの状況を取得
+	*
+	* @retval true	フェード終了
+	* @retval false	終わっていない
+	*/
+	bool IsFadeOut() const;
 
 private:
 
@@ -27,27 +51,19 @@ private:
 	*/
 	virtual void Update() override;
 
-public:
-
-	/**
-	* フェードの状況を取得
-	* 
-	* @retval true	フェード終了
-	* @retval false	終わっていない
-	*/
-	bool IsFadeOut() const;
 
 public:
 
 	// イメージコンポーネント
 	ImagePtr image;
 
+	// フェード速度
 	float speed = 1;
+
+private:
 
 	// フェードを開始するか
 	bool isStart = false;
-
-private:
 
 	// フェードが終わればtrue : 終わってなければfalse
 	bool isFadeOut = false;

@@ -11,18 +11,15 @@ using namespace FGEngine::InputSystem;
 
 /**
 * 戦闘シーンの初期化
-* 
-* @param engine エンジン
-* 
+*  
 * @return true  初期化成功
 * @return false 初期化失敗
 */
 bool BattleMap01Scene::Initialize()
 {
+    // 各マネージャを取得
     auto objManager = ObjectManager::GetInstance();
     auto resManager = ResouceManager::GetInstance();
-
-    resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/Gundam.gltf");
 
     // マップ01のリソース読み込み
     resManager->LoadObj("Biru01", "Application/Res/Map/Map01/Biru01.obj");
@@ -32,23 +29,20 @@ bool BattleMap01Scene::Initialize()
     resManager->LoadObj("Ground", "Application/Res/Map/Map01/Ground.obj");
     resManager->LoadTga("Grass", "Application/Res/Map/Map01/Grass.tga");
 
-
     // カメラを作成
     auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -20), Quaternion::identity);
     camera->AddComponent<Camera>();
     objManager->SetMainCamera(camera);
 
     // ステージの大きさを設定
-    mapX = 150;
-    mapZ = 120;
+    mapSize.x = 150;
+    mapSize.y = 120;
 
 
-    // バトルマネージェーを作成
+    // バトルマネージャを作成
     {
         auto battleManagerObj = objManager->CreateGameObject("BattleManager");
         auto battleManager = battleManagerObj->AddComponent<BattleManager>();
-        battleManager->mapX = mapX;
-        battleManager->mapZ = mapZ;
     }
 
     // 壁を作成
@@ -131,7 +125,7 @@ bool BattleMap01Scene::Initialize()
             renderer->materials = CloneMaterialList(renderer->mesh);
             renderer->materials[0]->mainTexture = resManager->GetTexture("Grass");
             auto col = ground->AddComponent<AabbCollider>();
-            col->min = Vector3(-150, -0.5f, -120);
+            col->min = Vector3(-150, -10.0f, -120);
             col->max = Vector3(150, 0.5f, 120);
         }
 
@@ -241,27 +235,8 @@ bool BattleMap01Scene::Initialize()
 
     // スカイスフィアを設定
     auto material = std::make_shared<Material>();
-    material->mainTexture = resManager->GetTexture("sky");
+    material->mainTexture = resManager->GetTexture("Sky");
     skyMaterial = material;
 
 	return true;
-}
-
-/**
-* 戦闘シーンの更新
-* 
-* @param engine エンジン
-*/
-void BattleMap01Scene::Update()
-{
-}
-
-/**
-* 戦闘シーンの終了
-* 
-* @param engine エンジン
-*/
-void BattleMap01Scene::Finalize()
-{
-
 }

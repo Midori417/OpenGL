@@ -2,17 +2,52 @@
 * @file ChoiceManager.cpp
 */
 #include "ChoiceManager.h"
+#include "FadeOut.h"
 using namespace FGEngine::InputSystem;
 using namespace FGEngine::WindowSystem;
 using namespace FGEngine::SceneSystem;
-#include "FadeOut.h"
+using namespace FGEngine::ResouceSystem;
 
 /**
 * 最初に実行
 */
 void ChoiceManager::Start()
 {
+	// リソースシステムを取得
+	auto resManager = ResouceManager::GetInstance();
 
+	// バトルボタンを作成
+	{
+		auto battleButton = Instantate("BattleButton", Vector3(500, -200, 0));
+		auto image = battleButton->AddComponent<Image>();
+		image->texture = resManager->GetTexture("BattleButton");
+		image->size = image->texture->GetSize() * 1.3f;
+		imgButtons.push_back(image);
+	}
+
+	// オプションボタンを作成
+	{
+		auto optionButton = Instantate("OptionButton", Vector3(500, 0, 0));
+		auto image = optionButton->AddComponent<Image>();
+		image->texture = resManager->GetTexture("OptionButton");
+		image->size = image->texture->GetSize() * 1.3f;
+		imgButtons.push_back(image);
+	}
+
+	// やめるボタンを作成
+	{
+		auto exitButton = Instantate("ExitButton", Vector3(500, 200, 0));
+		auto image = exitButton->AddComponent<Image>();
+		image->texture = resManager->GetTexture("ExitButton");
+		image->size = image->texture->GetSize() * 1.3f;
+		imgButtons.push_back(image);
+	}
+
+	// フェードオブジェクトを作成
+	{
+		auto fadeObject = Instantate("FadeObjectA");
+		fadeOut = fadeObject->AddComponent<FadeOut>();
+	}
 }
 
 /**
@@ -21,64 +56,72 @@ void ChoiceManager::Start()
 void ChoiceManager::Update()
 {
 
-	if (fadeOut)
+	// フェードアウトが設定されていなければ何もしない
+	if (!fadeOut)
 	{
-		if (fadeOut->IsFadeOut())
+		return;
+	}
+
+	// フェードアウトが終わったら
+	if (fadeOut->IsFadeOut())
+	{
+		switch (choiceNum)
 		{
-			SceneManager::LoadScene("バトルマップ01シーン");
+		case (int)ChoiceManager::GameChoice::Battle:
+			SceneManager::LoadScene("バトル設定シーン");
+			break;
+		case (int)ChoiceManager::GameChoice::Option:
+			break;
 		}
 	}
 
 	/**
 	* フェードが開始したら何もしない
 	*/
-	if (isFadeStart)
+	if (fadeOut->IsFadeStart())
 	{
 		return;
 	}
+
+	/**
+	* Eneterを押したら選択を決定
+	*/
+	if (InputKey::GetKeyDown(KeyCode::Enter))
+	{
+		if (choiceNum == (int)ChoiceManager::GameChoice::Exit)
+		{
+			// ウィンドウを閉じる
+			WindowManager::GetInstance()->WindowClose();
+		}
+		else
+		{
+			// それ以外ならフェードアウトを開始する
+			fadeOut->FadeStart();
+		}
+	}
+
 
 	// 選択を移動
 	if (InputKey::GetKeyDown(KeyCode::DownArrow))
 	{
 		choiceNum++;
-		choiceNum = Mathf::Clamp(choiceNum, (int)GameChoice::Battle, (int)GameChoice::Exit);
 	}
 	else if (InputKey::GetKeyDown(KeyCode::UpArrow))
 	{
 		choiceNum--;
-		choiceNum = Mathf::Clamp(choiceNum, (int)GameChoice::Battle, (int)GameChoice::Exit);
 	}
-
-	if (InputKey::GetKeyDown(KeyCode::Enter))
-	{
-		switch (choiceNum)
-		{
-		case (int)ChoiceManager::GameChoice::Battle:
-			isFadeStart = true;
-			if (fadeOut)
-			{
-				fadeOut->isStart = true;
-			}
-			break;
-		case (int)ChoiceManager::GameChoice::Option:
-			break;
-		case (int)ChoiceManager::GameChoice::Exit:
-			// ウィンドウを閉じる
-			WindowManager::GetInstance()->WindowClose();
-			break;
-		}
-	}
-	
+	choiceNum = Mathf::Clamp(choiceNum, (int)GameChoice::Battle, (int)GameChoice::Exit);
 
 	for (int i = 0; i < imgButtons.size(); ++i)
 	{
-		// 選択されてたら色を暗くする
+		// 選択されたら通常色
 		if (i == choiceNum)
 		{
 			imgButtons[i]->color = Color::white;
 		}
 		else
 		{
+			// 選択されていなければ色を黒くする
 			imgButtons[i]->color = Color(0.5f, 0.5f, 0.5f, 1.0f);
 		}
 	}

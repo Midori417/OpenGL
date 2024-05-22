@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "Scene/TitleScene.h"
 #include "Scene/BattleMap01Scene.h"
+#include "Scene/BattleSettingScene.h"
 #include "Scene/ChoiceScene.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
@@ -20,22 +21,22 @@ int Application::Initialize()
 	auto resManager = ResouceManager::GetInstance();
 
 	// リソースの読み込み
-	resManager->LoadTga("TitleBack", "Application/Res/UI/Title/TitleBack.tga");
-	resManager->LoadTga("TitleGundam", "Application/Res/UI/Title/TitleGundam.tga");
-	resManager->LoadTga("TitleGundamEye", "Application/Res/UI/Title/GundamEye.tga");
-	resManager->LoadTga("TitleLogo", "Application/Res/UI/Title/TitleLogo.tga");
-	resManager->LoadTga("TitleLogoWhite", "Application/Res/UI/Title/TitleLogoWhite.tga");
-	resManager->LoadTga("sky", "Application/Res/Map/sky2.tga");
-	resManager->LoadTga("PleaseButton", "Application/Res/UI/Title/PleaseButton.tga");
-	resManager->LoadTga("BattleButton", "Application/Res/UI/Title/BattleButton.tga");
-	resManager->LoadTga("OptionButton", "Application/Res/UI/Title/OptionButton.tga");
-	resManager->LoadTga("ExitButton", "Application/Res/UI/Title/ExitButton.tga");
-	
 	for (int i = 0; i < 10; i++)
 	{
 		std::string num = "Num" + std::to_string(i);
 		resManager->LoadTga(num, "Application/Res/UI/Num/" + num + ".tga");
 	}
+	resManager->LoadTga("TitleBack", "Application/Res/UI/Title/TitleBack.tga");
+	resManager->LoadTga("TitleGundam", "Application/Res/UI/Title/TitleGundam.tga");
+	resManager->LoadTga("TitleGundamEye", "Application/Res/UI/Title/GundamEye.tga");
+	resManager->LoadTga("TitleLogo", "Application/Res/UI/Title/TitleLogo.tga");
+	resManager->LoadTga("TitleLogoWhite", "Application/Res/UI/Title/TitleLogoWhite.tga");
+	resManager->LoadTga("Sky", "Application/Res/Map/sky2.tga");
+	resManager->LoadTga("PleaseButton", "Application/Res/UI/Title/PleaseButton.tga");
+	resManager->LoadTga("BattleButton", "Application/Res/UI/Title/BattleButton.tga");
+	resManager->LoadTga("OptionButton", "Application/Res/UI/Title/OptionButton.tga");
+	resManager->LoadTga("ExitButton", "Application/Res/UI/Title/ExitButton.tga");
+	resManager->LoadTga("BattleSetting", "Application/Res/UI/BattleSetting/BattleSetting.tga");
 	resManager->LoadTga("BoostBar", "Application/Res/UI/Battle/Boostbar.tga");
 	resManager->LoadTga("BoostBarBack", "Application/Res/UI/Battle/BoostbarBack.tga");
 	resManager->LoadTga("BoostBarOVERHEAT", "Application/Res/UI/Battle/BoostbarOverHeat.tga");
@@ -59,12 +60,17 @@ int Application::Initialize()
 	resManager->LoadTga("Win", "Application/Res/UI/Battle/Win.tga");
 	resManager->LoadTga("Lose", "Application/Res/UI/Battle/Lose.tga");
 
+	// MSの読み込み
+	resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/Gundam.gltf");
+
 
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");
 	SceneManager::AddScene<ChoiceScene>("ゲーム選択シーン");
+	SceneManager::AddScene<BattleSettingScene>("バトル設定シーン");
 	SceneManager::AddScene<BattleMap01Scene>("バトルマップ01シーン");
-	SceneManager::LoadScene("バトルマップ01シーン");
+	SceneManager::LoadScene("タイトルシーン");
+	//SceneManager::LoadScene("バトルマップ01シーン");
 
 	return 0;
 }

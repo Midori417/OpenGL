@@ -8,11 +8,13 @@
 using namespace FGEngine;
 using namespace FGEngine::UI;
 
+// 先行宣言
 class BaseMs;
 using BaseMsPtr = std::shared_ptr<BaseMs>;
-
 class ControlOwner;
 using ControlOwnerPtr = std::shared_ptr<ControlOwner>;
+class FadeOut;
+using FadeOutPtr = std::shared_ptr<FadeOut>;
 
 class BattleManager : public MonoBehaviour
 {
@@ -22,13 +24,12 @@ public:
 	BattleManager() = default;
 	virtual ~BattleManager() = default;
 
+private:
 
 	/**
 	* 生成時に実行
 	*/
 	virtual void Awake() override;
-
-private:
 
 	/**
 	* 最初に実行
@@ -47,14 +48,6 @@ private:
 	* @param ms 追加したいコンポーネントに対応するMsList
 	*/
 	BaseMsPtr SetMs(GameObjectPtr obj,  MsList ms);
-
-public:
-
-	// マップの大きさ横
-	float mapX;
-
-	// マップの大きさ縦
-	float mapZ;
 
 private:
 
@@ -107,6 +100,9 @@ private:
 	ImagePtr imgGoBack;
 	ImagePtr imgWin;
 	ImagePtr imgLose;
+
+	// フェードコンポーネント
+	FadeOutPtr fadeOut;
 };
 
 

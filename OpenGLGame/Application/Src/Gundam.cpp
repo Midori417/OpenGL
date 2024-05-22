@@ -3,6 +3,7 @@
 */
 #include "Gundam.h"
 #include "Bullet.h"
+#include "DamageInfo.h"
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
 
@@ -15,6 +16,8 @@ void Gundam::Awake()
 	auto resManager = ResouceManager::GetInstance();
 	resManager->LoadObj("Gundam/BeumRifleBullet", "Application/Res/Ms/Gundam/Model/BeumRifleBullet.obj");
 	resManager->LoadTga("Gundam/BeumRifleIcon", "Application/Res/Ms/Gundam/UI/BeumRifleIcon.tga");
+	resManager->LoadObj("Gundam/BazookaBullet", "Application/Res/Ms/Gundam/Model/BazookaBullet.obj");
+	resManager->LoadTga("Gundam/BazookaIcon", "Application/Res/Ms/Gundam/UI/BazookaIcon.tga");
 
 	// 描画コンポーネントを追加
 	auto renderer = OwnerObject()->AddComponent<GltfMeshRenderer>();
@@ -67,12 +70,29 @@ void Gundam::Awake()
 	moveParamater.jump.rotationSpeed = 0.05f;
 	moveParamater.jump.useEnergy = -30.0f;
 
+	// バズーカの生成
+	bazooka = std::make_shared<Bazooka>();
+	bazooka->name = "Bazooka";
+	bazooka->amoMax = 3;
+	bazooka->amo = bazooka->amoMax;
+	bazooka->damage = 99.0f;
+	bazooka->downPower = 100;
+	bazooka->homingPower = 0.9f;
+	bazooka->speed = 80.0f;
+	bazooka->reloadTime = 4;
+	bazooka->iconTexture = resManager->GetTexture("Gundam/BazookaIcon");
+	bazooka->mesh = resManager->GetStaticMesh("Gundam/BazookaBullet");
+	bazooka->shader = resManager->GetShader(DefalutShader::Standard3D);
+	bazooka->shadowShader = resManager->GetShader(DefalutShader::Shadow3D);
+	numWeapons.push_back(bazooka);
+
 	// ライフルの生成
 	rifle = std::make_shared<Rifle>();
 	rifle->name = "BeumRifle";
 	rifle->amoMax = 7;
 	rifle->amo = rifle->amoMax;
 	rifle->damage = 70.0f;
+	rifle->downPower = 40;
 	rifle->homingPower = 0.09f;
 	rifle->speed = 200.0f;
 	rifle->reloadTime = 3;
@@ -80,6 +100,7 @@ void Gundam::Awake()
 	rifle->mesh = resManager->GetStaticMesh("Gundam/BeumRifleBullet");
 	rifle->shader = resManager->GetShader(DefalutShader::Unlit);
 	numWeapons.push_back(rifle);
+
 }
 
 /**
@@ -93,15 +114,45 @@ void Gundam::Update()
 		return;
 	}
 
+
 	// HPがなければ死亡状態にする
 	if (hp <= 0)
 	{
-		anim->SetAnimation("RifleDown");
-		anim->Play();
-
 		// 死亡状態にする
 		isDeath = true;
 		return;
+	}
+
+	// ダメージ状態なら
+	if (isDamage)
+	{
+		if (anim->time >= anim->GetAnimationClip()->totalTime)
+		{
+			// ダメージアニメーションが終わればダメージ状態を解除
+			isDamage = false;
+
+			// それぞれの状態を元に戻す
+			rb->isGravity = true;
+
+			// ライフル
+			{
+				rifle->isNow = false;
+				rifle->isShot = false;
+				rifle->isStopShot = false;
+			}
+
+			// バズーカ
+			{
+				bazooka->isNow = false;
+				bazooka->isShot = false;
+			}
+			// アニメーションを再生
+			if (anim->GetAnimationClip()->name == "Damage.Rifle")
+			{
+				anim->SetAnimation("Idle.Rifle");
+				anim->Play();
+			}
+		}
 	}
 
 	// 地面についているとき
@@ -134,16 +185,28 @@ void Gundam::Update()
 */
 void Gundam::ReloadUpdate()
 {
-	for (auto x : numWeapons)
+	// ビームライフルのリロード
 	{
 		// 弾が減っていればリロード
-		if (x->amo < x->amoMax)
+		if (rifle->amo < rifle->amoMax)
 		{
-			x->reloadTimer += Time::DeltaTime();
-			if (x->reloadTimer > x->reloadTime)
+			rifle->reloadTimer += Time::DeltaTime();
+			if (rifle->reloadTimer > rifle->reloadTime)
 			{
-				x->reloadTimer = 0;
-				x->amo++;
+				rifle->reloadTimer = 0;
+				rifle->amo++;
+			}
+		}
+	}
+	// バズーカのリロード
+	{
+		if (bazooka->amo <= 0)
+		{
+			bazooka->reloadTimer += Time::DeltaTime();
+			if (bazooka->reloadTimer > bazooka->reloadTime)
+			{
+				bazooka->reloadTimer = 0;
+				bazooka->amo = bazooka->amoMax;
 			}
 		}
 	}
@@ -156,15 +219,21 @@ void Gundam::ReloadUpdate()
 */
 void Gundam::Move(const Vector2& moveAxis)
 {
+	// ダメージ状態なら何もしない
+	if (isDamage)
+	{
+		return;
+	}
+
 	// カメラの位置を取得
 	auto cameraTrs = GetCameraTransform();
-	// カメラの位置を取得できなければ何もしない
 	if (!cameraTrs)
 	{
 		return;
 	}
-	// ジャンプとダッシュ状態なら何もしない
-	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot)
+
+	// ジャンプ・ダッシュ・ライフルの移動禁止・バズーカ状態なら移動しない
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot || bazooka->isNow)
 	{
 		return;
 	}
@@ -187,7 +256,7 @@ void Gundam::Move(const Vector2& moveAxis)
 			GetTransform()->position += GetTransform()->Forward() * moveParamater.speed * Time::DeltaTime();
 
 		}
-		if (!rifle->isNow)
+		if (!rifle->isNow && !bazooka->isNow)
 		{
 			if (moveAxis != Vector2::zero)
 			{
@@ -205,80 +274,37 @@ void Gundam::Move(const Vector2& moveAxis)
 	}
 }
 
-/**
-* CPUの移動
-*/
-void Gundam::CpuMove(const Vector2& moveAxis)
-{
-	// カメラの位置を取得
-	auto cameraTrs = GetCameraTransform();
-	// カメラの位置を取得できなければ何もしない
-	if (!cameraTrs)
-	{
-		return;
-	}
-	// ジャンプとダッシュ状態なら何もしない
-	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot)
-	{
-		return;
-	}
-
-	// カメラの方向から、X-Z単位ベクトル(正規化)を取得
-	Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
-	Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
-
-	if (rb->IsGround())
-	{
-		// 進行方向に回転
-		if (moveForward != Vector3::zero)
-		{
-			GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation,
-				Quaternion::LookRotation(moveForward), moveParamater.rotationSpeed);
-		}
-		if (moveAxis != Vector2::zero)
-		{
-			// オブジェクトの向いてる方向に進む
-			GetTransform()->position += GetTransform()->Forward() * moveParamater.speed * Time::DeltaTime();
-
-		}
-		if (!rifle->isNow)
-		{
-			if (moveAxis != Vector2::zero)
-			{
-				// 歩くアニメーションを再生する
-				anim->SetAnimation("Run.Rifle", true);
-				anim->Play();
-			}
-			else
-			{
-				// 移動入力がなければIdleアニメーションを再生する
-				anim->SetAnimation("Idle.Rifle", true);
-				anim->Play();
-			}
-		}
-	}
-
-}
 
 /**
 * ジャンプ
 */
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
-	// ダッシュ状態なら何もしない
-	if (moveParamater.dash.isNow || rifle->isStopShot)
+	// ダメージ状態なら何もしない
+	if (isDamage)
 	{
 		return;
 	}
+
+	// ダッシュ・ライフルの移動禁止・バズーカ状態ならジャンプしない
+	if (moveParamater.dash.isNow || rifle->isStopShot || bazooka->isNow)
+	{
+		return;
+	}
+
+	// ジャンプ入力があれば
 	if (isJump)
 	{
 		// エネルギーがあればジャンプさせる
 		if (boostEnergy > 0)
 		{
-			// 重力の速度を0にして　
-			rb->velocity = Vector3(0);
-
+			// カメラを取得
 			auto cameraTrs = GetCameraTransform();
+			if (!cameraTrs)
+			{
+				return;
+			}
+
 			// カメラの方向から、X-Z単位ベクトル(正規化)を取得
 			Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
 			Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
@@ -310,6 +336,8 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				anim->Play();
 			}
 
+			// 重力の速度を0にして　
+			rb->velocity = Vector3(0);
 			// 上昇
 			GetTransform()->position.y += moveParamater.jump.power * Time::DeltaTime();
 			// エネルギーを消費
@@ -366,10 +394,18 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 */
 void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
-	if (rifle->isStopShot)
+	// ダメージ状態なら何もしない
+	if (isDamage)
 	{
 		return;
 	}
+
+	// ライフルの停止・バズーカ状態ならダッシュしない
+	if (rifle->isStopShot || bazooka->isNow)
+	{
+		return;
+	}
+
 	if (isDash)
 	{
 		// エネルギーがあればダッシュさせる
@@ -378,8 +414,8 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			rb->isVelocity = false;
 
 			rb->velocity.y = 0;
+			// カメラを取得
 			auto cameraTrs = GetCameraTransform();
-			// カメラの位置を設定されていない
 			if (!cameraTrs)
 			{
 				return;
@@ -467,9 +503,22 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 */
 void Gundam::Attack1(bool attackKey)
 {
+	// ダメージ状態なら何もしない
+	if (isDamage)
+	{
+		return;
+	}
+
+	// 攻撃入力があれば
 	if (attackKey)
 	{
-		// ビームライフルの弾があるときだけ打つ
+		// バズーカ攻撃状態ならライフル攻撃をしない
+		if (bazooka->isNow)
+		{
+			return;
+		}
+
+		// ビームライフルの弾があれば射撃
 		if (rifle->amo > 0 && !rifle->isNow)
 		{
 			// ターゲットが自分から見てどの方向にいるか調べる
@@ -494,7 +543,8 @@ void Gundam::Attack1(bool attackKey)
 				anim->SetAnimation("Rifle.Shot.Idle.B");
 				anim->Play();
 			}
-			else if (anim->GetAnimationClip()->name == "Idle.Rifle")
+			// アイドル・ジャンプ状態
+			else if (anim->GetAnimationClip()->name == "Idle.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle")
 			{
 				rb->velocity = Vector3(0, 1, 0);
 				// 動きを止める
@@ -520,8 +570,8 @@ void Gundam::Attack1(bool attackKey)
 						anim->Play();
 					}
 				}
-				// 左
-				else if(perendicular.y > 0)
+				// 左方
+				else if (perendicular.y > 0)
 				{
 					if (dot > 0.6f)
 					{
@@ -535,6 +585,7 @@ void Gundam::Attack1(bool attackKey)
 					}
 				}
 			}
+			// 歩き状態
 			else if (anim->GetAnimationClip()->name == "Run.Rifle")
 			{
 				// 前方
@@ -557,7 +608,7 @@ void Gundam::Attack1(bool attackKey)
 						anim->Play();
 					}
 				}
-				// 左
+				// 左方
 				else if (perendicular.y > 0)
 				{
 					if (dot > 0.4f)
@@ -572,17 +623,34 @@ void Gundam::Attack1(bool attackKey)
 					}
 				}
 			}
-			else
+			// ダッシュ状態
+			else if (anim->GetAnimationClip()->name == "Dash.Rifle")
 			{
-				anim->SetAnimation("Rifle.Shot.Idle.F");
-				anim->Play();
+				// 前方
+				if (dot > 0.9f)
+				{
+					anim->SetAnimation("Rifle.Shot.Dash.F");
+					anim->Play();
+				}
+				// 右方
+				else if (perendicular.y < 0)
+				{
+					anim->SetAnimation("Rifle.Shot.Dash.R");
+					anim->Play();
+				}
+				// 左
+				else if (perendicular.y > 0)
+				{
+					anim->SetAnimation("Rifle.Shot.Dash.L");
+					anim->Play();
+				}
 			}
 
 			// 射撃中
 			rifle->isNow = true;
 		}
 	}
-	// 射撃中
+	// 射撃状態
 	if (rifle->isNow)
 	{
 		if (anim->time >= 0.2f && !rifle->isShot)
@@ -605,6 +673,7 @@ void Gundam::Attack1(bool attackKey)
 			renderer->mesh = rifle->mesh;
 			renderer->shader = rifle->shader;
 			auto bulletMove = bullet->AddComponent<Bullet>();
+			bulletMove->downPower = rifle->downPower;
 			bulletMove->speed = rifle->speed;
 			bulletMove->rotationSpeed = rifle->homingPower;
 			bulletMove->damage = rifle->damage;
@@ -638,11 +707,13 @@ void Gundam::Attack1(bool attackKey)
 				anim->SetAnimation("Run.Rifle", true);
 				anim->Play();
 			}
-			else if (anim->GetAnimationClip()->name == "Rifle.Shot.Dash.F")
+			else if (anim->GetAnimationClip()->name == "Rifle.Shot.Dash.F" ||
+				anim->GetAnimationClip()->name == "Rifle.Shot.Dash.R" || anim->GetAnimationClip()->name == "Rifle.Shot.Dash.L")
 			{
 				anim->SetAnimation("Dash.Rifle");
 				anim->Play();
 			}
+
 			rifle->isNow = false;
 			rifle->isShot = false;
 			rifle->isStopShot = false;
@@ -651,30 +722,182 @@ void Gundam::Attack1(bool attackKey)
 }
 
 /**
+* 攻撃2(バズーカ)
+*/
+void Gundam::Attack2(bool attackKey)
+{
+	// ダメージ状態なら何もしない
+	if (isDamage)
+	{
+		return;
+	}
+
+	// 攻撃入力があれば
+	if (attackKey)
+	{
+		// ライフル攻撃状態ならバズーカ攻撃をしない
+		if (rifle->isNow)
+		{
+			return;
+		}
+
+		// バズーカの弾があるなら射撃
+		if (bazooka->amo > 0 && !bazooka->isNow)
+		{
+			if (GetTargetMs())
+			{
+				// ターゲットが自分から見てどの方向にいるか調べる
+				Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+				float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
+
+				// 重力を使わない
+				rb->isGravity = false;
+				rb->velocity = Vector3(0);
+
+				// 相手の逆方向を向く
+				GetTransform()->rotation = Quaternion::LookRotation(directionToTarget * Vector3(1, 0, 1));
+			}
+
+			// アニメーションを再生
+			anim->SetAnimation("Bazooka.Shot");
+			anim->Play();
+
+			// 射撃中
+			bazooka->isNow = true;
+		}
+	}
+	// 射撃中
+	if (bazooka->isNow)
+	{
+		if (anim->time >= 0.4f && !bazooka->isShot)
+		{
+			// 残弾を減らす
+			bazooka->amo -= 1;
+
+			// ターゲットの方向のトランスフォームを作成
+			TransformPtr trs = std::make_shared<Transform>();
+			trs->position = GetTransform()->position;
+			trs->rotation = GetTransform()->rotation;
+			trs->LookAt(GetTargetMs()->GetTransform());
+
+			// 弾の生成位置を計算
+			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.3f, 0, 5));
+
+			// 弾を作成
+			auto bullet = Instantate("Bullet", pos, trs->rotation);
+			auto renderer = bullet->AddComponent<MeshRenderer>();
+			renderer->mesh = bazooka->mesh;
+			renderer->shader = bazooka->shader;
+			renderer->shadowShader = bazooka->shadowShader;
+			auto bulletMove = bullet->AddComponent<Bullet>();
+			bulletMove->speed = bazooka->speed;
+			bulletMove->downPower = bazooka->downPower;
+			bulletMove->rotationSpeed = bazooka->homingPower;
+			bulletMove->damage = bazooka->damage;
+
+			// 反動で後ろに動かす
+			GetTransform()->position += GetTransform()->Forward() * -0.5f;
+
+			// 距離によって誘導をつける
+			if (GetDistance() < redLookDistace)
+			{
+				bulletMove->targetMS = GetTargetMs();
+			}
+
+			// 撃った
+			bazooka->isShot = true;
+		}
+
+		// 射撃アニメーションが終われば射撃状態を解除する
+		if (anim->time >= anim->GetAnimationClip()->totalTime)
+		{
+			// アニメーションを再生
+			if (anim->GetAnimationClip()->name == "Bazooka.Shot")
+			{
+				anim->SetAnimation("Idle.Rifle");
+				anim->Play();
+				rb->isGravity = true;
+			}
+			bazooka->isNow = false;
+			bazooka->isShot = false;
+		}
+	}
+}
+
+/**
 * ダメージ
 *
-* @param damage 与えるダメージ
+* @param damage ダメージ情報
 */
-void Gundam::Damage(float damage)
+void Gundam::Damage(const DamageInfo& damageInfo)
 {
-	hp -= static_cast<int>(damage);
+	// 与えられたダメージの方向を計算
+	Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+	float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
+
+	// 体力を減らす
+	hp -= static_cast<int>(damageInfo.damage);
+
+	// 通常ダメージアクション
+	if (downValue < 100)
+	{
+		// 前方
+		if (dot > 0)
+		{
+			GetTransform()->rotation = Quaternion::LookRotation(directionToTarget * Vector3(1, 0, 1));
+			GetTransform()->position += GetTransform()->Forward() * -0.5f;
+
+			anim->SetAnimation("Damage.Rifle.F");
+			anim->Play();
+		}
+		// 後方
+		else
+		{
+			GetTransform()->rotation = Quaternion::LookRotation(-directionToTarget * Vector3(1, 0, 1));
+			GetTransform()->position += GetTransform()->Forward() * -0.5f;
+
+			anim->SetAnimation("Damage.Rifle.B");
+			anim->Play();
+		}
+
+		// 重力を無し
+		rb->isGravity = false;
+		rb->velocity = Vector3::zero;
+
+		// ダメージ状態にする
+		isDamage = true;
+	}
+	// ダウン状態
+	else
+	{
+	}
+
 }
 
 /**
 * 生き返る
+*
+* @param removePos	生き返る位置
+* @param hpCut		体力のカット率
 */
-void Gundam::Remove(const Vector3& removePos, float hp)
+void Gundam::Remove(const Vector3& removePos, float hpCut)
 {
 	// 蘇生位置を設定
 	GetTransform()->position = removePos;
 
 	// ステータスの設定
-	this->hp = hpMax * hp;
+	this->hp = hpMax * hpCut;
+	this->boostEnergy = boostEnergyMax;
 
 	// 武装の初期化
 	rifle->Initialize();
+	bazooka->Initialize();
 
 	// 死亡状態を解除
 	isDeath = false;
-	anim->SetAnimation("RifleIdle");
+
+	rb->velocity = Vector3::zero;
+
+	anim->SetAnimation("Idle.Rifle");
+	anim->Play();
 }

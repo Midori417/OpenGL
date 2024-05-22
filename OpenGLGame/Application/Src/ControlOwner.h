@@ -77,6 +77,9 @@ public:
 	// 自分の機体
 	BaseMsPtr myMs;
 
+	// 復活位置配列
+	std::vector<Vector3> removePoss;
+
 protected:
 
 	// 自分のMSの死亡の有無

@@ -19,6 +19,9 @@ using namespace FGEngine::SceneSystem;
 */
 void BattleManager::Awake()
 {
+	auto resManager = ResouceManager::GetInstance();
+	auto winManager = WindowManager::GetInstance();
+
 	// プレイヤーを作成
 	{
 		auto playerObj = Instantate("Player");
@@ -67,16 +70,6 @@ void BattleManager::Awake()
 	// お互いのコントローラーの情報を設定
 	playerControl->otherOwner = cpuControl.get();
 	cpuControl->otherOwner = playerControl.get();
-}
-
-/**
-* 最初に実行
-*/
-void BattleManager::Start()
-{
-
-	auto resManager = ResouceManager::GetInstance();
-	auto winManager = WindowManager::GetInstance();
 
 	// UI
 	{
@@ -117,14 +110,19 @@ void BattleManager::Start()
 		}
 
 	}
+}
+
+/**
+* 最初に実行
+*/
+void BattleManager::Start()
+{
 	// UIを非表示
 	imgStandbay->SetEnable(false);
 	imgGoBack->SetEnable(false);
 	imgGo->SetEnable(false);
 	imgWin->SetEnable(false);
 	imgLose->SetEnable(false);
-
-
 }
 
 /**
@@ -198,9 +196,6 @@ void BattleManager::Update()
 			SceneManager::LoadScene("タイトルシーン");
 		}
 
-
-		break;
-	default:
 		break;
 	}
 }

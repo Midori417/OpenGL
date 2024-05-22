@@ -3,7 +3,6 @@
 */
 #include "ChoiceScene.h"
 #include "../ChoiceManager.h"
-#include "../FadeOut.h"
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
@@ -17,6 +16,7 @@ bool ChoiceScene::Initialize()
 	// マネージャーを取得
 	auto objManager = ObjectManager::GetInstance();
 	auto resManager = ResouceManager::GetInstance();
+	auto winManager = WindowManager::GetInstance();
 
 	// カメラの作成
 	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
@@ -32,7 +32,7 @@ bool ChoiceScene::Initialize()
 		auto titleBack = objManager->CreateGameObject("TitleBack");
 		auto image = titleBack->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleBack");
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		image->size = winManager->GetWindowSize();
 	}
 
 	// ガンダムを作成
@@ -40,7 +40,7 @@ bool ChoiceScene::Initialize()
 		auto titleGundam = objManager->CreateGameObject("TitleGundam");
 		auto image = titleGundam->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleGundam");
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		image->size = winManager->GetWindowSize();
 	}
 
 	// ブラックオブジェクトを作成
@@ -49,7 +49,7 @@ bool ChoiceScene::Initialize()
 		auto image = blackObject->AddComponent<Image>();
 		image->texture = resManager->GetTexture("white");
 		image->color = Color(0, 0, 0, 0.7f);
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		image->size = winManager->GetWindowSize();
 	}
 
 	// タイトルロゴを作成
@@ -60,56 +60,5 @@ bool ChoiceScene::Initialize()
 		image->size = Vector2(937, 383) * 0.9f;
 	}
 
-	// バトルボタンを作成
-	{
-		auto battleButton = objManager->CreateGameObject("BattleButton", Vector3(500, -200, 0));
-		auto image = battleButton->AddComponent<Image>();
-		image->texture = resManager->GetTexture("BattleButton");
-		image->size = image->texture->GetSize() * 1.3f;
-		choiceManager->imgButtons.push_back(image);
-	}
-
-	// オプションボタンを作成
-	{
-		auto optionButton = objManager->CreateGameObject("OptionButton", Vector3(500, 0, 0));
-		auto image = optionButton->AddComponent<Image>();
-		image->texture = resManager->GetTexture("OptionButton");
-		image->size = image->texture->GetSize() * 1.3f;
-		choiceManager->imgButtons.push_back(image);
-	}
-
-	// やめるボタンを作成
-	{
-		auto exitButton = objManager->CreateGameObject("ExitButton", Vector3(500, 200, 0));
-		auto image = exitButton->AddComponent<Image>();
-		image->texture = resManager->GetTexture("ExitButton");
-		image->size = image->texture->GetSize() * 1.3f;
-		choiceManager->imgButtons.push_back(image);
-	}
-
-	// フェードオブジェクトを作成
-	{
-		auto fadeObject = objManager->CreateGameObject("FadeObjectA");
-		auto image = fadeObject->AddComponent<Image>();
-		image->texture = resManager->GetTexture("white");
-		image->color = Color::black;
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
-		choiceManager->fadeOut = fadeObject->AddComponent<FadeOut>();
-	}
-
 	return false;
-}
-
-/**
-* ゲーム選択シーンの更新
-*/
-void ChoiceScene::Update()
-{
-}
-
-/**
-* ゲーム選択シーンの終了
-*/
-void ChoiceScene::Finalize()
-{
 }

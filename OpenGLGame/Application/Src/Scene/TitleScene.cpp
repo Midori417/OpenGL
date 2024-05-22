@@ -4,6 +4,7 @@
 #include "TitleScene.h"
 #include "../ImageBlinking.h"
 #include "../FadeOut.h"
+#include "../TitleManager.h"
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
@@ -11,14 +12,9 @@ using namespace FGEngine::UI;
 
 /**
 * タイトルシーンの初期化
-*
-* @param engine エンジン
 */
 bool TitleScene::Initialize()
 {
-	// メンバー変数の初期化
-	isFadeStart = false;
-
 	auto objManager = ObjectManager::GetInstance();
 	auto resManager = ResouceManager::GetInstance();
 
@@ -26,6 +22,10 @@ bool TitleScene::Initialize()
 	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10));
 	camera->AddComponent<Camera>();
 	objManager->SetMainCamera(camera);
+
+	// タイトルマネージャを作成
+	auto titleManagerObj = objManager->CreateGameObject("TitleManager");
+	auto titleManager = titleManagerObj->AddComponent<TitleManager>();
 
 	// タイトル背景を作成
 	{
@@ -71,43 +71,5 @@ bool TitleScene::Initialize()
 		image->size = Vector2(937, 383) * 1.3f;
 	}
 
-	// フェードオブジェクトを作成
-	{
-		auto fadeObject = objManager->CreateGameObject("FadeObject");
-		auto image = fadeObject->AddComponent<Image>();
-		image->texture = resManager->GetTexture("white");
-		image->color = Color::black;
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
-		fadeOut = fadeObject->AddComponent<FadeOut>();
-	}
 	return true;
-}
-
-/**
-* タイトルシーンの更新
-*
-* @param engine		エンジン
-* @param deltaTime	前回の更新からの経過時間
-*/
-void TitleScene::Update()
-{
-	if (InputKey::AnyKey() && !isFadeStart)
-	{
-		fadeOut->isStart = true;
-		isFadeStart = true;
-	}
-	// フェードが終了したらシーン移動
-	if (fadeOut->IsFadeOut())
-	{
-		SceneManager::LoadScene("ゲーム選択シーン");
-	}
-}
-
-/**
-* タイトルシーンの終了
-*
-* @param engine エンジン
-*/
-void TitleScene::Finalize()
-{
 }

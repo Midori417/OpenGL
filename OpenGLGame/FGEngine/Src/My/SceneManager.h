@@ -50,6 +50,12 @@ namespace FGEngine
 			template<typename T>
 			static void AddScene(const std::string& name)
 			{
+				auto tmp = scenes.find(name);
+				if (tmp != scenes.end())
+				{
+					// Šù‚É‘¶İ‚µ‚Ä‚¢‚é
+					return;
+				}
 				auto scenePtr = std::make_shared<T>();
 				scenes.emplace(name, scenePtr);
 			}

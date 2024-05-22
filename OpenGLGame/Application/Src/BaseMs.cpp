@@ -4,14 +4,6 @@
 #include "BaseMs.h"
 
 /**
-* ƒ`[ƒ€‚ğæ“¾
-*/
-Teum BaseMs::GetTeum() const
-{
-	return teum;
-}
-
-/**
 * HP‚ğæ“¾
 */
 int BaseMs::GetHP() const

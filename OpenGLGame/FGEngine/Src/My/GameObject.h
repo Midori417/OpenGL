@@ -74,7 +74,7 @@ namespace FGEngine
 			{
 				monoBehaviours.push_back(p);
 				// ¶¬ˆ—‚ðŽÀs
-				p->Awake();
+				monoBehaviours.back()->Awake();
 			}
 
 

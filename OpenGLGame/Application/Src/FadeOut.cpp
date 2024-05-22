@@ -2,21 +2,52 @@
 * @file FadeOut.cpp
 */
 #include "FadeOut.h"
+using namespace FGEngine::ResouceSystem;
+using namespace FGEngine::WindowSystem;
+
+/**
+* フェードを開始する
+*/
+void FadeOut::FadeStart()
+{
+	isStart = true;
+}
+
+/**
+* フェードが始まっているかを取得
+*
+* @retval true 始まっている
+* @retval false 始まっていない
+*/
+bool FadeOut::IsFadeStart() const
+{
+	return isStart;
+}
+
+/**
+* フェードの状況を取得
+*
+* @retval true	フェード終了
+* @retval false	終わっていない
+*/
+bool FadeOut::IsFadeOut() const
+{
+	return isFadeOut;
+}
+
 
 /**
 * 最初に実行
 */
 void FadeOut::Start()
 {
-	// コンポーネントを取得
-	image = OwnerObject()->GetComponent<Image>();
+	// イメージコンポーネントを追加
+	image = OwnerObject()->AddComponent<Image>();
+	image->texture = ResouceManager::GetInstance()->GetTexture("white");
+	image->color = Color::black;
+	image->size = WindowManager::GetInstance()->GetWindowSize();
 
-	// イメージがなければ何もしない
-	if (!image)
-	{
-		return;
-	}
-
+	// アルファをゼロにする
 	image->color.a = 0;
 }
 
@@ -33,20 +64,11 @@ void FadeOut::Update()
 
 	// アルファ値を増加
 	image->color.a += speed * Time::DeltaTime();
+
+	// アルファ値が1以上になればフェードを終了する
 	if (image->color.a >= 1)
 	{
 		image->color.a = 1;
 		isFadeOut = true; // フェード終了
 	}
-}
-
-/**
-* フェードの状況を取得
-*
-* @retval true	フェード終了
-* @retval false	終わっていない
-*/
-bool FadeOut::IsFadeOut() const
-{
-	return isFadeOut;
 }

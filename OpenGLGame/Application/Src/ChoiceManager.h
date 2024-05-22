@@ -6,7 +6,7 @@
 #include "FGEngine.h"
 using namespace FGEngine;
 
-
+// 先行宣言
 class FadeOut;
 using FadeOutPtr = std::shared_ptr<FadeOut>;
 
@@ -56,10 +56,6 @@ private:
 	// 選択色
 	Color highlightedColor = Color{ 0.7f, 0.7f, 0.7f , 1 };
 
-	// ボタンが押されたら
-	bool isFadeStart = false;
-
-public:
 
 	// ボタン配列
 	std::vector<UI::ImagePtr> imgButtons;
