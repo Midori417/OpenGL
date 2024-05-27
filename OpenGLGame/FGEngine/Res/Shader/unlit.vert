@@ -13,7 +13,7 @@ layout(location=1) out vec2 outTexcoord;	// テクスチャ座標
 
 // プログラムからの入力
 layout(location=0) uniform mat4 transformMatrix;
-layout(location=3) uniform vec2 aspectRatioAndScaleFov;	// アスペクト比
+layout(location=3) uniform vec4 aspectRatioAndScaleFov;	// アスペクト比
 layout(location=4) uniform vec3 cameraPosition;	// カメラの位置
 layout(location=5) uniform mat3 cameraRotationMatrix;
 
@@ -29,19 +29,15 @@ void main()
 	outPosition = gl_Position.xyz;
 
 	// ワールド座標系からビュー座標系に変換
-//	vec3 pos = gl_Position.xyz - cameraPosition;
-//	gl_Position.xyz = RotateXYZ(pos, cameraSin, cameraCos);
-//
 	vec3 pos = (gl_Position.xyz - cameraPosition) * cameraRotationMatrix;
-//	gl_Position.xyz = RotateXYZ(pos, cameraSin, cameraCos);
 	gl_Position.xyz = pos;
 
 	// ビュー座標系からクリップ座標系に変換
 	gl_Position.xy *= aspectRatioAndScaleFov;
 
 	// 深度値の計算結果が-1～+1になるようなパラメータA、Bを計算
-	const float near = 0.35f;
-	const float far = 1000;
+	const float near = aspectRatioAndScaleFov.z;
+	const float far = aspectRatioAndScaleFov.w;
 	const float A = -2 * far * near / (far - near);
 	const float B = (far + near) / (far - near);
 

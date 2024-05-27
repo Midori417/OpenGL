@@ -4,9 +4,12 @@
 #ifndef BASEMS_H_INCLUDED
 #define BASEMS_H_INCLUDED
 #include "FGEngine.h"
+#include "GameInput.h"
 using namespace FGEngine;
 
+// 先行宣言
 struct DamageInfo;
+struct GameInput;
 
 /**
 * UIに表記する武装
@@ -31,10 +34,6 @@ struct NumWeapon
 	// 武器アイコン
 	TexturePtr iconTexture;
 
-
-	/**
-	* 射撃
-	*/
 	virtual void Initialize(){}
 };
 using NumWeaponPtr = std::shared_ptr<NumWeapon>;
@@ -67,7 +66,10 @@ public:
 	int GetCost() const;
 
 	/**
-	* 死亡か取得
+	* 死亡状態を取得
+	* 
+	* @retval true	死亡
+	* @retval false 生存
 	*/
 	bool IsDeath() const;
 
@@ -79,38 +81,12 @@ public:
 	void SetDistance(float distance);
 
 	/**
-	* 敵との距離を取得
-	*/
-	float GetDistance() const;
-
-	/**
-	* 移動
-	*
-	* @param moveAxis 入力軸
-	*/
-	virtual void Move(const Vector2& moveAxis) {}
-
-	/**
-	* ジャンプ
-	*/
-	virtual void Jump(bool isJump, const Vector2& moveAxis){}
-
-	/**
-	* ダッシュ
-	*/
-	virtual void Dash(bool isDash, const Vector2& mvoeAxis){}
-
-	// 攻撃
-	virtual void Attack1(bool attackKey) {}
-	virtual void Attack2(bool attackKey) {}
-
-	/**
 	* 生き返る
 	* 
 	* @param removePos	生き返る位置
 	* @param hpCut		体力のカット率
 	*/
-	virtual void Remove(const Vector3& removePos, float hpCut){}
+	virtual void Respon(const Vector3& removePos, float hpCut){}
 
 	/**
 	* ダメージを与える
@@ -125,26 +101,47 @@ public:
 	void SetCamera(Transform* camera);
 
 	/**
-	* カメラのトランスフォームを取得
-	*/
-	Transform* GetCameraTransform() const;
-
-	/**
 	* ターゲットMSの設定
 	*/
 	void SetTargetMS(BaseMs* baseMS);
+
+	/**
+	* ゲーム入力を設定
+	*/
+	void SetGameInput(GameInput* gameInput);
+
+protected:
+
+	/**
+	* 死亡チェック
+	* 
+	* @retval true	死亡
+	* @retval false 生存
+	*/
+	bool DeadChaeck();
+
+	/**
+	* ブーストエネルギーの更新
+	*/
+	void BoostEnergyUpdate();
+
+	/**
+	* カメラのトランスフォームを取得
+	*/
+	Transform* GetCameraTransform() const;
 
 	/**
 	* ターゲットMSの取得
 	*/
 	BaseMs* GetTargetMs() const;
 
+	/**
+	* 敵との距離を取得
+	*/
+	float GetDistance() const;
+
 
 public:
-
-
-	// MSの名前
-	std::string name;
 
 	// 数制限がる武器の配列
 	std::vector<NumWeaponPtr> numWeapons;
@@ -157,44 +154,65 @@ public:
 
 protected:
 
-	// 機体のコスト
-	int cost = 0;
+	// リギボ
+	RigidbodyPtr rb;
 
-	// 機体のHPの最大値
-	float hpMax = 0;
+	// アニメータ
+	AnimatorPtr anim;
 
-	// 機体のHP
-	float hp = 0;
+	// レンダラー
+	GltfMeshRendererPtr renderer;
 
-	// ダウン値
-	float downValue = 0;
+	// 入力
+	GameInput* gameInput = nullptr;
 
-	// ダメージ状態の有無
-	bool isDamage = false;
+	/**
+	* 基礎パラメータ
+	*/
+	struct BaseParamater
+	{
+		// MSの名前
+		std::string name;
 
-	// 死亡状態の有無
-	bool isDeath = false;
+		// 機体のコスト
+		int cost = 0;
 
-	// エネルギー最大量
-	const float boostEnergyMax = 100;
+		// 機体のHPの最大値
+		float hpMax = 0;
 
-	// エネルギー
-	float boostEnergy = 100;
+		// 機体のHP
+		float hp = 0;
 
-	// エネルギー回復速度
-	float boostEnergyChage = 500;
+	};
+	BaseParamater baseParamater;
 
-	// 地面についてからのチャージ速度
-	float boostEnergyChageTimer = 0;
+	/**
+	* ブーストパラメータ
+	*/
+	struct BoostParamater
+	{
+		// エネルギーの最大量
+		const float max = 100;
 
-	// 地面についてからのチャージ開始までの速度
-	float boostEnergyChageStartTime = 0.2f;
+		// 現在のエネルギー
+		float current = 100;
 
-	// 地面についてからのチャージ開始までの速度(OVERHEATの場合)
-	float boostEnergyChageOverHeatStartTime = 0.5f;
+		// 回復速度
+		float chageSpeed = 500;
 
-	// エネルギー回復のロックの有無
-	bool boostEnergyChageLock = false;
+		// チャージ開始タイマー
+		float chageStartTimer = 0;
+
+		// チャージの開始速度
+		const float chageStartTime = 0.2f;
+
+		// チャージ開始速度(OVERHEATの場合)
+		const float overHeatChageStartTime = 0.5f;
+
+		// エネルギーを回復するか
+		bool chageLock = false;
+	};
+	BoostParamater boostParamater;
 
 	/**
 	* 移動パラメータ
@@ -250,11 +268,33 @@ protected:
 		// 通常時の旋回速度
 		float rotationSpeed = 0;
 
+		// ダッシュパラメータ
 		DashParamater dash;
 
+		// ジャンプパラメータ
 		JumpPramter jump;
 	};
 	MoveParamater moveParamater;
+
+	// 死亡状態
+	bool isDeath = false;
+
+	// ダウン値
+	float downValue = 0;
+
+	// 吹き飛び状態の有無
+	bool isBlowAway = false;
+
+	float blowAwayTimer = 0;
+
+	float blowAwayTime = 1;
+
+	float blowPower = 30.0f;
+
+	bool isDown = false;
+
+	// ダメージ状態の有無
+	bool isDamage = false;
 
 private:
 

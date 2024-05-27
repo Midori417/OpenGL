@@ -17,7 +17,7 @@ layout(location=2) out vec3 outNormal;		// 法線ベクトル
 layout(location=3) out vec3 outShadowTexcoord;	// シャドウテクスチャ座標
 
 // プログラムからの入力
-layout(location=3) uniform vec2 aspectRatioAndScaleFov;	// アスペクト比
+layout(location=3) uniform vec4 aspectRatioAndScaleFov;	// アスペクト比
 layout(location=4) uniform vec3 cameraPosition;	// カメラの位置
 layout(location=5) uniform mat3 cameraRotationMatrix;
 layout(location=10) uniform mat4 shadowTextureMatrix;	// シャドウテクスチャ行列
@@ -69,8 +69,8 @@ void main()
 	gl_Position.xy *= aspectRatioAndScaleFov;
 
 	// 深度値の計算結果が-1～+1になるようなパラメータA、Bを計算
-	const float near = 0.35f;
-	const float far = 1000;
+	const float near = aspectRatioAndScaleFov.z;
+	const float far = aspectRatioAndScaleFov.w;
 	const float A = -2 * far * near / (far - near);
 	const float B = (far + near) / (far - near);
 

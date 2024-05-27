@@ -55,6 +55,8 @@ public:
 
 	// —^‚¦‚éƒ_ƒEƒ“’l
 	float downPower = 0;
+
+	Vector3 basePos = Vector3::zero;
 };
 
 

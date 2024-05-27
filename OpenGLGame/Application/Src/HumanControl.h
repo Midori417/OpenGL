@@ -1,8 +1,8 @@
 /**
-* @file Player.h
+* @file HumanControl.h
 */
-#ifndef PLAYER_H_INCLUDED
-#define PLAYER_H_INCLUDED
+#ifndef HYUMANCONTROL_H_INCLUDED
+#define HYUMANCONTROL_H_INCLUDED
 #include "ControlOwner.h"
 using namespace FGEngine::UI;
 
@@ -14,15 +14,15 @@ class ImageNum;
 using ImageNumPtr = std::shared_ptr<ImageNum>;
 
 /**
-* プレイヤー操作
+* 人間が操作
 */
-class PlayerControl : public ControlOwner
+class HumanControl : public ControlOwner
 {
 public:
 
 	// コンストラクタ・デストラクタ
-	PlayerControl() = default;
-	virtual ~PlayerControl() = default;
+	HumanControl() = default;
+	virtual ~HumanControl() = default;
 
 
 private:
@@ -38,9 +38,9 @@ private:
 	virtual void Update() override;
 
 	/**
-	* 機体の更新
+	* ゲーム入力を更新
 	*/
-	virtual void MsUpdate() override;
+	virtual void GameInputUpdate() override;
 
 	/**
 	* UI処理の更新
@@ -50,10 +50,9 @@ private:
 	/**
 	* 終了処理
 	*/
-	virtual void Finish() override;
+	virtual void Finish(VictoryState victoryState) override;
 
 private:
-
 
 	// 自身の情報背景
 	ImagePtr imgMyInfoBack;
@@ -115,7 +114,13 @@ private:
 	ImagePtr imgMyTeumHpBar;
 
 	// 相手チームの体力バー
-	ImagePtr imgEnemyTeumHpBar;
+	ImagePtr imgOtherTeumHpBar;
+
+	// 勝利
+	ImagePtr imgWin;
+
+	// 敗北
+	ImagePtr imgLose;
 };
 
 

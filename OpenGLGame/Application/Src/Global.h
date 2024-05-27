@@ -12,6 +12,24 @@ static const int teumMaxHp = 6000;
 static const int playerMax = 4;
 
 /**
+* Ÿ”só‘Ô
+*/
+enum class VictoryState
+{
+	// ‰½‚à‚È‚µ
+	None,
+
+	// Ÿ—˜
+	Win,
+
+	// ”s–k
+	Lose,
+
+	// ˆø‚«•ª‚¯
+	Drow,
+};
+
+/**
 * ƒRƒ“ƒgƒ[ƒ‹î•ñ
 */
 struct ControlInfo

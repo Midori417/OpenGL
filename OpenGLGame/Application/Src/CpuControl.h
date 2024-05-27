@@ -29,14 +29,9 @@ private:
 	virtual void Update() override;
 
 	/**
-	* 機体の更新
+	* ゲーム入力を更新
 	*/
-	virtual void MsUpdate() override;
-
-	/**
-	* 終了
-	*/
-	virtual void Finish() override;
+	virtual void GameInputUpdate() override;
 
 private:
 
@@ -67,15 +62,25 @@ private:
 	};
 	int cpuState = 0;
 
+	// CPU用の仮想軸
 	Vector2 cpuMoveAxis = Vector2::zero;
 
+	// 軸配列
 	std::vector<Vector2> moveAxiss;
+
+	// ターゲットナンバー
+	int targetNum = 0;
+
+	// 次の移動方向を変更タイマー
 	float moveTimer = 0;
+
+	// 次の移動方向を変更するまでの時間
 	float moveTime = 0;
 
+	// 次の行動を変更タイマー
 	float cpuTimer = 0;
 
-	// 次の行動を決めるまでの時間
+	// 次の行動を変更するまでの時間
 	float cpuTime = 0;
 };
 

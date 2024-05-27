@@ -20,7 +20,7 @@ void Gundam::Awake()
 	resManager->LoadTga("Gundam/BazookaIcon", "Application/Res/Ms/Gundam/UI/BazookaIcon.tga");
 
 	// 描画コンポーネントを追加
-	auto renderer = OwnerObject()->AddComponent<GltfMeshRenderer>();
+	renderer = OwnerObject()->AddComponent<GltfMeshRenderer>();
 	renderer->glTFfile = resManager->GetGltfFile("Gundam");
 	renderer->shader = resManager->GetShader(DefalutShader::Skeletal3D);
 	renderer->shadowShader = resManager->GetShader(DefalutShader::ShadowSkeletal3D);
@@ -45,11 +45,10 @@ void Gundam::Awake()
 	anim->SetAnimation("Idle.Rifle", true);
 	anim->Play();
 
-	// ステータスを設定
-	hpMax = 600;
-	hp = hpMax;
-	cost = 2000;
-	boostEnergy = boostEnergyMax;
+	// 基礎パラメータを設定
+	baseParamater.hpMax = 600;
+	baseParamater.hp = baseParamater.hpMax;
+	baseParamater.cost = 2000;
 
 	// 攻撃の距離
 	proximityDistance = 40.0f;
@@ -93,7 +92,7 @@ void Gundam::Awake()
 	rifle->amo = rifle->amoMax;
 	rifle->damage = 70.0f;
 	rifle->downPower = 40;
-	rifle->homingPower = 0.09f;
+	rifle->homingPower = 0.4f;
 	rifle->speed = 200.0f;
 	rifle->reloadTime = 3;
 	rifle->iconTexture = resManager->GetTexture("Gundam/BeumRifleIcon");
@@ -108,19 +107,40 @@ void Gundam::Awake()
 */
 void Gundam::Update()
 {
-	// 死んでいれば何もしない
-	if (isDeath)
+	// 死亡チェック、死んでいれば何もしない
+	if (DeadChaeck())
 	{
 		return;
 	}
 
-
-	// HPがなければ死亡状態にする
-	if (hp <= 0)
+	if (isBlowAway && !isDown)
 	{
-		// 死亡状態にする
-		isDeath = true;
-		return;
+		blowAwayTimer += Time::DeltaTime();
+		if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
+		{
+			GetTransform()->position -= blowPower * GetTransform()->Forward() * Time::DeltaTime();
+		}
+		else if (anim->GetAnimationClip()->name == "BlowAway.Rifle.B")
+		{
+			GetTransform()->position += blowPower * GetTransform()->Forward() * Time::DeltaTime();
+		}
+		if (blowAwayTimer > blowAwayTime && rb->IsGround())
+		{
+			isBlowAway = false;
+
+			if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
+			{
+				anim->SetAnimation("Down.Rifle.F");
+				anim->Play();
+			}
+			else if (anim->GetAnimationClip()->name == "BlowAway.Rifle.B")
+			{
+				anim->SetAnimation("Down.Rifle.B");
+				anim->Play();
+			}
+
+			isDown = true;
+		}
 	}
 
 	// ダメージ状態なら
@@ -155,29 +175,24 @@ void Gundam::Update()
 		}
 	}
 
-	// 地面についているとき
-	if (rb->IsGround() && !boostEnergyChageLock)
+	if (gameInput)
 	{
-		if (boostEnergyChageTimer <= 0)
-		{
-			// ブーストエネルギーが減っていたら
-			if (boostEnergy < boostEnergyMax)
-			{
-				boostEnergy += boostEnergyChage * Time::DeltaTime();
-			}
-		}
-		else
-		{
-			// エネルギーチャージ開始タイマーを減らす
-			boostEnergyChageTimer -= Time::DeltaTime();
-		}
+		// 移動
+		Move(gameInput->moveAxis);
+		// ジャンプ
+		Jump(gameInput->jumpBtn, gameInput->moveAxis);
+		// ダッシュ
+		Dash(gameInput->dashBtn, gameInput->moveAxis);
+		// 攻撃(ビームライフル)
+		Action1(gameInput->action1Btn);
+		// 攻撃2(バズーカ)
+		Action2(gameInput->action2Btn);
 	}
-	boostEnergy = Mathf::Clamp(boostEnergy, 0.0f, boostEnergyMax);
+	// ブーストエネルギーを更新
+	BoostEnergyUpdate();
 
 	// リロードを更新
 	ReloadUpdate();
-
-
 }
 
 /**
@@ -220,7 +235,7 @@ void Gundam::ReloadUpdate()
 void Gundam::Move(const Vector2& moveAxis)
 {
 	// ダメージ状態なら何もしない
-	if (isDamage)
+	if (isDamage || isBlowAway || isDown)
 	{
 		return;
 	}
@@ -281,7 +296,7 @@ void Gundam::Move(const Vector2& moveAxis)
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
 	// ダメージ状態なら何もしない
-	if (isDamage)
+	if (isDamage || isBlowAway || isDown)
 	{
 		return;
 	}
@@ -296,7 +311,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 	if (isJump)
 	{
 		// エネルギーがあればジャンプさせる
-		if (boostEnergy > 0)
+		if (boostParamater.current > 0)
 		{
 			// カメラを取得
 			auto cameraTrs = GetCameraTransform();
@@ -340,11 +355,12 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 			rb->velocity = Vector3(0);
 			// 上昇
 			GetTransform()->position.y += moveParamater.jump.power * Time::DeltaTime();
+
 			// エネルギーを消費
-			boostEnergy += moveParamater.jump.useEnergy * Time::DeltaTime();
+			boostParamater.current += moveParamater.jump.useEnergy * Time::DeltaTime();
 
 			//ブーストエネルギーの回復をロック
-			boostEnergyChageLock = true;
+			boostParamater.chageLock = true;
 
 			// ジャンプ状態に変更
 			moveParamater.jump.isNow = true;
@@ -355,9 +371,9 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 			if (moveParamater.jump.isNow)
 			{
 				// エネルギーチャージのロックを解除
-				boostEnergyChageLock = false;
+				boostParamater.chageLock = false;
 				// エネルギーチャージのタイマーを代入
-				boostEnergyChageTimer = boostEnergyChageOverHeatStartTime;
+				boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
 
 				anim->SetAnimation("Idle.Rifle", true);
 				anim->Play();
@@ -372,9 +388,9 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 		if (moveParamater.jump.isNow)
 		{
 			// エネルギーチャージのロックを解除
-			boostEnergyChageLock = false;
+			boostParamater.chageLock = false;
 			// エネルギーチャージのタイマーを代入
-			boostEnergyChageTimer = boostEnergyChageStartTime;
+			boostParamater.chageStartTimer = boostParamater.chageStartTime;
 
 			if (!rifle->isNow)
 			{
@@ -395,7 +411,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
 	// ダメージ状態なら何もしない
-	if (isDamage)
+	if (isDamage || isBlowAway || isDown)
 	{
 		return;
 	}
@@ -409,7 +425,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 	if (isDash)
 	{
 		// エネルギーがあればダッシュさせる
-		if (boostEnergy > 0)
+		if (boostParamater.current > 0)
 		{
 			rb->isVelocity = false;
 
@@ -435,7 +451,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			rb->velocity = GetTransform()->Forward() * moveParamater.dash.speed;
 
 			// エネルギーを消費
-			boostEnergy += moveParamater.dash.useEnergy * Time::DeltaTime();
+			boostParamater.current += moveParamater.dash.useEnergy * Time::DeltaTime();
 
 			// 射撃状態ならアニメーションをキャンセル
 			if (!rifle->isNow)
@@ -450,7 +466,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// ダッシュ中に変更
 			moveParamater.dash.isNow = true;
 			// エネルギーチャージをロック
-			boostEnergyChageLock = true;
+			boostParamater.chageLock = true;
 		}
 		else
 		{
@@ -459,9 +475,9 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			{
 				rb->isVelocity = true;
 				// エネルギーチャージのロックを解除
-				boostEnergyChageLock = false;
+				boostParamater.chageLock = false;
 				// エネルギーチャージのタイマーを代入
-				boostEnergyChageTimer = boostEnergyChageOverHeatStartTime;
+				boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
 
 				if (!rifle->isNow)
 				{
@@ -481,9 +497,10 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 		{
 			rb->isVelocity = true;
 			// エネルギーチャージのロックを解除
-			boostEnergyChageLock = false;
+			boostParamater.chageLock = false;
 			// エネルギーチャージのタイマーを代入
-			boostEnergyChageTimer = boostEnergyChageStartTime;
+			boostParamater.chageStartTimer = boostParamater.chageStartTime;
+
 
 			if (!rifle->isNow)
 			{
@@ -501,10 +518,10 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 /**
 * 攻撃(ビームライフル)
 */
-void Gundam::Attack1(bool attackKey)
+void Gundam::Action1(bool attackKey)
 {
 	// ダメージ状態なら何もしない
-	if (isDamage)
+	if (isDamage || isBlowAway || isDown)
 	{
 		return;
 	}
@@ -658,17 +675,15 @@ void Gundam::Attack1(bool attackKey)
 			// 残弾を減らす
 			rifle->amo -= 1;
 
-			// ターゲットの方向のトランスフォームを作成
-			TransformPtr trs = std::make_shared<Transform>();
-			trs->position = GetTransform()->position;
-			trs->rotation = GetTransform()->rotation;
-			trs->LookAt(GetTargetMs()->GetTransform());
+			// ターゲットの方向を取得
+			Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+			Quaternion rot = Quaternion::LookRotation(directionToTarget);
 
 			// 弾の生成位置を計算
-			auto pos = GetTransform()->position + (trs->rotation * Vector3(0, 0, 5));
+			auto pos = GetTransform()->position + (rot * Vector3(0, 0, 5));
 
 			// 弾を作成
-			auto bullet = Instantate("Bullet", pos, trs->rotation);
+			auto bullet = Instantate("Bullet", pos, rot);
 			auto renderer = bullet->AddComponent<MeshRenderer>();
 			renderer->mesh = rifle->mesh;
 			renderer->shader = rifle->shader;
@@ -724,10 +739,10 @@ void Gundam::Attack1(bool attackKey)
 /**
 * 攻撃2(バズーカ)
 */
-void Gundam::Attack2(bool attackKey)
+void Gundam::Action2(bool attackKey)
 {
 	// ダメージ状態なら何もしない
-	if (isDamage)
+	if (isDamage || isBlowAway || isDown)
 	{
 		return;
 	}
@@ -774,17 +789,11 @@ void Gundam::Attack2(bool attackKey)
 			// 残弾を減らす
 			bazooka->amo -= 1;
 
-			// ターゲットの方向のトランスフォームを作成
-			TransformPtr trs = std::make_shared<Transform>();
-			trs->position = GetTransform()->position;
-			trs->rotation = GetTransform()->rotation;
-			trs->LookAt(GetTargetMs()->GetTransform());
-
 			// 弾の生成位置を計算
 			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.3f, 0, 5));
 
 			// 弾を作成
-			auto bullet = Instantate("Bullet", pos, trs->rotation);
+			auto bullet = Instantate("Bullet", pos, GetTransform()->rotation);
 			auto renderer = bullet->AddComponent<MeshRenderer>();
 			renderer->mesh = bazooka->mesh;
 			renderer->shader = bazooka->shader;
@@ -831,12 +840,17 @@ void Gundam::Attack2(bool attackKey)
 */
 void Gundam::Damage(const DamageInfo& damageInfo)
 {
+	if (isBlowAway || isDown)
+	{
+		return;
+	}
 	// 与えられたダメージの方向を計算
-	Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+	Vector3 directionToTarget = damageInfo.direction;
 	float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
 
 	// 体力を減らす
-	hp -= static_cast<int>(damageInfo.damage);
+	baseParamater.hp -= static_cast<int>(damageInfo.damage);
+	//downValue += damageInfo.downPower;
 
 	// 通常ダメージアクション
 	if (downValue < 100)
@@ -845,7 +859,7 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 		if (dot > 0)
 		{
 			GetTransform()->rotation = Quaternion::LookRotation(directionToTarget * Vector3(1, 0, 1));
-			GetTransform()->position += GetTransform()->Forward() * -0.5f;
+			GetTransform()->position += GetTransform()->Forward() * -1.0f;
 
 			anim->SetAnimation("Damage.Rifle.F");
 			anim->Play();
@@ -854,7 +868,7 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 		else
 		{
 			GetTransform()->rotation = Quaternion::LookRotation(-directionToTarget * Vector3(1, 0, 1));
-			GetTransform()->position += GetTransform()->Forward() * -0.5f;
+			GetTransform()->position += GetTransform()->Forward() * 1.0f;
 
 			anim->SetAnimation("Damage.Rifle.B");
 			anim->Play();
@@ -870,6 +884,27 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 	// ダウン状態
 	else
 	{
+		// 前方
+		if (dot > 0)
+		{
+			GetTransform()->rotation = Quaternion::LookRotation(directionToTarget * Vector3(1, 0, 1));
+			GetTransform()->position += GetTransform()->Forward() * -1.0f;
+
+			anim->SetAnimation("BlowAway.Rifle.F");
+			anim->Play();
+		}
+		// 後方
+		else
+		{
+			GetTransform()->rotation = Quaternion::LookRotation(-directionToTarget * Vector3(1, 0, 1));
+			GetTransform()->position += GetTransform()->Forward() * 1.0f;
+
+			anim->SetAnimation("BlowAway.Rifle.B");
+			anim->Play();
+		}
+		blowAwayTimer = 0;
+		isBlowAway = true;
+		downValue = 0;
 	}
 
 }
@@ -880,14 +915,14 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 * @param removePos	生き返る位置
 * @param hpCut		体力のカット率
 */
-void Gundam::Remove(const Vector3& removePos, float hpCut)
+void Gundam::Respon(const Vector3& removePos, float hpCut)
 {
 	// 蘇生位置を設定
 	GetTransform()->position = removePos;
 
 	// ステータスの設定
-	this->hp = hpMax * hpCut;
-	this->boostEnergy = boostEnergyMax;
+	baseParamater.hp = baseParamater.hpMax * hpCut;
+	boostParamater.current = boostParamater.max;
 
 	// 武装の初期化
 	rifle->Initialize();
@@ -897,6 +932,13 @@ void Gundam::Remove(const Vector3& removePos, float hpCut)
 	isDeath = false;
 
 	rb->velocity = Vector3::zero;
+	renderer->enabled = true;
+
+	// ターゲットの方向を取得
+	Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+	Quaternion rot = Quaternion::LookRotation(directionToTarget);
+	// 相手の逆方向を向く
+	GetTransform()->rotation = Quaternion::LookRotation(directionToTarget * Vector3(1, 0, 1));
 
 	anim->SetAnimation("Idle.Rifle");
 	anim->Play();

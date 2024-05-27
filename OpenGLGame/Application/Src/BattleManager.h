@@ -35,6 +35,12 @@ public:
 	*/
 	static void SetBattleInfo(BattleInfoPtr _battleInfo);
 
+	/**
+	* リスポーン位置
+	*/
+	void SetResponPos(const Vector3& pos);
+	void SetResponPos(const std::vector<Vector3>& poses);
+
 private:
 
 	/**
@@ -65,7 +71,7 @@ private:
 	/**
 	* バトル状態
 	*/
-	enum class GameState
+	enum class BattleState
 	{
 		// 準備
 		Ready,
@@ -82,13 +88,13 @@ private:
 		// 勝敗
 		Victory,
 	};
-	GameState state = GameState::Ready;
+	BattleState battleState = BattleState::Ready;
 
 	// タイマー
 	float timer = 0;
 
 	// 準備時間
-	float readyTime = 1.5f;
+	const float readyTime = 1.5f;
 
 	// スタンバイ時間
 	const float standbayTime = 2;
@@ -111,8 +117,12 @@ private:
 	// チーム2体力
 	std::shared_ptr<int> teum2Hp = 0;
 
+	// 復帰位置
+	// 配列 0=Teum1,1 = Teum2の初期位置
+	std::vector<Vector3> responPoses;
+
 	// バトルタイム
-	float battleTime = 0;
+	float battleTimer = 0;
 
 	// === UI === //
 
@@ -124,12 +134,6 @@ private:
 
 	// ゴーの背景
 	ImagePtr imgGoBack;
-
-	// 勝利
-	ImagePtr imgWin;
-
-	// 敗北
-	ImagePtr imgLose;
 };
 
 

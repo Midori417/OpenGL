@@ -262,14 +262,8 @@
     <Filter Include="Application\Src\ControlOwner">
       <UniqueIdentifier>{11035202-b277-4bce-aa04-cb12991623a1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Src\ControlOwner\Player">
-      <UniqueIdentifier>{84275c86-e7a0-44a7-91df-eb513fa8984f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Src\CameraMove">
       <UniqueIdentifier>{7b7cf36e-8c6d-4c88-8a6f-72449481e23b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Src\ControlOwner\CPU">
-      <UniqueIdentifier>{98d18f94-d017-4637-9be4-1e0287349e1a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Src\Other\ImageNum">
       <UniqueIdentifier>{b21795ac-a565-4a5d-a39f-2c3c6ec33d37}</UniqueIdentifier>
@@ -291,6 +285,18 @@
     </Filter>
     <Filter Include="Application\Src\Manager\BattleSettingManager">
       <UniqueIdentifier>{b615120e-a2b7-4001-97e5-f45294ffb7cc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\ControlOwner\HumanControl">
+      <UniqueIdentifier>{84275c86-e7a0-44a7-91df-eb513fa8984f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\ControlOwner\CPUControl">
+      <UniqueIdentifier>{98d18f94-d017-4637-9be4-1e0287349e1a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Particle">
+      <UniqueIdentifier>{a334b54f-6a3b-48f1-a74d-79c7497df3d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Resouce\Sprite">
+      <UniqueIdentifier>{0232a078-3cba-4565-b040-0d1bdc9b776b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -597,8 +603,8 @@
     <ClInclude Include="Application\Src\Gundam.h">
       <Filter>Application\Src\Ms\Gundam</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\PlayerControl.h">
-      <Filter>Application\Src\ControlOwner\Player</Filter>
+    <ClInclude Include="Application\Src\HumanControl.h">
+      <Filter>Application\Src\ControlOwner\HumanControl</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\MsLilst.h">
       <Filter>Application\Src\Ms</Filter>
@@ -610,7 +616,7 @@
       <Filter>Application\Src\CameraMove</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\CpuControl.h">
-      <Filter>Application\Src\ControlOwner\CPU</Filter>
+      <Filter>Application\Src\ControlOwner\CPUControl</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\ImageNum.h">
       <Filter>Application\Src\Other\ImageNum</Filter>
@@ -621,9 +627,6 @@
     <ClInclude Include="Application\Src\Global.h">
       <Filter>Application\Src</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\DamageInfo.h">
-      <Filter>Application\Src\Other</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Src\TitleManager.h">
       <Filter>Application\Src\Manager\TitleManager</Filter>
     </ClInclude>
@@ -632,6 +635,18 @@
     </ClInclude>
     <ClInclude Include="Application\Src\BattleSettingManager.h">
       <Filter>Application\Src\Manager\BattleSettingManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\DamageInfo.h">
+      <Filter>Application\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Particle.h">
+      <Filter>FGEngine\Src\My\Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\Sprite.h">
+      <Filter>FGEngine\Src\My\Resouce\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\GameInput.h">
+      <Filter>Application\Src\Other</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -824,14 +839,14 @@
     <ClCompile Include="Application\Src\Gundam.cpp">
       <Filter>Application\Src\Ms\Gundam</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\PlayerControl.cpp">
-      <Filter>Application\Src\ControlOwner\Player</Filter>
+    <ClCompile Include="Application\Src\HumanControl.cpp">
+      <Filter>Application\Src\ControlOwner\HumanControl</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\LookOnCamera.cpp">
       <Filter>Application\Src\CameraMove</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\CpuControl.cpp">
-      <Filter>Application\Src\ControlOwner\CPU</Filter>
+      <Filter>Application\Src\ControlOwner\CPUControl</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\ImageNum.cpp">
       <Filter>Application\Src\Other\ImageNum</Filter>

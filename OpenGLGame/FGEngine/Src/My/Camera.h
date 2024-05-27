@@ -22,8 +22,6 @@ namespace FGEngine
 		Camera() = default;
 		virtual ~Camera() = default;
 
-		static CameraPtr GetMainCamera();
-
 		// 視野角の管理
 		void SetFovY(float fovY) 
 		{
@@ -44,13 +42,9 @@ namespace FGEngine
 
 	public:
 
-		// メインカメラ
-		static std::weak_ptr<Camera> mainCamera;	
+		float far = 1000;
 
-
-		float far = 0.3f;
-
-		float nera = 1000.0f;
+		float near = 0.35f;
 
 		// 画面のアスペクト比
 		float aspect = 16 / 9;

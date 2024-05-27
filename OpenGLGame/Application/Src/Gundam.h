@@ -34,34 +34,44 @@ private:
 	*/
 	void ReloadUpdate();
 
-public:
-
 	/**
 	* 移動
 	* 
 	* @param moveAxis 入力軸
 	*/
-	virtual void Move(const Vector2& moveAxis) override;
+	void Move(const Vector2& moveAxis);
 
 	/**
 	* ジャンプ
+	* 
+	* @param jumpBtn	ジャンプボタンの状態
+	* @param moveAxis	入力軸
 	*/
-	virtual void Jump(bool isJump, const Vector2& moveAxis) override;
+	void Jump(bool jumpBtn, const Vector2& moveAxis);
 
 	/**
 	* ダッシュ
+	* 
+	* @param dashBtn	ダッシュボタンの状態
+	* @param moveAxis	入力軸
 	*/
-	virtual void Dash(bool isDash, const Vector2& moveAxis) override;
+	void Dash(bool dashBtn, const Vector2& moveAxis);
 
 	/**
 	* 攻撃(ビームライフル)
+	* 
+	* @param acttion1Btn アクションボタン1の状態
 	*/
-	virtual void Attack1(bool attackKey) override;
+	void Action1(bool acttion1Btn);
 
 	/**
 	* 攻撃2(バズーカ)
+	* 
+	* @param acttion1Btn アクションボタン1の状態
 	*/
-	virtual void Attack2(bool attackKey) override;
+	void Action2(bool acttion2Btn);
+
+public:
 
 	/**
 	* ダメージを与える
@@ -76,7 +86,7 @@ public:
 	* @param removePos	生き返る位置
 	* @param hpCut		体力のカット率
 	*/
-	virtual void Remove(const Vector3& removePos, float hpCut) override;
+	virtual void Respon(const Vector3& removePos, float hpCut) override;
 
 private:
 
@@ -167,11 +177,6 @@ private:
 	};
 	std::shared_ptr<Bazooka> bazooka;
 
-	// リギボ
-	RigidbodyPtr rb;
-
-	// アニメータ
-	AnimatorPtr anim;
 };
 
 #endif // !GUNDAM_H_INCLUDED

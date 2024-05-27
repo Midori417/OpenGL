@@ -38,11 +38,16 @@ bool BattleMap01Scene::Initialize()
     mapSize.x = 150;
     mapSize.y = 120;
 
+    // 復帰位置
+    std::vector<Vector3> responPoses;
+    responPoses.push_back(Vector3(0, 20, 50));
+    responPoses.push_back(Vector3(0, 20, -50));
 
     // バトルマネージャを作成
     {
         auto battleManagerObj = objManager->CreateGameObject("BattleManager");
         auto battleManager = battleManagerObj->AddComponent<BattleManager>();
+        battleManager->SetResponPos(responPoses);
     }
 
     // 壁を作成

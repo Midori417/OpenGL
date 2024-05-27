@@ -2,7 +2,7 @@
 * @file BattleManager.cpp
 */
 #include "BattleManager.h"
-#include "PlayerControl.h"
+#include "HumanControl.h"
 #include "CpuControl.h"
 #include "LookOnCamera.h"
 #include "BaseMs.h"
@@ -26,6 +26,27 @@ void BattleManager::SetBattleInfo(BattleInfoPtr _battleInfo)
 }
 
 /**
+* リスポーン位置を設定
+*
+* @param pos リスポーン位置
+*/
+void BattleManager::SetResponPos(const Vector3& pos)
+{
+	responPoses.push_back(pos);
+}
+
+/**
+* リスポーン位置を設定
+*
+* @param posed リスポーン位置配列
+*/
+void BattleManager::SetResponPos(const std::vector<Vector3>& poses)
+{
+	responPoses.clear();
+	responPoses = poses;
+}
+
+/**
 * 生成時に実行
 */
 void BattleManager::Awake()
@@ -37,7 +58,7 @@ void BattleManager::Awake()
 	// バトル情報を設定
 	teum1Hp = std::make_shared<int>(battleInfo->teum1Hp);
 	teum2Hp = std::make_shared<int>(battleInfo->teum2Hp);
-	battleTime = battleInfo->time;
+	battleTimer = battleInfo->time;
 
 	// コントロールの作成
 	int i = 0;
@@ -55,17 +76,17 @@ void BattleManager::Awake()
 		// 誰が操作するかを設定
 		if (x->playerId == 0)
 		{
-			auto hyumanControl = player->AddComponent<PlayerControl>();
+			auto hyumanControl = player->AddComponent<HumanControl>();
 
 			// 機体を設定
-			auto ms = Instantate("MS" + std::to_string(i), Vector3(0, 6, 50));
+			auto ms = Instantate("MS" + std::to_string(i));
 
 			// 対応するMsコンポーネントを追加
 			hyumanControl->myMs = SetMs(ms, x->ms);
 
 			// カメラを設定
 			auto camera = ObjectManager::GetInstance()->GetMainCamera();
-			hyumanControl->lookOnCamera = camera->AddComponent<LookOnCamera>();
+			hyumanControl->myCamera = camera->AddComponent<LookOnCamera>();
 
 			// チームを設定
 			if (x->teumId == 1)
@@ -94,14 +115,14 @@ void BattleManager::Awake()
 			auto cpuControl = player->AddComponent<CpuControl>();
 
 			// 機体を設定
-			auto ms = Instantate("MS" + std::to_string(i), Vector3(0, 6, -50));
+			auto ms = Instantate("MS" + std::to_string(i));
 
 			// 対応するMsコンポーネントを追加
 			cpuControl->myMs = SetMs(ms, x->ms);
 
 			// 仮想カメラを設定
 			auto camera = Instantate("virtualCamera");
-			cpuControl->lookOnCamera = camera->AddComponent<LookOnCamera>();
+			cpuControl->myCamera = camera->AddComponent<LookOnCamera>();
 
 			// チームを設定
 			if (x->teumId == 1)
@@ -150,11 +171,11 @@ void BattleManager::Awake()
 	{
 		for (auto teum1 : teum1ControlOwners)
 		{
-			teum1->SetMyTeumHP(teum1Hp.get());
+			teum1->SetTeumHP(teum1Hp.get(), teum2Hp.get());
 		}
 		for (auto teum2 : teum2ControlOwners)
 		{
-			teum2->SetMyTeumHP(teum2Hp.get());
+			teum2->SetTeumHP(teum2Hp.get(), teum1Hp.get());
 		}
 	}
 
@@ -181,20 +202,6 @@ void BattleManager::Awake()
 			imgGo->texture = resManager->GetTexture("GO");
 			imgGo->size = winManager->GetWindowSize() * 0.9f;
 		}
-		// WINを作成
-		{
-			auto win = Instantate("Win");
-			imgWin = win->AddComponent<Image>();
-			imgWin->texture = resManager->GetTexture("Win");
-			imgWin->size = winManager->GetWindowSize();
-		}
-		// Loseを作成
-		{
-			auto lose = Instantate("Lose");
-			imgLose = lose->AddComponent<Image>();
-			imgLose->texture = resManager->GetTexture("Lose");
-			imgLose->size = winManager->GetWindowSize();
-		}
 
 	}
 }
@@ -204,12 +211,34 @@ void BattleManager::Awake()
 */
 void BattleManager::Start()
 {
+	// MSの出撃位置を設定
+	for (int i = 0; i < teum1ControlOwners.size(); ++i)
+	{
+		auto teum1 = teum1ControlOwners[i];
+
+		teum1->myMs->GetTransform()->position = responPoses[0] + Vector3(10.0f * i, 0, 0);
+		teum1->responPoss = responPoses;
+
+		Vector3 toTargetVector = Vector3(responPoses[1] - responPoses[0]).Normalized();
+		teum1->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector * Vector3(0, 0, 1));
+	}
+	for (int i = 0; i < teum2ControlOwners.size(); ++i)
+	{
+		auto teum2 = teum2ControlOwners[i];
+
+		teum2->myMs->GetTransform()->position = responPoses[1] + Vector3(10.0f * i, 0, 0);
+
+		// リスポーン位置を設定
+		teum2->responPoss = responPoses;
+
+		Vector3 toTargetVector = Vector3(responPoses[0] - responPoses[1]).Normalized();
+		teum2->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector * Vector3(0, 0, 1));
+	}
+
 	// UIを非表示
 	imgStandbay->SetEnable(false);
 	imgGoBack->SetEnable(false);
 	imgGo->SetEnable(false);
-	imgWin->SetEnable(false);
-	imgLose->SetEnable(false);
 }
 
 /**
@@ -217,82 +246,130 @@ void BattleManager::Start()
 */
 void BattleManager::Update()
 {
-	switch (state)
+	// バトル状態
+	switch (battleState)
 	{
-	case BattleManager::GameState::Ready:
+	case BattleManager::BattleState::Ready:
+
+	// 準備
+	{
+		// タイマーを進める
 		timer += Time::DeltaTime();
 		if (timer > readyTime)
 		{
+			// バトル状態をスタンバイに
+			battleState = BattleState::Standbay;
+
+			// Stanbayを表示
 			imgStandbay->SetEnable(true);
-			state = GameState::Standbay;
+
+			// タイマーを0にする
 			timer = 0;
 		}
-		break;
-	case BattleManager::GameState::Standbay:
+	}
 
+	break;
+	case BattleManager::BattleState::Standbay:
+
+	// スタンバイ
 	{
+		// タイマーを進める
 		timer += Time::DeltaTime();
 		if (timer > standbayTime)
 		{
+			// バトル状態をゴーに
+			battleState = BattleState::GO;
+
+			// Stanbayを非表示に
 			imgStandbay->SetEnable(false);
-			imgGoBack->SetEnable(true);
+			// GOを表示
 			imgGo->SetEnable(true);
-			state = GameState::GO;
+
+			// タイマーを0にする
 			timer = 0;
 		}
 	}
-
 	break;
-	case BattleManager::GameState::GO:
+	case BattleManager::BattleState::GO:
+
+	// ゴー
 	{
-		timer += Time::DeltaTime();;
+		// タイマーを進める
+		timer += Time::DeltaTime();
 		if (timer > goTime)
 		{
-			imgGo->SetEnable(false);
-			imgGoBack->SetEnable(false);
+			// バトル状態をバトルに
+			battleState = BattleState::Battle;
 
-			// オーナにスタートを伝える
+			// GOを非表示に
+			imgGo->SetEnable(false);
+
+			// コントロールの処理を開始させる
 			for (auto teum1 : teum1ControlOwners)
 			{
-				teum1->isStart = true;
+				teum1->StartOk();
 			}
 			for (auto teum2 : teum2ControlOwners)
 			{
-				teum2->isStart = true;
+				teum2->StartOk();
 			}
-
-			state = GameState::Battle;
 		}
 	}
 	break;
-	case BattleManager::GameState::Battle:
+	case BattleManager::BattleState::Battle:
 
-		if (*teum1Hp <= 0)
-		{
-			imgLose->SetEnable(true);
-			state = GameState::Victory;
-		}
-		else if (*teum2Hp <= 0)
-		{
-			imgWin->SetEnable(true);
-			state = GameState::Victory;
-		}
-		break;
-	case BattleManager::GameState::Victory:
+	// バトル中
+	{
+		// バトル時間を減らす
+		battleTimer -= Time::DeltaTime();
 
-		// オーナに終了処理をさせる
-		for (auto teum1 : teum1ControlOwners)
+		if (*teum1Hp <= 0 || *teum2Hp <= 0)
 		{
-			teum1->Finish();
-			teum1->SetEnable(false);
-		}
-		for (auto teum2 : teum2ControlOwners)
-		{
-			teum2->Finish();
-			teum2->SetEnable(false);
-		}
+			VictoryState teum1Victory = VictoryState::None;
+			VictoryState teum2Victory = VictoryState::None;
+			// どちらのチームHpも0ならば引き分け
+			if (*teum1Hp <= 0 && *teum2Hp <= 0)
+			{
+				teum1Victory = VictoryState::Drow;
+				teum2Victory = VictoryState::Drow;
+			}
+			else if (*teum1Hp <= 0)
+			{
+				teum1Victory = VictoryState::Lose;
+				teum2Victory = VictoryState::Win;
+			}
+			else if (*teum2Hp <= 0)
+			{
+				teum1Victory = VictoryState::Win;
+				teum2Victory = VictoryState::Lose;
+			}
 
-		break;
+			// 終了処理させる
+			for (auto teum1 : teum1ControlOwners)
+			{
+				teum1->Finish(teum1Victory);
+				teum1->SetEnable(false);
+			}
+			for (auto teum2 : teum2ControlOwners)
+			{
+				teum2->Finish(teum2Victory);
+				teum2->SetEnable(false);
+			}
+			battleState = BattleState::Victory;
+		}
+	}
+	break;
+	case BattleManager::BattleState::Victory:
+
+	// 勝敗
+	{
+		if (InputKey::GetKey(KeyCode::Enter))
+		{
+			SceneManager::LoadScene("バトル設定シーン");
+		}
+	}
+
+	break;
 	}
 }
 

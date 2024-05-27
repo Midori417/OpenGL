@@ -162,8 +162,9 @@
     <ClInclude Include="Application\Src\ImageBlinking.h" />
     <ClInclude Include="Application\Src\ImageNum.h" />
     <ClInclude Include="Application\Src\LookOnCamera.h" />
+    <ClInclude Include="Application\Src\GameInput.h" />
     <ClInclude Include="Application\Src\MsLilst.h" />
-    <ClInclude Include="Application\Src\PlayerControl.h" />
+    <ClInclude Include="Application\Src\HumanControl.h" />
     <ClInclude Include="Application\Src\Bullet.h" />
     <ClInclude Include="Application\Src\Scene\ChoiceScene.h" />
     <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="FGEngine\Src\My\ImGuiLayout.h" />
     <ClInclude Include="FGEngine\Src\My\Intersect.h" />
     <ClInclude Include="FGEngine\Src\My\MeshRenderer.h" />
+    <ClInclude Include="FGEngine\Src\My\Particle.h" />
     <ClInclude Include="FGEngine\Src\My\PhysicsEngine.h" />
     <ClInclude Include="FGEngine\Src\My\RenderingEngine.h" />
     <ClInclude Include="FGEngine\Src\My\ResouceManager.h" />
@@ -234,6 +236,7 @@
     <ClInclude Include="FGEngine\Src\My\SceneManager.h" />
     <ClInclude Include="FGEngine\Src\My\Singleton.h" />
     <ClInclude Include="FGEngine\Src\My\SphereCollider.h" />
+    <ClInclude Include="FGEngine\Src\My\Sprite.h" />
     <ClInclude Include="FGEngine\Src\My\StaticMesh.h" />
     <ClInclude Include="FGEngine\Src\My\SystemFrd.h" />
     <ClInclude Include="FGEngine\Src\My\Texture.h" />
@@ -275,7 +278,7 @@
     <ClCompile Include="Application\Src\ImageBlinking.cpp" />
     <ClCompile Include="Application\Src\ImageNum.cpp" />
     <ClCompile Include="Application\Src\LookOnCamera.cpp" />
-    <ClCompile Include="Application\Src\PlayerControl.cpp" />
+    <ClCompile Include="Application\Src\HumanControl.cpp" />
     <ClCompile Include="Application\Src\Scene\ChoiceScene.cpp" />
     <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp" />
     <ClCompile Include="Application\Src\Scene\BattleSettingScene.cpp" />

@@ -90,7 +90,8 @@ namespace FGEngine::ObjectSystem
 				// アスペクト比と視野角を設定
 				float fovScale = mainCamera->camera->GetFovScale();
 				float aspectRatio = mainCamera->camera->aspect;
-				glProgramUniform2f(prog, RenderingSystem::locAspectRatioAndScaleFov, 1 / aspectRatio, fovScale);
+				glProgramUniform4f(prog, RenderingSystem::locAspectRatioAndScaleFov, 1 / aspectRatio, fovScale,
+					mainCamera->camera->near, mainCamera->camera->far);
 
 				// カメラの位置と回転とスケールの格納先
 				Vector3 pos;

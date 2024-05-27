@@ -10,6 +10,7 @@ using namespace FGEngine::WindowSystem;
 */
 void FadeOut::FadeStart()
 {
+	image->SetEnable(true);
 	isStart = true;
 }
 
@@ -49,6 +50,7 @@ void FadeOut::Start()
 
 	// ƒAƒ‹ƒtƒ@‚ğƒ[ƒ‚É‚·‚é
 	image->color.a = 0;
+	image->SetEnable(false);
 }
 
 /**

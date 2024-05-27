@@ -24,6 +24,8 @@ void Bullet::Start()
 {
 	// 生成してから3秒後に削除
 	Destroy(OwnerObject(), 3);
+
+	basePos = GetTransform()->position;
 }
 
 /**
@@ -39,13 +41,13 @@ void Bullet::Update()
 	{
 
 		// 方向ベクトルを計算
-		Vector3 direction = (targetMS->GetTransform()->position - GetTransform()->position);
+		Vector3 direction = (targetMS->GetTransform()->position - basePos);
 
 		// 目標の回転を計算
 		Quaternion targetRotation = Quaternion::LookRotation(direction);
 
 		// ミサイルの回転を目標の回転に近づける
-		GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation, targetRotation, Mathf::Clamp01(rotationSpeed * Time::DeltaTime()));
+		GetTransform()->rotation = Quaternion::Slerp(GetTransform()->rotation, targetRotation, rotationSpeed);
 
 		GetTransform()->position += GetTransform()->Forward() * speed * Time::DeltaTime();
 	}
@@ -68,7 +70,7 @@ void Bullet::OnTriggerEnter(const CollisionPtr other)
 		// ダメージ情報を作成
 		DamageInfo damageInfo;
 		damageInfo.damage = damage;
-		damageInfo.direction = GetTransform()->position;
+		damageInfo.direction = Vector3(GetTransform()->position - other->GetTransform()->position).Normalized();
 		damageInfo.downPower = downPower;
 
 		// ダメージを与える

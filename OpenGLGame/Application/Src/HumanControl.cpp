@@ -1,7 +1,7 @@
 /**
-* @file Player.cpp
+* @file HumanControl.cpp
 */
-#include "PlayerControl.h"
+#include "HumanControl.h"
 #include "LookOnCamera.h"
 #include "BaseMs.h"
 #include "ImageBlinking.h"
@@ -9,18 +9,19 @@
 #include "Global.h"
 using namespace FGEngine::InputSystem;
 using namespace FGEngine::ResouceSystem;
+using namespace FGEngine::WindowSystem;
 
 /**
 * 最初に実行
 */
-void PlayerControl::Start()
+void HumanControl::Start()
 {
-	// リソースマネージャーを取得
+	// 必要なマネージャーを取得
 	auto resManager = ResouceManager::GetInstance();
+	auto winManager = WindowManager::GetInstance();
 
-	// 初期ターゲットを設定
-	targetOwner = otherTeumOwner[0];
-
+	// 初期する
+	Initialize();
 
 	// UIの作成
 	{
@@ -161,19 +162,19 @@ void PlayerControl::Start()
 			imgMyTeumHpBar->size = imgMyTeumHpBar->texture->GetSize() * 1.2f;
 
 			float max = static_cast<float>(teumMaxHp);
-			float hp = static_cast<float>(*myTeumHp);
+			float hp = static_cast<float>(MyTeumHp());
 			imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
 		}
 		// 相手チームの体力バーを作成
 		{
-			auto teumEnemyBar = Instantate("TeumEnemyBar", Vector3(-620, -420, 0));
-			imgEnemyTeumHpBar = teumEnemyBar->AddComponent<Image>();
-			imgEnemyTeumHpBar->texture = resManager->GetTexture("TeumEnemyHpBar");
-			imgEnemyTeumHpBar->size = imgEnemyTeumHpBar->texture->GetSize() * 1.2f;
+			auto otherTeumHpBar = Instantate("OtherTeumHpBar", Vector3(-620, -420, 0));
+			imgOtherTeumHpBar = otherTeumHpBar->AddComponent<Image>();
+			imgOtherTeumHpBar->texture = resManager->GetTexture("TeumEnemyHpBar");
+			imgOtherTeumHpBar->size = imgOtherTeumHpBar->texture->GetSize() * 1.2f;
 
 			float max = static_cast<float>(teumMaxHp);
-			float hp = static_cast<float>(targetOwner->GetTeumHp());
-			imgEnemyTeumHpBar->fillAmout = (max - (max - hp)) / max;
+			float hp = static_cast<float>(OtherTeumHp());
+			imgOtherTeumHpBar->fillAmout = (max - (max - hp)) / max;
 		}
 		// チーム体力フレームを作成
 		{
@@ -188,6 +189,20 @@ void PlayerControl::Start()
 			imgTimer = timer->AddComponent<Image>();
 			imgTimer->texture = resManager->GetTexture("Timer");
 			imgTimer->size = imgTimer->texture->GetSize() * 1.2f;
+		}
+		// WINを作成
+		{
+			auto win = Instantate("Win");
+			imgWin = win->AddComponent<Image>();
+			imgWin->texture = resManager->GetTexture("Win");
+			imgWin->size = winManager->GetWindowSize();
+		}
+		// Loseを作成
+		{
+			auto lose = Instantate("Lose");
+			imgLose = lose->AddComponent<Image>();
+			imgLose->texture = resManager->GetTexture("Lose");
+			imgLose->size = winManager->GetWindowSize();
 		}
 	}
 	// UIを非表示にする
@@ -220,26 +235,19 @@ void PlayerControl::Start()
 		imgTargetHPBar->SetEnable(false);
 		imgTeumHpFrame->SetEnable(false);
 		imgMyTeumHpBar->SetEnable(false);
-		imgEnemyTeumHpBar->SetEnable(false);
+		imgOtherTeumHpBar->SetEnable(false);
 		imgTimer->SetEnable(false);
+		imgWin->SetEnable(false);
+		imgLose->SetEnable(false);
 	}
-
-
-	// カメラに自身のMSを設定
-	lookOnCamera->SetMsTransform(myMs->GetTransform().get());
-
-	// カメラにターゲットを設定
-	lookOnCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-
-	// プレイヤーにカメラ設定
-	myMs->SetCamera(lookOnCamera->GetTransform().get());
 }
 
 /**
 * 毎フレーム実行
 */
-void PlayerControl::Update()
+void HumanControl::Update()
 {
+	// スタート呼び出されていなければ何もしない
 	if (!isStart)
 	{
 		return;
@@ -274,162 +282,163 @@ void PlayerControl::Update()
 		imgTargetHPBar->SetEnable(true);
 		imgTeumHpFrame->SetEnable(true);
 		imgMyTeumHpBar->SetEnable(true);;
-		imgEnemyTeumHpBar->SetEnable(true);
+		imgOtherTeumHpBar->SetEnable(true);
 		imgTimer->SetEnable(true);
 	}
 
-	// ターゲットのMSを取得
-	if (targetOwner)
-	{
-		auto targetMs = targetOwner->myMs;
-		myMs->SetTargetMS(targetMs.get());
-
-		// 距離を求める
-		if (targetMs && myMs)
-		{
-			distance = Vector3::Distance(targetMs->GetTransform()->position, myMs->GetTransform()->position);
-		}
-	}
-	// HPがゼロになったら機能停止
+	// 自身の機体が死んだら
 	if (myMs->IsDeath())
 	{
 		if (!isMsDeath)
 		{
+			// 自チームのHpを減らす
 			TeumHpSud();
+			// Msの操作をできないようにする
+			isMsControl = false;
 			isMsDeath = true;
-
-			// チーム体力があれば復帰する
-			if (*myTeumHp > 0)
+			responTimer = 0;
+		}
+		// チーム体力が0以上だったら復活させる
+		if (MyTeumHp() > 0)
+		{
+			responTimer += Time::DeltaTime();
+			if (responTimer > responTime)
 			{
-				// 自チームの体力が自身の機体のコストより高ければそのままの体力で復活
-				if (*myTeumHp > myMs->GetCost())
+				int index = Random::Range(0, (int)responPoss.size() - 1);
+				// 自チームの体力がコスト以上あればそのままの体力で復活
+				if (MyTeumHp() >= myMs->GetCost())
 				{
-					myMs->Remove(Vector3(0, 10, 50), 1);
+					myMs->Respon(responPoss[index], 1);
 				}
-				// 自チームの体力が自身の機体のコストより低ければコストに対して
-				else
+				// 自チームの体力がコスト以下ならば体力カットして復活
+				else if (MyTeumHp() < myMs->GetCost())
 				{
-					float hp = static_cast<float>(*myTeumHp);
+					float hp = static_cast<float>(MyTeumHp());
 					float cost = static_cast<float>(myMs->GetCost());
-					float hpCut = (cost -(cost - hp)) / cost;
-					myMs->Remove(Vector3(0, 6, -50), hpCut);
+					float hpCut = ((cost - hp) / cost);
+					myMs->Respon(responPoss[index], hpCut);
 				}
+				// MSの操作を許可
+				isMsControl = true;
 				isMsDeath = false;
 			}
 		}
-		return;
 	}
 
-	if (!myMs->IsDeath())
+	// ゲーム入力
+	GameInputUpdate();
+
+	// テストターゲットを変更
+	if (gameInput->targetChange1Btn && otherTeumOwner[0] != nullptr)
 	{
-		// Ms更新
-		MsUpdate();
+		targetOwner = otherTeumOwner[0];
+		// カメラと機体にターゲットを持たせる
+		myMs->SetTargetMS(targetOwner->myMs.get());
+		myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
 	}
+	else if(gameInput->targetChange2Btn && otherTeumOwner[1] != nullptr)
+	{
+		targetOwner = otherTeumOwner[1];
+		// カメラと機体にターゲットを持たせる
+		myMs->SetTargetMS(targetOwner->myMs.get());
+		myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+	}
+
+
 	// UI更新
 	UIUpdate();
 }
 
 /**
-* MSの更新
+* ゲーム入力を更新
 */
-void PlayerControl::MsUpdate()
+void HumanControl::GameInputUpdate()
 {
-	// 移動
-	Vector2 moveAxis = Vector2(InputManager::GetAxis(Axis::Horizontal), InputManager::GetAxis(Axis::Vertical));
-	myMs->Move(moveAxis);
+	// MSが死んでいれか、操作が許可されていなければ何もしない
+	if (myMs->IsDeath() || !isMsControl)
+	{
+		return;
+	}
 
-	// ジャンプ
-	bool jumpKey = InputKey::GetKey(KeyCode::Space);
-	myMs->Jump(jumpKey, moveAxis);
-
-	// ダッシュ
-	bool dashKey = InputKey::GetKey(KeyCode::LeftShift);
-	myMs->Dash(dashKey, moveAxis);
-
-	// 攻撃1
-	bool attackKey = InputMouse::GetMouseButton(MouseButton::LeftButton);
-	myMs->Attack1(attackKey);
-
-	// 攻撃2
-	bool attackKey2 = InputKey::GetKey(KeyCode::E);
-	myMs->Attack2(attackKey2);
+	// ゲーム入力
+	gameInput->moveAxis = Vector2(InputManager::GetAxis(Axis::Horizontal), InputManager::GetAxis(Axis::Vertical));
+	gameInput->jumpBtn = InputKey::GetKey(KeyCode::Space);
+	gameInput->dashBtn = InputKey::GetKey(KeyCode::LeftShift);
+	gameInput->action1Btn = InputMouse::GetMouseButton(MouseButton::LeftButton);
+	gameInput->action2Btn = InputKey::GetKey(KeyCode::E);
+	gameInput->targetChange1Btn = InputKey::GetKey(KeyCode::Alpha1);
+	gameInput->targetChange2Btn = InputKey::GetKey(KeyCode::Alpha2);
 }
 
 /**
 * UIの更新
 */
-void PlayerControl::UIUpdate()
+void HumanControl::UIUpdate()
 {
-	// 自チームの処理
+	// 自チーム体力の設定
+	if (imgMyTeumHpBar)
 	{
-		if (myMs)
-		{
-			// Hp
-			if (inMyMsHp)
-			{
-				inMyMsHp->num = myMs->GetHP();
-			}
-
-			// BoostBar
-			if (myMs->GetBoostEnergy() > 0)
-			{
-				imgBoostBar->fillAmout = myMs->GetBoostEnergy();
-				imgBoostBarOverHeat->SetEnable(false);
-			}
-			else if (myMs->GetBoostEnergy() <= 0)
-			{
-				imgBoostBarOverHeat->SetEnable(true);
-			}
-
-			// WeponAmo
-			for (int i = 0; i < inWeaponAmos.size(); ++i)
-			{
-				inWeaponAmos[i]->num = static_cast<int>(myMs->numWeapons[i]->amo);
-			}
-			// WeaponBar
-			for (int i = 0; i < imgWeaponBars.size(); ++i)
-			{
-				float amo = (myMs->numWeapons[i]->amo);
-				float amoMax = (myMs->numWeapons[i]->amoMax);
-				imgWeaponBars[i]->fillAmout = Mathf::Clamp01((amoMax - (amoMax - amo)) / amoMax);
-			}
-
-			// 自チームHPの処理
-			if (imgMyTeumHpBar)
-			{
-				float max = static_cast<float>(teumMaxHp);
-				float hp = static_cast<float>(*myTeumHp);
-				imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
-			}
-		}
-
-		if (myTeumHp)
-		{
-			float max = static_cast<float>(teumMaxHp);
-			float hp = static_cast<float>(*myTeumHp);
-			imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
-		}
-
+		float max = static_cast<float>(teumMaxHp);
+		float hp = static_cast<float>(MyTeumHp());
+		imgMyTeumHpBar->fillAmout = (max - (max - hp)) / max;
+	}
+	// 相手チームの体力の設定
+	if (imgOtherTeumHpBar)
+	{
+		float max = static_cast<float>(teumMaxHp);
+		float hp = static_cast<float>(OtherTeumHp());
+		imgOtherTeumHpBar->fillAmout = (max - (max - hp)) / max;
 	}
 
-	// 相手がいれば処理をする
+
+	// 自分の機体の体力を設定
+	if (inMyMsHp)
+	{
+		inMyMsHp->num = myMs->GetHP();
+	}
+	// ブーストゲージを設定
+	if (imgBoostBar && imgBoostBarOverHeat)
+	{
+		if (myMs->GetBoostEnergy() > 0)
+		{
+			imgBoostBar->fillAmout = myMs->GetBoostEnergy();
+			imgBoostBarOverHeat->SetEnable(false);
+		}
+		else if (myMs->GetBoostEnergy() <= 0)
+		{
+			imgBoostBarOverHeat->SetEnable(true);
+		}
+	}
+	// 武装の残弾を設定
+	for (int i = 0; i < inWeaponAmos.size(); ++i)
+	{
+		inWeaponAmos[i]->num = static_cast<int>(myMs->numWeapons[i]->amo);
+	}
+	// 武装の残弾ゲージを設定
+	for (int i = 0; i < imgWeaponBars.size(); ++i)
+	{
+		float amo = (myMs->numWeapons[i]->amo);
+		float amoMax = (myMs->numWeapons[i]->amoMax);
+		imgWeaponBars[i]->fillAmout = Mathf::Clamp01((amoMax - (amoMax - amo)) / amoMax);
+	}
+
 	if (targetOwner)
 	{
 		auto targetMs = targetOwner->myMs;
-		if (myMs && targetMs)
+		if (!targetMs->IsDeath())
 		{
 			// ターゲットマークの処理
 			if (imgTargetMark)
 			{
 				// 近ければ小さくし、遠ければ大きくする
-				imgTargetMark->size = Vector2(Mathf::Clamp(distance, 100.0f, 200.0f));
+				imgTargetMark->size = Vector2(Mathf::Clamp(GetDistance(), 100.0f, 200.0f));
 
 				// 距離によってテクスチャを変える
-				if (distance <= myMs->proximityDistance)
+				if (GetDistance() <= myMs->proximityDistance)
 				{
 					imgTargetMark->texture = texTargetMark03;
 				}
-				else if (distance <= myMs->redLookDistace)
+				else if (GetDistance() <= myMs->redLookDistace)
 				{
 					imgTargetMark->texture = texTargetMark02;
 				}
@@ -443,22 +452,16 @@ void PlayerControl::UIUpdate()
 			{
 				imgTargetHPBar->fillAmout = targetMs->GetHP01();
 			}
+
 		}
-
-		// 相手チームのHP処理
-		float max = static_cast<float>(teumMaxHp);
-		float hp = static_cast<float>(targetOwner->GetTeumHp());
-		imgEnemyTeumHpBar->fillAmout = (max - (max - hp)) / max;
-
 	}
-
 }
 
 
 /**
 * 終了処理
 */
-void PlayerControl::Finish()
+void HumanControl::Finish(VictoryState victoryState)
 {
 	// UIを非表示にする
 	{
@@ -490,7 +493,22 @@ void PlayerControl::Finish()
 		imgTargetHPBar->SetEnable(false);
 		imgTeumHpFrame->SetEnable(false);
 		imgMyTeumHpBar->SetEnable(false);
-		imgEnemyTeumHpBar->SetEnable(false);
+		imgOtherTeumHpBar->SetEnable(false);
 		imgTimer->SetEnable(false);
+	}
+
+	// 勝敗によってUIを表示する
+	switch (victoryState)
+	{
+	case VictoryState::None:
+		break;
+	case VictoryState::Win:
+		imgWin->SetEnable(true);
+		break;
+	case VictoryState::Lose:
+		imgLose->SetEnable(true);
+		break;
+	case VictoryState::Drow:
+		break;
 	}
 }

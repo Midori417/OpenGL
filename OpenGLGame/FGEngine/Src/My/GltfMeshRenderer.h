@@ -52,6 +52,7 @@ namespace FGEngine
 		// Ssbo
 		std::vector<AnimMatrixRange> ssboRanges;
 	};
+	using GltfMeshRendererPtr = std::shared_ptr<GltfMeshRenderer>;
 }
 
 #endif // !FGENGIEN_GLTFMESHRENDERER_H_INCLUDED

@@ -11,10 +11,14 @@
 */
 void CpuControl::Start()
 {
+	// 初期する
+	Initialize();
+
 	// CPUの行動切り替え時間を設定
 	cpuTime = 1;
 	moveTime = 2;
 
+	// 仮想入力軸を作成
 	moveAxiss.push_back(Vector2::right);
 	moveAxiss.push_back(Vector2::left);
 	moveAxiss.push_back(Vector2::up);
@@ -23,18 +27,6 @@ void CpuControl::Start()
 	moveAxiss.push_back(Vector2(-1, 1));
 	moveAxiss.push_back(Vector2(-1, -1));
 	moveAxiss.push_back(Vector2(1, -1));
-
-	// 初期ターゲットを設定
-	targetOwner = otherTeumOwner[0];
-
-	// カメラに自身のMSを設定
-	lookOnCamera->SetMsTransform(myMs->GetTransform().get());
-
-	// カメラにターゲットを設定
-	lookOnCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-
-	// プレイヤーにカメラ設定
-	myMs->SetCamera(lookOnCamera->GetTransform().get());
 }
 
 /**
@@ -47,7 +39,7 @@ void CpuControl::Update()
 		return;
 	}
 
-	// HPがゼロになったら機能停止
+	// 自身の機体が死んだら
 	if (myMs->IsDeath())
 	{
 		if (!isMsDeath)
@@ -55,50 +47,70 @@ void CpuControl::Update()
 			// 自チームのHpを減らす
 			TeumHpSud();
 			isMsDeath = true;
-
-			if (*myTeumHp > 0)
+			// Msの操作をできないようにする
+			isMsControl = false;
+		}
+		// チーム体力が0以上だったら復活させる
+		if (MyTeumHp() > 0)
+		{
+			responTimer += Time::DeltaTime();
+			if (responTimer > responTime)
 			{
-				// 自チームの体力が自身の機体のコストより高ければそのままの体力で復活
-				if (*myTeumHp > myMs->GetCost())
+				int index = Random::Range(0, static_cast<int>(responPoss.size()) - 1);
+				// 自チームの体力がコスト以上あればそのままの体力で復活
+				if (MyTeumHp() >= myMs->GetCost())
 				{
-					myMs->Remove(Vector3(0, 10, -50), 1);
+					myMs->Respon(responPoss[index], 1);
 				}
-				// 自チームの体力が自身の機体のコストより低ければコストに対して
-				else
+				// 自チームの体力がコスト以下ならば体力カットして復活
+				else if (MyTeumHp() < myMs->GetCost())
 				{
-					float hp = static_cast<float>(*myTeumHp);
+					float hp = static_cast<float>(MyTeumHp());
 					float cost = static_cast<float>(myMs->GetCost());
-					float hpCut = (cost - (cost - hp)) / cost;
-					myMs->Remove(Vector3(0, 6, -50), hpCut);
+					float hpCut = ((cost - hp) / cost);
+					myMs->Respon(responPoss[index], hpCut);
 				}
-				isMsDeath = false;
+				// MSの操作を許可
+				isMsControl = true;
 			}
 		}
 	}
+	GameInputUpdate();
 
-	if (!myMs->IsDeath())
+	// テストターゲットを変更
+	if (gameInput->targetChange1Btn && otherTeumOwner[0] != nullptr)
 	{
-		MsUpdate();
+		targetOwner = otherTeumOwner[0];
+		// カメラと機体にターゲットを持たせる
+		myMs->SetTargetMS(targetOwner->myMs.get());
+		myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+	}
+	if (gameInput->targetChange2Btn && otherTeumOwner[1] != nullptr)
+	{
+		targetOwner = otherTeumOwner[1];
+		// カメラと機体にターゲットを持たせる
+		myMs->SetTargetMS(targetOwner->myMs.get());
+		myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
 	}
 }
 
 /**
-* 機体の更新
+* ゲーム入力を更新
 */
-void CpuControl::MsUpdate()
+void CpuControl::GameInputUpdate()
 {
+	// MSが死んでいれか、操作が許可されていなければ何もしない
+	if (myMs->IsDeath() || !isMsControl)
+	{
+		return;
+	}
+
 	auto targetMs = targetOwner->myMs;
 
 	// 自身のMSに相手のMsの情報を伝える
 	myMs->SetTargetMS(targetMs.get());
 
-	cpuTimer -= Time::DeltaTime();
-	if (cpuTimer <= 0)
-	{
-		cpuState = (int)Random::Range(CpuState::None, CpuState::Max - 1);
-		cpuTimer = cpuTime;
-		LOG("%d", cpuState);
-	}
+	// 移動方向を乱数で決める
 	moveTimer -= Time::DeltaTime();
 	if (moveTimer <= 0)
 	{
@@ -106,42 +118,60 @@ void CpuControl::MsUpdate()
 		cpuMoveAxis = moveAxiss[index];
 		moveTimer = moveTime;
 	}
-	// Cpuの移動処理
-	myMs->Move(cpuMoveAxis);
+	gameInput->moveAxis = cpuMoveAxis;
+
+	// 行動を乱数で決める
+	cpuTimer -= Time::DeltaTime();
+	if (cpuTimer <= 0)
+	{
+		cpuState = (int)Random::Range(CpuState::None, CpuState::Max - 1);
+		cpuTimer = cpuTime;
+		targetNum = (int)Random::Range(0, static_cast<int>(otherTeumOwner.size() - 1));
+	}
+
 
 	// ジャンプ
-	bool jumpBtn = false;
+	gameInput->jumpBtn = false;
 	if (cpuState == CpuState::Jump)
 	{
-		jumpBtn = true;
+		gameInput->jumpBtn = true;
 	}
-	myMs->Jump(jumpBtn, cpuMoveAxis);
 
 	// ダッシュ
-	bool dashBtn = false;
+	gameInput->dashBtn = false;
 	if (cpuState == CpuState::Dash || cpuState == CpuState::DashAttack)
 	{
-		dashBtn = true;
+		gameInput->dashBtn = true;
 	}
-	myMs->Dash(dashBtn, cpuMoveAxis);
 
 	// 攻撃1
-	bool attackBtn = false;
+	gameInput->action1Btn= false;
 	if (cpuState == CpuState::Attack || cpuState == CpuState::DashAttack)
 	{
-		attackBtn = true;
+		if (!targetMs->IsDeath())
+		{
+			gameInput->action1Btn = true;
+		}
 	}
-	myMs->Attack1(attackBtn);
 
 	// 攻撃2
-	bool attackBtn2 = false;
+	gameInput->action2Btn = false;
 	if (cpuState == CpuState::Attack2)
 	{
-		attackBtn2 = true;
+		if (!targetMs->IsDeath())
+		{
+			gameInput->action3Btn = true;
+		}
 	}
-	myMs->Attack2(attackBtn);
-}
 
-void CpuControl::Finish()
-{
+	if (targetNum == 0)
+	{
+		gameInput->targetChange2Btn = false;
+		gameInput->targetChange1Btn = true;
+	}
+	else if(targetNum == 1)
+	{
+		gameInput->targetChange1Btn = false;
+		gameInput->targetChange2Btn = true;
+	}
 }

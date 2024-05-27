@@ -24,5 +24,4 @@ void main()
 	// ローカル座標系からワールド座標系に変換
 	gl_Position = transformMatrix * vec4(inPosition, 1);
 	gl_Position = viewProjectionMatrix * gl_Position;
-
 }

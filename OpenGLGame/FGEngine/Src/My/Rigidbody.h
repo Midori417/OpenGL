@@ -65,7 +65,7 @@ namespace FGEngine
 		float noGroundTimer = 0;
 
 		// ‚±‚ÌŠÔ‚ğ’´‚¦‚½‚ç’n–Ê‚É‚Â‚¢‚Ä‚¢‚È‚¢
-		float noGroundTime = 0.2f;
+		float noGroundTime = 0.1f;
 
 		// d—Í‰Á‘¬“x
 		static constexpr float gravity = 9.81f;
