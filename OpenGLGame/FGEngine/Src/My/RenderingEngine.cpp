@@ -213,7 +213,7 @@ namespace FGEngine::RenderingSystem
 		const Matrix4x4 matShadowProj = Matrix4x4::Orthogonal(
 			-shadowAreaSize / 2, shadowAreaSize / 2,
 			-shadowAreaSize / 2, shadowAreaSize / 2,
-			-shadowNearZ, -shadowFarZ);
+			shadowNearZ, shadowFarZ);
 		const Matrix4x4 matShadow = matShadowProj * matShadowView;
 
 		// シェーダの仕分け

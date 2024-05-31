@@ -126,6 +126,21 @@ namespace FGEngine
 		return m;
 	}
 
+	Matrix4x4 Matrix4x4::Perspective(float fov, float aspect, float zNear, float zFar)
+	{
+		float tanHalfFov = Mathf::Tan(fov / 2.0f);
+
+		Matrix4x4 result(0.0f);
+
+		result[0][0] = 1.0f / (aspect * tanHalfFov);
+		result[1][1] = 1.0f / tanHalfFov;
+		result[2][2] = -(zFar + zNear) / (zFar - zNear);
+		result[2][3] = -1.0f;
+		result[3][2] = -(2.0f * zFar * zNear) / (zFar - zNear);	
+
+		return result;
+	}
+
 	/**
 	* ビュー行列を作成する
 	*
@@ -138,7 +153,7 @@ namespace FGEngine
 	Matrix4x4 Matrix4x4::LookAt(const Vector3& eye, const Vector3& target, const Vector3& up)
 	{
 		// ワールド座標系における始点座標系のXYZの向きを計算
-		const Vector3 axisZ = -Vector3(eye - target).Normalized();
+		const Vector3 axisZ = Vector3(eye - target).Normalized();
 		const Vector3 axisX = Vector3::Cross(up, axisZ).Normalized();
 		const Vector3 axisY = Vector3::Cross(axisZ, axisX).Normalized();
 

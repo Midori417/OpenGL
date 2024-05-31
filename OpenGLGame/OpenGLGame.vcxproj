@@ -136,6 +136,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="cpp.hint" />
     <None Include="FGEngine\Res\Shader\shadow3D.frag" />
     <None Include="FGEngine\Res\Shader\shadow3D.vert" />
     <None Include="FGEngine\Res\Shader\shadowSkeletal3D.vert" />
@@ -149,6 +150,7 @@
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
     <ClInclude Include="Application\Src\BaseMs.h" />
+    <ClInclude Include="Application\Src\BaseWeapon.h" />
     <ClInclude Include="Application\Src\BattleManager.h" />
     <ClInclude Include="Application\Src\BattleSettingManager.h" />
     <ClInclude Include="Application\Src\ChoiceManager.h" />
@@ -159,13 +161,14 @@
     <ClInclude Include="Application\Src\FGEngine.h" />
     <ClInclude Include="Application\Src\Global.h" />
     <ClInclude Include="Application\Src\Gundam.h" />
+    <ClInclude Include="Application\Src\HomingBullet.h" />
     <ClInclude Include="Application\Src\ImageBlinking.h" />
     <ClInclude Include="Application\Src\ImageNum.h" />
     <ClInclude Include="Application\Src\LookOnCamera.h" />
     <ClInclude Include="Application\Src\GameInput.h" />
     <ClInclude Include="Application\Src\MsLilst.h" />
     <ClInclude Include="Application\Src\HumanControl.h" />
-    <ClInclude Include="Application\Src\Bullet.h" />
+    <ClInclude Include="Application\Src\BaseBullet.h" />
     <ClInclude Include="Application\Src\Scene\ChoiceScene.h" />
     <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h" />
     <ClInclude Include="Application\Src\Scene\BattleSettingScene.h" />
@@ -269,12 +272,13 @@
     <ClCompile Include="Application\Src\BaseMs.cpp" />
     <ClCompile Include="Application\Src\BattleManager.cpp" />
     <ClCompile Include="Application\Src\BattleSettingManager.cpp" />
-    <ClCompile Include="Application\Src\Bullet.cpp" />
+    <ClCompile Include="Application\Src\BaseBullet.cpp" />
     <ClCompile Include="Application\Src\ChoiceManager.cpp" />
     <ClCompile Include="Application\Src\ControlOwner.cpp" />
     <ClCompile Include="Application\Src\CpuControl.cpp" />
     <ClCompile Include="Application\Src\FadeOut.cpp" />
     <ClCompile Include="Application\Src\Gundam.cpp" />
+    <ClCompile Include="Application\Src\HomingBullet.cpp" />
     <ClCompile Include="Application\Src\ImageBlinking.cpp" />
     <ClCompile Include="Application\Src\ImageNum.cpp" />
     <ClCompile Include="Application\Src\LookOnCamera.cpp" />
@@ -288,6 +292,7 @@
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Animator.cpp" />
     <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp" />
+    <ClCompile Include="FGEngine\Src\My\Camera.cpp" />
     <ClCompile Include="FGEngine\Src\My\Collider.cpp" />
     <ClCompile Include="FGEngine\Src\My\GltfFileBuffer.cpp" />
     <ClCompile Include="FGEngine\Src\My\GltfMeshRenderer.cpp" />

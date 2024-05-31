@@ -26,6 +26,14 @@ void ControlOwner::SetTeumHP(int* myTeumHp, int* otherTeumHp)
 }
 
 /**
+* チーム体力を無限にする
+*/
+void ControlOwner::TeumHPInivinit()
+{
+	isTeumHpInfinit = true;
+}
+
+/**
 * コントロールの初期化
 */
 void ControlOwner::Initialize()
@@ -89,4 +97,12 @@ float ControlOwner::GetDistance()
 	}
 
 	return 0.0f;
+}
+
+/**
+* チーム体力が無限かどうか
+*/
+bool ControlOwner::GetTeumHPInifinit() const
+{
+	return isTeumHpInfinit;
 }

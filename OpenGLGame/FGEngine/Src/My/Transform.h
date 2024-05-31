@@ -69,14 +69,14 @@ namespace FGEngine
 		* @param worldUp	上方ベクトル
 		*/
 		void LookAt(const Transform* target, const Vector3& worldUp = Vector3::up);
-		void LookAt(const TransformPtr target, const Vector3& worldUp = Vector3::up);
+		void LookAt(const TransformPtr& target, const Vector3& worldUp = Vector3::up);
 
 		/**
 		* 親Transformを設定する
 		* 
 		* @param parent 設定する親のTransform
 		*/
-		void SetParent(const TransformPtr parent);
+		void SetParent(const TransformPtr& parent);
 
 		/**
 		* 親Transformを取得する

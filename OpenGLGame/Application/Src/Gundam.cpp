@@ -2,7 +2,7 @@
 * @file Gundam.cpp
 */
 #include "Gundam.h"
-#include "Bullet.h"
+#include "HomingBullet.h"
 #include "DamageInfo.h"
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
@@ -14,10 +14,14 @@ void Gundam::Awake()
 {
 	// リソースマネージャーを取得
 	auto resManager = ResouceManager::GetInstance();
-	resManager->LoadObj("Gundam/BeumRifleBullet", "Application/Res/Ms/Gundam/Model/BeumRifleBullet.obj");
-	resManager->LoadTga("Gundam/BeumRifleIcon", "Application/Res/Ms/Gundam/UI/BeumRifleIcon.tga");
-	resManager->LoadObj("Gundam/BazookaBullet", "Application/Res/Ms/Gundam/Model/BazookaBullet.obj");
-	resManager->LoadTga("Gundam/BazookaIcon", "Application/Res/Ms/Gundam/UI/BazookaIcon.tga");
+	if (!isResoueLoad)
+	{
+		resManager->LoadObj("Gundam/BeumRifleBullet", "Application/Res/Ms/Gundam/Model/BeumRifleBullet.obj");
+		resManager->LoadTga("Gundam/BeumRifleIcon", "Application/Res/Ms/Gundam/UI/BeumRifleIcon.tga");
+		resManager->LoadObj("Gundam/BazookaBullet", "Application/Res/Ms/Gundam/Model/BazookaBullet.obj");
+		resManager->LoadTga("Gundam/BazookaIcon", "Application/Res/Ms/Gundam/UI/BazookaIcon.tga");
+		isResoueLoad = true;
+	}
 
 	// 描画コンポーネントを追加
 	renderer = OwnerObject()->AddComponent<GltfMeshRenderer>();
@@ -32,7 +36,7 @@ void Gundam::Awake()
 	// コライダーを追加
 	auto col = OwnerObject()->AddComponent<SphereCollider>();
 	col->radius = 2.4f;
-	col->ceneter = Vector3(0, -2.7f, 0);
+	col->ceneter = Vector3(0, -2.3f, 0);
 	auto col2 = OwnerObject()->AddComponent<SphereCollider>();
 	col2->radius = 2.5f;
 	col2->ceneter = Vector3(0, -0.4f, -0.2f);
@@ -64,41 +68,48 @@ void Gundam::Awake()
 	moveParamater.dash.useEnergy = -30.0f;
 
 	// ジャンプ
-	moveParamater.jump.power = 10.0f;
+	moveParamater.jump.power = 30.0f;
 	moveParamater.jump.speed = 10.0f;
 	moveParamater.jump.rotationSpeed = 0.05f;
 	moveParamater.jump.useEnergy = -30.0f;
 
-	// バズーカの生成
-	bazooka = std::make_shared<Bazooka>();
-	bazooka->name = "Bazooka";
-	bazooka->amoMax = 3;
-	bazooka->amo = bazooka->amoMax;
-	bazooka->damage = 99.0f;
-	bazooka->downPower = 100;
-	bazooka->homingPower = 0.9f;
-	bazooka->speed = 80.0f;
-	bazooka->reloadTime = 4;
-	bazooka->iconTexture = resManager->GetTexture("Gundam/BazookaIcon");
-	bazooka->mesh = resManager->GetStaticMesh("Gundam/BazookaBullet");
-	bazooka->shader = resManager->GetShader(DefalutShader::Standard3D);
-	bazooka->shadowShader = resManager->GetShader(DefalutShader::Shadow3D);
-	numWeapons.push_back(bazooka);
-
 	// ライフルの生成
-	rifle = std::make_shared<Rifle>();
-	rifle->name = "BeumRifle";
-	rifle->amoMax = 7;
-	rifle->amo = rifle->amoMax;
-	rifle->damage = 70.0f;
-	rifle->downPower = 40;
-	rifle->homingPower = 0.4f;
-	rifle->speed = 200.0f;
-	rifle->reloadTime = 3;
-	rifle->iconTexture = resManager->GetTexture("Gundam/BeumRifleIcon");
-	rifle->mesh = resManager->GetStaticMesh("Gundam/BeumRifleBullet");
-	rifle->shader = resManager->GetShader(DefalutShader::Unlit);
-	numWeapons.push_back(rifle);
+	{
+		rifle = std::make_shared<Rifle>();
+		rifle->name = "BeumRifle";
+		rifle->amoMax = 7;
+		rifle->reloadTime = 3;
+		rifle->iconTexture = resManager->GetTexture("Gundam/BeumRifleIcon");
+		rifle->amo = rifle->amoMax;
+
+		// 弾のパラメータを設定
+		rifle->bullet.damage = 70.0f;
+		rifle->bullet.downPower = 40;
+		rifle->bullet.homingPower = 0.4f;
+		rifle->bullet.speed = 200.0f;
+		rifle->bullet.mesh = resManager->GetStaticMesh("Gundam/BeumRifleBullet");
+		rifle->bullet.shader = resManager->GetShader(DefalutShader::Unlit);
+	}
+	{
+		// バズーカの生成
+		bazooka = std::make_shared<Bazooka>();
+		bazooka->name = "Bazooka";
+		bazooka->amoMax = 3;
+		bazooka->amo = bazooka->amoMax;
+		bazooka->reloadTime = 4;
+		bazooka->iconTexture = resManager->GetTexture("Gundam/BazookaIcon");
+
+		// 弾のパラメータを設定
+		bazooka->bullet.damage = 99.0f;
+		bazooka->bullet.downPower = 100;
+		bazooka->bullet.homingPower = 0.9f;
+		bazooka->bullet.speed = 80.0f;
+		bazooka->bullet.mesh = resManager->GetStaticMesh("Gundam/BazookaBullet");
+		bazooka->bullet.shader = resManager->GetShader(DefalutShader::Standard3D);
+		bazooka->bullet.shadowShader = resManager->GetShader(DefalutShader::Shadow3D);
+	}
+	uiWeapons.push_back(bazooka);
+	uiWeapons.push_back(rifle);
 
 }
 
@@ -107,12 +118,19 @@ void Gundam::Awake()
 */
 void Gundam::Update()
 {
+	// 停止状態なら何もしない
+	if (isStop)
+	{
+		return;
+	}
+
 	// 死亡チェック、死んでいれば何もしない
 	if (DeadChaeck())
 	{
 		return;
 	}
 
+	// 吹き飛び処理
 	if (isBlowAway && !isDown)
 	{
 		blowAwayTimer += Time::DeltaTime();
@@ -138,8 +156,48 @@ void Gundam::Update()
 				anim->SetAnimation("Down.Rifle.B");
 				anim->Play();
 			}
-
+			downTimer = 0;
 			isDown = true;
+		}
+		if (blowAwayTimer > 5)
+		{
+			rb->gravityScale = 2;
+			isBlowAway = false;
+		}
+	}
+
+	// ダウン状態
+	if (isDown)
+	{
+		// ダウン時間を増加
+		downTimer += Time::DeltaTime();
+
+		// 移動入寮があるか、ダウン時間が一定たてば立ち上がらせる
+		if (gameInput->moveAxis != Vector2::zero || downTimer >= downStandUpTime)
+		{
+			if (anim->GetAnimationClip()->name == "Down.Rifle.F")
+			{
+				anim->SetAnimation("StandUp.Rifle.F");
+				anim->Play();
+			}
+			else if (anim->GetAnimationClip()->name == "Down.Rifle.B")
+			{
+				anim->SetAnimation("StandUp.Rifle.B");
+				anim->Play();
+			}
+		}
+		// 立ち上げるアニメーション中で
+		if (anim->GetAnimationClip()->name == "StandUp.Rifle.F" || 
+			anim->GetAnimationClip()->name == "StandUp.Rifle.B")
+		{
+			// アニメーションが終われば
+			if (anim->time >= anim->GetAnimationClip()->totalTime)
+			{
+				// ダウン状態を終了
+				isDown = false;
+				anim->SetAnimation("Idle.Rifle");
+				anim->Play();
+			}
 		}
 	}
 
@@ -160,7 +218,6 @@ void Gundam::Update()
 				rifle->isShot = false;
 				rifle->isStopShot = false;
 			}
-
 			// バズーカ
 			{
 				bazooka->isNow = false;
@@ -175,19 +232,34 @@ void Gundam::Update()
 		}
 	}
 
-	if (gameInput)
+	if (isRespon)
 	{
-		// 移動
-		Move(gameInput->moveAxis);
-		// ジャンプ
-		Jump(gameInput->jumpBtn, gameInput->moveAxis);
-		// ダッシュ
-		Dash(gameInput->dashBtn, gameInput->moveAxis);
-		// 攻撃(ビームライフル)
-		Action1(gameInput->action1Btn);
-		// 攻撃2(バズーカ)
-		Action2(gameInput->action2Btn);
+		responTimer -= Time::DeltaTime();
+		if (responTimer <= 0)
+		{
+			isRespon = false;
+		}
 	}
+
+	// MSの入力行動
+	if (gameInput && !isRespon)
+	{
+		// ダメージ状態なら何もしない
+		if (!isDamage && !isBlowAway && !isDown)
+		{
+			// 移動
+			Move(gameInput->moveAxis);
+			// ジャンプ
+			Jump(gameInput->jumpBtn, gameInput->moveAxis);
+			// ダッシュ
+			Dash(gameInput->dashBtn, gameInput->moveAxis);
+			// 攻撃(ビームライフル)
+			Action1(gameInput->action1Btn);
+			// 攻撃2(バズーカ)
+			Action2(gameInput->action2Btn);
+		}
+	}
+
 	// ブーストエネルギーを更新
 	BoostEnergyUpdate();
 
@@ -234,12 +306,6 @@ void Gundam::ReloadUpdate()
 */
 void Gundam::Move(const Vector2& moveAxis)
 {
-	// ダメージ状態なら何もしない
-	if (isDamage || isBlowAway || isDown)
-	{
-		return;
-	}
-
 	// カメラの位置を取得
 	auto cameraTrs = GetCameraTransform();
 	if (!cameraTrs)
@@ -295,12 +361,6 @@ void Gundam::Move(const Vector2& moveAxis)
 */
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
-	// ダメージ状態なら何もしない
-	if (isDamage || isBlowAway || isDown)
-	{
-		return;
-	}
-
 	// ダッシュ・ライフルの移動禁止・バズーカ状態ならジャンプしない
 	if (moveParamater.dash.isNow || rifle->isStopShot || bazooka->isNow)
 	{
@@ -336,19 +396,23 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				GetTransform()->position += GetTransform()->Forward() * moveParamater.jump.speed * Time::DeltaTime();
 			}
 
-			// ジャンプアニメーションを再生
-			if (!moveParamater.jump.isNow)
+			// 射撃状態ならアニメーションをキャンセル
+			if (!rifle->isNow)
 			{
-				if (rb->IsGround())
+				// ジャンプアニメーションを再生
+				if (!moveParamater.jump.isNow)
 				{
-					anim->SetAnimation("Jump.Rifle.Ground");
-				}
-				else
-				{
+					if (rb->IsGround())
+					{
+						anim->SetAnimation("Jump.Rifle.Ground");
+					}
+					else
+					{
 
-					anim->SetAnimation("Jump.Rifle");
+						anim->SetAnimation("Jump.Rifle");
+					}
+					anim->Play();
 				}
-				anim->Play();
 			}
 
 			// 重力の速度を0にして　
@@ -375,9 +439,12 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				// エネルギーチャージのタイマーを代入
 				boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
 
-				anim->SetAnimation("Idle.Rifle", true);
-				anim->Play();
-
+				// 射撃状態ならアニメーションをキャンセル
+				if (!rifle->isNow)
+				{
+					anim->SetAnimation("Idle.Rifle", true);
+					anim->Play();
+				}
 				// ジャンプ状態を終了
 				moveParamater.jump.isNow = false;
 			}
@@ -410,12 +477,6 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 */
 void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
-	// ダメージ状態なら何もしない
-	if (isDamage || isBlowAway || isDown)
-	{
-		return;
-	}
-
 	// ライフルの停止・バズーカ状態ならダッシュしない
 	if (rifle->isStopShot || bazooka->isNow)
 	{
@@ -520,12 +581,6 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 */
 void Gundam::Action1(bool attackKey)
 {
-	// ダメージ状態なら何もしない
-	if (isDamage || isBlowAway || isDown)
-	{
-		return;
-	}
-
 	// 攻撃入力があれば
 	if (attackKey)
 	{
@@ -543,8 +598,6 @@ void Gundam::Action1(bool attackKey)
 			Vector3 perendicular = Vector3::Cross(directionToTarget, GetTransform()->Forward());
 			float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
 
-			// アニメーションを再生
-
 			// 後ろ向き射撃だけ共通
 			if (dot < -0.5f)
 			{
@@ -561,7 +614,8 @@ void Gundam::Action1(bool attackKey)
 				anim->Play();
 			}
 			// アイドル・ジャンプ状態
-			else if (anim->GetAnimationClip()->name == "Idle.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle")
+			else if (anim->GetAnimationClip()->name == "Idle.Rifle" || 
+				anim->GetAnimationClip()->name == "Jump.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle.Ground")
 			{
 				rb->velocity = Vector3(0, 1, 0);
 				// 動きを止める
@@ -683,20 +737,21 @@ void Gundam::Action1(bool attackKey)
 			auto pos = GetTransform()->position + (rot * Vector3(0, 0, 5));
 
 			// 弾を作成
-			auto bullet = Instantate("Bullet", pos, rot);
-			auto renderer = bullet->AddComponent<MeshRenderer>();
-			renderer->mesh = rifle->mesh;
-			renderer->shader = rifle->shader;
-			auto bulletMove = bullet->AddComponent<Bullet>();
-			bulletMove->downPower = rifle->downPower;
-			bulletMove->speed = rifle->speed;
-			bulletMove->rotationSpeed = rifle->homingPower;
-			bulletMove->damage = rifle->damage;
+			auto bulletObj = Instantate("Bullet", pos, rot);
+			auto renderer = bulletObj->AddComponent<MeshRenderer>();
+			auto homingBullet = bulletObj->AddComponent<HomingBullet>();
+			ShotWeapon::Bullet* bullet = &rifle->bullet;
+			renderer->mesh = bullet->mesh;
+			renderer->shader = bullet->shader;
+			homingBullet->damage = bullet->damage;
+			homingBullet->downPower = bullet->downPower;
+			homingBullet->speed = bullet->speed;
+			homingBullet->homingSpeed = bullet->homingPower;
 
 			// 距離によって誘導をつける
 			if (GetDistance() < redLookDistace)
 			{
-				bulletMove->targetMS = GetTargetMs();
+				homingBullet->SetTargetMs(GetTargetMs());
 			}
 
 			// 撃った
@@ -741,12 +796,6 @@ void Gundam::Action1(bool attackKey)
 */
 void Gundam::Action2(bool attackKey)
 {
-	// ダメージ状態なら何もしない
-	if (isDamage || isBlowAway || isDown)
-	{
-		return;
-	}
-
 	// 攻撃入力があれば
 	if (attackKey)
 	{
@@ -793,16 +842,17 @@ void Gundam::Action2(bool attackKey)
 			auto pos = GetTransform()->position + (GetTransform()->rotation * Vector3(0.3f, 0, 5));
 
 			// 弾を作成
-			auto bullet = Instantate("Bullet", pos, GetTransform()->rotation);
-			auto renderer = bullet->AddComponent<MeshRenderer>();
-			renderer->mesh = bazooka->mesh;
-			renderer->shader = bazooka->shader;
-			renderer->shadowShader = bazooka->shadowShader;
-			auto bulletMove = bullet->AddComponent<Bullet>();
-			bulletMove->speed = bazooka->speed;
-			bulletMove->downPower = bazooka->downPower;
-			bulletMove->rotationSpeed = bazooka->homingPower;
-			bulletMove->damage = bazooka->damage;
+			auto bulletObj = Instantate("Bullet", pos, GetTransform()->rotation);
+			auto renderer = bulletObj->AddComponent<MeshRenderer>();
+			auto homingBullet = bulletObj->AddComponent<HomingBullet>();
+			ShotWeapon::Bullet* bullet = &bazooka->bullet;
+			renderer->mesh = bullet->mesh;
+			renderer->shader = bullet->shader;
+			renderer->shadowShader = bullet->shadowShader;
+			homingBullet->damage = bullet->damage;
+			homingBullet->downPower = bullet->downPower;
+			homingBullet->speed = bullet->speed;
+			homingBullet->homingSpeed = bullet->homingPower;
 
 			// 反動で後ろに動かす
 			GetTransform()->position += GetTransform()->Forward() * -0.5f;
@@ -810,7 +860,7 @@ void Gundam::Action2(bool attackKey)
 			// 距離によって誘導をつける
 			if (GetDistance() < redLookDistace)
 			{
-				bulletMove->targetMS = GetTargetMs();
+				homingBullet->SetTargetMs(GetTargetMs());
 			}
 
 			// 撃った
@@ -834,13 +884,26 @@ void Gundam::Action2(bool attackKey)
 }
 
 /**
+* 攻撃3(ビームサーベル)
+*
+* @param acttion3Btn アクションボタン3の状態
+*/
+void Gundam::Action3(bool acttion3Btn)
+{
+	if (acttion3Btn)
+	{
+		
+	}
+}
+
+/**
 * ダメージ
 *
 * @param damage ダメージ情報
 */
 void Gundam::Damage(const DamageInfo& damageInfo)
 {
-	if (isBlowAway || isDown)
+	if (isBlowAway || isDown || isRespon)
 	{
 		return;
 	}
@@ -850,7 +913,7 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 
 	// 体力を減らす
 	baseParamater.hp -= static_cast<int>(damageInfo.damage);
-	//downValue += damageInfo.downPower;
+	downValue += damageInfo.downPower;
 
 	// 通常ダメージアクション
 	if (downValue < 100)
@@ -902,6 +965,8 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 			anim->SetAnimation("BlowAway.Rifle.B");
 			anim->Play();
 		}
+		rb->gravityScale = 3;
+		rb->isGravity = true;
 		blowAwayTimer = 0;
 		isBlowAway = true;
 		downValue = 0;
@@ -929,7 +994,12 @@ void Gundam::Respon(const Vector3& removePos, float hpCut)
 	bazooka->Initialize();
 
 	// 死亡状態を解除
+	downValue = 0;
+	isBlowAway = false;
+	isDamage = false;
+	isDown = false;
 	isDeath = false;
+	rb->isGravity = true;
 
 	rb->velocity = Vector3::zero;
 	renderer->enabled = true;
@@ -942,4 +1012,6 @@ void Gundam::Respon(const Vector3& removePos, float hpCut)
 
 	anim->SetAnimation("Idle.Rifle");
 	anim->Play();
+	responTimer = responTime;
+	isRespon = true;
 }

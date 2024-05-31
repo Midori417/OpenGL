@@ -32,5 +32,8 @@ private:
 
 	// マップの大きさ
 	Vector2 mapSize = Vector2::zero;
+
+	// リソースの読み込み
+	static bool isResouceLoad;
 };
 #endif // !MAINSCENE_H_INCLUDED

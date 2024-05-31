@@ -53,9 +53,11 @@ using ControlInfoPtr = std::shared_ptr<ControlInfo>;
 struct BattleInfo
 {
 	// チーム1体力
+	// -1 = ∞
 	int teum1Hp = teumMaxHp;
 
 	// チーム2体力
+	// -1 = ∞
 	int teum2Hp = teumMaxHp;
 
 	// ゲーム時間

@@ -4,6 +4,7 @@
 #ifndef GUNDAM_H_INCLUDED
 #define GUNDAM_H_INCLUDED
 #include "BaseMs.h"
+#include "BaseWeapon.h"
 
 /**
 * ガンダム
@@ -67,9 +68,16 @@ private:
 	/**
 	* 攻撃2(バズーカ)
 	* 
-	* @param acttion1Btn アクションボタン1の状態
+	* @param acttion2Btn アクションボタン2の状態
 	*/
 	void Action2(bool acttion2Btn);
+
+	/**
+	* 攻撃3(ビームサーベル)
+	* 
+	* @param acttion3Btn アクションボタン3の状態
+	*/
+	void Action3(bool acttion3Btn);
 
 public:
 
@@ -93,18 +101,8 @@ private:
 	/**
 	* ライフル構造体
 	*/
-	struct Rifle : NumWeapon
+	struct Rifle : public ShotWeaponUI
 	{
-		// 与えるダメージ
-		float damage = 0;
-
-		// 誘導力
-		float homingPower = 0;
-
-		float downPower = 0;
-
-		// 速度
-		float speed = 0;
 
 		// 射撃状態か
 		bool isNow = false;
@@ -114,12 +112,6 @@ private:
 
 		// 停止して打つか
 		bool isStopShot = false;
-
-		// メッシュ
-		StaticMeshPtr mesh;
-
-		//シェーダ
-		ShaderPtr shader;
 
 		/**
 		* 初期化
@@ -137,33 +129,13 @@ private:
 	/**
 	* バズーカ構造体
 	*/
-	struct Bazooka : NumWeapon
+	struct Bazooka : ShotWeaponUI
 	{
-		// 与えるダメージ
-		float damage = 0;
-
-		float downPower = 0;
-
-		// 誘導力
-		float homingPower = 0;
-
-		// 速度
-		float speed = 0;
-
 		// 射撃状態か
 		bool isNow = false;
 
 		// 撃ったか
 		bool isShot = false;
-
-		// メッシュ
-		StaticMeshPtr mesh;
-
-		//シェーダ
-		ShaderPtr shader;
-
-		// 影シェーダ
-		ShaderPtr shadowShader;
 
 		/**
 		* 初期化

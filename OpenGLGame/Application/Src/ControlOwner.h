@@ -45,6 +45,11 @@ public:
 	*/
 	virtual void Finish(VictoryState victoryState){}
 
+	/**
+	* チーム体力を無限にする
+	*/
+	void TeumHPInivinit();
+
 
 protected:
 
@@ -78,6 +83,11 @@ protected:
 	* 距離を取得
 	*/
 	float GetDistance();
+
+	/**
+	* チーム体力が無限かどうか
+	*/
+	bool GetTeumHPInifinit() const;
 
 public:
 
@@ -126,6 +136,9 @@ private:
 
 	// 相手チームの体力
 	int* otherTeumHp = 0;
+
+	// true = チーム体力∞
+	bool isTeumHpInfinit = false;
 
 };
 

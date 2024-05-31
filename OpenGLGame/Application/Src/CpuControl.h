@@ -29,6 +29,11 @@ private:
 	virtual void Update() override;
 
 	/**
+	* 終了処理
+	*/
+	virtual void Finish(VictoryState victoryState) override;
+
+	/**
 	* ゲーム入力を更新
 	*/
 	virtual void GameInputUpdate() override;

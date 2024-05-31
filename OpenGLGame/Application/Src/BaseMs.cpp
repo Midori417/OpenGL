@@ -3,6 +3,8 @@
 */
 #include "BaseMs.h"
 
+bool BaseMs::isResoueLoad = false;
+
 /**
 * HP‚ğæ“¾
 */
@@ -78,6 +80,14 @@ void BaseMs::SetGameInput(GameInput* gameInput)
 }
 
 /**
+* ’â~‚³‚¹‚é
+*/
+void BaseMs::Stop()
+{
+	isStop = true;
+}
+
+/**
 * €–Sƒ`ƒFƒbƒN
 *
 * @retval true	€–S
@@ -92,12 +102,13 @@ bool BaseMs::DeadChaeck()
 	}
 
 	// HP‚ª‚È‚¯‚ê‚Î€–Só‘Ô‚É‚·‚é
-	if (baseParamater.hp <= 0)
+	if (baseParamater.hp <= 0 || GetTransform()->position.y < -10)
 	{
 		// €–Só‘Ô‚É‚·‚é
 		isDeath = true;
 		// •`‰æ‚µ‚È‚¢
 		renderer->enabled = false;
+		rb->velocity = Vector3::zero;
 		return true;
 	}
 	return false;

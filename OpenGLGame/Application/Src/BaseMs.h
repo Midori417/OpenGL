@@ -10,33 +10,8 @@ using namespace FGEngine;
 // 先行宣言
 struct DamageInfo;
 struct GameInput;
-
-/**
-* UIに表記する武装
-*/
-struct NumWeapon
-{
-	// 名前
-	std::string name;
-
-	// 残弾マックス
-	float amoMax = 0;
-
-	// 残弾
-	float amo = 0;
-
-	// リロードタイマー
-	float reloadTimer = 0;
-
-	// リロードタイム
-	float reloadTime = 0;
-
-	// 武器アイコン
-	TexturePtr iconTexture;
-
-	virtual void Initialize(){}
-};
-using NumWeaponPtr = std::shared_ptr<NumWeapon>;
+class UIWeapon;
+using UIWeaponPtr = std::shared_ptr<UIWeapon>;
 
 /**
 * MSの基底クラス
@@ -110,6 +85,11 @@ public:
 	*/
 	void SetGameInput(GameInput* gameInput);
 
+	/**
+	* 停止させる
+	*/
+	void Stop();
+
 protected:
 
 	/**
@@ -140,11 +120,10 @@ protected:
 	*/
 	float GetDistance() const;
 
-
 public:
 
-	// 数制限がる武器の配列
-	std::vector<NumWeaponPtr> numWeapons;
+	// UIに表示する武装
+	std::vector<UIWeaponPtr> uiWeapons;
 
 	// 近接距離
 	float proximityDistance = 0;
@@ -165,6 +144,9 @@ protected:
 
 	// 入力
 	GameInput* gameInput = nullptr;
+
+	// リソース読み込み
+	static bool isResoueLoad;
 
 	/**
 	* 基礎パラメータ
@@ -287,14 +269,29 @@ protected:
 
 	float blowAwayTimer = 0;
 
-	float blowAwayTime = 1;
+	float blowAwayTime = 0.5f;
 
-	float blowPower = 30.0f;
+	float blowPower = 70.0f;
 
 	bool isDown = false;
 
+	// ダウンしてからの時間
+	float downTimer = 0;
+	
+	// ダウンしてから強制立ち上がりの時間
+	const float downStandUpTime = 3;
+
 	// ダメージ状態の有無
 	bool isDamage = false;
+
+	float responTimer = 0;
+	float responTime = 0.5f;
+
+	// リスポーン状態
+	bool isRespon = false;
+
+	// ストップさせる
+	bool isStop = false;
 
 private:
 

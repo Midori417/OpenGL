@@ -18,6 +18,9 @@ namespace FGEngine::InputSystem
 		// 右マウスボタン
 		RightButton,
 
+		// 真ん中マウスボタン
+		CenterButton,
+
 		// マウス登録ボタンマックス
 		Max,
 	};
@@ -30,6 +33,7 @@ namespace FGEngine::InputSystem
 	{
 		GLFW_MOUSE_BUTTON_LEFT,
 		GLFW_MOUSE_BUTTON_RIGHT,
+		GLFW_MOUSE_BUTTON_MIDDLE,
 	};
 
 }

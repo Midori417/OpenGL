@@ -90,6 +90,9 @@ private:
 	// 武器のアイコン
 	std::vector<ImagePtr> imgWeapnIcons;
 
+	// 自チームの自分以外の機体体力
+	ImageNumPtr inMyTeumOtherMsHp;
+
 	// ターゲットマーク
 	ImagePtr imgTargetMark;
 
@@ -99,10 +102,13 @@ private:
 	TexturePtr texTargetMark03;
 
 	// ターゲットの情報
-	ImagePtr imgTargetInfo;
+	std::vector<ImagePtr> imgOtherTeumMsInfoBacks;
 
 	// ターゲットの体力バー
-	ImagePtr imgTargetHPBar;
+	std::vector<ImagePtr> imgOtherTeumMsHpBars;
+
+	ImagePtr imgMyTeumOtherMsInfo;
+	ImagePtr imgMyTeumOtherMsHpBar;
 
 	// 時間
 	ImagePtr imgTimer;

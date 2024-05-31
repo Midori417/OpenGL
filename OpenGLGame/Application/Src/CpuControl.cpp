@@ -44,11 +44,15 @@ void CpuControl::Update()
 	{
 		if (!isMsDeath)
 		{
-			// 自チームのHpを減らす
-			TeumHpSud();
-			isMsDeath = true;
+			if (!GetTeumHPInifinit())
+			{
+				// 自チームのHpを減らす
+				TeumHpSud();
+			}
 			// Msの操作をできないようにする
 			isMsControl = false;
+			isMsDeath = true;
+			responTimer = 0;
 		}
 		// チーム体力が0以上だったら復活させる
 		if (MyTeumHp() > 0)
@@ -56,7 +60,7 @@ void CpuControl::Update()
 			responTimer += Time::DeltaTime();
 			if (responTimer > responTime)
 			{
-				int index = Random::Range(0, static_cast<int>(responPoss.size()) - 1);
+				int index = Random::Range(0, (int)responPoss.size() - 1);
 				// 自チームの体力がコスト以上あればそのままの体力で復活
 				if (MyTeumHp() >= myMs->GetCost())
 				{
@@ -72,26 +76,70 @@ void CpuControl::Update()
 				}
 				// MSの操作を許可
 				isMsControl = true;
+				isMsDeath = false;
 			}
 		}
 	}
 	GameInputUpdate();
 
-	// テストターゲットを変更
-	if (gameInput->targetChange1Btn && otherTeumOwner[0] != nullptr)
+	// ターゲット切り替え
+	if (gameInput->targetChangeBtn && otherTeumOwner.size() > 0)
 	{
-		targetOwner = otherTeumOwner[0];
-		// カメラと機体にターゲットを持たせる
-		myMs->SetTargetMS(targetOwner->myMs.get());
-		myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+		if (targetOwner == otherTeumOwner[0])
+		{
+			if (!otherTeumOwner[1]->myMs->IsDeath())
+			{
+				targetOwner = otherTeumOwner[1];
+				// カメラと機体にターゲットを持たせる
+				myMs->SetTargetMS(targetOwner->myMs.get());
+				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+			}
+		}
+		else if (targetOwner == otherTeumOwner[1])
+		{
+			if (!otherTeumOwner[0]->myMs->IsDeath())
+			{
+				targetOwner = otherTeumOwner[0];
+				// カメラと機体にターゲットを持たせる
+				myMs->SetTargetMS(targetOwner->myMs.get());
+				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+			}
+		}
+		gameInput->targetChangeBtn = false;
 	}
-	if (gameInput->targetChange2Btn && otherTeumOwner[1] != nullptr)
+	// ターゲットの機体が死んだら
+	if (targetOwner->myMs->IsDeath() && otherTeumOwner.size() > 0)
 	{
-		targetOwner = otherTeumOwner[1];
-		// カメラと機体にターゲットを持たせる
-		myMs->SetTargetMS(targetOwner->myMs.get());
-		myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+		if (targetOwner == otherTeumOwner[0])
+		{
+			if (!otherTeumOwner[1]->myMs->IsDeath())
+			{
+				targetOwner = otherTeumOwner[1];
+				// カメラと機体にターゲットを持たせる
+				myMs->SetTargetMS(targetOwner->myMs.get());
+				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+			}
+		}
+		else if (targetOwner == otherTeumOwner[1])
+		{
+			if (!otherTeumOwner[0]->myMs->IsDeath())
+			{
+				targetOwner = otherTeumOwner[0];
+				// カメラと機体にターゲットを持たせる
+				myMs->SetTargetMS(targetOwner->myMs.get());
+				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
+			}
+		}
 	}
+}
+
+/**
+* 終了処理
+*/
+void CpuControl::Finish(VictoryState victoryState)
+{
+	// 基底を停止
+	myMs->Stop();
 }
 
 /**
@@ -160,18 +208,12 @@ void CpuControl::GameInputUpdate()
 	{
 		if (!targetMs->IsDeath())
 		{
-			gameInput->action3Btn = true;
+			gameInput->action2Btn = true;
 		}
 	}
 
 	if (targetNum == 0)
 	{
-		gameInput->targetChange2Btn = false;
-		gameInput->targetChange1Btn = true;
-	}
-	else if(targetNum == 1)
-	{
-		gameInput->targetChange1Btn = false;
-		gameInput->targetChange2Btn = true;
+		gameInput->targetChangeBtn = true;
 	}
 }

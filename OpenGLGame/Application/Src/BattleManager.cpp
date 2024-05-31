@@ -56,8 +56,15 @@ void BattleManager::Awake()
 	auto winManager = WindowManager::GetInstance();
 
 	// バトル情報を設定
-	teum1Hp = std::make_shared<int>(battleInfo->teum1Hp);
-	teum2Hp = std::make_shared<int>(battleInfo->teum2Hp);
+	if (battleInfo->teum1Hp > 0)
+	{
+		teum1Hp = std::make_shared<int>(battleInfo->teum1Hp);
+	}
+	if (battleInfo->teum1Hp > 0)
+	{
+		teum2Hp = std::make_shared<int>(battleInfo->teum2Hp);
+	}
+
 	battleTimer = battleInfo->time;
 
 	// コントロールの作成
@@ -165,7 +172,8 @@ void BattleManager::Awake()
 			{
 				teum2->otherTeumOwner.push_back(teum1.get());
 			}
-		}}
+		}
+}
 
 	// 自チーム体力を設定
 	{
@@ -251,7 +259,7 @@ void BattleManager::Update()
 	{
 	case BattleManager::BattleState::Ready:
 
-	// 準備
+		// 準備
 	{
 		// タイマーを進める
 		timer += Time::DeltaTime();
@@ -271,7 +279,7 @@ void BattleManager::Update()
 	break;
 	case BattleManager::BattleState::Standbay:
 
-	// スタンバイ
+		// スタンバイ
 	{
 		// タイマーを進める
 		timer += Time::DeltaTime();
@@ -292,7 +300,7 @@ void BattleManager::Update()
 	break;
 	case BattleManager::BattleState::GO:
 
-	// ゴー
+		// ゴー
 	{
 		// タイマーを進める
 		timer += Time::DeltaTime();
@@ -318,7 +326,7 @@ void BattleManager::Update()
 	break;
 	case BattleManager::BattleState::Battle:
 
-	// バトル中
+		// バトル中
 	{
 		// バトル時間を減らす
 		battleTimer -= Time::DeltaTime();
@@ -361,7 +369,7 @@ void BattleManager::Update()
 	break;
 	case BattleManager::BattleState::Victory:
 
-	// 勝敗
+		// 勝敗
 	{
 		if (InputKey::GetKey(KeyCode::Enter))
 		{

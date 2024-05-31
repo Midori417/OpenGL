@@ -14,6 +14,9 @@ enum class MsList
 
 	// ガンダム
 	Gundam,
+
+	// ストライクガンダム
+	StrikeGundam,
 };
 
 #endif // !MSLIST_H_INCLUDED

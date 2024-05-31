@@ -26,6 +26,7 @@
     <None Include="FGEngine\Res\Shader\shadow3D.vert">
       <Filter>FGEngine\Res</Filter>
     </None>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -235,9 +236,6 @@
     <Filter Include="Application\Src\Ms">
       <UniqueIdentifier>{e0633c67-af68-46a3-b47c-3d0a7d2d3fc2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Src\Ms\BaseMs">
-      <UniqueIdentifier>{3ff193ec-65e5-4ce8-b2db-278e182f0ed4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Src\Ms\Gundam">
       <UniqueIdentifier>{5d797193-c10c-439b-a63e-ea39aae1bf88}</UniqueIdentifier>
     </Filter>
@@ -268,9 +266,6 @@
     <Filter Include="Application\Src\Other\ImageNum">
       <UniqueIdentifier>{b21795ac-a565-4a5d-a39f-2c3c6ec33d37}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Src\Ms\Bullet">
-      <UniqueIdentifier>{1a2f93ed-c034-473c-ad74-70cbe003800b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Src\Manager\TitleManager">
       <UniqueIdentifier>{81dd0e68-a868-465f-8c03-edf07402e0fc}</UniqueIdentifier>
     </Filter>
@@ -297,6 +292,21 @@
     </Filter>
     <Filter Include="FGEngine\Src\My\Resouce\Sprite">
       <UniqueIdentifier>{0232a078-3cba-4565-b040-0d1bdc9b776b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Base">
+      <UniqueIdentifier>{d100a9bb-c7ac-4d80-8c01-0678da3477c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Base\BaseMs">
+      <UniqueIdentifier>{3ff193ec-65e5-4ce8-b2db-278e182f0ed4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Base\Bullet">
+      <UniqueIdentifier>{1a2f93ed-c034-473c-ad74-70cbe003800b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Base\BaseWeapon">
+      <UniqueIdentifier>{fcf6d4d5-857c-4e32-9f6c-12685db6a800}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Src\Ms\Base\Bullet\HomingBullet">
+      <UniqueIdentifier>{cd8af568-f7d3-4f58-a841-b1aa8523587a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -598,7 +608,7 @@
       <Filter>Application\Src\Manager\BattleManager</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\BaseMs.h">
-      <Filter>Application\Src\Ms\BaseMs</Filter>
+      <Filter>Application\Src\Ms\Base\BaseMs</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Gundam.h">
       <Filter>Application\Src\Ms\Gundam</Filter>
@@ -621,8 +631,8 @@
     <ClInclude Include="Application\Src\ImageNum.h">
       <Filter>Application\Src\Other\ImageNum</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\Bullet.h">
-      <Filter>Application\Src\Ms\Bullet</Filter>
+    <ClInclude Include="Application\Src\BaseBullet.h">
+      <Filter>Application\Src\Ms\Base\Bullet</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Global.h">
       <Filter>Application\Src</Filter>
@@ -647,6 +657,12 @@
     </ClInclude>
     <ClInclude Include="Application\Src\GameInput.h">
       <Filter>Application\Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BaseWeapon.h">
+      <Filter>Application\Src\Ms\Base\BaseWeapon</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\HomingBullet.h">
+      <Filter>Application\Src\Ms\Base\Bullet\HomingBullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -834,7 +850,7 @@
       <Filter>Application\Src\Manager\BattleManager</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\BaseMs.cpp">
-      <Filter>Application\Src\Ms\BaseMs</Filter>
+      <Filter>Application\Src\Ms\Base\BaseMs</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Gundam.cpp">
       <Filter>Application\Src\Ms\Gundam</Filter>
@@ -851,8 +867,8 @@
     <ClCompile Include="Application\Src\ImageNum.cpp">
       <Filter>Application\Src\Other\ImageNum</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Bullet.cpp">
-      <Filter>Application\Src\Ms\Bullet</Filter>
+    <ClCompile Include="Application\Src\BaseBullet.cpp">
+      <Filter>Application\Src\Ms\Base\Bullet</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\ControlOwner.cpp">
       <Filter>Application\Src\ControlOwner</Filter>
@@ -865,6 +881,12 @@
     </ClCompile>
     <ClCompile Include="Application\Src\BattleSettingManager.cpp">
       <Filter>Application\Src\Manager\BattleSettingManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Camera.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\HomingBullet.cpp">
+      <Filter>Application\Src\Ms\Base\Bullet\HomingBullet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

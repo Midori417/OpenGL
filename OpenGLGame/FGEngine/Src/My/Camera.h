@@ -39,6 +39,8 @@ namespace FGEngine
 			return fovScale;
 		}
 
+		static Vector2 WorldPointToScreenPoint(const Vector3& targetPos, const CameraPtr& targetCamera,
+			float screenWidth, float screenHeight);
 
 	public:
 

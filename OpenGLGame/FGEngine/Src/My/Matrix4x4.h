@@ -63,6 +63,8 @@ namespace FGEngine
 		*/
 		static Matrix4x4 RotateZ(float angle);
 
+		static Matrix4x4 Perspective(float fov, float aspect, float zNear, float zFar);
+
 		/**
 		* ƒrƒ…[s—ñ‚ğì¬‚·‚é
 		*

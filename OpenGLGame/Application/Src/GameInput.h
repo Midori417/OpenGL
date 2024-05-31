@@ -30,8 +30,7 @@ struct GameInput
 	bool action3Btn = false;
 
 	// ターゲット切り替えボタン
-	bool targetChange1Btn = false;
-	bool targetChange2Btn = false;
+	bool targetChangeBtn = false;
 };
 
 #endif // !MSCONTROL_H_INCLUDED

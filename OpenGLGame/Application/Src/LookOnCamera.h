@@ -27,16 +27,14 @@ public:
 	/**
 	* とりつくMSのトランスフォームを設定
 	* 
-	* @param msTrs とりつくMsのTrs
+	* @param msTrs とりつくMsのTrss
 	*/
 	void SetMsTransform(Transform* myMs);
 
+	void StartOk();
+
 private:
 
-	/**
-	* 最初に実行
-	*/
-	virtual void Start() override;
 
 	/**
 	* 毎フレーム実行(Updateよりあと)
@@ -65,6 +63,9 @@ private:
 
 	// カメラの旋回速度
 	float rotationSpeed = 0.5f;
+
+	bool isStart = false;
+
 };
 
 
