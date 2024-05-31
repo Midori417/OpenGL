@@ -90,9 +90,6 @@ private:
 	// 武器のアイコン
 	std::vector<ImagePtr> imgWeapnIcons;
 
-	// 自チームの自分以外の機体体力
-	ImageNumPtr inMyTeumOtherMsHp;
-
 	// ターゲットマーク
 	ImagePtr imgTargetMark;
 
@@ -110,17 +107,22 @@ private:
 	ImagePtr imgMyTeumOtherMsInfo;
 	ImagePtr imgMyTeumOtherMsHpBar;
 
+	// パートナー機体体力波形
+	ImagePtr imgPartnerHpBack;
+	// パートナー機体体力
+	ImageNumPtr inPartnerMsHp;
+
 	// 時間
 	ImagePtr imgTimer;
 
 	// チーム体力のフレーム
-	ImagePtr imgTeumHpFrame;
+	ImagePtr imgTeamHpFrame;
 
 	// 自チームの体力バー
-	ImagePtr imgMyTeumHpBar;
+	ImagePtr imgMyTeamHpBar;
 
 	// 相手チームの体力バー
-	ImagePtr imgOtherTeumHpBar;
+	ImagePtr imgOtherTeamHpBar;
 
 	// 勝利
 	ImagePtr imgWin;

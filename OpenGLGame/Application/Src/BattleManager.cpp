@@ -102,8 +102,8 @@ void BattleManager::Awake()
 				// チーム人数が1以上なら自チームのオーナを設定
 				if (teum1ControlOwners.size() > 1)
 				{
-					hyumanControl->myTeumOtherOwner = teum1ControlOwners.begin()->get();
-					teum1ControlOwners.begin()->get()->myTeumOtherOwner = hyumanControl.get();
+					hyumanControl->myTeamOtherOwner = teum1ControlOwners.begin()->get();
+					teum1ControlOwners.begin()->get()->myTeamOtherOwner = hyumanControl.get();
 				}
 			}
 			else if (x->teumId == 2)
@@ -112,8 +112,8 @@ void BattleManager::Awake()
 				// チーム人数が1以上なら自チームのオーナを設定
 				if (teum2ControlOwners.size() > 1)
 				{
-					hyumanControl->myTeumOtherOwner = teum2ControlOwners.begin()->get();
-					teum2ControlOwners.begin()->get()->myTeumOtherOwner = hyumanControl.get();
+					hyumanControl->myTeamOtherOwner = teum2ControlOwners.begin()->get();
+					teum2ControlOwners.begin()->get()->myTeamOtherOwner = hyumanControl.get();
 				}
 			}
 		}
@@ -138,8 +138,8 @@ void BattleManager::Awake()
 				// チーム人数が1以上なら自チームのオーナを設定
 				if (teum1ControlOwners.size() > 1)
 				{
-					cpuControl->myTeumOtherOwner = teum1ControlOwners.begin()->get();
-					teum1ControlOwners.begin()->get()->myTeumOtherOwner = cpuControl.get();
+					cpuControl->myTeamOtherOwner = teum1ControlOwners.begin()->get();
+					teum1ControlOwners.begin()->get()->myTeamOtherOwner = cpuControl.get();
 				}
 			}
 			else if (x->teumId == 2)
@@ -148,8 +148,8 @@ void BattleManager::Awake()
 				// チーム人数が1以上なら自チームのオーナを設定
 				if (teum2ControlOwners.size() > 1)
 				{
-					cpuControl->myTeumOtherOwner = teum2ControlOwners.begin()->get();
-					teum2ControlOwners.begin()->get()->myTeumOtherOwner = cpuControl.get();
+					cpuControl->myTeamOtherOwner = teum2ControlOwners.begin()->get();
+					teum2ControlOwners.begin()->get()->myTeamOtherOwner = cpuControl.get();
 				}
 			}
 		}
@@ -163,14 +163,14 @@ void BattleManager::Awake()
 		{
 			for (auto teum2 : teum2ControlOwners)
 			{
-				teum1->otherTeumOwner.push_back(teum2.get());
+				teum1->otherTeamOwner.push_back(teum2.get());
 			}
 		}
 		for (auto teum2 : teum2ControlOwners)
 		{
 			for (auto teum1 : teum1ControlOwners)
 			{
-				teum2->otherTeumOwner.push_back(teum1.get());
+				teum2->otherTeamOwner.push_back(teum1.get());
 			}
 		}
 }

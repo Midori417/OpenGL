@@ -30,7 +30,7 @@ void ControlOwner::SetTeumHP(int* myTeumHp, int* otherTeumHp)
 */
 void ControlOwner::TeumHPInivinit()
 {
-	isTeumHpInfinit = true;
+	isTeamHpInfinit = true;
 }
 
 /**
@@ -39,7 +39,7 @@ void ControlOwner::TeumHPInivinit()
 void ControlOwner::Initialize()
 {
 	// 初期ターゲットを設定
-	targetOwner = otherTeumOwner[0];
+	targetOwner = otherTeamOwner[0];
 
 	// カメラに自身のMSを設定
 	myCamera->SetMsTransform(myMs->GetTransform().get());
@@ -104,5 +104,5 @@ float ControlOwner::GetDistance()
 */
 bool ControlOwner::GetTeumHPInifinit() const
 {
-	return isTeumHpInfinit;
+	return isTeamHpInfinit;
 }

@@ -83,23 +83,23 @@ void CpuControl::Update()
 	GameInputUpdate();
 
 	// ターゲット切り替え
-	if (gameInput->targetChangeBtn && otherTeumOwner.size() > 0)
+	if (gameInput->targetChangeBtn && otherTeamOwner.size() > 0)
 	{
-		if (targetOwner == otherTeumOwner[0])
+		if (targetOwner == otherTeamOwner[0])
 		{
-			if (!otherTeumOwner[1]->myMs->IsDeath())
+			if (!otherTeamOwner[1]->myMs->IsDeath())
 			{
-				targetOwner = otherTeumOwner[1];
+				targetOwner = otherTeamOwner[1];
 				// カメラと機体にターゲットを持たせる
 				myMs->SetTargetMS(targetOwner->myMs.get());
 				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
 			}
 		}
-		else if (targetOwner == otherTeumOwner[1])
+		else if (targetOwner == otherTeamOwner[1])
 		{
-			if (!otherTeumOwner[0]->myMs->IsDeath())
+			if (!otherTeamOwner[0]->myMs->IsDeath())
 			{
-				targetOwner = otherTeumOwner[0];
+				targetOwner = otherTeamOwner[0];
 				// カメラと機体にターゲットを持たせる
 				myMs->SetTargetMS(targetOwner->myMs.get());
 				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
@@ -108,23 +108,23 @@ void CpuControl::Update()
 		gameInput->targetChangeBtn = false;
 	}
 	// ターゲットの機体が死んだら
-	if (targetOwner->myMs->IsDeath() && otherTeumOwner.size() > 0)
+	if (targetOwner->myMs->IsDeath() && otherTeamOwner.size() > 0)
 	{
-		if (targetOwner == otherTeumOwner[0])
+		if (targetOwner == otherTeamOwner[0])
 		{
-			if (!otherTeumOwner[1]->myMs->IsDeath())
+			if (!otherTeamOwner[1]->myMs->IsDeath())
 			{
-				targetOwner = otherTeumOwner[1];
+				targetOwner = otherTeamOwner[1];
 				// カメラと機体にターゲットを持たせる
 				myMs->SetTargetMS(targetOwner->myMs.get());
 				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
 			}
 		}
-		else if (targetOwner == otherTeumOwner[1])
+		else if (targetOwner == otherTeamOwner[1])
 		{
-			if (!otherTeumOwner[0]->myMs->IsDeath())
+			if (!otherTeamOwner[0]->myMs->IsDeath())
 			{
-				targetOwner = otherTeumOwner[0];
+				targetOwner = otherTeamOwner[0];
 				// カメラと機体にターゲットを持たせる
 				myMs->SetTargetMS(targetOwner->myMs.get());
 				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
@@ -174,7 +174,7 @@ void CpuControl::GameInputUpdate()
 	{
 		cpuState = (int)Random::Range(CpuState::None, CpuState::Max - 1);
 		cpuTimer = cpuTime;
-		targetNum = (int)Random::Range(0, static_cast<int>(otherTeumOwner.size() - 1));
+		targetNum = (int)Random::Range(0, static_cast<int>(otherTeamOwner.size() - 1));
 	}
 
 

@@ -98,10 +98,10 @@ public:
 	BaseMsPtr myMs = nullptr;
 
 	// 自チームの別オーナ
-	ControlOwner* myTeumOtherOwner = nullptr;
+	ControlOwner* myTeamOtherOwner = nullptr;
 
 	// 相手チームのオーナ配列
-	std::vector<ControlOwner*> otherTeumOwner;
+	std::vector<ControlOwner*> otherTeamOwner;
 
 	// 復活位置配列
 	std::vector<Vector3> responPoss;
@@ -138,7 +138,7 @@ private:
 	int* otherTeumHp = 0;
 
 	// true = チーム体力∞
-	bool isTeumHpInfinit = false;
+	bool isTeamHpInfinit = false;
 
 };
 

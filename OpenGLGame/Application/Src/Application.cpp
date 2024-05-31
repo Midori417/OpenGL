@@ -53,17 +53,23 @@ int Application::Initialize()
 	resManager->LoadTga("TargetMark01", "Application/Res/UI/Battle/TargetMark01.tga");
 	resManager->LoadTga("TargetMark02", "Application/Res/UI/Battle/TargetMark02.tga");
 	resManager->LoadTga("TargetMark03", "Application/Res/UI/Battle/TargetMark03.tga");
+	resManager->LoadTga("Timer", "Application/Res/UI/Battle/Timer.tga");
 	resManager->LoadTga("OtherTeumMsInfo", "Application/Res/UI/Battle/TargetMsInfo.tga");
 	resManager->LoadTga("OtherTeumMsHpBar", "Application/Res/UI/Battle/TargetMsHpBar.tga");
+
+	// –¡•û‚Ì‘Ì—Í
 	resManager->LoadTga("MyTeumOtherMsInfo", "Application/Res/UI/Battle/TeumOtherMsInfo.tga");
 	resManager->LoadTga("MyTeumOtherMsHpBar", "Application/Res/UI/Battle/TeumOtherMsHpBar.tga");
-	resManager->LoadTga("Timer", "Application/Res/UI/Battle/Timer.tga");
+	resManager->LoadTga("PartnerHpBack", "Application/Res/UI/Battle/PartnerHpBack.tga");
+
+	// •‘•
 	resManager->LoadTga("WeaponBack", "Application/Res/UI/Battle/WeaponBack.tga");
 	resManager->LoadTga("WeaponBar", "Application/Res/UI/Battle/WeaponBar.tga");
+
 	// ƒ`[ƒ€‘Ì—Í
-	resManager->LoadTga("TeumHpFrame", "Application/Res/UI/Battle/TeumHp/TeumHpFrame.tga");
-	resManager->LoadTga("MyTeumHpBar", "Application/Res/UI/Battle/TeumHp/MyTeumHpBar.tga");
-	resManager->LoadTga("OtherTeumHpBar", "Application/Res/UI/Battle/TeumHp/OtherTeumHpBar.tga");
+	resManager->LoadTga("TeamHpFrame", "Application/Res/UI/Battle/TeamHp/TeamHpFrame.tga");
+	resManager->LoadTga("MyTeamHpBar", "Application/Res/UI/Battle/TeamHp/MyTeamHpBar.tga");
+	resManager->LoadTga("OtherTeamHpBar", "Application/Res/UI/Battle/TeamHp/OtherTeamHpBar.tga");
 
 	// Ÿ”s
 	resManager->LoadTga("Win", "Application/Res/UI/Battle/Win.tga");
