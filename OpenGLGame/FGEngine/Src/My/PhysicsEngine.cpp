@@ -55,7 +55,7 @@ namespace FGEngine::PhysicsSystem
 	{
 		// 設置判定
 		// 衝突ベクトルが垂直に近い場合、床と触れたとみなす
-		static const float cosGround = Mathf::Cos(Mathf::DegToRad(75)); //　床とみなす角度
+		static const float cosGround = Mathf::Cos(Mathf::DegToRad(90)); //　床とみなす角度
 		if (penetration.y > 0 && gameObject->rigidbody)
 		{
 			// 対象が単位垂直ベクトルであることを利用して、内積による角度の比較を単純化

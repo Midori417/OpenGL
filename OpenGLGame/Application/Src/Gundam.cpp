@@ -108,6 +108,13 @@ void Gundam::Awake()
 		bazooka->bullet.shader = resManager->GetShader(DefalutShader::Standard3D);
 		bazooka->bullet.shadowShader = resManager->GetShader(DefalutShader::Shadow3D);
 	}
+	// サーベル
+	{
+		sable = std::make_shared<Sable>();
+		sable->name = "Sable";
+	}
+
+	// UI武装配列に追加
 	uiWeapons.push_back(bazooka);
 	uiWeapons.push_back(rifle);
 
@@ -187,7 +194,7 @@ void Gundam::Update()
 			}
 		}
 		// 立ち上げるアニメーション中で
-		if (anim->GetAnimationClip()->name == "StandUp.Rifle.F" || 
+		if (anim->GetAnimationClip()->name == "StandUp.Rifle.F" ||
 			anim->GetAnimationClip()->name == "StandUp.Rifle.B")
 		{
 			// アニメーションが終われば
@@ -257,6 +264,8 @@ void Gundam::Update()
 			Action1(gameInput->action1Btn);
 			// 攻撃2(バズーカ)
 			Action2(gameInput->action2Btn);
+			// 攻撃(サーベル)
+			Action3(gameInput->action3Btn);
 		}
 	}
 
@@ -314,7 +323,7 @@ void Gundam::Move(const Vector2& moveAxis)
 	}
 
 	// ジャンプ・ダッシュ・ライフルの移動禁止・バズーカ状態なら移動しない
-	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot || bazooka->isNow)
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot || bazooka->isNow || sable->isNow)
 	{
 		return;
 	}
@@ -339,22 +348,39 @@ void Gundam::Move(const Vector2& moveAxis)
 		}
 		if (!rifle->isNow && !bazooka->isNow)
 		{
+			// 移動入力があれば歩きアニメーションを再生
 			if (moveAxis != Vector2::zero)
 			{
-				// 歩くアニメーションを再生する
-				anim->SetAnimation("Run.Rifle", true);
-				anim->Play();
+				switch (handWeapon)
+				{
+				case Gundam::HandWeapon::Rifle:
+					anim->SetAnimation("Run.Rifle", true);
+					anim->Play();
+					break;
+				case Gundam::HandWeapon::Sable:
+					anim->SetAnimation("Run.Sable", true);
+					anim->Play();
+					break;
+				}
 			}
+			// 移動入力がなければアイドルアニメーションを再生
 			else
 			{
-				// 移動入力がなければIdleアニメーションを再生する
-				anim->SetAnimation("Idle.Rifle", true);
-				anim->Play();
+				switch (handWeapon)
+				{
+				case Gundam::HandWeapon::Rifle:
+					anim->SetAnimation("Idle.Rifle", true);
+					anim->Play();
+					break;
+				case Gundam::HandWeapon::Sable:
+					anim->SetAnimation("Idle.Sable", true);
+					anim->Play();
+					break;
+				}
 			}
 		}
 	}
 }
-
 
 /**
 * ジャンプ
@@ -362,7 +388,7 @@ void Gundam::Move(const Vector2& moveAxis)
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
 	// ダッシュ・ライフルの移動禁止・バズーカ状態ならジャンプしない
-	if (moveParamater.dash.isNow || rifle->isStopShot || bazooka->isNow)
+	if (moveParamater.dash.isNow || rifle->isStopShot || bazooka->isNow || sable->isNow)
 	{
 		return;
 	}
@@ -478,7 +504,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
 	// ライフルの停止・バズーカ状態ならダッシュしない
-	if (rifle->isStopShot || bazooka->isNow)
+	if (rifle->isStopShot || bazooka->isNow || sable->isNow)
 	{
 		return;
 	}
@@ -584,8 +610,7 @@ void Gundam::Action1(bool attackKey)
 	// 攻撃入力があれば
 	if (attackKey)
 	{
-		// バズーカ攻撃状態ならライフル攻撃をしない
-		if (bazooka->isNow)
+		if (bazooka->isNow || sable->isNow)
 		{
 			return;
 		}
@@ -593,6 +618,9 @@ void Gundam::Action1(bool attackKey)
 		// ビームライフルの弾があれば射撃
 		if (rifle->amo > 0 && !rifle->isNow)
 		{
+			// 持っている武装をライフルにする
+			handWeapon = HandWeapon::Rifle;
+
 			// ターゲットが自分から見てどの方向にいるか調べる
 			Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
 			Vector3 perendicular = Vector3::Cross(directionToTarget, GetTransform()->Forward());
@@ -614,7 +642,7 @@ void Gundam::Action1(bool attackKey)
 				anim->Play();
 			}
 			// アイドル・ジャンプ状態
-			else if (anim->GetAnimationClip()->name == "Idle.Rifle" || 
+			else if (anim->GetAnimationClip()->name == "Idle.Rifle" ||
 				anim->GetAnimationClip()->name == "Jump.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle.Ground")
 			{
 				rb->velocity = Vector3(0, 1, 0);
@@ -657,7 +685,7 @@ void Gundam::Action1(bool attackKey)
 				}
 			}
 			// 歩き状態
-			else if (anim->GetAnimationClip()->name == "Run.Rifle")
+			else if (anim->GetAnimationClip()->name == "Run.Rifle" && rb->IsGround())
 			{
 				// 前方
 				if (dot > 0.9f)
@@ -715,6 +743,48 @@ void Gundam::Action1(bool attackKey)
 					anim->SetAnimation("Rifle.Shot.Dash.L");
 					anim->Play();
 				}
+			}
+			else
+			{
+				rb->velocity = Vector3(0, 1, 0);
+				// 動きを止める
+				rifle->isStopShot = true;
+
+				// 前方
+				if (dot > 0.9f)
+				{
+					anim->SetAnimation("Rifle.Shot.Idle.F");
+					anim->Play();
+				}
+				// 右方
+				else if (perendicular.y < 0)
+				{
+					if (dot > 0.6f)
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.FR");
+						anim->Play();
+					}
+					else
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.R");
+						anim->Play();
+					}
+				}
+				// 左方
+				else if (perendicular.y > 0)
+				{
+					if (dot > 0.6f)
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.FL");
+						anim->Play();
+					}
+					else
+					{
+						anim->SetAnimation("Rifle.Shot.Idle.L");
+						anim->Play();
+					}
+				}
+
 			}
 
 			// 射撃中
@@ -799,8 +869,7 @@ void Gundam::Action2(bool attackKey)
 	// 攻撃入力があれば
 	if (attackKey)
 	{
-		// ライフル攻撃状態ならバズーカ攻撃をしない
-		if (rifle->isNow)
+		if (rifle->isNow || sable->isNow)
 		{
 			return;
 		}
@@ -808,6 +877,10 @@ void Gundam::Action2(bool attackKey)
 		// バズーカの弾があるなら射撃
 		if (bazooka->amo > 0 && !bazooka->isNow)
 		{
+			// 持っている武装をライフルにする
+			handWeapon = HandWeapon::Rifle;
+
+			// ターゲットがいれば
 			if (GetTargetMs())
 			{
 				// ターゲットが自分から見てどの方向にいるか調べる
@@ -892,7 +965,131 @@ void Gundam::Action3(bool acttion3Btn)
 {
 	if (acttion3Btn)
 	{
-		
+		if (rifle->isNow || bazooka->isNow)
+		{
+			return;
+		}
+		if (!sable->isNow)
+		{
+
+			// サーベル行動中にする
+			sable->isNow = true;
+			// 重力を受けなくする
+			rb->isGravity = false;
+			rb->velocity = Vector3::zero;
+
+			// ターゲットとの距離が赤ロック距離なら
+			if (GetDistance() < redLookDistace)
+			{
+				// 持っている武装をサーベルにする
+				handWeapon = HandWeapon::Sable;
+
+				// サーベル移動状態にする
+				sable->move.isNow = true;
+
+				// 攻撃し始めた位置を格納
+				sable->move.attackStartPos = GetTransform()->position;
+
+				// アニメーションを再生
+				anim->SetAnimation("Sable.Move");
+				anim->Play();
+			}
+			else
+			{
+				if (handWeapon != HandWeapon::Sable)
+				{
+					// 持っている武装をサーベルにする
+					handWeapon = HandWeapon::Sable;
+
+					// 範囲外だとサーベル抜刀状態にする
+					sable->isGet = true;
+
+					// アニメーションを再生
+					anim->SetAnimation("Sable.Get");
+					anim->Play();
+				}
+				else
+				{
+					sable->attack1.isNow = true;
+					anim->SetAnimation("Sable.Attack1");
+					anim->Play();
+				}
+			}
+		}
+		// サーベル行動中
+		else
+		{
+			if (sable->attack1.isNow)
+			{
+
+			}
+			else if (sable->attack2.isNow)
+			{
+
+			}
+			else if (sable->attack3.isNow)
+			{
+
+			}
+		}
+	}
+	// サーベル行動中
+	if (sable->isNow)
+	{
+		// サーベル抜刀状態
+		if (sable->isGet)
+		{
+			if (anim->time >= anim->GetAnimationClip()->totalTime)
+			{
+				sable->isNow = false;
+				sable->isGet = false;
+				rb->isGravity = true;
+				anim->SetAnimation("Idle.Sable");
+				anim->Play();
+			}
+		}
+		// サーベル移動状態
+		else if (sable->move.isNow)
+		{
+			// ターゲットの方向を取得
+			Vector3 directionToTarget = GetTargetMs()->GetTransform()->position - GetTransform()->position;
+
+			GetTransform()->rotation = Quaternion::LookRotation(directionToTarget);
+
+			// 移動距離を計算
+			float moveDistance = Mathf::Abs(Vector3::Distance(GetTransform()->position, sable->move.attackStartPos));
+			GetTransform()->position += sable->move.speed * GetTransform()->Forward() * Time::DeltaTime();
+			if (moveDistance >= sable->move.distanceMax || GetDistance() < 10)
+			{
+				// サーベル移動状態を終了
+				sable->move.isNow= false;
+				sable->attack1.isNow = true;
+				anim->SetAnimation("Sable.Attack1");
+				anim->Play();
+			}
+		}
+		// サーベル攻撃一段階目中
+		else if (sable->attack1.isNow)
+		{
+			if (anim->time < 0.5f)
+			{
+				GetTransform()->position += sable->move.speed * GetTransform()->Forward() * Time::DeltaTime();
+			}
+			if (anim->time >= anim->GetAnimationClip()->totalTime)
+			{
+				sable->attack1.isNow = false;
+				sable->isNow = false;
+				rb->isGravity = true;
+				anim->SetAnimation("Idle.Sable");
+				anim->Play();
+			}
+		}
+		else if (sable->attack2.isNow)
+		{
+		}
+		else if (sable->attack3.isNow)
+		{
+		}
 	}
 }
 
@@ -907,6 +1104,7 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 	{
 		return;
 	}
+
 	// 与えられたダメージの方向を計算
 	Vector3 directionToTarget = damageInfo.direction;
 	float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());

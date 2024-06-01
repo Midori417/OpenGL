@@ -36,7 +36,7 @@ void LookOnCamera::LateUpdate()
 		// 距離を求める
 		float distance = Vector3::Distance(targetMsPos, playerMsPos);
 
-		// 高さを招請
+		// 高さを調整
 		float posY = offsetMaxPos.y * (1 - (distance / offsetMaxPos.y));
 
 		// オフセット位置を補正
@@ -48,7 +48,6 @@ void LookOnCamera::LateUpdate()
 
 		// 位置と回転
 		Vector3 position = Vector3::Lerp(GetTransform()->position, playerMsPos + targetRotation * offsetPos, Time::DeltaTime());
-		position.y = Mathf::Clamp(position.y, playerMsPos.y, position.y);
 		Quaternion rotation = Quaternion::LookRotation(targetMsPos - position);
 
 
@@ -96,6 +95,7 @@ void LookOnCamera::PositionCamera()
 	}
 	else
 	{
+		return;
 		// 自身とターゲットのMSの位置を取得
 		Vector3 playerMsPos = myMs->position;
 		Vector3 targetMsPos = targetMs->position;
@@ -122,7 +122,6 @@ void LookOnCamera::PositionCamera()
 
 		// 位置と回転
 		Vector3 position = Vector3::Lerp(GetTransform()->position, playerMsPos + targetRotation * offsetPos, 1);
-		position.y = Mathf::Clamp(position.y, playerMsPos.y, position.y);
 		Quaternion rotation = Quaternion::LookRotation(targetMsPos - position);
 
 

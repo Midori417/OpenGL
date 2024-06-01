@@ -394,6 +394,7 @@ void HumanControl::Update()
 
 	// ゲーム入力
 	GameInputUpdate();
+	myMs->SetDistance(GetDistance());
 
 	// ターゲット切り替え
 	if (gameInput->targetChangeBtn && otherTeamOwner.size() > 0)
@@ -455,6 +456,7 @@ void HumanControl::GameInputUpdate()
 	gameInput->dashBtn = InputKey::GetKey(KeyCode::LeftShift);
 	gameInput->action1Btn = InputMouse::GetMouseButton(MouseButton::LeftButton);
 	gameInput->action2Btn = InputKey::GetKey(KeyCode::E);
+	gameInput->action3Btn = InputMouse::GetMouseButton(MouseButton::RightButton);
 	gameInput->targetChangeBtn = InputMouse::GetMouseButtonDown(MouseButton::CenterButton);
 }
 

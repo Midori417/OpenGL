@@ -111,6 +111,13 @@ public:
 
 public:
 
+	// ËŒ‚ó‘Ô‚©
+	bool isNow = false;
+
+	// Œ‚‚Á‚½‚©
+	bool isShot = false;
+
+	// ’e
 	ShotWeapon::Bullet bullet;
 };
 #endif // !BASEWEAPON_H_INCLUDED

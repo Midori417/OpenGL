@@ -80,7 +80,7 @@ void CpuControl::Update()
 			}
 		}
 	}
-	GameInputUpdate();
+	//GameInputUpdate();
 
 	// ターゲット切り替え
 	if (gameInput->targetChangeBtn && otherTeamOwner.size() > 0)

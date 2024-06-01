@@ -307,12 +307,12 @@ namespace FGEngine
 	}
 
 	/**
-* JSONの配列データをVector3に変換する
-*
-* @param json 変換元となる配列データ
-*
-* @return jsonを変換してできたVector3の値
-*/
+	* JSONの配列データをVector3に変換する
+	*
+	* @param json 変換元となる配列データ
+	*
+	* @return jsonを変換してできたVector3の値
+	*/
 	Vector3 GetVector3(const json& json)
 	{
 		if (json.size() < 3)
@@ -760,13 +760,14 @@ namespace FGEngine::RenderingSystem
 		for (size_t i = 0; i < p->animationClips.size(); ++i)
 		{
 			const std::string& name = p->animationClips[i]->name;
+			const float time = p->animationClips[i]->totalTime;
 			if (name.size() <= 0)
 			{
 				LOG(" animations[%d]=<NO NAME>", i);
 			}
 			else
 			{
-				LOG(R"( animations[%d]="%s")", i, name.c_str());
+				LOG(R"( animations[%d]="%s"time=%f )", i, name.c_str(), time);
 			}
 		}
 	}

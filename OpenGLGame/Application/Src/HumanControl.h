@@ -109,6 +109,7 @@ private:
 
 	// パートナー機体体力波形
 	ImagePtr imgPartnerHpBack;
+
 	// パートナー機体体力
 	ImageNumPtr inPartnerMsHp;
 
