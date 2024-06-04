@@ -52,13 +52,13 @@ void BattleSettingManager::Awake()
 	battleInfo->controlInfo[1]->playerId = 1;
 	battleInfo->controlInfo[1]->ms = MsList::Gundam;
 
-	//battleInfo->controlInfo[2]->teumId = 2;
-	//battleInfo->controlInfo[2]->playerId = 1;
-	//battleInfo->controlInfo[2]->ms = MsList::Gundam;
+	battleInfo->controlInfo[2]->teumId = 2;
+	battleInfo->controlInfo[2]->playerId = 1;
+	battleInfo->controlInfo[2]->ms = MsList::Gundam;
 
-	//battleInfo->controlInfo[3]->teumId = 1;
-	//battleInfo->controlInfo[3]->playerId = 1;
-	//battleInfo->controlInfo[3]->ms = MsList::Gundam;
+	battleInfo->controlInfo[3]->teumId = 1;
+	battleInfo->controlInfo[3]->playerId = 1;
+	battleInfo->controlInfo[3]->ms = MsList::Gundam;
 }
 
 /**

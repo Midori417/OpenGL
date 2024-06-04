@@ -90,6 +90,14 @@ public:
 	*/
 	void Stop();
 
+	/**
+	* 誘導可能かチェック
+	*
+	* @retval true  誘導可能
+	* @retval false 誘導不可
+	*/
+	bool HomingCheck() const;
+
 protected:
 
 	/**
@@ -120,6 +128,7 @@ protected:
 	*/
 	float GetDistance() const;
 
+
 public:
 
 	// UIに表示する武装
@@ -128,8 +137,16 @@ public:
 	// 近接距離
 	float proximityDistance = 0;
 
-	// 赤ロック距離
-	float redLookDistace = 0;
+	// 赤ロック距離(平行)
+	float redLookDistaceXZ = 0;
+
+	// 赤ロック距離(+Y)
+	float redLookDistanceMaxY = 0;
+
+	// 赤ロック距離(-Y)
+	float redLookDistanceMinY = 0;
+
+	int audioPlayer = 0;
 
 protected:
 
@@ -250,6 +267,10 @@ protected:
 		// 通常時の旋回速度
 		float rotationSpeed = 0;
 
+		float moveTimer = 0;
+
+		const float moveTime = 0.3f;
+
 		// ダッシュパラメータ
 		DashParamater dash;
 
@@ -264,14 +285,22 @@ protected:
 	// ダウン値
 	float downValue = 0;
 
-	// 吹き飛び状態の有無
-	bool isBlowAway = false;
+	/**
+	* 吹き飛び構造体
+	*/
+	struct BlowAway
+	{
+		// 吹き飛び状態か
+		bool isNow = false;
 
-	float blowAwayTimer = 0;
+		// 吹き飛ぶ時間
+		float timer = 0;
 
-	float blowAwayTime = 0.5f;
+		float time = 0.5f;
 
-	float blowPower = 70.0f;
+		float power = 70.0f;
+	};
+	BlowAway blowAway;
 
 	bool isDown = false;
 

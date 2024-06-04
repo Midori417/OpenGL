@@ -168,13 +168,14 @@ void HumanControl::Start()
 		// ターゲットマークを作成
 		{
 			// ターゲットマークのテクスチャを取得
-			texTargetMark01 = resManager->GetTexture("TargetMark01");
-			texTargetMark02 = resManager->GetTexture("TargetMark02");
-			texTargetMark03 = resManager->GetTexture("TargetMark03");
+			texTargetMarkGreen = resManager->GetTexture("TargetMarkGreen");
+			texTargetMarkRed = resManager->GetTexture("TargetMarkRed");
+			texTargetMarkLock = resManager->GetTexture("TargetMarkLock");
+			texTargetMarkYellow = resManager->GetTexture("TargetMarkYellow");
 
 			auto targetMark = Instantate("TargetMark");
 			imgTargetMark = targetMark->AddComponent<Image>();
-			imgTargetMark->texture = texTargetMark01;
+			imgTargetMark->texture = texTargetMarkGreen;
 			imgTargetMark->size = imgTargetMark->texture->GetSize();
 		}
 		for (int i = 0; i < otherTeamOwner.size(); ++i)
@@ -207,7 +208,7 @@ void HumanControl::Start()
 				imgMyTeamHpBar->size = imgMyTeamHpBar->texture->GetSize() * 1.2f;
 
 				float max = static_cast<float>(teumMaxHp);
-				float hp = static_cast<float>(MyTeumHp());
+				float hp = static_cast<float>(MyTeamHp());
 				imgMyTeamHpBar->fillAmout = (max - (max - hp)) / max;
 			}
 			// 相手チームの体力バーを作成
@@ -218,7 +219,7 @@ void HumanControl::Start()
 				imgOtherTeamHpBar->size = imgOtherTeamHpBar->texture->GetSize() * 1.2f;
 
 				float max = static_cast<float>(teumMaxHp);
-				float hp = static_cast<float>(OtherTeumHp());
+				float hp = static_cast<float>(OtherTeamHp());
 				imgOtherTeamHpBar->fillAmout = (max - (max - hp)) / max;
 			}
 			// チーム体力フレームを作成
@@ -312,125 +313,24 @@ void HumanControl::Update()
 	{
 		return;
 	}
-	else
+
+	// ゲーム入力の更新
+	if (isInputUpdate)
 	{
-		// UIを表示
-		imgMyInfoBack->SetEnable(true);
-		inMyMsHp->SetEnable(true);
-		imgBoostBarBack->SetEnable(true);
-		imgBoostBar->SetEnable(true);
-		imgBurstBarBack->SetEnable(true);
-		imgBurstBar->SetEnable(true);
-		for (auto x : imgWeaponBacks)
-		{
-			x->SetEnable(true);
-		}
-		for (auto x : inWeaponAmos)
-		{
-			x->SetEnable(true);
-		}
-		for (auto x : imgWeaponBars)
-		{
-			x->SetEnable(true);
-		}
-		for (auto x : imgWeapnIcons)
-		{
-			x->SetEnable(true);
-		}
-		if (inPartnerMsHp)
-		{
-			imgPartnerHpBack->SetEnable(true);
-			inPartnerMsHp->SetEnable(true);
-		}
-		imgTargetMark->SetEnable(true);
-		imgTeamHpFrame->SetEnable(true);
-		imgMyTeamHpBar->SetEnable(true);;
-		imgOtherTeamHpBar->SetEnable(true);
-		imgTimer->SetEnable(true);
-		myCamera->StartOk();
+		GameInputUpdate();
 	}
 
-	// 自身の機体が死んだら
+	// 自身の機体が死んでいた時の処理
 	if (myMs->IsDeath())
 	{
-		if (!isMsDeath)
-		{
-			if (!GetTeumHPInifinit())
-			{
-				// 自チームのHpを減らす
-				TeumHpSud();
-			}
-			// Msの操作をできないようにする
-			isMsControl = false;
-			isMsDeath = true;
-			responTimer = 0;
-		}
-		// チーム体力が0以上だったら復活させる
-		if (MyTeumHp() > 0)
-		{
-			responTimer += Time::DeltaTime();
-			if (responTimer > responTime)
-			{
-				int index = Random::Range(0, (int)responPoss.size() - 1);
-				// 自チームの体力がコスト以上あればそのままの体力で復活
-				if (MyTeumHp() >= myMs->GetCost())
-				{
-					myMs->Respon(responPoss[index], 1);
-				}
-				// 自チームの体力がコスト以下ならば体力カットして復活
-				else if (MyTeumHp() < myMs->GetCost())
-				{
-					float hp = static_cast<float>(MyTeumHp());
-					float cost = static_cast<float>(myMs->GetCost());
-					float hpCut = ((cost - hp) / cost);
-					myMs->Respon(responPoss[index], hpCut);
-				}
-				// MSの操作を許可
-				isMsControl = true;
-				isMsDeath = false;
-			}
-		}
+		MyMsDeadUpdate();
 	}
-
-	// ゲーム入力
-	GameInputUpdate();
-	myMs->SetDistance(GetDistance());
-
-	// ターゲット切り替え
-	if (gameInput->targetChangeBtn && otherTeamOwner.size() > 0)
+	else
 	{
-		if (targetOwner == otherTeamOwner[0])
-		{
-			targetOwner = otherTeamOwner[1];
-			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-		}
-		else if (targetOwner == otherTeamOwner[1])
-		{
-			targetOwner = otherTeamOwner[0];
-			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-		}
-	}
-	// ターゲットの機体が死んだら
-	if (targetOwner->myMs->IsDeath() && otherTeamOwner.size() > 0)
-	{
-		if (targetOwner == otherTeamOwner[0])
-		{
-			targetOwner = otherTeamOwner[1];
-			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-		}
-		else if (targetOwner == otherTeamOwner[1])
-		{
-			targetOwner = otherTeamOwner[0];
-			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-		}
+		myMs->SetDistance(GetDistance());
+
+		// ターゲットの更新処理
+		TargetUpdate();
 	}
 
 
@@ -439,17 +339,55 @@ void HumanControl::Update()
 }
 
 /**
+* コントロールをスタートする
+*/
+void HumanControl::ControlStart()
+{
+	// UIを表示
+	imgMyInfoBack->SetEnable(true);
+	inMyMsHp->SetEnable(true);
+	imgBoostBarBack->SetEnable(true);
+	imgBoostBar->SetEnable(true);
+	imgBurstBarBack->SetEnable(true);
+	imgBurstBar->SetEnable(true);
+	for (auto x : imgWeaponBacks)
+	{
+		x->SetEnable(true);
+	}
+	for (auto x : inWeaponAmos)
+	{
+		x->SetEnable(true);
+	}
+	for (auto x : imgWeaponBars)
+	{
+		x->SetEnable(true);
+	}
+	for (auto x : imgWeapnIcons)
+	{
+		x->SetEnable(true);
+	}
+	if (inPartnerMsHp)
+	{
+		imgPartnerHpBack->SetEnable(true);
+		inPartnerMsHp->SetEnable(true);
+	}
+	imgTargetMark->SetEnable(true);
+	imgTeamHpFrame->SetEnable(true);
+	imgMyTeamHpBar->SetEnable(true);;
+	imgOtherTeamHpBar->SetEnable(true);
+	imgTimer->SetEnable(true);
+
+	// カメラの処理開始
+	myCamera->StartOk();
+
+	isStart = true;
+}
+
+/**
 * ゲーム入力を更新
 */
 void HumanControl::GameInputUpdate()
 {
-
-	// MSが死んでいれか、操作が許可されていなければ何もしない
-	if (myMs->IsDeath() || !isMsControl)
-	{
-		return;
-	}
-
 	// ゲーム入力
 	gameInput->moveAxis = Vector2(InputManager::GetAxis(Axis::Horizontal), InputManager::GetAxis(Axis::Vertical));
 	gameInput->jumpBtn = InputKey::GetKey(KeyCode::Space);
@@ -469,14 +407,14 @@ void HumanControl::UIUpdate()
 	if (imgMyTeamHpBar)
 	{
 		float max = static_cast<float>(teumMaxHp);
-		float hp = static_cast<float>(MyTeumHp());
+		float hp = static_cast<float>(MyTeamHp());
 		imgMyTeamHpBar->fillAmout = (max - (max - hp)) / max;
 	}
 	// 相手チームの体力の設定
 	if (imgOtherTeamHpBar)
 	{
 		float max = static_cast<float>(teumMaxHp);
-		float hp = static_cast<float>(OtherTeumHp());
+		float hp = static_cast<float>(OtherTeamHp());
 		imgOtherTeamHpBar->fillAmout = (max - (max - hp)) / max;
 	}
 
@@ -558,12 +496,17 @@ void HumanControl::UIUpdate()
 
 	if (targetOwner)
 	{
-		auto targetMs = targetOwner->myMs;
-		if (!targetMs->IsDeath())
+		// ターゲットマークの処理
+		if (imgTargetMark)
 		{
-			// ターゲットマークの処理
-			if (imgTargetMark)
+			auto targetMs = targetOwner->myMs;
+
+			if (!targetMs->IsDeath())
 			{
+				if (!imgTargetMark->GetEnabled())
+				{
+					imgTargetMark->SetEnable(true);
+				}
 				auto camera = myCamera->GetComponent<Camera>();
 				if (camera)
 				{
@@ -576,19 +519,33 @@ void HumanControl::UIUpdate()
 				// 近ければ小さくし、遠ければ大きくする
 				imgTargetMark->size = Vector2(Mathf::Clamp(GetDistance(), 100.0f, 200.0f));
 
-				// 距離によってテクスチャを変える
-				if (GetDistance() <= myMs->proximityDistance)
+				if (myMs->HomingCheck())
 				{
-					imgTargetMark->texture = texTargetMark03;
-				}
-				else if (GetDistance() <= myMs->redLookDistace)
-				{
-					imgTargetMark->texture = texTargetMark02;
+					// 距離によってテクスチャを変える
+					float dis = Vector3::Distance(
+						myMs->GetTransform()->position * Vector3(1, 0, 1), 
+						targetMs->GetTransform()->position * Vector3(1, 0, 1));
+					if (dis <= myMs->proximityDistance)
+					{
+						imgTargetMark->texture = texTargetMarkLock;
+					}
+					else
+					{
+						imgTargetMark->texture = texTargetMarkRed;
+					}
 				}
 				else
 				{
-					imgTargetMark->texture = texTargetMark01;
+					imgTargetMark->texture = texTargetMarkGreen;
 				}
+			}
+			else
+			{
+				if (imgTargetMark->GetEnabled())
+				{
+					imgTargetMark->SetEnable(false);
+				}
+
 			}
 		}
 
@@ -605,8 +562,14 @@ void HumanControl::UIUpdate()
 			float dot = Vector3::Dot(directionToTarget, myCamera->GetTransform()->Forward());
 			if (dot > 0.4f)
 			{
-				imgOtherTeumMsInfoBacks[i]->SetEnable(true);
-				imgOtherTeumMsHpBars[i]->SetEnable(true);
+				if (!imgOtherTeumMsInfoBacks[i]->GetEnabled())
+				{
+					imgOtherTeumMsInfoBacks[i]->SetEnable(true);
+				}
+				if (!imgOtherTeumMsHpBars[i]->GetEnabled())
+				{
+					imgOtherTeumMsHpBars[i]->SetEnable(true);
+				}
 				auto camera = myCamera->GetComponent<Camera>();
 				if (camera)
 				{
@@ -621,14 +584,26 @@ void HumanControl::UIUpdate()
 			}
 			else
 			{
-				imgOtherTeumMsInfoBacks[i]->SetEnable(false);
-				imgOtherTeumMsHpBars[i]->SetEnable(false);
+				if (imgOtherTeumMsInfoBacks[i]->GetEnabled())
+				{
+					imgOtherTeumMsInfoBacks[i]->SetEnable(false);
+				}
+				if (imgOtherTeumMsHpBars[i]->GetEnabled())
+				{
+					imgOtherTeumMsHpBars[i]->SetEnable(false);
+				}
 			}
 		}
 		else if (otherMs->IsDeath())
 		{
-			imgOtherTeumMsInfoBacks[i]->SetEnable(false);
-			imgOtherTeumMsHpBars[i]->SetEnable(false);
+			if (imgOtherTeumMsInfoBacks[i]->GetEnabled())
+			{
+				imgOtherTeumMsInfoBacks[i]->SetEnable(false);
+			}
+			if (imgOtherTeumMsHpBars[i]->GetEnabled())
+			{
+				imgOtherTeumMsHpBars[i]->SetEnable(false);
+			}
 		}
 	}
 

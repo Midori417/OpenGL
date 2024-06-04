@@ -71,6 +71,7 @@ namespace FGEngine
 
 		// ‘O‰ñ‚ÌƒtƒŒ[ƒ€‚ÅÕ“Ë‚µ‚Ä‚¢‚é‚©
 		bool old = false;
+
 	};
 }
 

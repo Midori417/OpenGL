@@ -149,7 +149,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
+    <ClInclude Include="Application\Src\AudioSettings.h" />
     <ClInclude Include="Application\Src\BaseMs.h" />
+    <ClInclude Include="Application\Src\BaseSlash.h" />
     <ClInclude Include="Application\Src\BaseWeapon.h" />
     <ClInclude Include="Application\Src\BattleManager.h" />
     <ClInclude Include="Application\Src\BattleSettingManager.h" />
@@ -181,6 +183,7 @@
     <ClInclude Include="FGEngine\Src\My\Behaviour.h" />
     <ClInclude Include="FGEngine\Src\My\Collision.h" />
     <ClInclude Include="FGEngine\Src\My\DefalutShader.h" />
+    <ClInclude Include="FGEngine\Src\My\EasyAudio\EasyAudio.h" />
     <ClInclude Include="FGEngine\Src\My\GltfFile.h" />
     <ClInclude Include="FGEngine\Src\My\GltfFileBuffer.h" />
     <ClInclude Include="FGEngine\Src\My\GltfMeshRenderer.h" />
@@ -192,7 +195,6 @@
     <ClInclude Include="FGEngine\Src\My\PhysicsEngine.h" />
     <ClInclude Include="FGEngine\Src\My\RenderingEngine.h" />
     <ClInclude Include="FGEngine\Src\My\ResouceManager.h" />
-    <ClInclude Include="FGEngine\Src\My\AudioSettings.h" />
     <ClInclude Include="FGEngine\Src\My\BoxCollider.h" />
     <ClInclude Include="FGEngine\Src\My\BufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\Camera.h" />
@@ -202,7 +204,6 @@
     <ClInclude Include="FGEngine\Src\My\ComponentHelper.h" />
     <ClInclude Include="FGEngine\Src\My\Debug.h" />
     <ClInclude Include="FGEngine\Src\My\DrawParams.h" />
-    <ClInclude Include="FGEngine\Src\My\EasyAudio.h" />
     <ClInclude Include="FGEngine\Src\My\EngineCore.h" />
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\GameObject.h" />
@@ -270,6 +271,7 @@
   <ItemGroup>
     <ClCompile Include="Application\Src\Application.cpp" />
     <ClCompile Include="Application\Src\BaseMs.cpp" />
+    <ClCompile Include="Application\Src\BaseSlash.cpp" />
     <ClCompile Include="Application\Src\BattleManager.cpp" />
     <ClCompile Include="Application\Src\BattleSettingManager.cpp" />
     <ClCompile Include="Application\Src\BaseBullet.cpp" />
@@ -294,6 +296,7 @@
     <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Camera.cpp" />
     <ClCompile Include="FGEngine\Src\My\Collider.cpp" />
+    <ClCompile Include="FGEngine\Src\My\EasyAudio\EasyAudio.cpp" />
     <ClCompile Include="FGEngine\Src\My\GltfFileBuffer.cpp" />
     <ClCompile Include="FGEngine\Src\My\GltfMeshRenderer.cpp" />
     <ClCompile Include="FGEngine\Src\My\Image.cpp" />
@@ -305,7 +308,6 @@
     <ClCompile Include="FGEngine\Src\My\ResouceManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\BufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\Debug.cpp" />
-    <ClCompile Include="FGEngine\Src\My\EasyAudio.cpp" />
     <ClCompile Include="FGEngine\Src\My\EngineCore.cpp" />
     <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp" />

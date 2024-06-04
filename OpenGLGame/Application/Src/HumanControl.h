@@ -38,6 +38,11 @@ private:
 	virtual void Update() override;
 
 	/**
+	* コントロールをスタートさせる
+	*/
+	virtual void ControlStart() override;
+
+	/**
 	* ゲーム入力を更新
 	*/
 	virtual void GameInputUpdate() override;
@@ -94,9 +99,10 @@ private:
 	ImagePtr imgTargetMark;
 
 	// ターゲットマークのテクスチャ
-	TexturePtr texTargetMark01;
-	TexturePtr texTargetMark02;
-	TexturePtr texTargetMark03;
+	TexturePtr texTargetMarkGreen;
+	TexturePtr texTargetMarkRed;
+	TexturePtr texTargetMarkLock;
+	TexturePtr texTargetMarkYellow;
 
 	// ターゲットの情報
 	std::vector<ImagePtr> imgOtherTeumMsInfoBacks;

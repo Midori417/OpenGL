@@ -9,13 +9,6 @@
 namespace FGEngine
 {
 	/**
-	* 速度を更新
-	*/
-	void Rigidbody::VeocityUpdata()
-	{
-	}
-
-	/**
 	* 重力を更新
 	*/
 	void Rigidbody::GravityUpdate()
@@ -23,32 +16,33 @@ namespace FGEngine
 		// 重力の有無
 		if (isGravity)
 		{
-			// 下に何かあれば重力をなくす
+			// 応急設置判定
 			if (isGrounded) 
 			{
-				// 接地フラグが立っていたら、下方向への加速度を0にする
-				velocity.y = Mathf::Max(velocity.y, 0.0f);
-
-				if (isVelocity)
-				{
-					velocity.x = 0;
-					velocity.z = 0;
-				}
-
-
 				isGround = true;
 				noGroundTimer = 0;
 			}
 			else 
 			{
-				// 重力加速度によって速度を更新する
-				velocity.y -= gravity * gravityScale * Time::DeltaTime();
-				
 				noGroundTimer += Time::DeltaTime();
-				if (noGroundTimer > noGroundTime)
+				if (noGroundTimer > 0.3f)
 				{
 					isGround = false;
 				}
+			}
+			if (isGround)
+			{
+
+				if (isVelocity)
+				{
+					velocity = Vector3::zero;
+				}
+			}
+			else
+			{
+				// 重力加速度によって速度を更新する
+				velocity.y -= gravity * gravityScale * Time::DeltaTime();
+
 			}
 
 		}

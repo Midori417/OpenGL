@@ -39,107 +39,36 @@ void CpuControl::Update()
 		return;
 	}
 
-	// 自身の機体が死んだら
+	// ゲーム入力の更新
+	if (isInputUpdate)
+	{
+		GameInputUpdate();
+	}
+
+	// 自身の機体が死んでいた時の処理
 	if (myMs->IsDeath())
 	{
-		if (!isMsDeath)
-		{
-			if (!GetTeumHPInifinit())
-			{
-				// 自チームのHpを減らす
-				TeumHpSud();
-			}
-			// Msの操作をできないようにする
-			isMsControl = false;
-			isMsDeath = true;
-			responTimer = 0;
-		}
-		// チーム体力が0以上だったら復活させる
-		if (MyTeumHp() > 0)
-		{
-			responTimer += Time::DeltaTime();
-			if (responTimer > responTime)
-			{
-				int index = Random::Range(0, (int)responPoss.size() - 1);
-				// 自チームの体力がコスト以上あればそのままの体力で復活
-				if (MyTeumHp() >= myMs->GetCost())
-				{
-					myMs->Respon(responPoss[index], 1);
-				}
-				// 自チームの体力がコスト以下ならば体力カットして復活
-				else if (MyTeumHp() < myMs->GetCost())
-				{
-					float hp = static_cast<float>(MyTeumHp());
-					float cost = static_cast<float>(myMs->GetCost());
-					float hpCut = ((cost - hp) / cost);
-					myMs->Respon(responPoss[index], hpCut);
-				}
-				// MSの操作を許可
-				isMsControl = true;
-				isMsDeath = false;
-			}
-		}
+		MyMsDeadUpdate();
 	}
-	//GameInputUpdate();
+	else
+	{
+		myMs->SetDistance(GetDistance());
 
-	// ターゲット切り替え
-	if (gameInput->targetChangeBtn && otherTeamOwner.size() > 0)
-	{
-		if (targetOwner == otherTeamOwner[0])
-		{
-			if (!otherTeamOwner[1]->myMs->IsDeath())
-			{
-				targetOwner = otherTeamOwner[1];
-				// カメラと機体にターゲットを持たせる
-				myMs->SetTargetMS(targetOwner->myMs.get());
-				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-			}
-		}
-		else if (targetOwner == otherTeamOwner[1])
-		{
-			if (!otherTeamOwner[0]->myMs->IsDeath())
-			{
-				targetOwner = otherTeamOwner[0];
-				// カメラと機体にターゲットを持たせる
-				myMs->SetTargetMS(targetOwner->myMs.get());
-				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-			}
-		}
-		gameInput->targetChangeBtn = false;
+		// ターゲットの更新処理
+		TargetUpdate();
 	}
-	// ターゲットの機体が死んだら
-	if (targetOwner->myMs->IsDeath() && otherTeamOwner.size() > 0)
-	{
-		if (targetOwner == otherTeamOwner[0])
-		{
-			if (!otherTeamOwner[1]->myMs->IsDeath())
-			{
-				targetOwner = otherTeamOwner[1];
-				// カメラと機体にターゲットを持たせる
-				myMs->SetTargetMS(targetOwner->myMs.get());
-				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-			}
-		}
-		else if (targetOwner == otherTeamOwner[1])
-		{
-			if (!otherTeamOwner[0]->myMs->IsDeath())
-			{
-				targetOwner = otherTeamOwner[0];
-				// カメラと機体にターゲットを持たせる
-				myMs->SetTargetMS(targetOwner->myMs.get());
-				myCamera->SelectTarget(targetOwner->myMs->GetTransform().get());
-			}
-		}
-	}
+
 }
 
 /**
-* 終了処理
+* コントロールをスタートする
 */
-void CpuControl::Finish(VictoryState victoryState)
+void CpuControl::ControlStart()
 {
-	// 基底を停止
-	myMs->Stop();
+	// カメラのスタート処理を終了
+	myCamera->StartOk();
+
+	isStart = true;
 }
 
 /**
@@ -147,16 +76,8 @@ void CpuControl::Finish(VictoryState victoryState)
 */
 void CpuControl::GameInputUpdate()
 {
-	// MSが死んでいれか、操作が許可されていなければ何もしない
-	if (myMs->IsDeath() || !isMsControl)
-	{
-		return;
-	}
-
+	//return;
 	auto targetMs = targetOwner->myMs;
-
-	// 自身のMSに相手のMsの情報を伝える
-	myMs->SetTargetMS(targetMs.get());
 
 	// 移動方向を乱数で決める
 	moveTimer -= Time::DeltaTime();
@@ -193,7 +114,7 @@ void CpuControl::GameInputUpdate()
 	}
 
 	// 攻撃1
-	gameInput->action1Btn= false;
+	gameInput->action1Btn = false;
 	if (cpuState == CpuState::Attack || cpuState == CpuState::DashAttack)
 	{
 		if (!targetMs->IsDeath())
@@ -211,9 +132,27 @@ void CpuControl::GameInputUpdate()
 			gameInput->action2Btn = true;
 		}
 	}
+	// 攻撃3
+	gameInput->action3Btn = false;
+	if (cpuState == CpuState::Attack3)
+	{
+		if (!targetMs->IsDeath())
+		{
+			gameInput->action3Btn = true;
+		}
+	}
 
 	if (targetNum == 0)
 	{
 		gameInput->targetChangeBtn = true;
 	}
+}
+
+/**
+* 終了処理
+*/
+void CpuControl::Finish(VictoryState victoryState)
+{
+	// 基底を停止
+	myMs->Stop();
 }

@@ -104,8 +104,6 @@ bool BaseMs::DeadChaeck()
 	// HP‚ª‚È‚¯‚ê‚Î€–Só‘Ô‚É‚·‚é
 	if (baseParamater.hp <= 0 || GetTransform()->position.y < -10)
 	{
-		// €–Só‘Ô‚É‚·‚é
-		isDeath = true;
 		// •`‰æ‚µ‚È‚¢
 		renderer->enabled = false;
 		rb->velocity = Vector3::zero;
@@ -147,6 +145,21 @@ void BaseMs::BoostEnergyUpdate()
 float BaseMs::GetDistance() const
 {
 	return distance;
+}
+
+/**
+* —U“±‰Â”\‚©ƒ`ƒFƒbƒN
+*
+* @retval true  —U“±‰Â”\
+* @retval false —U“±•s‰Â
+*/
+bool BaseMs::HomingCheck() const
+{
+	Vector3 pos = GetTransform()->position;
+	Vector3 targetPos = targetMs->GetTransform()->position;
+	float distanceXY = Mathf::Abs(Vector3::Distance(pos * Vector3(1, 0, 1), targetPos * Vector3(1, 0, 1)));
+	float distanceY = pos.y - targetPos.y;
+	return (distanceXY < redLookDistaceXZ) && (distanceY > redLookDistanceMinY) && (distanceY < redLookDistanceMaxY);
 }
 
 /**

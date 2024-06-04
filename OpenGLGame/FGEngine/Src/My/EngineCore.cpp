@@ -9,6 +9,7 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "ResouceManager.h"
+#include "EasyAudio/EasyAudio.h"
 #include "../../../Application/Src/Application.h"
 #include "Time.h"
 #include "Package/ImGUI.h"
@@ -173,6 +174,12 @@ namespace FGEngine::MainSystem
 		// インプットマネージャを初期化
 		inputManager->Initialize();
 
+		// 音声ライブラリを初期化
+		if (!EasyAudio::Initialize()) 
+		{
+			return 1;
+		}
+
 		return 0;
 	}
 
@@ -202,6 +209,9 @@ namespace FGEngine::MainSystem
 		// レンダリングエンジンを更新
 		renderingEngine->Update();
 
+		// 音声ライブラリを更新
+		EasyAudio::Update();
+
 		// アプリケーションを更新する
 		application->Update();
 
@@ -220,6 +230,9 @@ namespace FGEngine::MainSystem
 	{
 		// アプリケーションの終了
 		application->Fainalize();
+
+		// 音声ライブラリを終了
+		EasyAudio::Finalize();
 
 		// ImGuiの終了
 		ImGui_ImplGlfw_Shutdown();

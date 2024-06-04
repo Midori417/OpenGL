@@ -50,12 +50,15 @@ int Application::Initialize()
 	resManager->LoadTga("GoBack", "Application/Res/UI/Battle/GoBack.tga");
 	resManager->LoadTga("PlayerInfo", "Application/Res/UI/Battle/PlayerInfo.tga");
 	resManager->LoadTga("STANDBAY", "Application/Res/UI/Battle/Standbay.tga");
-	resManager->LoadTga("TargetMark01", "Application/Res/UI/Battle/TargetMark01.tga");
-	resManager->LoadTga("TargetMark02", "Application/Res/UI/Battle/TargetMark02.tga");
-	resManager->LoadTga("TargetMark03", "Application/Res/UI/Battle/TargetMark03.tga");
 	resManager->LoadTga("Timer", "Application/Res/UI/Battle/Timer.tga");
 	resManager->LoadTga("OtherTeumMsInfo", "Application/Res/UI/Battle/TargetMsInfo.tga");
 	resManager->LoadTga("OtherTeumMsHpBar", "Application/Res/UI/Battle/TargetMsHpBar.tga");
+
+	// ターゲットマーク
+	resManager->LoadTga("TargetMarkGreen", "Application/Res/UI/Battle/TargetMark/TargetMarkGreen.tga");
+	resManager->LoadTga("TargetMarkRed", "Application/Res/UI/Battle/TargetMark/TargetMarkRed.tga");
+	resManager->LoadTga("TargetMarkLock", "Application/Res/UI/Battle/TargetMark/TargetMarkLock.tga");
+	resManager->LoadTga("TargetMarkYellow", "Application/Res/UI/Battle/TargetMark/TargetMarkYellow.tga");
 
 	// 味方の体力
 	resManager->LoadTga("MyTeumOtherMsInfo", "Application/Res/UI/Battle/TeumOtherMsInfo.tga");

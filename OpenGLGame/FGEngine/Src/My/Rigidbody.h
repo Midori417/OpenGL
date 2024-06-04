@@ -24,11 +24,6 @@ namespace FGEngine
 	private:
 
 		/**
-		* 速度の更新
-		*/
-		void VeocityUpdata();
-
-		/**
 		* 重力の更新
 		*/
 		void GravityUpdate();

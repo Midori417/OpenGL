@@ -64,7 +64,7 @@ namespace FGEngine
 		virtual void OnTriggerStay(const CollisionPtr ohter) {}
 
 		// オブジェクト状態を設定する
-		void SetEnable(bool value)
+		virtual void SetEnable(bool value)
 		{
 			enabled = value;
 			if (enabled)
@@ -76,13 +76,6 @@ namespace FGEngine
 				OnDisable();
 			}
 		}
-
-		// オブジェクトの状態を取得
-		bool GetEnable()
-		{
-			return enabled;
-		}
-
 
 	private:
 

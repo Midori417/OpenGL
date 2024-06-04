@@ -30,15 +30,15 @@ public:
 	/**
 	* コントロールをスタートさせる
 	*/
-	void StartOk();
+	virtual void ControlStart(){}
 
 	/**
 	* 自チームと相手チームの体力を設定
 	* 
-	* @param myTeumHp		自チームの体力ポインター
-	* @param otherTeumHp	相手チームの体力ポインター
+	* @param myTeamHp		自チームの体力ポインター
+	* @param otherTeamHp	相手チームの体力ポインター
 	*/
-	void SetTeumHP(int* myTeumHp, int* otherTeumHp);
+	void SetTeamHP(int* myTeumHp, int* otherTeumHp);
 
 	/**
 	* 終了
@@ -48,7 +48,7 @@ public:
 	/**
 	* チーム体力を無限にする
 	*/
-	void TeumHPInivinit();
+	void TeamHPInivinit();
 
 
 protected:
@@ -59,20 +59,29 @@ protected:
 	void Initialize();
 
 	/**
+	* 自身の機が死亡しときの処理
+	*/
+	void MyMsDeadUpdate();
+
+	/**
 	* ゲーム入力を更新
 	*/
 	virtual void GameInputUpdate(){}
 
+	/**
+	* ターゲットの処理
+	*/
+	void TargetUpdate();
 
 	/**
 	* 自チームの体力を取得
 	*/
-	int& MyTeumHp() const;
+	int& MyTeamHp() const;
 
 	/**
 	* 相手チームの体力を取得
 	*/
-	int& OtherTeumHp() const;
+	int& OtherTeamHp() const;
 
 	/**
 	* チーム体力を減らす
@@ -120,8 +129,8 @@ protected:
 	// 現在のターゲットオーナー
 	ControlOwner* targetOwner = nullptr;
 
-	// Msの操作できるか
-	bool isMsControl = true;
+	// 入力を更新するか
+	bool isInputUpdate = true;
 
 	// 復活タイマー
 	float responTimer = 0;
@@ -132,10 +141,10 @@ protected:
 private:
 
 	// 自チームの体力
-	int* myTeumHp = 0;
+	int* myTeamHp = 0;
 
 	// 相手チームの体力
-	int* otherTeumHp = 0;
+	int* otherTeamHp = 0;
 
 	// true = チーム体力∞
 	bool isTeamHpInfinit = false;

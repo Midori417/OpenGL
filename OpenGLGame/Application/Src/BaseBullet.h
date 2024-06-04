@@ -6,6 +6,9 @@
 #include "FGEngine.h"
 using namespace FGEngine;
 
+// 先行宣言
+class BaseMs;
+
 /**
 * 弾の基底クラス
 */
@@ -16,6 +19,18 @@ public:
 	// コンストラクタ・デストラクタ
 	BaseBullet() = default;
 	virtual ~BaseBullet() = default;
+
+private:
+
+	/**
+	* 生成時に実行
+	*/
+	virtual void Awake() override;
+
+	/**
+	* 他のコリジョンに触れたときに実行
+	*/
+	virtual void OnTriggerEnter(const CollisionPtr other) override;
 
 public:
 
@@ -30,7 +45,13 @@ public:
 
 	// 撃ってから消えるまでの時間
 	float destroyTime = 5;
+
+	struct Col
+	{
+		float radius = 1;
+		Vector3 ceneter = Vector3::zero;
+	};
+	Col colllider;
+
 };
-
-
 #endif // !BASEBULLET_H_INCLUDED

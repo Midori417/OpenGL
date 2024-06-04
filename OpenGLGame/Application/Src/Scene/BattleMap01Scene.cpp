@@ -64,8 +64,10 @@ bool BattleMap01Scene::Initialize()
 		// ‘O
 		{
 			auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, mapSize.y));
+			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
 			auto col = wall->AddComponent<AabbCollider>();
+			col->min = Vector3(-1, -1, -10);
 
 			auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, mapSize.y));
 			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
@@ -79,8 +81,10 @@ bool BattleMap01Scene::Initialize()
 		// Œã‚ë
 		{
 			auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, -mapSize.y));
+			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
 			auto col = wall->AddComponent<AabbCollider>();
+			col->max = Vector3(1, 1, 10);
 
 			auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, -mapSize.y));
 			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
@@ -96,8 +100,10 @@ bool BattleMap01Scene::Initialize()
 		// ‰E
 		{
 			auto wall = objManager->CreateGameObject("Wall", Vector3(mapSize.x, -6.0f, 0));
+			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
 			auto col = wall->AddComponent<AabbCollider>();
+			col->max = Vector3(10, 1, 1);
 
 			auto line = objManager->CreateGameObject("Line", Vector3(mapSize.x, 1.0f, 0));
 			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
@@ -112,8 +118,10 @@ bool BattleMap01Scene::Initialize()
 		// ¶
 		{
 			auto wall = objManager->CreateGameObject("Wall", Vector3(-mapSize.x, -6.0f, 0));
+			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
 			auto col = wall->AddComponent<AabbCollider>();
+			col->min = Vector3(-10, -1, -1);
 
 			auto line = objManager->CreateGameObject("Line", Vector3(-mapSize.x, 1.0f, 0));
 			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
@@ -131,31 +139,15 @@ bool BattleMap01Scene::Initialize()
 	{
 		// “y‘ä
 		{
-			auto groundObj = objManager->CreateGameObject("Ground", Vector3(0, -1.0f, 0));
-			auto renderer = groundObj->AddComponent<GltfMeshRenderer>();
+			auto ground = objManager->CreateGameObject("Ground", Vector3(0, -1.0f, 0));
+			ground->tag = "Ground";
+			auto renderer = ground->AddComponent<GltfMeshRenderer>();
 			renderer->glTFfile = resManager->GetGltfFile("Map01");
 			renderer->shader = resManager->GetShader(DefalutShader::Standard3D);
-			auto col = groundObj->AddComponent<AabbCollider>();
+			auto col = ground->AddComponent<AabbCollider>();
 			col->min = Vector3(-mapSize.x, -10.0f, -mapSize.y);
 			col->max = Vector3(mapSize.x, 1.0f, mapSize.y);
 		}
-		// Œš•¨01
-		//{
-		//	// A
-		//	{
-		//		auto biruObjA = objManager->CreateGameObject("Biru01A", Vector3(-43.0f, 0.0f, -18.0f));
-		//		auto renderer = biruObjA->AddComponent<GltfMeshRenderer>();
-		//		renderer->glTFfile = resManager->GetGltfFile("Map01/Biru01");
-		//		renderer->shader = resManager->GetShader(DefalutShader::Standard3D);
-		//	}
-		//	// B
-		//	{
-		//		auto biruObjB = objManager->CreateGameObject("Biru01B", Vector3(0, 0.0f, 0));
-		//		auto renderer = biruObjB->AddComponent<GltfMeshRenderer>();
-		//		renderer->glTFfile = resManager->GetGltfFile("Map01/Biru01");
-		//		renderer->shader = resManager->GetShader(DefalutShader::Standard3D);
-		//	}
-		//}
 	}
 
 

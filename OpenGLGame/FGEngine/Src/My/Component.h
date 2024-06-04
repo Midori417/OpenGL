@@ -31,7 +31,7 @@ namespace FGEngine
 		*/
 		GameObjectPtr OwnerObject() const
 		{
-			auto ptr = ownerObject.lock();
+			std::shared_ptr<GameObject> ptr(ownerObject);
 			if (!ptr)
 			{
 				return nullptr;
@@ -49,18 +49,6 @@ namespace FGEngine
 		*/
 		template<typename T>
 		std::shared_ptr<T> GetComponent() const;
-
-		/**
-		* 親のT型のコンポーネントを取得
-		*/
-		template<typename T>
-		std::shared_ptr<T> GetComponentInChildren() const;
-
-		/**
-		* 子のT型のコンポーネントを取得
-		*/
-		template<typename T>
-		std::shared_ptr<T> GetComponentInParent() const;
 
 		/**
 		* Tagを取得

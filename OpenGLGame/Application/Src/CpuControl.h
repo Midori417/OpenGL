@@ -29,14 +29,19 @@ private:
 	virtual void Update() override;
 
 	/**
-	* 終了処理
+	* コントロールをスタートさせる
 	*/
-	virtual void Finish(VictoryState victoryState) override;
+	virtual void ControlStart() override;
 
 	/**
 	* ゲーム入力を更新
 	*/
 	virtual void GameInputUpdate() override;
+
+	/**
+	* 終了処理
+	*/
+	virtual void Finish(VictoryState victoryState) override;
 
 private:
 
@@ -59,6 +64,9 @@ private:
 
 		// 攻撃2
 		Attack2,
+
+		// 攻撃3
+		Attack3,
 
 		// ダッシュライフル
 		DashAttack,

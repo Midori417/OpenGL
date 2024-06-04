@@ -5,8 +5,6 @@
 #define HOMINGBULLET_H_INCLUDED
 #include "BaseBullet.h"
 
-// 先行宣言
-class BaseMs;
 
 // 弾の基底クラス
 class HomingBullet : public BaseBullet
@@ -27,11 +25,6 @@ public:
 private:
 
 	/**
-	* 生成時に実行
-	*/
-	virtual void Awake() override;
-
-	/**
 	* 最初に実行
 	*/
 	virtual void Start() override;
@@ -40,9 +33,6 @@ private:
 	* 毎フレーム実行
 	*/
 	virtual void Update()override;
-
-	// 他のコリジョンに触れたときに実行
-	virtual void OnTriggerEnter(const CollisionPtr other) override;
 
 public:
 

@@ -19,6 +19,9 @@ struct DamageInfo
 
 	// ƒ_ƒ[ƒW‚Ì•ûŒü
 	Vector3 direction = Vector3::zero;
+	
+	// ‚«”ò‚Î‚µ‹——£
+	float blowDistance = 0;
 };
 
 #endif // !DAMAGEINFO_H_INCLUDED

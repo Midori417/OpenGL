@@ -8,6 +8,7 @@
 #include "BaseMs.h"
 #include "Gundam.h"
 #include "Global.h"
+#include "AudioSettings.h"
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
@@ -84,12 +85,14 @@ void BattleManager::Awake()
 		if (x->playerId == 0)
 		{
 			auto hyumanControl = player->AddComponent<HumanControl>();
+			controlOwners.push_back(hyumanControl);
 
 			// 機体を設定
 			auto ms = Instantate("MS" + std::to_string(i));
 
 			// 対応するMsコンポーネントを追加
 			hyumanControl->myMs = SetMs(ms, x->ms);
+			hyumanControl->myMs->audioPlayer = AudioPlayer::player;
 
 			// カメラを設定
 			auto camera = ObjectManager::GetInstance()->GetMainCamera();
@@ -120,12 +123,14 @@ void BattleManager::Awake()
 		else if (x->playerId == 1)
 		{
 			auto cpuControl = player->AddComponent<CpuControl>();
+			controlOwners.push_back(cpuControl);
 
 			// 機体を設定
 			auto ms = Instantate("MS" + std::to_string(i));
 
 			// 対応するMsコンポーネントを追加
 			cpuControl->myMs = SetMs(ms, x->ms);
+			cpuControl->myMs->audioPlayer = i;
 
 			// 仮想カメラを設定
 			auto camera = Instantate("virtualCamera");
@@ -173,17 +178,17 @@ void BattleManager::Awake()
 				teum2->otherTeamOwner.push_back(teum1.get());
 			}
 		}
-}
+	}
 
 	// 自チーム体力を設定
 	{
 		for (auto teum1 : teum1ControlOwners)
 		{
-			teum1->SetTeumHP(teum1Hp.get(), teum2Hp.get());
+			teum1->SetTeamHP(teum1Hp.get(), teum2Hp.get());
 		}
 		for (auto teum2 : teum2ControlOwners)
 		{
-			teum2->SetTeumHP(teum2Hp.get(), teum1Hp.get());
+			teum2->SetTeamHP(teum2Hp.get(), teum1Hp.get());
 		}
 	}
 
@@ -247,6 +252,7 @@ void BattleManager::Start()
 	imgStandbay->SetEnable(false);
 	imgGoBack->SetEnable(false);
 	imgGo->SetEnable(false);
+
 }
 
 /**
@@ -315,11 +321,11 @@ void BattleManager::Update()
 			// コントロールの処理を開始させる
 			for (auto teum1 : teum1ControlOwners)
 			{
-				teum1->StartOk();
+				teum1->ControlStart();
 			}
 			for (auto teum2 : teum2ControlOwners)
 			{
-				teum2->StartOk();
+				teum2->ControlStart();
 			}
 		}
 	}
@@ -328,6 +334,23 @@ void BattleManager::Update()
 
 		// バトル中
 	{
+		// 実験
+		{
+			auto hyumanMs = controlOwners[0]->myMs->GetTransform();
+			auto pos = hyumanMs->position;
+			auto rightPos = hyumanMs->Right();
+			EasyAudio::Vector vec;
+			vec.x = pos.x;
+			vec.y = pos.y;
+			vec.z = pos.z;
+			EasyAudio::Vector rightVec;
+			rightVec.x = rightPos.x;
+			rightVec.y = rightPos.y;
+			rightVec.z = rightPos.z;
+			EasyAudio::SetListenr(vec, rightVec);
+
+		}
+
 		// バトル時間を減らす
 		battleTimer -= Time::DeltaTime();
 

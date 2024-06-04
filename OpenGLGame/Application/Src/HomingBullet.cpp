@@ -15,17 +15,6 @@ void HomingBullet::SetTargetMs(BaseMs* targetMs)
 	this->targetMs = targetMs;
 }
 
-/**
-* 生成時に実行
-*/
-void HomingBullet::Awake()
-{
-	auto rb = OwnerObject()->AddComponent<Rigidbody>();
-	rb->isGravity = false;
-	auto col = OwnerObject()->AddComponent<SphereCollider>();
-	col->isTrigger = true;
-	OwnerObject()->tag = "Bullet";
-}
 
 /**
 * 最初に実行
@@ -63,34 +52,3 @@ void HomingBullet::Update()
 	}
 }
 
-/**
-* 他のコリジョンに触れたときに実行
-*/
-void HomingBullet::OnTriggerEnter(const CollisionPtr other)
-{
-	// 触れたオブジェクトのタグがBulletなら何もしない
-	if (other->GetGameObject()->tag == "Bullet")
-	{
-		return;
-	}
-
-	auto ms = other->GetGameObject()->GetComponent<BaseMs>();
-	if (ms)
-	{
-		if (ms->IsDeath())
-		{
-			return;
-		}
-		// ダメージ情報を作成
-		DamageInfo damageInfo;
-		damageInfo.damage = damage;
-		damageInfo.direction = Vector3(GetTransform()->position - other->GetTransform()->position).Normalized();
-		damageInfo.downPower = downPower;
-
-		// ダメージを与える
-		ms->Damage(damageInfo);
-	}
-
-	// 自身を削除
-	Destroy(OwnerObject());
-}

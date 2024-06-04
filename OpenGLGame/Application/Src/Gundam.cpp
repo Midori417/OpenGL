@@ -3,6 +3,8 @@
 */
 #include "Gundam.h"
 #include "HomingBullet.h"
+#include "BaseSlash.h"
+#include "AudioSettings.h"
 #include "DamageInfo.h"
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
@@ -12,6 +14,9 @@ using namespace FGEngine::InputSystem;
 */
 void Gundam::Awake()
 {
+	// タグをMsにする
+	OwnerObject()->tag = "Ms";
+
 	// リソースマネージャーを取得
 	auto resManager = ResouceManager::GetInstance();
 	if (!isResoueLoad)
@@ -56,7 +61,9 @@ void Gundam::Awake()
 
 	// 攻撃の距離
 	proximityDistance = 40.0f;
-	redLookDistace = 90.0f;
+	redLookDistaceXZ = 90.0f;
+	redLookDistanceMinY = -100.0f;
+	redLookDistanceMaxY = 10.0f;
 
 	// 移動パラメータ
 	moveParamater.speed = 20.0f;
@@ -112,6 +119,18 @@ void Gundam::Awake()
 	{
 		sable = std::make_shared<Sable>();
 		sable->name = "Sable";
+		sable->attack1.damage = 65;
+		sable->attack1.downPower = 35;
+		sable->attack1.destoryTime = 0.3f;
+
+		sable->attack2.damage = 65;
+		sable->attack2.downPower = 35;
+		sable->attack2.destoryTime = 0.3f;
+
+		sable->attack3.damage = 75;
+		sable->attack3.downPower = 35;
+		sable->attack3.destoryTime = 0.5f;
+		sable->attack3.slashTime = 0.4f;
 	}
 
 	// UI武装配列に追加
@@ -134,24 +153,32 @@ void Gundam::Update()
 	// 死亡チェック、死んでいれば何もしない
 	if (DeadChaeck())
 	{
+		if (!isDeath)
+		{
+			EasyAudio::Play(audioPlayer, SE::gundamDead);
+			// 死亡状態にする
+			isDeath = true;
+		}
 		return;
 	}
 
 	// 吹き飛び処理
-	if (isBlowAway && !isDown)
+	if (blowAway.isNow && !isDown)
 	{
-		blowAwayTimer += Time::DeltaTime();
+		blowAway.timer += Time::DeltaTime();
+
+		// アニメーションによって吹き飛ぶ方向を変える
 		if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
 		{
-			GetTransform()->position -= blowPower * GetTransform()->Forward() * Time::DeltaTime();
+			GetTransform()->position -= blowAway.power * GetTransform()->Forward() * Time::DeltaTime();
 		}
 		else if (anim->GetAnimationClip()->name == "BlowAway.Rifle.B")
 		{
-			GetTransform()->position += blowPower * GetTransform()->Forward() * Time::DeltaTime();
+			GetTransform()->position += blowAway.power * GetTransform()->Forward() * Time::DeltaTime();
 		}
-		if (blowAwayTimer > blowAwayTime && rb->IsGround())
+		if (blowAway.timer > blowAway.time && rb->IsGround())
 		{
-			isBlowAway = false;
+			blowAway.isNow = false;
 
 			if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
 			{
@@ -166,10 +193,12 @@ void Gundam::Update()
 			downTimer = 0;
 			isDown = true;
 		}
-		if (blowAwayTimer > 5)
+
+		// バグ対策
+		if (blowAway.timer > 5)
 		{
 			rb->gravityScale = 2;
-			isBlowAway = false;
+			blowAway.isNow = false;
 		}
 	}
 
@@ -219,17 +248,6 @@ void Gundam::Update()
 			// それぞれの状態を元に戻す
 			rb->isGravity = true;
 
-			// ライフル
-			{
-				rifle->isNow = false;
-				rifle->isShot = false;
-				rifle->isStopShot = false;
-			}
-			// バズーカ
-			{
-				bazooka->isNow = false;
-				bazooka->isShot = false;
-			}
 			// アニメーションを再生
 			if (anim->GetAnimationClip()->name == "Damage.Rifle")
 			{
@@ -239,6 +257,7 @@ void Gundam::Update()
 		}
 	}
 
+	// リスポーン状態
 	if (isRespon)
 	{
 		responTimer -= Time::DeltaTime();
@@ -252,7 +271,7 @@ void Gundam::Update()
 	if (gameInput && !isRespon)
 	{
 		// ダメージ状態なら何もしない
-		if (!isDamage && !isBlowAway && !isDown)
+		if (!isDamage && !blowAway.isNow && !isDown)
 		{
 			// 移動
 			Move(gameInput->moveAxis);
@@ -351,6 +370,20 @@ void Gundam::Move(const Vector2& moveAxis)
 			// 移動入力があれば歩きアニメーションを再生
 			if (moveAxis != Vector2::zero)
 			{
+				moveParamater.moveTimer -= Time::DeltaTime();
+				if (moveParamater.moveTimer <= 0)
+				{
+					moveParamater.moveTimer = moveParamater.moveTime;
+					EasyAudio::Play(audioPlayer, SE::gundamLegSound, 0.7f);
+					auto msPos = GetTransform()->position;
+					EasyAudio::Vector vector;
+					vector.x = msPos.x;
+					vector.y = msPos.y;
+					vector.z = msPos.z;
+					EasyAudio::SetPanAndVolumeFromPosition(audioPlayer, vector, 0.7f);
+
+				}
+
 				switch (handWeapon)
 				{
 				case Gundam::HandWeapon::Rifle:
@@ -430,12 +463,26 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				{
 					if (rb->IsGround())
 					{
-						anim->SetAnimation("Jump.Rifle.Ground");
+						if (handWeapon == HandWeapon::Rifle)
+						{
+							anim->SetAnimation("Jump.Rifle.Ground");
+						}
+						else
+						{
+							anim->SetAnimation("Jump.Sable");
+						}
 					}
 					else
 					{
 
-						anim->SetAnimation("Jump.Rifle");
+						if (handWeapon == HandWeapon::Rifle)
+						{
+							anim->SetAnimation("Jump.Rifle");
+						}
+						else
+						{
+							anim->SetAnimation("Jump.Sable");
+						}
 					}
 					anim->Play();
 				}
@@ -468,7 +515,15 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				// 射撃状態ならアニメーションをキャンセル
 				if (!rifle->isNow)
 				{
-					anim->SetAnimation("Idle.Rifle", true);
+					if (handWeapon == HandWeapon::Rifle)
+					{
+						anim->SetAnimation("Idle.Rifle", true);
+					}
+					else
+					{
+						anim->SetAnimation("Idle.Sable", true);
+					}
+
 					anim->Play();
 				}
 				// ジャンプ状態を終了
@@ -487,9 +542,14 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 
 			if (!rifle->isNow)
 			{
-				// 通常状態のアニメーションに変更
-				anim->SetAnimation("Idle.Rifle", true);
-				anim->Play();
+				if (handWeapon == HandWeapon::Rifle)
+				{
+					anim->SetAnimation("Idle.Rifle", true);
+				}
+				else
+				{
+					anim->SetAnimation("Idle.Sable", true);
+				}
 			}
 
 			// ジャンプ状態を終了
@@ -543,10 +603,16 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// 射撃状態ならアニメーションをキャンセル
 			if (!rifle->isNow)
 			{
-				if (!moveParamater.dash.isNow || anim->GetAnimationClip()->name != "Dash.Rifle")
+				if (!moveParamater.dash.isNow )
 				{
-					// ダッシュアニメーションを再生
-					anim->SetAnimation("Dash.Rifle", true);
+					if (handWeapon == HandWeapon::Rifle)
+					{
+						anim->SetAnimation("Dash.Rifle", true);
+					}
+					else
+					{
+						anim->SetAnimation("Dash.Sable", true);
+					}
 					anim->Play();
 				}
 			}
@@ -568,9 +634,14 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 
 				if (!rifle->isNow)
 				{
-					// 通常状態のアニメーションに変更
-					anim->SetAnimation("Idle.Rifle", true);
-					anim->Play();
+					if (handWeapon == HandWeapon::Rifle)
+					{
+						anim->SetAnimation("Idle.Rifle", true);
+					}
+					else
+					{
+						anim->SetAnimation("Idle.Sable", true);
+					}
 				}
 
 				// ダッシュ状態を終了
@@ -591,9 +662,14 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 
 			if (!rifle->isNow)
 			{
-				// 通常状態のアニメーションに変更
-				anim->SetAnimation("Idle.Rifle", true);
-				anim->Play();
+				if (handWeapon == HandWeapon::Rifle)
+				{
+					anim->SetAnimation("Idle.Rifle", true);
+				}
+				else
+				{
+					anim->SetAnimation("Idle.Sable", true);
+				}
 			}
 
 			// ダッシュ状態を終了
@@ -796,6 +872,15 @@ void Gundam::Action1(bool attackKey)
 	{
 		if (anim->time >= 0.2f && !rifle->isShot)
 		{
+			// 音を鳴らす
+			EasyAudio::Play(audioPlayer, SE::gundamBeumRifleShot, 1);
+			auto msPos = GetTransform()->position;
+			EasyAudio::Vector vector;
+			vector.x = msPos.x;
+			vector.y = msPos.y;
+			vector.z = msPos.z;
+			EasyAudio::SetPanAndVolumeFromPosition(audioPlayer, vector, 20);
+
 			// 残弾を減らす
 			rifle->amo -= 1;
 
@@ -819,7 +904,7 @@ void Gundam::Action1(bool attackKey)
 			homingBullet->homingSpeed = bullet->homingPower;
 
 			// 距離によって誘導をつける
-			if (GetDistance() < redLookDistace)
+			if (HomingCheck())
 			{
 				homingBullet->SetTargetMs(GetTargetMs());
 			}
@@ -908,6 +993,15 @@ void Gundam::Action2(bool attackKey)
 	{
 		if (anim->time >= 0.4f && !bazooka->isShot)
 		{
+			// 音を鳴らす
+			EasyAudio::Play(audioPlayer, SE::gundamBazookaShot);
+			auto msPos = GetTransform()->position;
+			EasyAudio::Vector vector;
+			vector.x = msPos.x;
+			vector.y = msPos.y;
+			vector.z = msPos.z;
+			EasyAudio::SetPanAndVolumeFromPosition(audioPlayer, vector, 20);
+
 			// 残弾を減らす
 			bazooka->amo -= 1;
 
@@ -931,7 +1025,7 @@ void Gundam::Action2(bool attackKey)
 			GetTransform()->position += GetTransform()->Forward() * -0.5f;
 
 			// 距離によって誘導をつける
-			if (GetDistance() < redLookDistace)
+			if (HomingCheck())
 			{
 				homingBullet->SetTargetMs(GetTargetMs());
 			}
@@ -971,15 +1065,17 @@ void Gundam::Action3(bool acttion3Btn)
 		}
 		if (!sable->isNow)
 		{
-
 			// サーベル行動中にする
 			sable->isNow = true;
 			// 重力を受けなくする
 			rb->isGravity = false;
 			rb->velocity = Vector3::zero;
 
+			// ブーストエネルギーのチャージをロックする
+			boostParamater.chageLock = true;
+
 			// ターゲットとの距離が赤ロック距離なら
-			if (GetDistance() < redLookDistace)
+			if (HomingCheck())
 			{
 				// 持っている武装をサーベルにする
 				handWeapon = HandWeapon::Sable;
@@ -990,12 +1086,18 @@ void Gundam::Action3(bool acttion3Btn)
 				// 攻撃し始めた位置を格納
 				sable->move.attackStartPos = GetTransform()->position;
 
+				// 誘導あり
+				sable->isHoming = true;
+
+				sable->targetPos = &GetTargetMs()->GetTransform()->position;
+
 				// アニメーションを再生
 				anim->SetAnimation("Sable.Move");
 				anim->Play();
 			}
 			else
 			{
+				// 持っている武器がサーベルじゃなければ
 				if (handWeapon != HandWeapon::Sable)
 				{
 					// 持っている武装をサーベルにする
@@ -1010,8 +1112,19 @@ void Gundam::Action3(bool acttion3Btn)
 				}
 				else
 				{
-					sable->attack1.isNow = true;
-					anim->SetAnimation("Sable.Attack1");
+					// サーベル移動状態にする
+					sable->move.isNow = true;
+
+					// 攻撃し始めた位置を格納
+					sable->move.attackStartPos = GetTransform()->position;
+
+					// 誘導無し
+					sable->isHoming = false;
+
+					sable->targetPos = &GetTargetMs()->GetTransform()->position;
+
+					// アニメーションを再生
+					anim->SetAnimation("Sable.Move");
 					anim->Play();
 				}
 			}
@@ -1019,17 +1132,21 @@ void Gundam::Action3(bool acttion3Btn)
 		// サーベル行動中
 		else
 		{
-			if (sable->attack1.isNow)
+			// アニメーションがコンボ受付時間なら攻撃2につなげる
+			if (sable->attack1.isNow && anim->GetAnimationClip()->name == "Sable.Attack1")
 			{
-
+				if (anim->time >= 0.2f && anim->time <= 0.5f)
+				{
+					sable->attack2.isNow = true;
+				}
 			}
-			else if (sable->attack2.isNow)
+			// アニメーションがコンボ受付時間なら攻撃3につなげる
+			else if (sable->attack2.isNow && anim->GetAnimationClip()->name == "Sable.Attack2")
 			{
-
-			}
-			else if (sable->attack3.isNow)
-			{
-
+				if (anim->time >= 0.2f && anim->time <= 0.5f)
+				{
+					sable->attack3.isNow = true;
+				}
 			}
 		}
 	}
@@ -1039,11 +1156,17 @@ void Gundam::Action3(bool acttion3Btn)
 		// サーベル抜刀状態
 		if (sable->isGet)
 		{
+			// アニメーションが終われば
 			if (anim->time >= anim->GetAnimationClip()->totalTime)
 			{
+				// サーベル状態を終了
 				sable->isNow = false;
+				// サーベル取得状態を終了
 				sable->isGet = false;
+				// 重力を復活
 				rb->isGravity = true;
+
+				// アニメーションを再生
 				anim->SetAnimation("Idle.Sable");
 				anim->Play();
 			}
@@ -1051,46 +1174,270 @@ void Gundam::Action3(bool acttion3Btn)
 		// サーベル移動状態
 		else if (sable->move.isNow)
 		{
-			// ターゲットの方向を取得
-			Vector3 directionToTarget = GetTargetMs()->GetTransform()->position - GetTransform()->position;
+			// 向いてる方向に進む
+			GetTransform()->position += sable->move.speed * GetTransform()->Forward() * Time::DeltaTime();
 
-			GetTransform()->rotation = Quaternion::LookRotation(directionToTarget);
+			// エネルギーを消費
+			boostParamater.current -= sable->move.useEnergy * Time::DeltaTime();
 
 			// 移動距離を計算
 			float moveDistance = Mathf::Abs(Vector3::Distance(GetTransform()->position, sable->move.attackStartPos));
-			GetTransform()->position += sable->move.speed * GetTransform()->Forward() * Time::DeltaTime();
-			if (moveDistance >= sable->move.distanceMax || GetDistance() < 10)
+
+			// 誘導あり
+			if (sable->isHoming)
 			{
-				// サーベル移動状態を終了
-				sable->move.isNow= false;
-				sable->attack1.isNow = true;
-				anim->SetAnimation("Sable.Attack1");
-				anim->Play();
+				// ターゲットの方向を取得
+				Vector3 directionToTarget = *sable->targetPos - GetTransform()->position;
+
+				// ターゲットの方向を向ける
+				GetTransform()->rotation = Quaternion::LookRotation(directionToTarget);
+
+				// 一定以上進むか敵との距離が近ければ攻撃一段階目にする
+				if (moveDistance >= sable->move.useHomingDistanceMax || GetDistance() <= sable->move.attackDistance)
+				{
+					// サーベル移動状態を終了
+					sable->move.isNow = false;
+
+					// サーベル攻撃一段階目にする
+					sable->attack1.isNow = true;
+
+					// アニメーションを再生
+					anim->SetAnimation("Sable.Attack1");
+					anim->Play();
+				}
+			}
+			else
+			{
+				// 一定以上進めば攻撃一段階目にする
+				if (moveDistance >= sable->move.noHomingDistanceMax)
+				{
+					// サーベル移動状態を終了
+					sable->move.isNow = false;
+
+					// サーベル攻撃一段階目にする
+					sable->attack1.isNow = true;
+					anim->SetAnimation("Sable.Attack1");
+					anim->Play();
+				}
+
 			}
 		}
-		// サーベル攻撃一段階目中
+		// サーベル攻撃1段階目中
 		else if (sable->attack1.isNow)
 		{
-			if (anim->time < 0.5f)
+			// アニメーションの時間が移動時間内なら
+			if (anim->time < sable->attack1.moveTime)
 			{
-				GetTransform()->position += sable->move.speed * GetTransform()->Forward() * Time::DeltaTime();
+				// 誘導あり
+				if (sable->isHoming)
+				{
+					// 敵との距離が攻撃距離なら
+					if (GetDistance() > sable->move.attackDistance)
+					{
+						// 向いている方向に進む
+						GetTransform()->position += sable->attack1.speed * GetTransform()->Forward() * Time::DeltaTime();
+					}
+				}
+				// 誘導無し
+				else
+				{
+					// 向いている方向に進む
+					GetTransform()->position += sable->attack1.speed * GetTransform()->Forward() * Time::DeltaTime();
+				}
 			}
+
+			// アニメーションが攻撃時間なら
+			if (anim->time > sable->attack1.slashTime && !sable->attack1.isSlash)
+			{
+				// 攻撃判定を作成
+				auto slashObj = Instantate("Slash", Vector3(0, 0, 10));
+				slashObj->GetTransform()->SetParent(GetTransform());
+				auto slash = slashObj->AddComponent<BaseSlash>();
+				slash->damage = sable->attack1.damage;
+				slash->downPower = sable->attack1.downPower;
+				slash->destoryTime = sable->attack1.destoryTime;
+
+				// 攻撃判定作った
+				sable->attack1.isSlash = true;
+			}
+
+			// サーベル攻撃２段階目の状態ならコンボさせる
+			if (anim->time >= 0.5f && sable->attack2.isNow)
+			{
+				// 誘導ありなら
+				if (sable->isHoming)
+				{
+					// ターゲットの方向を取得
+					Vector3 directionToTarget = *sable->targetPos - GetTransform()->position;
+					GetTransform()->rotation = Quaternion::LookRotation(directionToTarget);
+				}
+				// サーベル攻撃１状態を解除
+				sable->attack1.isNow = false;
+				sable->attack1.isSlash = false;
+
+				// アニメーションを再生
+				anim->SetAnimation("Sable.Attack2");
+				anim->Play();
+
+			}
+
+			// アニメーションが終われば
 			if (anim->time >= anim->GetAnimationClip()->totalTime)
 			{
-				sable->attack1.isNow = false;
-				sable->isNow = false;
-				rb->isGravity = true;
-				anim->SetAnimation("Idle.Sable");
-				anim->Play();
+				// サーベル攻撃終了
+				SableAttackFailded(sable->attack1);
 			}
 		}
+		// サーベル攻撃2段階目中
 		else if (sable->attack2.isNow)
 		{
+			// アニメーションの時間が移動時間内なら
+			if (anim->time < sable->attack2.moveTime)
+			{
+				// 誘導あり
+				if (sable->isHoming)
+				{
+					// 敵との距離が攻撃距離なら
+					if (GetDistance() > sable->move.attackDistance)
+					{
+						// 向いている方向に進む
+						GetTransform()->position += sable->attack2.speed * GetTransform()->Forward() * Time::DeltaTime();
+					}
+				}
+				// 誘導無し
+				else
+				{
+					// 向いている方向に進む
+					GetTransform()->position += sable->attack2.speed * GetTransform()->Forward() * Time::DeltaTime();
+				}
+			}
+
+			// アニメーションが攻撃時間なら
+			if (anim->time > sable->attack2.slashTime && !sable->attack2.isSlash)
+			{
+				// 攻撃判定を作成
+				auto slashObj = Instantate("Slash", Vector3(0, 0, 10));
+				slashObj->GetTransform()->SetParent(GetTransform());
+				auto slash = slashObj->AddComponent<BaseSlash>();
+				slash->damage = sable->attack2.damage;
+				slash->downPower = sable->attack2.downPower;
+				slash->destoryTime = sable->attack2.destoryTime;
+
+				// 攻撃判定作った
+				sable->attack2.isSlash = true;
+			}
+
+			// サーベル攻撃２段階目の状態ならコンボさせる
+			if (anim->time >= 0.5f && sable->attack3.isNow)
+			{
+				// 誘導状態なら
+				if (sable->isHoming)
+				{
+					// ターゲットの方向を取得
+					Vector3 directionToTarget = *sable->targetPos - GetTransform()->position;
+					GetTransform()->rotation = Quaternion::LookRotation(directionToTarget);
+				}
+
+				// サーベル攻撃2状態を解除
+				sable->attack2.isNow = false;
+				sable->attack2.isSlash = false;
+
+				// アニメーションを再生
+				anim->SetAnimation("Sable.Attack3");
+				anim->Play();
+			}
+
+			// アニメーションが終われば
+			if (anim->time >= anim->GetAnimationClip()->totalTime)
+			{
+				// サーベル攻撃終了
+				SableAttackFailded(sable->attack2);
+			}
 		}
+		// サーベル攻撃3段階目中
 		else if (sable->attack3.isNow)
 		{
+			// アニメーションの時間が移動時間内なら
+			if (anim->time < sable->attack3.moveTime)
+			{
+				// 誘導あり
+				if (sable->isHoming)
+				{
+					// 敵との距離が攻撃距離なら
+					if (GetDistance() > sable->move.attackDistance)
+					{
+						// 向いている方向に進む
+						GetTransform()->position += sable->attack3.speed * GetTransform()->Forward() * Time::DeltaTime();
+					}
+				}
+				// 誘導無し
+				else
+				{
+					// 向いている方向に進む
+					GetTransform()->position += sable->attack3.speed * GetTransform()->Forward() * Time::DeltaTime();
+				}
+			}
+
+			// アニメーションが攻撃時間なら
+			if (anim->time > sable->attack3.slashTime && !sable->attack3.isSlash)
+			{
+				// 攻撃判定を作成
+				auto slashObj = Instantate("Slash", Vector3(0, 0, 10));
+				slashObj->GetTransform()->SetParent(GetTransform());
+				auto slash = slashObj->AddComponent<BaseSlash>();
+				slash->damage = sable->attack3.damage;
+				slash->downPower = sable->attack3.downPower;
+				slash->destoryTime = sable->attack3.destoryTime;
+
+				// 攻撃判定作った
+				sable->attack3.isSlash = true;
+			}
+
+			// アニメーションが終われば
+			if (anim->time >= anim->GetAnimationClip()->totalTime)
+			{
+				// サーベル攻撃終了
+				SableAttackFailded(sable->attack3);
+			}
 		}
 	}
+}
+
+/*
+* ビームサーベル攻撃終了
+*/
+void Gundam::SableAttackFailded(Sable::Attack& attack)
+{
+	// サーベル攻撃状態を解除
+	sable->isNow = false;
+
+	// 攻撃状態を解除
+	attack.isNow = false;
+
+	attack.isSlash = false;
+
+	// エネルギーのチャージのロックを解除
+	boostParamater.chageLock = false;
+
+	if (boostParamater.current <= 0)
+	{
+		boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
+	}
+	else
+	{
+		boostParamater.chageStartTimer = boostParamater.chageStartTime;
+	}
+
+	// 重力を復活
+	rb->isGravity = true;
+
+	// 姿勢を正す
+	//Vector3 directionToTarget = GetTargetMs()->GetTransform()->position - GetTransform()->position;
+	GetTransform()->rotation = Quaternion::LookRotation(GetTransform()->Forward() * Vector3(1, 0, 1));
+
+	// アニメーションを再生
+	anim->SetAnimation("Idle.Sable");
+	anim->Play();
 }
 
 /**
@@ -1100,7 +1447,7 @@ void Gundam::Action3(bool acttion3Btn)
 */
 void Gundam::Damage(const DamageInfo& damageInfo)
 {
-	if (isBlowAway || isDown || isRespon)
+	if (blowAway.isNow || isDown || isRespon)
 	{
 		return;
 	}
@@ -1112,6 +1459,32 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 	// 体力を減らす
 	baseParamater.hp -= static_cast<int>(damageInfo.damage);
 	downValue += damageInfo.downPower;
+
+	// ライフル状態だった場合
+	if (rifle->isNow)
+	{
+		rifle->isNow = false;
+		rifle->isShot = false;
+		rifle->isStopShot = false;
+	}
+	// バズーカ状態だった場合
+	if (bazooka->isNow)
+	{
+		bazooka->isNow = false;
+		bazooka->isShot = false;
+	}
+	// サーベル攻撃状態をだった場合
+	if (sable->isNow)
+	{
+		sable->isNow = false;
+		sable->isGet = false;
+		sable->attack1.isNow = false;
+		sable->attack1.isSlash = false;
+		sable->attack2.isNow = false;
+		sable->attack2.isSlash = false;
+		sable->attack3.isNow = false;
+		sable->attack3.isSlash = false;
+	}
 
 	// 通常ダメージアクション
 	if (downValue < 100)
@@ -1165,8 +1538,8 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 		}
 		rb->gravityScale = 3;
 		rb->isGravity = true;
-		blowAwayTimer = 0;
-		isBlowAway = true;
+		blowAway.timer = 0;
+		blowAway.isNow = true;
 		downValue = 0;
 	}
 
@@ -1193,7 +1566,7 @@ void Gundam::Respon(const Vector3& removePos, float hpCut)
 
 	// 死亡状態を解除
 	downValue = 0;
-	isBlowAway = false;
+	blowAway.isNow = false;
 	isDamage = false;
 	isDown = false;
 	isDeath = false;

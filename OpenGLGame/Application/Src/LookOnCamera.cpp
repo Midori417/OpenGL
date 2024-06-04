@@ -95,7 +95,6 @@ void LookOnCamera::PositionCamera()
 	}
 	else
 	{
-		return;
 		// 自身とターゲットのMSの位置を取得
 		Vector3 playerMsPos = myMs->position;
 		Vector3 targetMsPos = targetMs->position;

@@ -105,6 +105,8 @@ private:
 	// バトル情報
 	static BattleInfoPtr battleInfo;
 
+	std::vector<ControlOwnerPtr> controlOwners;
+
 	// チーム１コントロール配列
 	std::vector<ControlOwnerPtr> teum1ControlOwners;
 

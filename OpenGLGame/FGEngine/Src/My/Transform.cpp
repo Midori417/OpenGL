@@ -104,7 +104,7 @@ namespace FGEngine
 	* @param target		向ける対象オブジェクトのTransform
 	* @param worldUp	上方ベクトル
 	*/
-	void Transform::LookAt(const TransformPtr& target, const Vector3& worldUp)
+	void Transform::LookAt(const TransformPtr target, const Vector3& worldUp)
 	{
 		LookAt(target.get(), worldUp);
 	}
@@ -114,7 +114,7 @@ namespace FGEngine
 	*
 	* @param parent 設定する親のTransform
 	*/
-	void Transform::SetParent(const TransformPtr& parent)
+	void Transform::SetParent(const TransformPtr parent)
 	{
 		// 同じ親を指定していたら何もしない
 		if (this->parent.lock() == parent)

@@ -140,9 +140,6 @@
     <Filter Include="FGEngine\Src\My\WindowSystem">
       <UniqueIdentifier>{94aa4783-7514-43e7-8190-15a72cfa8953}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\SoundSystem">
-      <UniqueIdentifier>{bd2cfe1f-0858-400d-8adf-134e464dc315}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\ResouceSystem">
       <UniqueIdentifier>{8a34f49f-54d9-42f0-ac1b-c09d5152f66f}</UniqueIdentifier>
     </Filter>
@@ -308,6 +305,12 @@
     <Filter Include="Application\Src\Ms\Base\Bullet\HomingBullet">
       <UniqueIdentifier>{cd8af568-f7d3-4f58-a841-b1aa8523587a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Src\Ms\Base\Slash">
+      <UniqueIdentifier>{80e8ae60-f6f0-48fa-998f-9a513e4f1b05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\EasySound">
+      <UniqueIdentifier>{7593924c-d367-406c-b624-5f15ac805e52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
@@ -354,12 +357,6 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\ComponentHelper.h">
       <Filter>FGEngine\Src\My\Object\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\EasyAudio.h">
-      <Filter>FGEngine\Src\My\SoundSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\AudioSettings.h">
-      <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Mathf.h">
       <Filter>FGEngine\Src\My\Mathf</Filter>
@@ -664,6 +661,15 @@
     <ClInclude Include="Application\Src\HomingBullet.h">
       <Filter>Application\Src\Ms\Base\Bullet\HomingBullet</Filter>
     </ClInclude>
+    <ClInclude Include="Application\Src\BaseSlash.h">
+      <Filter>Application\Src\Ms\Base\Slash</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\EasyAudio\EasyAudio.h">
+      <Filter>FGEngine\Src\My\EasySound</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\AudioSettings.h">
+      <Filter>Application\Src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -692,9 +698,6 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Debug.cpp">
       <Filter>FGEngine\Src\My\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\EasyAudio.cpp">
-      <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Mathf.cpp">
       <Filter>FGEngine\Src\My\Mathf</Filter>
@@ -887,6 +890,12 @@
     </ClCompile>
     <ClCompile Include="Application\Src\HomingBullet.cpp">
       <Filter>Application\Src\Ms\Base\Bullet\HomingBullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BaseSlash.cpp">
+      <Filter>Application\Src\Ms\Base\Slash</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\EasyAudio\EasyAudio.cpp">
+      <Filter>FGEngine\Src\My\EasySound</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

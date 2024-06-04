@@ -19,9 +19,14 @@ namespace FGEngine
 		virtual ~Behaviour() = default;
 
 		// オブジェクト状態を設定する
-		void SetEnable(bool value)
+		virtual void SetEnable(bool value)
 		{
 			enabled = value;
+		}
+
+		bool GetEnabled() const
+		{
+			return enabled;
 		}
 
 

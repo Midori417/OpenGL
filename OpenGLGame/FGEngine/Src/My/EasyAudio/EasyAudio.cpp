@@ -1268,7 +1268,7 @@ void SetPanAndVolumeFromPosition(int playerId, const Vector& position, float vol
   p->SetVolume(volume);
 
   const float pan = v.x * listnerRight.x + v.y * listnerRight.y + v.z * listnerRight.z;
-  p->SetPan(pan);
+  //p->SetPan(pan);
 }
 
 /**

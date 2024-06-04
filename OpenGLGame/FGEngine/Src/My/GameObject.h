@@ -106,7 +106,6 @@ namespace FGEngine
 				imGuiLayout = p;
 			}
 
-
 			// コンポーネント配列に登録
 			components.push_back(p);
 
@@ -124,6 +123,39 @@ namespace FGEngine
 			{
 				return nullptr;
 			}
+			// Transformが基底クラスの場合
+			if constexpr (std::is_base_of_v<Transform, T>)
+			{
+				return transform;
+			}
+			// Rendererが基底クラスの場合
+			if constexpr (std::is_base_of_v<Renderer, T>)
+			{
+				return renderer;
+			}
+
+			// Rigidbodyが基底クラスの場合
+			if constexpr (std::is_base_of_v<Rigidbody, T>)
+			{
+				return rigidbody;
+			}
+			// Cameraが基底クラスの場合
+			if constexpr (std::is_base_of_v<Camera, T>)
+			{
+				return camera;
+			}
+			// Animatorが基底クラスの場合
+			if constexpr (std::is_base_of_v<Animator, T>)
+			{
+				return animator;
+			}
+
+			// ImGuiLayoutが基底クレスの場合
+			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
+			{
+				return imGuiLayout;
+			}
+
 
 			for (auto& e : components)
 			{
