@@ -155,7 +155,6 @@ void Gundam::Update()
 	{
 		if (!isDeath)
 		{
-			EasyAudio::Play(audioPlayer, SE::gundamDead);
 			// éÄñSèÛë‘Ç…Ç∑ÇÈ
 			isDeath = true;
 		}
@@ -371,18 +370,6 @@ void Gundam::Move(const Vector2& moveAxis)
 			if (moveAxis != Vector2::zero)
 			{
 				moveParamater.moveTimer -= Time::DeltaTime();
-				if (moveParamater.moveTimer <= 0)
-				{
-					moveParamater.moveTimer = moveParamater.moveTime;
-					EasyAudio::Play(audioPlayer, SE::gundamLegSound, 0.7f);
-					auto msPos = GetTransform()->position;
-					EasyAudio::Vector vector;
-					vector.x = msPos.x;
-					vector.y = msPos.y;
-					vector.z = msPos.z;
-					EasyAudio::SetPanAndVolumeFromPosition(audioPlayer, vector, 0.7f);
-
-				}
 
 				switch (handWeapon)
 				{
@@ -872,14 +859,7 @@ void Gundam::Action1(bool attackKey)
 	{
 		if (anim->time >= 0.2f && !rifle->isShot)
 		{
-			// âπÇñ¬ÇÁÇ∑
-			EasyAudio::Play(audioPlayer, SE::gundamBeumRifleShot, 1);
 			auto msPos = GetTransform()->position;
-			EasyAudio::Vector vector;
-			vector.x = msPos.x;
-			vector.y = msPos.y;
-			vector.z = msPos.z;
-			EasyAudio::SetPanAndVolumeFromPosition(audioPlayer, vector, 20);
 
 			// écíeÇå∏ÇÁÇ∑
 			rifle->amo -= 1;
@@ -993,15 +973,6 @@ void Gundam::Action2(bool attackKey)
 	{
 		if (anim->time >= 0.4f && !bazooka->isShot)
 		{
-			// âπÇñ¬ÇÁÇ∑
-			EasyAudio::Play(audioPlayer, SE::gundamBazookaShot);
-			auto msPos = GetTransform()->position;
-			EasyAudio::Vector vector;
-			vector.x = msPos.x;
-			vector.y = msPos.y;
-			vector.z = msPos.z;
-			EasyAudio::SetPanAndVolumeFromPosition(audioPlayer, vector, 20);
-
 			// écíeÇå∏ÇÁÇ∑
 			bazooka->amo -= 1;
 

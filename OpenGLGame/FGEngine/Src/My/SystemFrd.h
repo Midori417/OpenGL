@@ -46,6 +46,11 @@ namespace FGEngine
 		// ウィンドウ管理クラス
 		class WindowManager;
 	}
+	namespace SoundSystem
+	{
+		// サウンド管理クラス
+		class SoundManager;
+	}
 }
 
 #endif // !FGENGINE_SYSTEMFRD_H_INCLUDED

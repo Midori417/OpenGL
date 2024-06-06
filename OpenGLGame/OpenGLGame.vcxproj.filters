@@ -26,7 +26,6 @@
     <None Include="FGEngine\Res\Shader\shadow3D.vert">
       <Filter>FGEngine\Res</Filter>
     </None>
-    <None Include="cpp.hint" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Application">
@@ -308,8 +307,20 @@
     <Filter Include="Application\Src\Ms\Base\Slash">
       <UniqueIdentifier>{80e8ae60-f6f0-48fa-998f-9a513e4f1b05}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\EasySound">
+    <Filter Include="FGEngine\Src\My\SoundSystem">
       <UniqueIdentifier>{7593924c-d367-406c-b624-5f15ac805e52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\SoundSystem\SoundManager">
+      <UniqueIdentifier>{8587863a-8eb3-4c22-94dd-aac1399e8f39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Audio">
+      <UniqueIdentifier>{e77f2d4f-5b9e-4c78-9351-cda7aace1033}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Audio\AudioSource">
+      <UniqueIdentifier>{0a7566a6-6d21-46bc-a728-c78cd6041709}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\Audio\AudioListner">
+      <UniqueIdentifier>{3e854af7-356d-416b-8cbb-9395ad0983d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -665,10 +676,19 @@
       <Filter>Application\Src\Ms\Base\Slash</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\EasyAudio\EasyAudio.h">
-      <Filter>FGEngine\Src\My\EasySound</Filter>
+      <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\AudioSettings.h">
       <Filter>Application\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\SoundManager.h">
+      <Filter>FGEngine\Src\My\SoundSystem\SoundManager</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\AudioSource.h">
+      <Filter>FGEngine\Src\My\Object\Component\Audio\AudioSource</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\AudioListner.h">
+      <Filter>FGEngine\Src\My\Object\Component\Audio\AudioListner</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -895,7 +915,16 @@
       <Filter>Application\Src\Ms\Base\Slash</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\EasyAudio\EasyAudio.cpp">
-      <Filter>FGEngine\Src\My\EasySound</Filter>
+      <Filter>FGEngine\Src\My\SoundSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\SoundManager.cpp">
+      <Filter>FGEngine\Src\My\SoundSystem\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\AudioSource.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Audio\AudioSource</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\AudioListner.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\Audio\AudioListner</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

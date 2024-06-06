@@ -136,7 +136,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="cpp.hint" />
     <None Include="FGEngine\Res\Shader\shadow3D.frag" />
     <None Include="FGEngine\Res\Shader\shadow3D.vert" />
     <None Include="FGEngine\Res\Shader\shadowSkeletal3D.vert" />
@@ -180,6 +179,8 @@
     <ClInclude Include="FGEngine\Src\My\AabbCollider.h" />
     <ClInclude Include="FGEngine\Src\My\AnimationClip.h" />
     <ClInclude Include="FGEngine\Src\My\Animator.h" />
+    <ClInclude Include="FGEngine\Src\My\AudioListner.h" />
+    <ClInclude Include="FGEngine\Src\My\AudioSource.h" />
     <ClInclude Include="FGEngine\Src\My\Behaviour.h" />
     <ClInclude Include="FGEngine\Src\My\Collision.h" />
     <ClInclude Include="FGEngine\Src\My\DefalutShader.h" />
@@ -239,6 +240,7 @@
     <ClInclude Include="FGEngine\Src\My\Scene.h" />
     <ClInclude Include="FGEngine\Src\My\SceneManager.h" />
     <ClInclude Include="FGEngine\Src\My\Singleton.h" />
+    <ClInclude Include="FGEngine\Src\My\SoundManager.h" />
     <ClInclude Include="FGEngine\Src\My\SphereCollider.h" />
     <ClInclude Include="FGEngine\Src\My\Sprite.h" />
     <ClInclude Include="FGEngine\Src\My\StaticMesh.h" />
@@ -293,6 +295,8 @@
     <ClCompile Include="FGEngine\Src\Main.cpp" />
     <ClCompile Include="FGEngine\Src\My\AabbCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Animator.cpp" />
+    <ClCompile Include="FGEngine\Src\My\AudioListner.cpp" />
+    <ClCompile Include="FGEngine\Src\My\AudioSource.cpp" />
     <ClCompile Include="FGEngine\Src\My\BoxCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Camera.cpp" />
     <ClCompile Include="FGEngine\Src\My\Collider.cpp" />
@@ -326,6 +330,7 @@
     <ClCompile Include="FGEngine\Src\My\Quaternion.cpp" />
     <ClCompile Include="FGEngine\Src\My\Random.cpp" />
     <ClCompile Include="FGEngine\Src\My\SceneManager.cpp" />
+    <ClCompile Include="FGEngine\Src\My\SoundManager.cpp" />
     <ClCompile Include="FGEngine\Src\My\SphereCollider.cpp" />
     <ClCompile Include="FGEngine\Src\My\Texture.cpp" />
     <ClCompile Include="FGEngine\Src\My\Time.cpp" />

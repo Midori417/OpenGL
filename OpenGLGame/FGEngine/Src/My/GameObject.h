@@ -12,6 +12,8 @@
 #include "Rigidbody.h"
 #include "Animator.h"
 #include "Camera.h"
+#include "AudioListner.h"
+#include "AudioSource.h"
 #include "ImGuiLayout.h"
 
 namespace FGEngine
@@ -75,6 +77,12 @@ namespace FGEngine
 				monoBehaviours.push_back(p);
 				// 生成処理を実行
 				monoBehaviours.back()->Awake();
+			}
+
+			if constexpr (std::is_base_of_v<AudioSource, T>)
+			{
+				audioSources.push_back(p);
+				audioSources.back()->Awake();
 			}
 
 
@@ -155,7 +163,6 @@ namespace FGEngine
 			{
 				return imGuiLayout;
 			}
-
 
 			for (auto& e : components)
 			{
@@ -246,6 +253,10 @@ namespace FGEngine
 
 		// UIレイアウトコンポーネントポインター
 		UI::ImGuiLayoutPtr imGuiLayout;
+
+		std::vector<AudioSource> audioSources;
+
+		
 
 	};
 	using GameObjectList = std::vector<GameObjectPtr>;

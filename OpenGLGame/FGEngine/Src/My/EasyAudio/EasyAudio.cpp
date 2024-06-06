@@ -8,6 +8,7 @@
 #define XAUDIO2_HELPER_FUNCTIONS
 
 #include "EasyAudio.h"
+#include "../Vector3.h"
 #include <xaudio2.h>
 #include <vector>
 #include <list>
@@ -41,7 +42,7 @@
 # define LOG(msg) ((void)0)
 #endif // NDEBUG
 
-namespace EasyAudio {
+namespace FGEngine::EasyAudio {
 
 using Microsoft::WRL::ComPtr;
 
@@ -1145,12 +1146,14 @@ bool IsPlaying(int playerId)
 */
 void SetVolume(int playerId, float volume)
 {
-  if (!engine) {
+  if (!engine)
+  {
     return;
   }
 
   SoundPtr p = engine->FindSound(playerId);
-  if (p) {
+  if (p) 
+  {
     p->SetVolume(volume);
   }
 }
@@ -1233,9 +1236,9 @@ float GetPan(int playerId)
   return 0;
 }
 
-Vector listnerPosition = { 0, 0, 0 };
-Vector listnerRight = { 1, 0, 0 };
-void SetListenr(const Vector& position, const Vector& right)
+Vector3 listnerPosition = Vector3::zero;
+Vector3 listnerRight = Vector3::right;
+void SetListenr(const Vector3& position, const Vector3& right)
 {
   listnerPosition = position;
   listnerRight = right;
@@ -1244,7 +1247,7 @@ void SetListenr(const Vector& position, const Vector& right)
 /**
 * 位置関係から簡易的な3Dオーディオ効果をもたらす
 */
-void SetPanAndVolumeFromPosition(int playerId, const Vector& position, float volume)
+void SetPanAndVolumeFromPosition(int playerId, const Vector3& position, float volume)
 {
   if (!engine) {
     return;
@@ -1255,12 +1258,9 @@ void SetPanAndVolumeFromPosition(int playerId, const Vector& position, float vol
     return;
   }
 
-  Vector v = {
-    position.x - listnerPosition.x,
-    position.y - listnerPosition.y,
-    position.z - listnerPosition.z };
+  Vector3 v = position - listnerPosition;
   const float len = sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
-  v = { v.x / len, v.y / len, v.z / len };
+  v = v / len; 
 
   if (len > 1) {
     volume /= len;
@@ -1268,7 +1268,7 @@ void SetPanAndVolumeFromPosition(int playerId, const Vector& position, float vol
   p->SetVolume(volume);
 
   const float pan = v.x * listnerRight.x + v.y * listnerRight.y + v.z * listnerRight.z;
-  //p->SetPan(pan);
+  p->SetPan(1);
 }
 
 /**

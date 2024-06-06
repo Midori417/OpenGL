@@ -3,13 +3,12 @@
 */
 #ifndef EASYAUDIO_H_INCLUDED
 #define EASYAUDIO_H_INCLUDED
+#include "../VectorFrd.h"
 
 /**
 * 音声関連のコードを格納する名前空間
 */
-namespace EasyAudio {
-
-struct Vector { float x, y, z; };
+namespace FGEngine::EasyAudio {
 
 bool Initialize();
 void Finalize();
@@ -34,8 +33,8 @@ void SetPan(int playerId, float pan);
 float GetPan(int playerId);
 
 // 疑似的な3D音源
-void SetListenr(const Vector& position, const Vector& right);
-void SetPanAndVolumeFromPosition(int playerId, const Vector& position, float volume);
+void SetListenr(const Vector3& position, const Vector3& right);
+void SetPanAndVolumeFromPosition(int playerId, const Vector3& position, float volume);
 
 // プレイヤーが再生中かどうか(再生中ならtrue、それ以外はfalse)
 bool IsPlaying(int playerId);

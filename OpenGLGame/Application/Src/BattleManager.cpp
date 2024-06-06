@@ -334,23 +334,6 @@ void BattleManager::Update()
 
 		// バトル中
 	{
-		// 実験
-		{
-			auto hyumanMs = controlOwners[0]->myMs->GetTransform();
-			auto pos = hyumanMs->position;
-			auto rightPos = hyumanMs->Right();
-			EasyAudio::Vector vec;
-			vec.x = pos.x;
-			vec.y = pos.y;
-			vec.z = pos.z;
-			EasyAudio::Vector rightVec;
-			rightVec.x = rightPos.x;
-			rightVec.y = rightPos.y;
-			rightVec.z = rightPos.z;
-			EasyAudio::SetListenr(vec, rightVec);
-
-		}
-
 		// バトル時間を減らす
 		battleTimer -= Time::DeltaTime();
 

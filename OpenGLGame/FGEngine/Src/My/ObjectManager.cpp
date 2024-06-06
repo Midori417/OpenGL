@@ -352,6 +352,25 @@ namespace FGEngine::ObjectSystem
 	}
 
 	/**
+	* AudioSourceを更新
+	*/
+	void ObjectManager::UpdateAudioSource()
+	{
+		for (auto x : gameObjects)
+		{
+			// 持っていなければ何もしない
+			if (x->audioSources.empty())
+			{
+				continue;
+			}
+			for (auto audio : x->audioSources)
+			{
+				audio.Set3DSoundPos();
+			}
+		}
+	}
+
+	/**
 	* ゲームオブジェクトの削除処理
 	*/
 	void ObjectManager::DestoryGameObject()

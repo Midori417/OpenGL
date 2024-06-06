@@ -75,6 +75,11 @@ namespace FGEngine::ObjectSystem
 		*/
 		void UpdateAnimator();
 
+		/**
+		* AudioSourceを更新
+		*/
+		void UpdateAudioSource();
+
 
 		/**
 		* ゲームオブジェクトを取得

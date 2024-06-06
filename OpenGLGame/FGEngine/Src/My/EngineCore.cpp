@@ -6,6 +6,7 @@
 #include "RenderingEngine.h"
 #include "PhysicsEngine.h"
 #include "WindowManager.h"
+#include "SoundManager.h"
 #include "SceneManager.h"
 #include "InputManager.h"
 #include "ResouceManager.h"
@@ -141,6 +142,9 @@ namespace FGEngine::MainSystem
 		// オブジェクトマネージャー
 		objectManager = ObjectSystem::ObjectManager::GetInstance();
 
+		// サウンドマネージャー
+		soundManager = SoundSystem::SoundManager::GetInstance();
+
 		// アプリケーション
 		application = Application::GetInstance();
 
@@ -174,11 +178,8 @@ namespace FGEngine::MainSystem
 		// インプットマネージャを初期化
 		inputManager->Initialize();
 
-		// 音声ライブラリを初期化
-		if (!EasyAudio::Initialize()) 
-		{
-			return 1;
-		}
+		// サウンドマネージャーを初期化
+		soundManager->Inititalize();
 
 		return 0;
 	}
@@ -191,11 +192,11 @@ namespace FGEngine::MainSystem
 		// ウィンドウの描画開始
 		windowManager->Begin();
 
-		// 乱数の初期化
-		Random::Initialize((unsigned int)time(NULL));
-
 		// 時間ライブラリを更新
 		Time::Update();
+
+		// 乱数の初期化
+		Random::Initialize((unsigned int)time(NULL));
 
 		// インプットマネージャを更新
 		inputManager->Update(&windowManager->GetWindow());
@@ -209,8 +210,8 @@ namespace FGEngine::MainSystem
 		// レンダリングエンジンを更新
 		renderingEngine->Update();
 
-		// 音声ライブラリを更新
-		EasyAudio::Update();
+		// サウンドマネージャーを更新
+		soundManager->Update();
 
 		// アプリケーションを更新する
 		application->Update();
@@ -232,7 +233,7 @@ namespace FGEngine::MainSystem
 		application->Fainalize();
 
 		// 音声ライブラリを終了
-		EasyAudio::Finalize();
+		soundManager->Fainalize();
 
 		// ImGuiの終了
 		ImGui_ImplGlfw_Shutdown();
