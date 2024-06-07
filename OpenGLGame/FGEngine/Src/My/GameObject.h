@@ -254,7 +254,7 @@ namespace FGEngine
 		// UIレイアウトコンポーネントポインター
 		UI::ImGuiLayoutPtr imGuiLayout;
 
-		std::vector<AudioSource> audioSources;
+		std::vector<AudioSourcePtr> audioSources;
 
 		
 

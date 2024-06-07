@@ -16,9 +16,12 @@ void ChoiceManager::Start()
 	// リソースシステムを取得
 	auto resManager = ResouceManager::GetInstance();
 
+	float baseX = -570;
+	float spaceX = 100;
+
 	// バトルボタンを作成
 	{
-		auto battleButton = Instantate("BattleButton", Vector3(500, -200, 0));
+		auto battleButton = Instantate("BattleButton", Vector3(baseX, -200, 0));
 		auto image = battleButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("BattleButton");
 		image->size = image->texture->GetSize() * 1.3f;
@@ -27,7 +30,7 @@ void ChoiceManager::Start()
 
 	// オプションボタンを作成
 	{
-		auto optionButton = Instantate("OptionButton", Vector3(500, 0, 0));
+		auto optionButton = Instantate("OptionButton", Vector3(baseX + spaceX, 0, 0));
 		auto image = optionButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("OptionButton");
 		image->size = image->texture->GetSize() * 1.3f;
@@ -36,7 +39,7 @@ void ChoiceManager::Start()
 
 	// やめるボタンを作成
 	{
-		auto exitButton = Instantate("ExitButton", Vector3(500, 200, 0));
+		auto exitButton = Instantate("ExitButton", Vector3(baseX + spaceX * 2, 200, 0));
 		auto image = exitButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("ExitButton");
 		image->size = image->texture->GetSize() * 1.3f;

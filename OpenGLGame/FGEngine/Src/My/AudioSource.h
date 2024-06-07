@@ -103,7 +103,8 @@ namespace FGEngine
 		bool is3DSound = false;
 
 		// ループ再生をするかtrue=ループ再生:false=ループ再生しない
-		bool isLooop = true;
+		bool isLooop = false;
 	};
+	using AudioSourcePtr = std::shared_ptr<AudioSource>;
 }
 #endif // !FGENGINE_AUDIOSOURCE_H_INCLUDED

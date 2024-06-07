@@ -162,6 +162,9 @@
 
 #include "My/AnimationClip.h"
 
+#include "My/AudioListner.h"
+#include "My/AudioSource.h"
+
 // ===================
 //
 // SceneSystem | シーンシステム
@@ -195,3 +198,4 @@
 
 #include "My/WindowManager.h"
 
+#include "My/SoundManager.h"

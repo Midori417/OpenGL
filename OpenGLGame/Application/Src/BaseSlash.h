@@ -54,6 +54,12 @@ public:
 		Vector3 ceneter = Vector3::zero;
 	};
 	Col colllider;
+
+	std::string filenameSE;
+
+private:
+
+	AudioSourcePtr audioSource;
 };
 
 #endif // !BASESLASH_H_INCLUDED

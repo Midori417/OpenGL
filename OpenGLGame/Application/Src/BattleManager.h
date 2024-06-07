@@ -136,6 +136,8 @@ private:
 
 	// ÉSÅ[ÇÃîwåi
 	ImagePtr imgGoBack;
+
+	AudioSourcePtr audioSource;
 };
 
 

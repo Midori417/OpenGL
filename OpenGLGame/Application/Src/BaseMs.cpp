@@ -148,6 +148,22 @@ float BaseMs::GetDistance() const
 }
 
 /**
+* ブーストエネルギーがオーバーヒートしてるか
+*/
+void BaseMs::BoostCheck()
+{
+	boostParamater.chageLock = false;
+	if (boostParamater.current <= 0)
+	{
+		boostParamater.chageStartTimer = boostParamater.chageStartTime;
+	}
+	else
+	{
+		boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
+	}
+}
+
+/**
 * 誘導可能かチェック
 *
 * @retval true  誘導可能
@@ -160,6 +176,11 @@ bool BaseMs::HomingCheck() const
 	float distanceXY = Mathf::Abs(Vector3::Distance(pos * Vector3(1, 0, 1), targetPos * Vector3(1, 0, 1)));
 	float distanceY = pos.y - targetPos.y;
 	return (distanceXY < redLookDistaceXZ) && (distanceY > redLookDistanceMinY) && (distanceY < redLookDistanceMaxY);
+}
+
+bool BaseMs::GetHoimngCancel() const
+{
+	return moveParamater.step.isNow;
 }
 
 /**

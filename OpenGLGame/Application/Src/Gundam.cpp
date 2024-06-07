@@ -4,10 +4,40 @@
 #include "Gundam.h"
 #include "HomingBullet.h"
 #include "BaseSlash.h"
-#include "AudioSettings.h"
 #include "DamageInfo.h"
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
+
+/**
+* 効果音設定
+*/
+namespace SE
+{
+	char legSound[] = "Application/Res/Ms/Gundam/Sound/LegSound.mp3";
+	char boostSound[] = "Application/Res/Ms/Gundam/Sound/BoostSound.mp3";
+	char beumRifleShot[] = "Application/Res/Ms/Gundam/Sound/BeumRifleShot.mp3";
+	char bazookaShot[] = "Application/Res/Ms/Gundam/Sound/BazookaShot.mp3";
+	char sableAttack[] = "Application/Res/Ms/Gundam/Sound/SableAttack.mp3";
+	char sableHit[] = "Application/Res/Ms/Gundam/Sound/SableHit.mp3";
+	char dead[] = "Application/Res/Ms/Gundam/Sound/Dead.mp3";
+}
+
+namespace Animation
+{
+	char idleRifle[] = "Idle.Rifle";
+	char idleSable[] = "Idle.Sable";
+	char stepRifleF[] = "Step.Rifle.F";
+	char stepRifleB[] = "Step.Rifle.B";
+	char stepRifleR[] = "Step.Rifle.R";
+	char stepRifleL[] = "Step.Rifle.L";
+	char downCancelRifle[] = "DownCancel.Rifle";
+}
+
+namespace AudioIndex
+{
+	int legSound = 0;
+	int otherSound = 1;
+}
 
 /**
 * 最初に実行
@@ -21,6 +51,7 @@ void Gundam::Awake()
 	auto resManager = ResouceManager::GetInstance();
 	if (!isResoueLoad)
 	{
+		resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/Gundam.gltf");
 		resManager->LoadObj("Gundam/BeumRifleBullet", "Application/Res/Ms/Gundam/Model/BeumRifleBullet.obj");
 		resManager->LoadTga("Gundam/BeumRifleIcon", "Application/Res/Ms/Gundam/UI/BeumRifleIcon.tga");
 		resManager->LoadObj("Gundam/BazookaBullet", "Application/Res/Ms/Gundam/Model/BazookaBullet.obj");
@@ -51,8 +82,22 @@ void Gundam::Awake()
 	anim->animationClips = renderer->glTFfile->animationClips;
 
 	// 最初のアニメーションを追加
-	anim->SetAnimation("Idle.Rifle", true);
+	anim->SetAnimation(Animation::idleRifle, true);
 	anim->Play();
+
+	// サウンド
+	{
+		auto audio = OwnerObject()->AddComponent<AudioSource>();
+		audio->SetSoundFilename(SE::legSound);
+		audio->SetVolume(0.2f);
+		audio->is3DSound = true;
+		audioSources.push_back(audio);
+	}
+	{
+		auto audio = OwnerObject()->AddComponent<AudioSource>();
+		audio->is3DSound = true;
+		audioSources.push_back(audio);
+	}
 
 	// 基礎パラメータを設定
 	baseParamater.hpMax = 600;
@@ -61,7 +106,7 @@ void Gundam::Awake()
 
 	// 攻撃の距離
 	proximityDistance = 40.0f;
-	redLookDistaceXZ = 90.0f;
+	redLookDistaceXZ = 100.0f;
 	redLookDistanceMinY = -100.0f;
 	redLookDistanceMaxY = 10.0f;
 
@@ -79,6 +124,10 @@ void Gundam::Awake()
 	moveParamater.jump.speed = 10.0f;
 	moveParamater.jump.rotationSpeed = 0.05f;
 	moveParamater.jump.useEnergy = -30.0f;
+
+	// ステップ
+	moveParamater.step.speed = 30.0f;
+	moveParamater.step.useEnergy = 20.0f;
 
 	// ライフルの生成
 	{
@@ -155,6 +204,8 @@ void Gundam::Update()
 	{
 		if (!isDeath)
 		{
+			audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::dead);
+			audioSources[AudioIndex::otherSound]->Play();
 			// 死亡状態にする
 			isDeath = true;
 		}
@@ -178,6 +229,7 @@ void Gundam::Update()
 		if (blowAway.timer > blowAway.time && rb->IsGround())
 		{
 			blowAway.isNow = false;
+			rb->gravityScale = 2;
 
 			if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
 			{
@@ -201,19 +253,63 @@ void Gundam::Update()
 		}
 	}
 
+	if (isDown || (blowAway.isNow && blowAway.timer > 0.2f))
+	{
+		if (gameInput->moveAxis != Vector2::zero)
+		{
+			boostParamater.current -= 10;
+			boostParamater.chageLock = true;
+			if (blowAway.isNow)
+			{
+				rb->gravityScale = 2;
+				blowAway.isNow = false;
+			}
+			if (isDown)
+			{
+				isDown = false;
+			}
+			rb->isGravity = false;
+			rb->velocity = Vector3::zero;
+			anim->SetAnimation(Animation::downCancelRifle);
+			anim->Play();
+			isDownCancel = true;
+		}
+	}
+
+	// ダウンキャンセル状態なら
+	if (isDownCancel)
+	{
+		if (anim->time >= anim->GetAnimationClip()->totalTime)
+		{
+			rb->isGravity = true;
+			isDownCancel = false;
+			boostParamater.chageLock = false;
+			boostParamater.chageStartTimer = boostParamater.chageStartTime;
+			if (handWeapon == HandWeapon::Rifle)
+			{
+				anim->SetAnimation(Animation::idleRifle);
+				anim->Play();
+			}
+			else
+			{
+				anim->SetAnimation(Animation::idleSable);
+				anim->Play();
+			}
+		}
+	}
+
 	// ダウン状態
 	if (isDown)
 	{
 		// ダウン時間を増加
 		downTimer += Time::DeltaTime();
-
-		// 移動入寮があるか、ダウン時間が一定たてば立ち上がらせる
-		if (gameInput->moveAxis != Vector2::zero || downTimer >= downStandUpTime)
+		if (downTimer >= downStandUpTime)
 		{
 			if (anim->GetAnimationClip()->name == "Down.Rifle.F")
 			{
 				anim->SetAnimation("StandUp.Rifle.F");
 				anim->Play();
+
 			}
 			else if (anim->GetAnimationClip()->name == "Down.Rifle.B")
 			{
@@ -270,8 +366,9 @@ void Gundam::Update()
 	if (gameInput && !isRespon)
 	{
 		// ダメージ状態なら何もしない
-		if (!isDamage && !blowAway.isNow && !isDown)
+		if (!isDamage && !blowAway.isNow && !isDown && !isDownCancel)
 		{
+			Step(gameInput->stepBtn, gameInput->moveAxis);
 			// 移動
 			Move(gameInput->moveAxis);
 			// ジャンプ
@@ -341,7 +438,8 @@ void Gundam::Move(const Vector2& moveAxis)
 	}
 
 	// ジャンプ・ダッシュ・ライフルの移動禁止・バズーカ状態なら移動しない
-	if (moveParamater.dash.isNow || moveParamater.jump.isNow || rifle->isStopShot || bazooka->isNow || sable->isNow)
+	if (moveParamater.dash.isNow || moveParamater.jump.isNow || moveParamater.step.isNow ||
+		rifle->isStopShot || bazooka->isNow || sable->isNow)
 	{
 		return;
 	}
@@ -370,6 +468,11 @@ void Gundam::Move(const Vector2& moveAxis)
 			if (moveAxis != Vector2::zero)
 			{
 				moveParamater.moveTimer -= Time::DeltaTime();
+				if (moveParamater.moveTimer <= 0)
+				{
+					moveParamater.moveTimer = moveParamater.moveTime;
+					audioSources[AudioIndex::legSound]->Play();
+				}
 
 				switch (handWeapon)
 				{
@@ -408,7 +511,7 @@ void Gundam::Move(const Vector2& moveAxis)
 void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 {
 	// ダッシュ・ライフルの移動禁止・バズーカ状態ならジャンプしない
-	if (moveParamater.dash.isNow || rifle->isStopShot || bazooka->isNow || sable->isNow)
+	if (moveParamater.dash.isNow || rifle->isStopShot || bazooka->isNow || sable->isNow || moveParamater.step.isNow)
 	{
 		return;
 	}
@@ -448,6 +551,8 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 				// ジャンプアニメーションを再生
 				if (!moveParamater.jump.isNow)
 				{
+					audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::boostSound);
+					audioSources[AudioIndex::otherSound]->Play();
 					if (rb->IsGround())
 					{
 						if (handWeapon == HandWeapon::Rifle)
@@ -551,7 +656,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 {
 	// ライフルの停止・バズーカ状態ならダッシュしない
-	if (rifle->isStopShot || bazooka->isNow || sable->isNow)
+	if (rifle->isStopShot || bazooka->isNow || sable->isNow || moveParamater.step.isNow)
 	{
 		return;
 	}
@@ -590,8 +695,10 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			// 射撃状態ならアニメーションをキャンセル
 			if (!rifle->isNow)
 			{
-				if (!moveParamater.dash.isNow )
+				if (!moveParamater.dash.isNow)
 				{
+					audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::boostSound);
+					audioSources[AudioIndex::otherSound]->Play();
 					if (handWeapon == HandWeapon::Rifle)
 					{
 						anim->SetAnimation("Dash.Rifle", true);
@@ -673,7 +780,7 @@ void Gundam::Action1(bool attackKey)
 	// 攻撃入力があれば
 	if (attackKey)
 	{
-		if (bazooka->isNow || sable->isNow)
+		if (bazooka->isNow || sable->isNow || moveParamater.step.isNow)
 		{
 			return;
 		}
@@ -861,6 +968,9 @@ void Gundam::Action1(bool attackKey)
 		{
 			auto msPos = GetTransform()->position;
 
+			audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::beumRifleShot);
+			audioSources[AudioIndex::otherSound]->Play();
+
 			// 残弾を減らす
 			rifle->amo -= 1;
 
@@ -934,7 +1044,7 @@ void Gundam::Action2(bool attackKey)
 	// 攻撃入力があれば
 	if (attackKey)
 	{
-		if (rifle->isNow || sable->isNow)
+		if (rifle->isNow || sable->isNow || moveParamater.step.isNow)
 		{
 			return;
 		}
@@ -971,8 +1081,17 @@ void Gundam::Action2(bool attackKey)
 	// 射撃中
 	if (bazooka->isNow)
 	{
+		if (!bazooka->isShot)
+		{
+			boostParamater.chageLock = true;
+			boostParamater.current -= 30 * Time::DeltaTime();
+		}
 		if (anim->time >= 0.4f && !bazooka->isShot)
 		{
+
+			audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::bazookaShot);
+			audioSources[AudioIndex::otherSound]->Play();
+
 			// 残弾を減らす
 			bazooka->amo -= 1;
 
@@ -1015,6 +1134,7 @@ void Gundam::Action2(bool attackKey)
 				anim->Play();
 				rb->isGravity = true;
 			}
+			BoostCheck();
 			bazooka->isNow = false;
 			bazooka->isShot = false;
 		}
@@ -1030,7 +1150,7 @@ void Gundam::Action3(bool acttion3Btn)
 {
 	if (acttion3Btn)
 	{
-		if (rifle->isNow || bazooka->isNow)
+		if (rifle->isNow || bazooka->isNow || moveParamater.step.isNow)
 		{
 			return;
 		}
@@ -1138,7 +1258,7 @@ void Gundam::Action3(bool acttion3Btn)
 				rb->isGravity = true;
 
 				// アニメーションを再生
-				anim->SetAnimation("Idle.Sable");
+				anim->SetAnimation(Animation::idleSable);
 				anim->Play();
 			}
 		}
@@ -1150,6 +1270,7 @@ void Gundam::Action3(bool acttion3Btn)
 
 			// エネルギーを消費
 			boostParamater.current -= sable->move.useEnergy * Time::DeltaTime();
+			boostParamater.chageLock = true;
 
 			// 移動距離を計算
 			float moveDistance = Mathf::Abs(Vector3::Distance(GetTransform()->position, sable->move.attackStartPos));
@@ -1172,6 +1293,10 @@ void Gundam::Action3(bool acttion3Btn)
 					// サーベル攻撃一段階目にする
 					sable->attack1.isNow = true;
 
+					// 効果音を鳴らす
+					audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::sableAttack);
+					audioSources[AudioIndex::otherSound]->Play();
+
 					// アニメーションを再生
 					anim->SetAnimation("Sable.Attack1");
 					anim->Play();
@@ -1187,6 +1312,12 @@ void Gundam::Action3(bool acttion3Btn)
 
 					// サーベル攻撃一段階目にする
 					sable->attack1.isNow = true;
+
+					// 効果音を鳴らす
+					audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::sableAttack);
+					audioSources[AudioIndex::otherSound]->Play();
+
+					// アニメーションを再生
 					anim->SetAnimation("Sable.Attack1");
 					anim->Play();
 				}
@@ -1245,6 +1376,10 @@ void Gundam::Action3(bool acttion3Btn)
 				// サーベル攻撃１状態を解除
 				sable->attack1.isNow = false;
 				sable->attack1.isSlash = false;
+
+				// 効果音を鳴らす
+				audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::sableAttack);
+				audioSources[AudioIndex::otherSound]->Play();
 
 				// アニメーションを再生
 				anim->SetAnimation("Sable.Attack2");
@@ -1312,6 +1447,10 @@ void Gundam::Action3(bool acttion3Btn)
 				// サーベル攻撃2状態を解除
 				sable->attack2.isNow = false;
 				sable->attack2.isSlash = false;
+
+				// 効果音を鳴らす
+				audioSources[AudioIndex::otherSound]->SetSoundFilename(SE::sableAttack);
+				audioSources[AudioIndex::otherSound]->Play();
 
 				// アニメーションを再生
 				anim->SetAnimation("Sable.Attack3");
@@ -1387,28 +1526,105 @@ void Gundam::SableAttackFailded(Sable::Attack& attack)
 
 	attack.isSlash = false;
 
-	// エネルギーのチャージのロックを解除
-	boostParamater.chageLock = false;
-
-	if (boostParamater.current <= 0)
-	{
-		boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
-	}
-	else
-	{
-		boostParamater.chageStartTimer = boostParamater.chageStartTime;
-	}
-
+	BoostCheck();
 	// 重力を復活
 	rb->isGravity = true;
 
 	// 姿勢を正す
-	//Vector3 directionToTarget = GetTargetMs()->GetTransform()->position - GetTransform()->position;
 	GetTransform()->rotation = Quaternion::LookRotation(GetTransform()->Forward() * Vector3(1, 0, 1));
 
 	// アニメーションを再生
 	anim->SetAnimation("Idle.Sable");
 	anim->Play();
+}
+
+/**
+* ステップ
+*/
+void Gundam::Step(bool stepBtm, const Vector2& moveAxis)
+{
+	if (stepBtm)
+	{
+		if (sable->isGet || sable->attack1.isNow || sable->attack2.isNow || sable->attack3.isNow)
+		{
+			return;
+		}
+
+		if (moveAxis != Vector2::zero && !moveParamater.step.isNow)
+		{
+			moveParamater.step.isNow = true;
+			rb->isGravity = false;
+			boostParamater.chageLock = true;
+			auto cameraTrs = GetCameraTransform();
+
+			// カメラの方向から、X-Z単位ベクトル(正規化)を取得
+			Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
+			Vector3 moveFoward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
+
+			Vector3 perendicular = Vector3::Cross(moveFoward.Normalized(), GetTransform()->Forward());
+			float dot = Vector3::Dot(moveFoward.Normalized(), GetTransform()->Forward());
+			// サーベル攻撃状態をだった場合
+			if (sable->isNow)
+			{
+				sable->isNow = false;
+				sable->isGet = false;
+				sable->attack1.isNow = false;
+				sable->attack1.isSlash = false;
+				sable->attack2.isNow = false;
+				sable->attack2.isSlash = false;
+				sable->attack3.isNow = false;
+				sable->attack3.isSlash = false;
+			}
+
+
+			if (dot > 0.7f)
+			{
+				anim->SetAnimation(Animation::stepRifleF);
+				anim->Play();
+			}
+			else if (dot < -0.7f)
+			{
+				anim->SetAnimation(Animation::stepRifleB);
+				anim->Play();
+			}
+			else
+			{
+				if (perendicular.y < 0)
+				{
+					anim->SetAnimation(Animation::stepRifleR);
+					anim->Play();
+				}
+				else if (perendicular.y > 0)
+				{
+					anim->SetAnimation(Animation::stepRifleL);
+					anim->Play();
+				}
+			}
+			moveParamater.step.direction = moveFoward;
+		}
+	}
+	if (moveParamater.step.isNow)
+	{
+
+		GetTransform()->position += moveParamater.step.speed * moveParamater.step.direction * Time::DeltaTime();
+		boostParamater.current -= moveParamater.step.useEnergy * Time::DeltaTime();
+		if (anim->time >= anim->GetAnimationClip()->totalTime)
+		{
+			moveParamater.step.isNow = false;
+			rb->isGravity = true;
+			BoostCheck();
+			if (handWeapon == HandWeapon::Rifle)
+			{
+				anim->SetAnimation(Animation::idleRifle);
+				anim->Play();
+			}
+			else
+			{
+				anim->SetAnimation(Animation::idleSable);
+				anim->Play();
+			}
+		}
+	}
 }
 
 /**
@@ -1418,7 +1634,7 @@ void Gundam::SableAttackFailded(Sable::Attack& attack)
 */
 void Gundam::Damage(const DamageInfo& damageInfo)
 {
-	if (blowAway.isNow || isDown || isRespon)
+	if (blowAway.isNow || isDown || isRespon || isDownCancel)
 	{
 		return;
 	}
@@ -1431,6 +1647,16 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 	baseParamater.hp -= static_cast<int>(damageInfo.damage);
 	downValue += damageInfo.downPower;
 
+	// ダッシュ状態
+	if (moveParamater.dash.isNow)
+	{
+		moveParamater.dash.isNow = false;
+	}
+	// ジャンプ状態
+	if (moveParamater.jump.isNow)
+	{
+		moveParamater.jump.isNow = false;
+	}
 	// ライフル状態だった場合
 	if (rifle->isNow)
 	{
@@ -1456,6 +1682,7 @@ void Gundam::Damage(const DamageInfo& damageInfo)
 		sable->attack3.isNow = false;
 		sable->attack3.isSlash = false;
 	}
+	boostParamater.chageLock = false;
 
 	// 通常ダメージアクション
 	if (downValue < 100)
@@ -1534,6 +1761,18 @@ void Gundam::Respon(const Vector3& removePos, float hpCut)
 	// 武装の初期化
 	rifle->Initialize();
 	bazooka->Initialize();
+	// サーベル攻撃状態をだった場合
+	if (sable->isNow)
+	{
+		sable->isNow = false;
+		sable->isGet = false;
+		sable->attack1.isNow = false;
+		sable->attack1.isSlash = false;
+		sable->attack2.isNow = false;
+		sable->attack2.isSlash = false;
+		sable->attack3.isNow = false;
+		sable->attack3.isSlash = false;
+	}
 
 	// 死亡状態を解除
 	downValue = 0;
@@ -1542,6 +1781,7 @@ void Gundam::Respon(const Vector3& removePos, float hpCut)
 	isDown = false;
 	isDeath = false;
 	rb->isGravity = true;
+	boostParamater.chageLock = false;
 
 	rb->velocity = Vector3::zero;
 	renderer->enabled = true;

@@ -98,6 +98,8 @@ public:
 	*/
 	bool HomingCheck() const;
 
+	bool GetHoimngCancel() const;
+
 protected:
 
 	/**
@@ -128,6 +130,11 @@ protected:
 	*/
 	float GetDistance() const;
 
+	/**
+	* ブーストエネルギーがオーバーヒートしてるか
+	*/
+	void BoostCheck();
+
 
 public:
 
@@ -146,8 +153,6 @@ public:
 	// 赤ロック距離(-Y)
 	float redLookDistanceMinY = 0;
 
-	int audioPlayer = 0;
-
 protected:
 
 	// リギボ
@@ -158,6 +163,8 @@ protected:
 
 	// レンダラー
 	GltfMeshRendererPtr renderer;
+
+	std::vector<AudioSourcePtr> audioSources;
 
 	// 入力
 	GameInput* gameInput = nullptr;
@@ -259,6 +266,17 @@ protected:
 			bool isNow = false;
 		};
 
+		struct Step
+		{
+			Vector3 direction = Vector3::zero;
+
+			float useEnergy = 0.0f;
+			
+			bool isNow = false;
+
+			float speed = 0.0f;
+		};
+
 	public:
 
 		// 通常速度
@@ -276,6 +294,9 @@ protected:
 
 		// ジャンプパラメータ
 		JumpPramter jump;
+
+		// ステップパラメータ
+		Step step;
 	};
 	MoveParamater moveParamater;
 
@@ -301,6 +322,8 @@ protected:
 		float power = 70.0f;
 	};
 	BlowAway blowAway;
+
+	bool isDownCancel = false;
 
 	bool isDown = false;
 

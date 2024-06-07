@@ -20,6 +20,8 @@ struct GameInput
 	// ダッシュボタン
 	bool dashBtn = false;
 
+	bool stepBtn = false;
+
 	// 行動1ボタン
 	bool action1Btn = false;
 

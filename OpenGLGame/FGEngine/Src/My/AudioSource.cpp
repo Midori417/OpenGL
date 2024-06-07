@@ -24,6 +24,10 @@ namespace FGEngine
 		if (filename != "NoFile")
 		{
 			EasyAudio::Play(id, filename.c_str(), volume, isLooop);
+			if (is3DSound)
+			{
+				EasyAudio::SetPanAndVolumeFromPosition(id, GetTransform()->position, volume);
+			}
 		}
 	}
 

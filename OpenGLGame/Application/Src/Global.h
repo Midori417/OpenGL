@@ -69,5 +69,4 @@ struct BattleInfo
 
 };
 
-
 #endif // !GLOBAL_H_INCLUDED

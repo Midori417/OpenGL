@@ -209,6 +209,11 @@ private:
 	*/
 	void Action3(bool acttion3Btn);
 
+	/**
+	* ステップ
+	*/
+	void Step(bool stepBtm, const Vector2& moveAxis);
+
 	/*
 	* ビームサーベル攻撃終了
 	*/

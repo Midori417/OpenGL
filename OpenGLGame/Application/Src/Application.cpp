@@ -78,13 +78,6 @@ int Application::Initialize()
 	resManager->LoadTga("Win", "Application/Res/UI/Battle/Win.tga");
 	resManager->LoadTga("Lose", "Application/Res/UI/Battle/Lose.tga");
 
-
-
-	// MSの読み込み
-	resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/Gundam.gltf");
-	//resManager->LoadGlTF("Gundam", "Application/Res/Ms/StrikeGundam/Model/StrikeGundam.gltf");
-
-
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");
 	SceneManager::AddScene<ChoiceScene>("ゲーム選択シーン");
@@ -94,6 +87,7 @@ int Application::Initialize()
 	// 最初に流すシーン
 	//SceneManager::LoadScene("タイトルシーン");
 	SceneManager::LoadScene("バトル設定シーン");
+
 
 	return 0;
 }

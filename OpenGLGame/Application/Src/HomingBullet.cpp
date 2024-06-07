@@ -33,6 +33,13 @@ void HomingBullet::Start()
 */
 void HomingBullet::Update()
 {
+	if (targetMs)
+	{
+		if (targetMs->GetHoimngCancel())
+		{
+			isHoming = false;
+		}
+	}
 	if (!targetMs || !isHoming)
 	{
 		GetTransform()->position += GetTransform()->Forward() * speed * Time::DeltaTime();

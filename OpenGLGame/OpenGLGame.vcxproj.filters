@@ -322,6 +322,9 @@
     <Filter Include="FGEngine\Src\My\Object\Component\Audio\AudioListner">
       <UniqueIdentifier>{3e854af7-356d-416b-8cbb-9395ad0983d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Src\Sound">
+      <UniqueIdentifier>{aec1cbe0-bdf3-44fd-a7e7-d5a27f2335b6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Src\Package\ImGui\imconfig.h">
@@ -678,9 +681,6 @@
     <ClInclude Include="FGEngine\Src\My\EasyAudio\EasyAudio.h">
       <Filter>FGEngine\Src\My\SoundSystem</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\AudioSettings.h">
-      <Filter>Application\Src</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\SoundManager.h">
       <Filter>FGEngine\Src\My\SoundSystem\SoundManager</Filter>
     </ClInclude>
@@ -689,6 +689,9 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\AudioListner.h">
       <Filter>FGEngine\Src\My\Object\Component\Audio\AudioListner</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BgmList.h">
+      <Filter>Application\Src\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

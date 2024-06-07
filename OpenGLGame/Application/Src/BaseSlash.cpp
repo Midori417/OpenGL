@@ -16,6 +16,9 @@ void BaseSlash::Awake()
 	col->radius = colllider.radius;
 	col->ceneter = colllider.ceneter;
 	col->isTrigger = true;
+	audioSource = OwnerObject()->AddComponent<AudioSource>();
+	audioSource->SetSoundFilename(filenameSE);
+	audioSource->is3DSound = true;
 	OwnerObject()->tag = "Slash";
 }
 
@@ -52,6 +55,8 @@ void BaseSlash::OnTriggerEnter(const CollisionPtr other)
 		damageInfo.damage = damage;
 		damageInfo.direction = Vector3(GetTransform()->position - obj->GetTransform()->position).Normalized();
 		damageInfo.downPower = downPower;
+
+		audioSource->Play();
 
 		// ƒ_ƒ[ƒW‚ð—^‚¦‚é
 		ms->Damage(damageInfo);

@@ -39,6 +39,7 @@ void LookOnCamera::LateUpdate()
 		// 高さを調整
 		float posY = offsetMaxPos.y * (1 - (distance / offsetMaxPos.y));
 
+
 		// オフセット位置を補正
 		Vector3 offsetPos(
 			0.0f,

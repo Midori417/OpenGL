@@ -8,12 +8,13 @@
 #include "BaseMs.h"
 #include "Gundam.h"
 #include "Global.h"
-#include "AudioSettings.h"
+#include "BgmList.h"
 using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
 using namespace FGEngine::InputSystem;
 using namespace FGEngine::SceneSystem;
+using namespace FGEngine::SoundSystem;
 
 // スタティック変数を初期化
 BattleInfoPtr BattleManager::battleInfo = nullptr;
@@ -92,12 +93,12 @@ void BattleManager::Awake()
 
 			// 対応するMsコンポーネントを追加
 			hyumanControl->myMs = SetMs(ms, x->ms);
-			hyumanControl->myMs->audioPlayer = AudioPlayer::player;
 
 			// カメラを設定
 			auto camera = ObjectManager::GetInstance()->GetMainCamera();
 			hyumanControl->myCamera = camera->AddComponent<LookOnCamera>();
-
+			auto linstner = camera->AddComponent<AudioListner>();
+			SoundManager::GetInstance()->SetListner(linstner);
 			// チームを設定
 			if (x->teumId == 1)
 			{
@@ -130,7 +131,6 @@ void BattleManager::Awake()
 
 			// 対応するMsコンポーネントを追加
 			cpuControl->myMs = SetMs(ms, x->ms);
-			cpuControl->myMs->audioPlayer = i;
 
 			// 仮想カメラを設定
 			auto camera = Instantate("virtualCamera");
@@ -215,8 +215,12 @@ void BattleManager::Awake()
 			imgGo->texture = resManager->GetTexture("GO");
 			imgGo->size = winManager->GetWindowSize() * 0.9f;
 		}
-
 	}
+
+	audioSource = OwnerObject()->AddComponent<AudioSource>();
+	audioSource->SetSoundFilename(BGM::bgm01);
+	audioSource->SetVolume(0.05f);
+	audioSource->isLooop = true;
 }
 
 /**
@@ -315,6 +319,8 @@ void BattleManager::Update()
 			// バトル状態をバトルに
 			battleState = BattleState::Battle;
 
+			audioSource->Play();
+
 			// GOを非表示に
 			imgGo->SetEnable(false);
 
@@ -339,6 +345,7 @@ void BattleManager::Update()
 
 		if (*teum1Hp <= 0 || *teum2Hp <= 0)
 		{
+			audioSource->Stop();
 			VictoryState teum1Victory = VictoryState::None;
 			VictoryState teum2Victory = VictoryState::None;
 			// どちらのチームHpも0ならば引き分け

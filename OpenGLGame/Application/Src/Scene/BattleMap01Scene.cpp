@@ -29,7 +29,7 @@ bool BattleMap01Scene::Initialize()
 		resManager->LoadTga("Sky", "Application/Res/Map/sky2.tga");
 		// マップ01のリソース読み込み
 		resManager->LoadGlTF("Map01", "Application/Res/Map/Map01/Map01.gltf");
-		//resManager->LoadGlTF("Map01/Ground", "Application/Res/Map/Map01/Ground.gltf");
+		resManager->LoadGlTF("Map01/Ground", "Application/Res/Map/Map01/Ground.gltf");
 		//resManager->LoadGlTF("Map01/Biru01", "Application/Res/Map/Map01/Biru01.gltf");
 		//resManager->LoadGlTF("Map01/Biru02", "Application/Res/Map/Map01/Biru02.gltf");
 		//resManager->LoadGlTF("Map01/Biru03", "Application/Res/Map/Map01/Biru03.gltf");
@@ -142,7 +142,7 @@ bool BattleMap01Scene::Initialize()
 			auto ground = objManager->CreateGameObject("Ground", Vector3(0, -1.0f, 0));
 			ground->tag = "Ground";
 			auto renderer = ground->AddComponent<GltfMeshRenderer>();
-			renderer->glTFfile = resManager->GetGltfFile("Map01");
+			renderer->glTFfile = resManager->GetGltfFile("Map01/Ground");
 			renderer->shader = resManager->GetShader(DefalutShader::Standard3D);
 			auto col = ground->AddComponent<AabbCollider>();
 			col->min = Vector3(-mapSize.x, -10.0f, -mapSize.y);

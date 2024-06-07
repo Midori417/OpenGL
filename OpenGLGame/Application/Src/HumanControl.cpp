@@ -392,6 +392,7 @@ void HumanControl::GameInputUpdate()
 	gameInput->moveAxis = Vector2(InputManager::GetAxis(Axis::Horizontal), InputManager::GetAxis(Axis::Vertical));
 	gameInput->jumpBtn = InputKey::GetKey(KeyCode::Space);
 	gameInput->dashBtn = InputKey::GetKey(KeyCode::LeftShift);
+	gameInput->stepBtn = InputKey::GetKey(KeyCode::LeftControl);
 	gameInput->action1Btn = InputMouse::GetMouseButton(MouseButton::LeftButton);
 	gameInput->action2Btn = InputKey::GetKey(KeyCode::E);
 	gameInput->action3Btn = InputMouse::GetMouseButton(MouseButton::RightButton);

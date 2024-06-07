@@ -54,7 +54,7 @@ bool ChoiceScene::Initialize()
 
 	// ƒ^ƒCƒgƒ‹ƒƒS‚ðì¬
 	{
-		auto titleLogo = objManager->CreateGameObject("TitleLogoA", Vector3(-400, 0, 0));
+		auto titleLogo = objManager->CreateGameObject("TitleLogoA", Vector3(400, 0, 0));
 		auto image = titleLogo->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleLogo");
 		image->size = Vector2(937, 383) * 0.9f;

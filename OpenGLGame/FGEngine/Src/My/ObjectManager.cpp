@@ -365,7 +365,7 @@ namespace FGEngine::ObjectSystem
 			}
 			for (auto audio : x->audioSources)
 			{
-				audio.Set3DSoundPos();
+				audio->Set3DSoundPos();
 			}
 		}
 	}

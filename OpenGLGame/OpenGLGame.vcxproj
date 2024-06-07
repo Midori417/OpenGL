@@ -148,12 +148,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
-    <ClInclude Include="Application\Src\AudioSettings.h" />
     <ClInclude Include="Application\Src\BaseMs.h" />
     <ClInclude Include="Application\Src\BaseSlash.h" />
     <ClInclude Include="Application\Src\BaseWeapon.h" />
     <ClInclude Include="Application\Src\BattleManager.h" />
     <ClInclude Include="Application\Src\BattleSettingManager.h" />
+    <ClInclude Include="Application\Src\BgmList.h" />
     <ClInclude Include="Application\Src\ChoiceManager.h" />
     <ClInclude Include="Application\Src\ControlOwner.h" />
     <ClInclude Include="Application\Src\CpuControl.h" />
