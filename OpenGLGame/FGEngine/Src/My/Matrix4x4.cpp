@@ -250,6 +250,27 @@ namespace FGEngine
 	}
 
 	/**
+	* 座標変換行列から回転行列を抽出
+	*
+	*  @param transform 抽出元の座標変換行列
+	*
+	* @return 抽出した回転行列
+	*/
+	Matrix3x3 Matrix4x4::ExtractRotation(const Matrix4x4& transform)
+	{
+		// 拡大率の分解
+		Vector3 scale = ExtractScale(transform);
+
+		// 回転行列を分解
+		Matrix3x3 rotation = Matrix3x3(transform);
+		rotation[0] /= scale.x;
+		rotation[1] /= scale.y;
+		rotation[2] /= scale.z;
+
+		return rotation;
+	}
+
+	/**
 	* Matrix3x3とVector3の乗算
 	*/
 	Vector4 operator*(const Matrix4x4& m, const Vector4& v)

@@ -2,29 +2,35 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="FGEngine\Res\Shader\shadowSkeletal3D.vert">
-      <Filter>FGEngine\Res</Filter>
-    </None>
-    <None Include="FGEngine\Res\Shader\skeletal3D.vert">
-      <Filter>FGEngine\Res</Filter>
-    </None>
-    <None Include="FGEngine\Res\Shader\standard3D.frag">
-      <Filter>FGEngine\Res</Filter>
-    </None>
-    <None Include="FGEngine\Res\Shader\standard3D.vert">
-      <Filter>FGEngine\Res</Filter>
+    <None Include="FGEngine\Res\Shader\unlit.vert">
+      <Filter>FGEngine\Res\Unlit</Filter>
     </None>
     <None Include="FGEngine\Res\Shader\unlit.frag">
-      <Filter>FGEngine\Res</Filter>
+      <Filter>FGEngine\Res\Unlit</Filter>
     </None>
-    <None Include="FGEngine\Res\Shader\unlit.vert">
-      <Filter>FGEngine\Res</Filter>
+    <None Include="FGEngine\Res\Shader\standard3D.frag">
+      <Filter>FGEngine\Res\Standard3D</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\standard3D.vert">
+      <Filter>FGEngine\Res\Standard3D</Filter>
     </None>
     <None Include="FGEngine\Res\Shader\shadow3D.frag">
-      <Filter>FGEngine\Res</Filter>
+      <Filter>FGEngine\Res\shadow3D</Filter>
     </None>
     <None Include="FGEngine\Res\Shader\shadow3D.vert">
-      <Filter>FGEngine\Res</Filter>
+      <Filter>FGEngine\Res\shadow3D</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\shadowSkeletal3D.vert">
+      <Filter>FGEngine\Res\shadow3D</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\skeletal3D.vert">
+      <Filter>FGEngine\Res\Standard3D</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\particle.vert">
+      <Filter>FGEngine\Res\Particle</Filter>
+    </None>
+    <None Include="FGEngine\Res\Shader\particle.frag">
+      <Filter>FGEngine\Res\Particle</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -324,6 +330,24 @@
     </Filter>
     <Filter Include="Application\Src\Sound">
       <UniqueIdentifier>{aec1cbe0-bdf3-44fd-a7e7-d5a27f2335b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Res\Unlit">
+      <UniqueIdentifier>{603b7c5f-d0c5-4a45-a4dd-6ddb92e2dcc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Res\Standard3D">
+      <UniqueIdentifier>{01d187a3-2966-4d4e-bda5-1ae21d03fb7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Res\shadow3D">
+      <UniqueIdentifier>{97c644f8-a208-415c-9669-0afe7b60b83d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Res\Particle">
+      <UniqueIdentifier>{fd94a521-df4a-4d82-a3b0-72a9d5ace93d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\ParticleSystem">
+      <UniqueIdentifier>{ced34649-f807-4d75-b4cf-06436bfa7357}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Res">
+      <UniqueIdentifier>{1eff4471-0891-40a8-b39d-e598460dece8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -693,6 +717,15 @@
     <ClInclude Include="Application\Src\BgmList.h">
       <Filter>Application\Src\Sound</Filter>
     </ClInclude>
+    <ClInclude Include="FGEngine\Src\My\ParticleSystem.h">
+      <Filter>FGEngine\Src\My\Object\Component\ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\TestScene.h">
+      <Filter>Application\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\SmokeEffect.h">
+      <Filter>Application\Src\Ms\Base\Bullet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FGEngine\Src\Package\ImGui\imgui.cpp">
@@ -928,6 +961,18 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\AudioListner.cpp">
       <Filter>FGEngine\Src\My\Object\Component\Audio\AudioListner</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\Particle.cpp">
+      <Filter>FGEngine\Src\My\Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\My\ParticleSystem.cpp">
+      <Filter>FGEngine\Src\My\Object\Component\ParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\TestSene.cpp">
+      <Filter>Application\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\SmokeEffect.cpp">
+      <Filter>Application\Src\Ms\Base\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

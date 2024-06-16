@@ -34,7 +34,8 @@ namespace FGEngine
 		};
 
 		// filenameのテクスチャを作成するコンストラクタ
-		explicit Texture(const std::string& name, const std::string& filename, TextureType type = TextureType::Obj);
+		explicit Texture(const std::string& name, const std::string& filename, TextureType type = TextureType::Obj,
+			GLenum filterMode = GL_NEAREST);
 
 		// 空のテクスチャを作成するコンストラクタ
 		explicit Texture(const std::string& name, int width, int height,
@@ -59,7 +60,8 @@ namespace FGEngine
 		* 
 		* @return 作成したテクスチャポインター
 		*/
-		static std::shared_ptr<Texture> Create(const std::string& name, const std::string& filename, TextureType type = TextureType::Obj);
+		static std::shared_ptr<Texture> Create(const std::string& name, const std::string& filename, 
+			TextureType type = TextureType::Obj, GLenum filterMode = GL_NEAREST);
 
 		/**
 		* 空のテクスチャを作成する

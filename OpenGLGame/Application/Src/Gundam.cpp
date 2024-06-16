@@ -3,6 +3,7 @@
 */
 #include "Gundam.h"
 #include "HomingBullet.h"
+#include "SmokeEffect.h"
 #include "BaseSlash.h"
 #include "DamageInfo.h"
 using namespace FGEngine::ResouceSystem;
@@ -65,6 +66,7 @@ void Gundam::Awake()
 	renderer->shader = resManager->GetShader(DefalutShader::Skeletal3D);
 	renderer->shadowShader = resManager->GetShader(DefalutShader::ShadowSkeletal3D);
 
+
 	// d—Í‚ð’Ç‰Á
 	rb = OwnerObject()->AddComponent<Rigidbody>();
 	rb->gravityScale = 2;
@@ -118,6 +120,7 @@ void Gundam::Awake()
 	moveParamater.dash.speed = 40.0f;
 	moveParamater.dash.rotationSpeed = 0.01f;
 	moveParamater.dash.useEnergy = -30.0f;
+	bpp.texture = resManager->GetTexture("Particle");
 
 	// ƒWƒƒƒ“ƒv
 	moveParamater.jump.power = 30.0f;
@@ -1110,6 +1113,8 @@ void Gundam::Action2(bool attackKey)
 			homingBullet->downPower = bullet->downPower;
 			homingBullet->speed = bullet->speed;
 			homingBullet->homingSpeed = bullet->homingPower;
+			auto effect = bulletObj->AddComponent<SmokeEffect>();
+			effect->ep.texture = bpp.texture;
 
 			// ”½“®‚ÅŒã‚ë‚É“®‚©‚·
 			GetTransform()->position += GetTransform()->Forward() * -0.5f;

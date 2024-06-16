@@ -55,16 +55,6 @@ namespace FGEngine
 			return name;
 		}
 
-	public:
-
-		bool isNormal = false;
-
-		bool isShadow = false;
-
-		bool isLight = false;
-
-		bool isUseLight = false;
-
 	private:
 
 		// シェーダの名前

@@ -30,9 +30,13 @@ namespace FGEngine
 			fovScale = 1 / static_cast<float>(tan(radFovY / 2));	// Ž‹–ìŠp‚É‚æ‚éŠg‘å—¦
 		}
 
-		float GetFovY() const 
+		float GetDegFovY() const 
 		{
 			return degFovY;
+		}
+		float GetRadgFovY() const
+		{
+			return radFovY;
 		}
 		float GetFovScale() const 
 		{

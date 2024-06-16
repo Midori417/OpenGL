@@ -300,7 +300,6 @@ void HumanControl::Start()
 
 	// ‰Šú‚·‚é
 	Initialize();
-
 }
 
 /**

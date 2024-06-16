@@ -12,6 +12,7 @@
 #include "Rigidbody.h"
 #include "Animator.h"
 #include "Camera.h"
+#include "ParticleSystem.h"
 #include "AudioListner.h"
 #include "AudioSource.h"
 #include "ImGuiLayout.h"
@@ -114,6 +115,11 @@ namespace FGEngine
 				imGuiLayout = p;
 			}
 
+			if constexpr (std::is_base_of_v<ParticleSystem, T>)
+			{
+				particleSystem = p;
+			}
+
 			// コンポーネント配列に登録
 			components.push_back(p);
 
@@ -158,10 +164,16 @@ namespace FGEngine
 				return animator;
 			}
 
-			// ImGuiLayoutが基底クレスの場合
+			// ImGuiLayoutが基底クラスの場合
 			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
 			{
 				return imGuiLayout;
+			}
+
+			// ParticleSystemが基底クラスの場合
+			if constexpr (std::is_base_of_v<ParticleSystem, T>)
+			{
+				return particleSystem;
 			}
 
 			for (auto& e : components)
@@ -254,10 +266,11 @@ namespace FGEngine
 		// UIレイアウトコンポーネントポインター
 		UI::ImGuiLayoutPtr imGuiLayout;
 
+		// AudioSourceコンポーネント配列
 		std::vector<AudioSourcePtr> audioSources;
 
-		
-
+		// ParticleSystemポインター
+		ParticleSystemPtr particleSystem;
 	};
 	using GameObjectList = std::vector<GameObjectPtr>;
 }

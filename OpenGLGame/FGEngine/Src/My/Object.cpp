@@ -55,7 +55,7 @@ namespace FGEngine
 	*
 	* @return 生成したオブジェクト
 	*/
-	GameObjectPtr Object::Instantate(const std::string& name, const Transform& transform)
+	GameObjectPtr Object::Instantate(const std::string& name, const TransformPtr transform)
 	{
 		auto obj = ObjectSystem::ObjectManager::GetInstance()->CreateGameObject(name, transform);
 
@@ -77,6 +77,7 @@ namespace FGEngine
 
 		return obj;
 	}
+
 
 	/**
 	* オブジェクトの状態を破壊予定にする

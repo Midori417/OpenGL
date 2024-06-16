@@ -67,21 +67,15 @@ namespace FGEngine::RenderingSystem
 	}
 
 	/**
-	* カメラに近いライトを選んでGPuメモリーにコピーする
+	* カメラに近いライトを選んでGPUメモリーにコピーする
 	*/
 	void RenderingEngine::UpdateShaderLight()
 	{
 		// シェーダの仕分け
 		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
 		std::vector<GLuint> programs;
-		for (auto prog : *resouceManager->GetShaderList())
-		{
-			// ライト用のシェーダ
-			if (prog.second->isLight)
-			{
-				programs.push_back(prog.second->GetProgId());
-			}
-		}
+		programs.push_back(resouceManager->GetShader(DefalutShader::Standard3D)->GetProgId());
+		programs.push_back(resouceManager->GetShader(DefalutShader::Skeletal3D)->GetProgId());
 
 		for (auto prog : programs)
 		{
@@ -219,25 +213,14 @@ namespace FGEngine::RenderingSystem
 		// シェーダの仕分け
 		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
 		std::vector<GLuint> shadowPrograms;
-		for (auto prog : *resouceManager->GetShaderList())
-		{
-			// ライト用のシェーダ
-			if (prog.second->isShadow)
-			{
-				shadowPrograms.push_back(prog.second->GetProgId());
-			}
-		}
+
+		shadowPrograms.push_back(resouceManager->GetShader(DefalutShader::Shadow3D)->GetProgId());
+		shadowPrograms.push_back(resouceManager->GetShader(DefalutShader::ShadowSkeletal3D)->GetProgId());
 
 		// 影を使用するシェーダを取得
 		std::vector<GLuint> programs;
-		for (auto prog : *resouceManager->GetShaderList())
-		{
-			if (prog.second->isUseLight)
-			{
-				programs.push_back(prog.second->GetProgId());
-			}
-		}
-
+		programs.push_back(resouceManager->GetShader(DefalutShader::Standard3D)->GetProgId());
+		programs.push_back(resouceManager->GetShader(DefalutShader::Skeletal3D)->GetProgId());
 
 		// ビュープロジェクション行列をGPUメモリにコピー
 		for (auto prog : shadowPrograms)

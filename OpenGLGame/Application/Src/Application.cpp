@@ -6,6 +6,7 @@
 #include "Scene/BattleMap01Scene.h"
 #include "Scene/BattleSettingScene.h"
 #include "Scene/ChoiceScene.h"
+#include "Scene/TestScene.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 using namespace FGEngine::ResouceSystem;
@@ -78,6 +79,8 @@ int Application::Initialize()
 	resManager->LoadTga("Win", "Application/Res/UI/Battle/Win.tga");
 	resManager->LoadTga("Lose", "Application/Res/UI/Battle/Lose.tga");
 
+	resManager->LoadTga("Particle", "Application/Res/particle.tga", GL_LINEAR);
+
 	// シーンの登録
 	SceneManager::AddScene<TitleScene>("タイトルシーン");
 	SceneManager::AddScene<ChoiceScene>("ゲーム選択シーン");
@@ -87,6 +90,9 @@ int Application::Initialize()
 	// 最初に流すシーン
 	//SceneManager::LoadScene("タイトルシーン");
 	SceneManager::LoadScene("バトル設定シーン");
+
+	//SceneManager::AddScene<TestScene>("テストシーン");
+	//SceneManager::LoadScene("テストシーン");
 
 
 	return 0;

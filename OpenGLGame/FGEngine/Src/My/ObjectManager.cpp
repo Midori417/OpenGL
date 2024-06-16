@@ -25,6 +25,9 @@ namespace FGEngine::ObjectSystem
 		// ゲームオブジェクト配列の容量をを予約
 		gameObjects.reserve(1000);
 
+		// パーティクルマネージャーを作成
+		particleManager = ParticleManager::Create(10000);
+
 		return 0;
 	}
 
@@ -44,6 +47,8 @@ namespace FGEngine::ObjectSystem
 
 		// オブジェクト座標処理
 		UpdateTransform();
+
+		UpdateParticleSystem();
 
 		// 衝突処理
 		CollisionGameObject();
@@ -73,14 +78,10 @@ namespace FGEngine::ObjectSystem
 		// シェーダの仕分け
 		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
 		std::vector<GLuint> programs;
-		for (auto prog : *resouceManager->GetShaderList())
-		{
-			// 影用のシェーダの場合除外
-			if (prog.second->isNormal)
-			{
-				programs.push_back(prog.second->GetProgId());
-			}
-		}
+		programs.push_back(resouceManager->GetShader(DefalutShader::Standard3D)->GetProgId());
+		programs.push_back(resouceManager->GetShader(DefalutShader::Skeletal3D)->GetProgId());
+		programs.push_back(resouceManager->GetShader(DefalutShader::Unlit)->GetProgId());
+		programs.push_back(resouceManager->GetShader(DefalutShader::Particle)->GetProgId());
 
 		// カメラのパラメータを設定
 		for (auto prog : programs)
@@ -125,6 +126,20 @@ namespace FGEngine::ObjectSystem
 
 		// レンダリングエンジンに描画してもらう
 		RenderingSystem::RenderingEngine::GetInstance()->DrawGameObject(rendererList);
+
+		if (mainCamera)
+		{
+			// パーティクルを更新
+			// カメラがZ軸方向を向くようにビュー行列を作成
+			const Vector3 eye = mainCamera->GetTransform()->position;
+			const Vector3 target = mainCamera->GetTransform()->Forward();
+			const Matrix4x4 matParticleView = Matrix4x4::LookAt(eye, target, Vector3::up);
+			particleManager->Update(matParticleView);
+			particleManager->UpdateSSBO(eye);
+
+			// パーティクルの描画
+			particleManager->Draw();
+		}
 	}
 
 	/**
@@ -324,6 +339,41 @@ namespace FGEngine::ObjectSystem
 	}
 
 	/**
+	* パーティクルシステムの更新
+	*/
+	void ObjectManager::UpdateParticleSystem()
+	{
+		// スタート処理
+		for (auto x : gameObjects)
+		{
+			// 持っていなければ何もしない
+			if (x->particleSystem == nullptr)
+			{
+				continue;
+			}
+			if (!x->particleSystem->isStart)
+			{
+				x->particleSystem->Start();
+				x->particleSystem->isStart = true;
+			}
+		}
+
+		// スタート処理
+		for (auto x : gameObjects)
+		{
+			// 持っていなければ何もしない
+			if (x->particleSystem == nullptr)
+			{
+				continue;
+			}
+			if (x->particleSystem->isStart)
+			{
+				x->particleSystem->Update();
+			}
+		}
+	}
+
+	/**
 	* Rigidbodyを更新
 	*/
 	void ObjectManager::UpdateRigidbody()
@@ -424,6 +474,10 @@ namespace FGEngine::ObjectSystem
 			{
 				x->OnDestory();
 			}
+			if (e->particleSystem)
+			{
+				e->particleSystem->OnDestory();
+			}
 		}
 
 		// 破壊オブジェクトがないにする
@@ -462,7 +516,7 @@ namespace FGEngine::ObjectSystem
 	* @param name		オブジェクトの名前
 	* @param transform	オブジェクトのTransfrom
 	*/
-	GameObjectPtr ObjectManager::CreateGameObject(const std::string& name, const Transform& transform)
+	GameObjectPtr ObjectManager::CreateGameObject(const std::string& name, const TransformPtr transform)
 	{
 		// ゲームオブジェクトを作成
 		auto obj = CreateGameObject(name);
@@ -470,13 +524,13 @@ namespace FGEngine::ObjectSystem
 		// Tranformを設定
 
 		// 位置
-		obj->GetTransform()->position = transform.position;
+		obj->GetTransform()->position = transform->position;
 
 		// 回転
-		obj->GetTransform()->rotation = transform.rotation;
+		obj->GetTransform()->rotation = transform->rotation;
 
 		// 拡大縮小
-		obj->GetTransform()->scale = transform.scale;
+		obj->GetTransform()->scale = transform->scale;
 
 		// 作成したゲームオブジェクト
 		return obj;
@@ -501,5 +555,46 @@ namespace FGEngine::ObjectSystem
 
 		// 作成したゲームオブジェクト
 		return obj;
+	}
+
+	/**
+	* エミッターを追加する
+	* 
+	* @param ep エミッターの初期化パラメータ
+	* @param pp パーティクルの初期化パラメータ
+	* 
+	* @return 追加したエミッター
+	*/
+	ParticleEmitterPtr ObjectManager::AddParticleEmitter(const ParticleEmitterParameter& ep, const ParticleParameter& pp)
+	{
+		return particleManager->AddEmitter(ep, pp);
+	}
+
+	/**
+	* 指定された名前を持つエミッターを検索する
+	* 
+	* @param name 検索するID
+	* 
+	* @return 引数idと一致するIDを持つエミッター
+	*/
+	ParticleEmitterPtr ObjectManager::FindParticleEmitter(const std::string& name) const
+	{
+		return particleManager->FindEmitter(name);
+	}
+
+	/**
+	* 指定されたエミッターを削除する
+	*/
+	void ObjectManager::RemoveParticleEmitter(const ParticleEmitterPtr& p)
+	{
+		particleManager->RemoveEmitter(p);
+	}
+
+	/**
+	* すべてのエミッターを削除する
+	*/
+	void ObjectManager::RemoveParticleEmitterAll()
+	{
+		particleManager->RemoveEmitterAll();
 	}
 }

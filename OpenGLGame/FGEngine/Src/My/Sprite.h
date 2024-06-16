@@ -13,8 +13,7 @@ namespace FGEngine
 	struct Texcoord
 	{
 		// テクスチャ座標
-		float u = 0;
-		float v = 0;
+		Vector2 uv;
 
 		// 図形の大きさ
 		Vector2 size;

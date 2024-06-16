@@ -37,6 +37,62 @@ namespace FGEngine
 	}
 
 	/**
+	* “]’us—ñ‚ğ‹‚ß‚é
+	*/
+	Matrix3x3 Matrix3x3::Transpose(const Matrix3x3& m)
+	{
+		Matrix3x3 result = Matrix3x3(1);
+
+		result[0][0] = m[0][0];
+		result[0][1] = m[1][0];
+		result[0][2] = m[2][0];
+
+		result[1][0] = m[0][1];
+		result[1][1] = m[1][1];
+		result[1][2] = m[2][1];
+
+		result[2][0] = m[0][2];
+		result[2][1] = m[1][2];
+		result[2][2] = m[2][2];
+
+		return result;
+	}
+
+	/**
+	* ‹ts—ñ‚ğ‹‚ß‚é
+	*/
+	Matrix3x3 Matrix3x3::Inverse(const Matrix3x3& m)
+	{
+		// lˆöqs—ñ‚ğŒvZ
+		Matrix3x3 adjugate = Matrix3x3(1);
+		adjugate[0][0] = m[1][1] * m[2][2] - m[1][2] * m[2][1];
+		adjugate[0][1] = -m[0][1] * m[2][2] + m[0][2] * m[2][1];
+		adjugate[0][2] = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+		
+		adjugate[1][0] = -m[1][0] * m[2][2] + m[1][2] * m[2][0];
+		adjugate[1][1] = m[0][0] * m[2][2] - m[0][2] * m[2][0];
+		adjugate[1][2] = -m[0][0] * m[1][2] + m[0][2] * m[1][0];
+		
+		adjugate[2][0] = m[1][0] * m[2][1] - m[1][1] * m[2][0];
+		adjugate[2][1] = -m[0][0] * m[2][1] + m[0][1] * m[2][0];
+		adjugate[2][2] = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+		
+		// s—ñ®‚ğŒvZ
+		const float det =
+		m[0][0] * m[1][1] * m[2][2] - m[0][0] * m[1][2] * m[2][1] +
+		m[0][1] * m[1][2] * m[2][0] - m[0][1] * m[1][0] * m[2][2] +
+		m[0][2] * m[1][0] * m[2][1] - m[0][2] * m[1][1] * m[2][0];
+		
+		  // s—ñ®‚Ì‹t”‚ğŠ|‚¯‚é
+		const float invDet = 1.0f / det;
+		adjugate[0] *= invDet;
+		adjugate[1] *= invDet;
+		adjugate[2] *= invDet;
+		
+		return adjugate;
+	}
+
+	/**
 	* Matrix3x3‚ÆVector3‚ÌæZ
 	*/
 	Vector3 operator*(const Matrix3x3& m, const Vector3& v)

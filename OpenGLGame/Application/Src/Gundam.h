@@ -34,6 +34,13 @@ private:
 		Sable,
 	};
 
+	struct BoostParticleParameter
+	{
+		TexturePtr texture;
+	};
+	BoostParticleParameter bpp;
+
+
 	/**
 	* ƒ‰ƒCƒtƒ‹\‘¢‘Ì
 	*/

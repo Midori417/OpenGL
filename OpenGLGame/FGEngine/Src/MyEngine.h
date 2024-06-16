@@ -164,6 +164,7 @@
 
 #include "My/AudioListner.h"
 #include "My/AudioSource.h"
+#include "My/ParticleSystem.h"
 
 // ===================
 //

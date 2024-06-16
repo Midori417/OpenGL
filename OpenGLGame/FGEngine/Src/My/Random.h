@@ -2,7 +2,7 @@
 * @file Random.h
 */
 #ifndef FGENGINE_RANDOM_H_INCLUDED
-#define FGENGINE_RANDOM_H_INCLUDEC
+#define FGENGINE_RANDOM_H_INCLUDED
 
 namespace FGEngine
 {

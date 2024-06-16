@@ -25,6 +25,9 @@ namespace FGEngine
 
 		// 何もないシェーダ
 		Unlit,
+
+		// パーティクル
+		Particle,
 	};
 }
 

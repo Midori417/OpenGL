@@ -50,6 +50,10 @@ namespace FGEngine
 		// 黒(0, 0, 0, 1)
 		static const Color black;
 
+		static const Color gree;
+		
+		static const Color lighGree;
+
 		float operator[](size_t i)const {
 			return *(&r + i);
 		}
@@ -59,11 +63,30 @@ namespace FGEngine
 
 	};
 
+	inline Color operator+(const Color& a, const Color& b)
+	{
+		return Color{ a.r + b.r, a.g + b.g, a.b + b.b, a.a + b.a };
+	}
+
+	inline Color operator-(const Color& a, const Color& b)
+	{
+		return Color{ a.r - b.r, a.g - b.g, a.b - b.b, a.a - b.a };
+	}
+
 	// Color同士の乗算
 	inline Color operator*(const Color& a, const Color& b) 
 	{
 		return Color{ a.r * b.r, a.g * b.g, a.b * b.b, a.a * b.a };
 	}
+	inline Color operator*(const Color& c, float f)
+	{
+		return Color{ c.r * f, c.g * f, c.b * f, c.a * f };
+	}
+	inline Color operator*(float f, const Color& c)
+	{
+		return c * f;
+	}
+
 
 	// スタティック変数の初期化
 	inline const Color Color::none = Color(0, 0, 0, 0);		// 何もなし
@@ -72,6 +95,8 @@ namespace FGEngine
 	inline const Color Color::green = Color(0, 1, 0, 1);	// 緑
 	inline const Color Color::white = Color(1, 1, 1, 1);	// 白	
 	inline const Color Color::black = Color(0, 0, 0, 1);	// 黒
+	inline const Color Color::gree = Color(0.2f, 0.2f, 0.2f, 1);
+	inline const Color Color::lighGree = Color(0.6f, 0.6f, 0.6f, 1);
 
 }
 #endif // !COLOR_H_INCLUDED

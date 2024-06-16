@@ -57,14 +57,6 @@ namespace FGEngine
 			*/
 			int Initialize();
 
-			/**
-			* シェーダ配列を取得
-			*/
-			std::unordered_map<std::string, ShaderPtr>* GetShaderList()
-			{
-				return &shaderCache;
-			}
-
 		public:
 
 			/**
@@ -73,7 +65,7 @@ namespace FGEngine
 			* @param name		保存する名前
 			* @param filename	Tgaファイル名
 			*/
-			void LoadTga(const std::string& name, const std::string& filename);
+			void LoadTga(const std::string& name, const std::string& filename, GLenum fileterMode = GL_NEAREST);
 
 			/**
 			* OBJファイルを読み込む

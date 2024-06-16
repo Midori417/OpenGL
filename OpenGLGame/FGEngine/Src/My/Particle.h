@@ -5,9 +5,11 @@
 #define FGENGINE_PARTICLE_H_INCLUDED
 #include "Package/Glad.h"
 #include "Texture.h"
+#include "StaticMesh.h"
 #include "Sprite.h"
 #include "BufferObject.h"
 #include "VertexArrayObject.h"
+#include "MapBufferObjecth.h"
 #include "Shader.h"
 #include "VectorPoint.h"
 #include "MatrixPoint.h"
@@ -16,16 +18,17 @@
 #include "Mathf.h"
 #include <vector>
 #include <memory>
-
-// 先行宣言
-class Particles;
-class ParticleEmitter;
-using ParticleEmitterPtr = std::shared_ptr<ParticleEmitter>;
-class ParticleManager;
-using ParticleManagerPtr = std::shared_ptr<ParticleManager>;
+#include <random>
 
 namespace FGEngine
 {
+	// 先行宣言
+	class Particles;
+	class ParticleEmitter;
+	using ParticleEmitterPtr = std::shared_ptr<ParticleEmitter>;
+	class ParticleManager;
+	using ParticleManagerPtr = std::shared_ptr<ParticleManager>;
+
 	/**
 	* 値の保管方法
 	*/
@@ -40,7 +43,7 @@ namespace FGEngine
 		// 徐々に減速
 		EaseOut,
 
-		// 徐々に加速し、抒情に減速する
+		// 徐々に加速し、徐々に減速する
 		EaseInOut,
 
 		// 補完しない
@@ -59,6 +62,26 @@ namespace FGEngine
 		Interporator() = default;
 		~Interporator() = default;
 		explicit Interporator(const T& start) :start(start), end(start){}
+
+		// 値を設定する
+		void Set(const T& start, const T& end)
+		{
+			this->start = start;
+			this->end = end;
+		}
+
+		// 引数t(範囲0.0～1.0)で補完した値を返す
+		T Interporate(float t) const
+		{
+			switch (type)
+			{
+			default:
+			case InterporationType::Linear:
+				return start + t * (end - start);
+			case InterporationType::None:
+				return start;
+			}
+		}
 
 	public:
 
@@ -85,7 +108,7 @@ namespace FGEngine
 		float lifeTime = 1;
 
 		// テクスチャ座標
-		Texcoord tc = { 0, 0, Vector2::one };
+		Texcoord tc = { Vector2::zero, Vector2::one };
 
 		// 半径方向の速度
 		Interporator1f radial = Interporator1f(10);
@@ -94,10 +117,10 @@ namespace FGEngine
 		Interporator3f velocity = Interporator3f(Vector3::zero);
 
 		// 大きさ
-		Interporator2f scale = Interporator2f(Vector2::one);
+		Interporator3f scale = Interporator3f(Vector3::one);
 
 		// 回転
-		Interporator1f rotation = Interporator1f(0);
+		Interporator3f rotation = Interporator3f(Vector3::zero);
 
 		// 色と不透明度
 		Interporator<Color> color = Interporator<Color>(Color::white);
@@ -126,20 +149,19 @@ namespace FGEngine
 		// 重力
 		float gravity = -9.8f;
 
-		// テクスチャ
 		TexturePtr texture;
 
 		// テクスチャの縦と横の分割数
 		Vector2 tiles = Vector2::one;
 
 		// ブレンド係数
-		GLenum srcFactor = GL_SRC0_ALPHA;
+		GLenum srcFactor = GL_SRC_ALPHA;
 
 		// ブレンド係数
 		GLenum dstFactor = GL_ONE_MINUS_SRC_ALPHA;
 
 		// パーティクルを放出する秒数
-		float diuration = 1.0f;
+		float duration = 1.0f;
 
 		// duration経過後の動作(true=ループ、false=停止)
 		bool isLoop = false;
@@ -152,6 +174,8 @@ namespace FGEngine
 
 		// 回転
 		Vector3 rotation = Vector3::zero;
+
+		Matrix4x4 objTransform = Matrix4x4(1);
 
 		// 形状
 		ParticleEmitterShape shape = ParticleEmitterShape::Sphere;
@@ -181,7 +205,7 @@ namespace FGEngine
 		};
 
 		// コンストラクタ・デストラクタ
-		ParticleEmitterParameter() : sphere({1,1}){}
+		ParticleEmitterParameter() {}
 		~ParticleEmitterParameter() = default;
 
 		/**
@@ -248,7 +272,7 @@ namespace FGEngine
 		// === 変化しないパラメータ === //
 
 		// 基本パラメータ
-		const ParticleParameter* pp;
+		const ParticleParameter* pp = nullptr;
 
 		// 中心からの向き
 		Vector3 radialDirection = Vector3(1, 0, 0);
@@ -257,7 +281,7 @@ namespace FGEngine
 		Interporator3f velocity = Interporator3f(Vector3::zero);
 
 		// テクスチャ座標
-		Texcoord texcoord = { 0, 0,Vector2::one };
+		Texcoord texcoord = { Vector2::zero, Vector2::one };
 
 		// === 変化するパラメータ === //
 
@@ -275,6 +299,7 @@ namespace FGEngine
 
 		// 視点からの深度値
 		float viewDepth = 0;
+
 	};
 
 	/**
@@ -299,11 +324,11 @@ namespace FGEngine
 		void Die()
 		{
 			ep.isLoop = false;
-			ep.diuration = 0;
+			ep.duration = 0;
 		}
 		bool IsDead() const
 		{
-			return !ep.isLoop && timer >= ep.diuration && particles.empty();
+			return !ep.isLoop && timer >= ep.duration && particles.empty();
 		}
 
 		// パラメータの取得・設定
@@ -350,6 +375,72 @@ namespace FGEngine
 
 		// 描画の基準となる頂点のオフセット
 		size_t dataOffset = 0;
+	};
+
+	/**
+	* パーティクル管理クラス
+	*/
+	class ParticleManager
+	{
+	public:
+
+		/**
+		* マネージャーを作成
+		*/
+		static ParticleManagerPtr Create(size_t maxParticleCount);
+
+		explicit ParticleManager(size_t maxParticleCount);
+		~ParticleManager();
+
+		// コピーと代入を禁止
+		ParticleManager(const ParticleManager&) = delete;
+		ParticleManager& operator=(const ParticleManager&) = delete;
+
+		void Update(const Matrix4x4& matView);
+		void UpdateSSBO(const Vector3& eye);
+		void Draw();
+
+		// エミッターの管理
+		ParticleEmitterPtr AddEmitter(const ParticleEmitterParameter& ep, const ParticleParameter& pp);
+		ParticleEmitterPtr FindEmitter(const std::string& name) const;
+		void RemoveEmitter(const ParticleEmitterPtr&);
+		void RemoveEmitterAll();
+
+		// パーティクルの管理
+		Particle* AllocateParticle();
+		void DeallocateParticle(Particle* p);
+
+		// 乱数の生成
+		int RandomInt(int min, int max)
+		{
+			return std::uniform_int_distribution<>(min, max)(randomEngine);
+		}
+		float RandomFloat(float min, float max)
+		{
+			return std::uniform_real_distribution<float>(min, max)(randomEngine);
+		}
+
+	private:
+
+		// エミッターの配列
+		std::vector<ParticleEmitterPtr> emitters;
+
+		// パーティクル配列
+		std::vector<Particle> particles;
+
+		// 未使用のパーティクルの配列
+		std::vector<Particle*> freeParticles;
+
+		// 生成可能な最大パーティクル数
+		size_t maxParticleCount = 0;
+
+		RenderingSystem::BufferObjectPtr vbo;
+		RenderingSystem::BufferObjectPtr ibo;
+		RenderingSystem::VertexArrayObjectPtr vao;
+		ShaderPtr shader;
+		RenderingSystem::MappedBufferObjectPtr ssbo;
+
+		std::mt19937 randomEngine;
 	};
 }
 

@@ -21,9 +21,9 @@ namespace FGEngine
 	* @param filename	テクスチャファイル名
 	* @parma usage		テクスチャの形式
 	*/
-	Texture::Texture(const std::string& name, const std::string& filename, TextureType type)
+	Texture::Texture(const std::string& name, const std::string& filename, TextureType type, GLenum filterMode)
 		: name(name)
-	{		
+	{
 		std::ifstream file(filename, std::ios::binary);
 		if (!file) {
 			char s[256];
@@ -100,7 +100,7 @@ namespace FGEngine
 		{
 			topToBottom = !topToBottom;
 		}
-		if (topToBottom) 
+		if (topToBottom)
 		{
 			const int pixelDepth = buffer[16];						// １ピクセルのビット数
 			const int lineByteSize = width * pixelDepth / 8;		// 1行のバイト数
@@ -182,6 +182,8 @@ namespace FGEngine
 			glTextureParameteri(object, GL_TEXTURE_SWIZZLE_G, GL_RED);
 			glTextureParameteri(object, GL_TEXTURE_SWIZZLE_B, GL_RED);
 		}
+		glTextureParameteri(object, GL_TEXTURE_MAG_FILTER, filterMode);
+		glTextureParameteri(object, GL_TEXTURE_MIN_FILTER, filterMode);
 
 		// 管理ID
 		id = object;
@@ -228,26 +230,27 @@ namespace FGEngine
 
 	/**
 	* テクスチャを読み込んで作成
-	* 
+	*
 	* @param name		テクスチャの名前
 	* @apram filename	テクスチャのファイル
-	* 
+	*
 	* @return 作成したテクスチャポインター
 	*/
-	std::shared_ptr<Texture> Texture::Create(const std::string& name, const std::string& filename, TextureType type)
+	std::shared_ptr<Texture> Texture::Create(const std::string& name, const std::string& filename, 
+		TextureType type, GLenum filterMode)
 	{
-		return std::make_shared<Texture>(name, filename, type);
+		return std::make_shared<Texture>(name, filename, type, filterMode);
 	}
 
 	/**
 	* 空のテクスチャを作成する
-	* 
+	*
 	* @param name		テクスチャ識別用の名前
 	* @param widht		テクスチャの幅(ピクセル数)
 	* @param height		テクスチャの高さ(ピクセル数)
 	* @param gpuFormat	データ形式
 	* @param wrapMode	ラップモード
-	* 
+	*
 	* @return 作成したテクスチャポインター
 	*/
 	std::shared_ptr<Texture> Texture::Create(const std::string& name, int width, int height, GLenum gpuFormat, GLenum wrapMode)

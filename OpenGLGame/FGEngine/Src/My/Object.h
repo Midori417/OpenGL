@@ -64,7 +64,7 @@ namespace FGEngine
 		* ゲームオブジェクトを生成する
 		*/
 		GameObjectPtr Instantate(const std::string& name);
-		GameObjectPtr Instantate(const std::string& name, const Transform& transform);
+		GameObjectPtr Instantate(const std::string& name, const TransformPtr transform);
 		GameObjectPtr Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation = Quaternion::identity);
 
 		/**

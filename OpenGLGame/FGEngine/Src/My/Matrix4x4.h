@@ -109,6 +109,15 @@ namespace FGEngine
 		*/
 		static Vector3 ExtractScale(const Matrix4x4& transform);
 
+		/**
+		* 座標変換行列から回転行列を抽出
+		*
+		*  @param transform 抽出元の座標変換行列
+		* 
+		* @return 抽出した回転行列
+		*/
+		static Matrix3x3 ExtractRotation(const Matrix4x4& transform);
+
 		// 添え字演算子
 		Vector4& operator[](size_t i)
 		{

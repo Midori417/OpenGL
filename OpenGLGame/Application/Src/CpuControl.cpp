@@ -76,7 +76,7 @@ void CpuControl::ControlStart()
 */
 void CpuControl::GameInputUpdate()
 {
-	//return;
+	return;
 	auto targetMs = targetOwner->myMs;
 
 	// ˆÚ“®•ûŒü‚ð—”‚ÅŒˆ‚ß‚é

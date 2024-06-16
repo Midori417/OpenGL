@@ -25,6 +25,16 @@ namespace FGEngine
 		// Matrix4x4からMatrix3x3に変換するコンストラクタ
 		explicit Matrix3x3(const Matrix4x4& m);
 
+		/**
+		* 転置行列を求める
+		*/
+		static Matrix3x3 Transpose(const Matrix3x3& m);
+
+		/**
+		* 逆行列を求める
+		*/
+		static Matrix3x3 Inverse(const Matrix3x3& m);
+
 		// 添え字演算子
 		Vector3& operator[](size_t i) {
 			return data[i];

@@ -42,19 +42,15 @@ namespace FGEngine::ResouceSystem
 		LoadObj("Cube", "FGEngine/Res/Mesh/Cube/Cube.obj");
 		LoadObj("Sphere", "FGEngine/Res/Mesh/Sphere/Sphere.obj");
 		LoadObj("skySphere", "FGEngine/Res/Mesh/skySphere/sky_Sphere.obj");
+		LoadObj("Plane", "FGEngine/Res/Mesh/Plane/Plane.obj");
 
 		// デフォルトシェーダーの読み込み
-		LoadShader("Standard3D", "FGEngine/Res/Shader/standard3D.vert", "FGEngine/Res/Shader/standard3D.frag",
-			true, false, true, true);
-		LoadShader("Shadow3D", "FGEngine/Res/Shader/shadow3D.vert", "FGEngine/Res/Shader/shadow3D.frag",
-			false, true);
-		LoadShader("Unlit", "FGEngine/Res/Shader/unlit.vert", "FGEngine/Res/Shader/unlit.frag",
-			true, false, false);
-		LoadShader("Skeletal3D", "FGEngine/Res/Shader/skeletal3D.vert", "FGEngine/Res/Shader/standard3D.frag",
-			true, false, true, true);
-		LoadShader("ShadowSkeletal3D", "FGEngine/Res/Shader/shadowSkeletal3D.vert", "FGEngine/Res/Shader/shadow3D.frag",
-			false, true);
-
+		LoadShader("Standard3D", "FGEngine/Res/Shader/standard3D.vert", "FGEngine/Res/Shader/standard3D.frag");
+		LoadShader("Shadow3D", "FGEngine/Res/Shader/shadow3D.vert", "FGEngine/Res/Shader/shadow3D.frag");
+		LoadShader("Unlit", "FGEngine/Res/Shader/unlit.vert", "FGEngine/Res/Shader/unlit.frag");
+		LoadShader("Skeletal3D", "FGEngine/Res/Shader/skeletal3D.vert", "FGEngine/Res/Shader/standard3D.frag");
+		LoadShader("ShadowSkeletal3D", "FGEngine/Res/Shader/shadowSkeletal3D.vert", "FGEngine/Res/Shader/shadow3D.frag");
+		LoadShader("Particle", "FGEngine/Res/Shader/particle.vert", "FGEngine/Res/Shader/particle.frag");
 
 		return 0;
 	}
@@ -64,7 +60,7 @@ namespace FGEngine::ResouceSystem
 	* @param name		保存する名前
 	* @param filename	Tgaファイル名
 	*/
-	void ResouceManager::LoadTga(const std::string& name, const std::string& filename)
+	void ResouceManager::LoadTga(const std::string& name, const std::string& filename, GLenum filterMode)
 	{
 		// すでに登録されているため登録できない
 		auto itr = textureCache.find(name);
@@ -76,7 +72,7 @@ namespace FGEngine::ResouceSystem
 		}
 
 		// 読み込んだパラメータでテクスチャを作成
-		TexturePtr texture = Texture::Create(name, filename);
+		TexturePtr texture = Texture::Create(name, filename, Texture::TextureType::Obj, filterMode);
 		if (!texture)
 		{
 			LOG_ERROR("(Texture)%sの作成に失敗", name.c_str());
@@ -135,10 +131,6 @@ namespace FGEngine::ResouceSystem
 			LOG_ERROR("(Shader)%sの作成に失敗", name.c_str());
 			return;
 		}
-		shader->isNormal = isNormal;
-		shader->isShadow = isShadow;
-		shader->isLight = isLight;
-		shader->isUseLight = isUseLight;
 
 		// 作成したシェーダを配列に登録する
 		LOG("(Shader)%sを登録", name.c_str());
@@ -236,6 +228,9 @@ namespace FGEngine::ResouceSystem
 			break;
 		case FGEngine::DefalutShader::Unlit:
 			name = "Unlit";
+			break;
+		case FGEngine::DefalutShader::Particle:
+			name = "Particle";
 			break;
 		default:
 			break;
