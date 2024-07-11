@@ -60,80 +60,80 @@ bool BattleMap01Scene::Initialize()
 	}
 
 	// 壁を作成
-	{
-		// 前
-		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, mapSize.y));
-			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
-			auto col = wall->AddComponent<AabbCollider>();
-			col->min = Vector3(-1, -1, -10);
+	//{
+	//	// 前
+	//	{
+	//		auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, mapSize.y));
+	//		wall->tag = "Wall";
+	//		wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
+	//		auto col = wall->AddComponent<AabbCollider>();
+	//		col->min = Vector3(-1, -1, -10);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, mapSize.y));
-			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
-			auto render = line->AddComponent<MeshRenderer>();
-			render->mesh = resManager->GetStaticMesh("Cube");
-			render->shader = resManager->GetShader(DefalutShader::Unlit);
-			render->materials = CloneMaterialList(render->mesh);
-			render->materials[0]->mainTexture = resManager->GetTexture("white");
-			render->materials[0]->color = Color::red;
-		}
-		// 後ろ
-		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, -mapSize.y));
-			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
-			auto col = wall->AddComponent<AabbCollider>();
-			col->max = Vector3(1, 1, 10);
+	//		auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, mapSize.y));
+	//		line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
+	//		auto render = line->AddComponent<MeshRenderer>();
+	//		render->mesh = resManager->GetStaticMesh("Cube");
+	//		render->shader = resManager->GetShader(DefalutShader::Unlit);
+	//		render->materials = CloneMaterialList(render->mesh);
+	//		render->materials[0]->mainTexture = resManager->GetTexture("white");
+	//		render->materials[0]->color = Color::red;
+	//	}
+	//	// 後ろ
+	//	{
+	//		auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, -mapSize.y));
+	//		wall->tag = "Wall";
+	//		wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
+	//		auto col = wall->AddComponent<AabbCollider>();
+	//		col->max = Vector3(1, 1, 10);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, -mapSize.y));
-			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
-			auto render = line->AddComponent<MeshRenderer>();
-			render->mesh = resManager->GetStaticMesh("Cube");
-			render->shader = resManager->GetShader(DefalutShader::Unlit);
-			render->materials = CloneMaterialList(render->mesh);
-			render->materials[0]->mainTexture = resManager->GetTexture("white");
-			render->materials[0]->color = Color::red;
+	//		auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, -mapSize.y));
+	//		line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
+	//		auto render = line->AddComponent<MeshRenderer>();
+	//		render->mesh = resManager->GetStaticMesh("Cube");
+	//		render->shader = resManager->GetShader(DefalutShader::Unlit);
+	//		render->materials = CloneMaterialList(render->mesh);
+	//		render->materials[0]->mainTexture = resManager->GetTexture("white");
+	//		render->materials[0]->color = Color::red;
 
-		}
+	//	}
 
-		// 右
-		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(mapSize.x, -6.0f, 0));
-			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
-			auto col = wall->AddComponent<AabbCollider>();
-			col->max = Vector3(10, 1, 1);
+	//	// 右
+	//	{
+	//		auto wall = objManager->CreateGameObject("Wall", Vector3(mapSize.x, -6.0f, 0));
+	//		wall->tag = "Wall";
+	//		wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
+	//		auto col = wall->AddComponent<AabbCollider>();
+	//		col->max = Vector3(10, 1, 1);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(mapSize.x, 1.0f, 0));
-			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
-			auto render = line->AddComponent<MeshRenderer>();
-			render->mesh = resManager->GetStaticMesh("Cube");
-			render->shader = resManager->GetShader(DefalutShader::Unlit);
-			render->materials = CloneMaterialList(render->mesh);
-			render->materials[0]->mainTexture = resManager->GetTexture("white");
-			render->materials[0]->color = Color::red;
+	//		auto line = objManager->CreateGameObject("Line", Vector3(mapSize.x, 1.0f, 0));
+	//		line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
+	//		auto render = line->AddComponent<MeshRenderer>();
+	//		render->mesh = resManager->GetStaticMesh("Cube");
+	//		render->shader = resManager->GetShader(DefalutShader::Unlit);
+	//		render->materials = CloneMaterialList(render->mesh);
+	//		render->materials[0]->mainTexture = resManager->GetTexture("white");
+	//		render->materials[0]->color = Color::red;
 
-		}
-		// 左
-		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(-mapSize.x, -6.0f, 0));
-			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
-			auto col = wall->AddComponent<AabbCollider>();
-			col->min = Vector3(-10, -1, -1);
+	//	}
+	//	// 左
+	//	{
+	//		auto wall = objManager->CreateGameObject("Wall", Vector3(-mapSize.x, -6.0f, 0));
+	//		wall->tag = "Wall";
+	//		wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
+	//		auto col = wall->AddComponent<AabbCollider>();
+	//		col->min = Vector3(-10, -1, -1);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(-mapSize.x, 1.0f, 0));
-			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
-			auto render = line->AddComponent<MeshRenderer>();
-			render->mesh = resManager->GetStaticMesh("Cube");
-			render->shader = resManager->GetShader(DefalutShader::Unlit);
-			render->materials = CloneMaterialList(render->mesh);
-			render->materials[0]->mainTexture = resManager->GetTexture("white");
-			render->materials[0]->color = Color::red;
-		}
+	//		auto line = objManager->CreateGameObject("Line", Vector3(-mapSize.x, 1.0f, 0));
+	//		line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
+	//		auto render = line->AddComponent<MeshRenderer>();
+	//		render->mesh = resManager->GetStaticMesh("Cube");
+	//		render->shader = resManager->GetShader(DefalutShader::Unlit);
+	//		render->materials = CloneMaterialList(render->mesh);
+	//		render->materials[0]->mainTexture = resManager->GetTexture("white");
+	//		render->materials[0]->color = Color::red;
+	//	}
 
-	}
+	//}
 
 	// ステージを作成
 	{
@@ -151,10 +151,10 @@ bool BattleMap01Scene::Initialize()
 	}
 
 
-	// スカイスフィアを設定
-	auto material = std::make_shared<Material>();
-	material->mainTexture = resManager->GetTexture("Sky");
-	skyMaterial = material;
+	//// スカイスフィアを設定
+	//auto material = std::make_shared<Material>();
+	//material->mainTexture = resManager->GetTexture("Sky");
+	//skyMaterial = material;
 
 	return true;
 }

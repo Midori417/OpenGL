@@ -93,7 +93,7 @@ namespace FGEngine
 		std::string name;
 
 		// 破壊予定か
-		bool isDestroyed;
+		bool isDestroyed = false;
 
 		// オブジェクトの状態
 		HideFlag hideFlag = HideFlag::None;
