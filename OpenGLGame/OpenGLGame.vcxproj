@@ -213,7 +213,6 @@
     <ClInclude Include="FGEngine\Src\My\EngineCore.h" />
     <ClInclude Include="FGEngine\Src\My\FrameBufferObject.h" />
     <ClInclude Include="FGEngine\Src\My\GameObject.h" />
-    <ClInclude Include="FGEngine\Src\My\InputGamePad.h" />
     <ClInclude Include="FGEngine\Src\My\InputKey.h" />
     <ClInclude Include="FGEngine\Src\My\InputManager.h" />
     <ClInclude Include="FGEngine\Src\My\InputMouse.h" />
@@ -324,7 +323,6 @@
     <ClCompile Include="FGEngine\Src\My\EngineCore.cpp" />
     <ClCompile Include="FGEngine\Src\My\FrameBufferObject.cpp" />
     <ClCompile Include="FGEngine\Src\My\GameObject.cpp" />
-    <ClCompile Include="FGEngine\Src\My\InputGamePad.cpp" />
     <ClCompile Include="FGEngine\Src\My\InputKey.cpp" />
     <ClCompile Include="FGEngine\Src\My\InputMouse.cpp" />
     <ClCompile Include="FGEngine\Src\My\MapBufferObject.cpp" />

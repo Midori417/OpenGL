@@ -118,9 +118,6 @@
     <Filter Include="FGEngine\Src\My\InputSystem\Mouse">
       <UniqueIdentifier>{b2d48df0-9b41-4bbd-8afc-aea697ec001a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\InputSystem\GamePad">
-      <UniqueIdentifier>{f73df68c-e44b-41af-a80b-c7eef710cf55}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\InputSystem\InputManager">
       <UniqueIdentifier>{3d56c1ff-f2b8-42bc-a46a-981e09068ece}</UniqueIdentifier>
     </Filter>
@@ -513,9 +510,6 @@
     <ClInclude Include="FGEngine\Src\My\MouseButton.h">
       <Filter>FGEngine\Src\My\InputSystem\Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\InputGamePad.h">
-      <Filter>FGEngine\Src\My\InputSystem\GamePad</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\InputManager.h">
       <Filter>FGEngine\Src\My\InputSystem\InputManager</Filter>
     </ClInclude>
@@ -811,9 +805,6 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\InputKey.cpp">
       <Filter>FGEngine\Src\My\InputSystem\Key</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\InputGamePad.cpp">
-      <Filter>FGEngine\Src\My\InputSystem\GamePad</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\My\Matrix3x3.cpp">
       <Filter>FGEngine\Src\My\Mathf\Matrix</Filter>
