@@ -166,9 +166,6 @@
     <Filter Include="FGEngine\Src\My\PhysicsSystem">
       <UniqueIdentifier>{f5a273cb-ede8-42ab-a6af-ac00fe661867}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Component\Behaviour">
-      <UniqueIdentifier>{3573da3d-ff23-46d6-8cdd-a7ef810bc485}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\PhysicsSystem\Intersect">
       <UniqueIdentifier>{05d7d45a-3703-47aa-a6c6-c794b6486c2a}</UniqueIdentifier>
     </Filter>
@@ -286,9 +283,6 @@
     <Filter Include="Application\Src\ControlOwner\CPUControl">
       <UniqueIdentifier>{98d18f94-d017-4637-9be4-1e0287349e1a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Particle">
-      <UniqueIdentifier>{a334b54f-6a3b-48f1-a74d-79c7497df3d1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\My\Resouce\Sprite">
       <UniqueIdentifier>{0232a078-3cba-4565-b040-0d1bdc9b776b}</UniqueIdentifier>
     </Filter>
@@ -340,11 +334,11 @@
     <Filter Include="FGEngine\Res\Particle">
       <UniqueIdentifier>{fd94a521-df4a-4d82-a3b0-72a9d5ace93d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\My\Object\Component\ParticleSystem">
-      <UniqueIdentifier>{ced34649-f807-4d75-b4cf-06436bfa7357}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Res">
       <UniqueIdentifier>{1eff4471-0891-40a8-b39d-e598460dece8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\My\Object\Component\GameEvent">
+      <UniqueIdentifier>{3573da3d-ff23-46d6-8cdd-a7ef810bc485}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -444,11 +438,8 @@
     <ClInclude Include="FGEngine\Src\My\Package\Glad.h">
       <Filter>FGEngine\Src\My\Package</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\MyEngine.h">
+    <ClInclude Include="FGEngine\Src\FGEngine.h">
       <Filter>FGEngine</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\FGEngine.h">
-      <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Package\ImGUI.h">
       <Filter>FGEngine\Src\My\Package</Filter>
@@ -465,8 +456,8 @@
     <ClInclude Include="FGEngine\Src\My\ObjectManager.h">
       <Filter>FGEngine\Src\My\ObjectSystem</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\MonoBehaviour.h">
-      <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
+    <ClInclude Include="FGEngine\Src\My\GameEvent.h">
+      <Filter>FGEngine\Src\My\Object\Component\GameEvent</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\SystemFrd.h">
       <Filter>FGEngine\Src\My</Filter>
@@ -557,9 +548,6 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\PhysicsEngine.h">
       <Filter>FGEngine\Src\My\PhysicsSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Behaviour.h">
-      <Filter>FGEngine\Src\My\Object\Component\Behaviour</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Intersect.h">
       <Filter>FGEngine\Src\My\PhysicsSystem\Intersect</Filter>
@@ -678,9 +666,6 @@
     <ClInclude Include="Application\Src\DamageInfo.h">
       <Filter>Application\Src</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\Particle.h">
-      <Filter>FGEngine\Src\My\Particle</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Src\My\Sprite.h">
       <Filter>FGEngine\Src\My\Resouce\Sprite</Filter>
     </ClInclude>
@@ -711,14 +696,8 @@
     <ClInclude Include="Application\Src\BgmList.h">
       <Filter>Application\Src\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Src\My\ParticleSystem.h">
-      <Filter>FGEngine\Src\My\Object\Component\ParticleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Src\Scene\TestScene.h">
       <Filter>Application\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\SmokeEffect.h">
-      <Filter>Application\Src\Ms\Base\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -953,17 +932,8 @@
     <ClCompile Include="FGEngine\Src\My\AudioListner.cpp">
       <Filter>FGEngine\Src\My\Object\Component\Audio\AudioListner</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\Particle.cpp">
-      <Filter>FGEngine\Src\My\Particle</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\My\ParticleSystem.cpp">
-      <Filter>FGEngine\Src\My\Object\Component\ParticleSystem</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Src\Scene\TestSene.cpp">
       <Filter>Application\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\SmokeEffect.cpp">
-      <Filter>Application\Src\Ms\Base\Bullet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
