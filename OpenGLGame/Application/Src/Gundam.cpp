@@ -3,7 +3,6 @@
 */
 #include "Gundam.h"
 #include "HomingBullet.h"
-#include "SmokeEffect.h"
 #include "BaseSlash.h"
 #include "DamageInfo.h"
 using namespace FGEngine::ResouceSystem;
@@ -232,7 +231,6 @@ void Gundam::Update()
 		if (blowAway.timer > blowAway.time && rb->IsGround())
 		{
 			blowAway.isNow = false;
-			rb->gravityScale = 2;
 
 			if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
 			{
@@ -251,7 +249,6 @@ void Gundam::Update()
 		// バグ対策
 		if (blowAway.timer > 5)
 		{
-			rb->gravityScale = 2;
 			blowAway.isNow = false;
 		}
 	}
@@ -815,8 +812,7 @@ void Gundam::Action1(bool attackKey)
 				anim->Play();
 			}
 			// アイドル・ジャンプ状態
-			else if (anim->GetAnimationClip()->name == "Idle.Rifle" ||
-				anim->GetAnimationClip()->name == "Jump.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle.Ground")
+			else if (anim->GetAnimationClip()->name == "Idle.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle.Ground")
 			{
 				rb->velocity = Vector3(0, 1, 0);
 				// 動きを止める
@@ -1113,8 +1109,6 @@ void Gundam::Action2(bool attackKey)
 			homingBullet->downPower = bullet->downPower;
 			homingBullet->speed = bullet->speed;
 			homingBullet->homingSpeed = bullet->homingPower;
-			auto effect = bulletObj->AddComponent<SmokeEffect>();
-			effect->ep.texture = bpp.texture;
 
 			// 反動で後ろに動かす
 			GetTransform()->position += GetTransform()->Forward() * -0.5f;

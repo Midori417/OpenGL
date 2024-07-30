@@ -31,7 +31,7 @@ private:
 private:
 
 	// マップの大きさ
-	Vector2 mapSize = Vector2::zero;
+	Vector2 mapSize = Vector2(150, 180);
 
 	// リソースの読み込み
 	static bool isResouceLoad;

@@ -6,6 +6,7 @@
 #include "Singleton.h"
 #include "Object.h"
 #include "GameObject.h"
+#include "Particle.h"
 
 namespace FGEngine::ObjectSystem
 {
@@ -66,6 +67,11 @@ namespace FGEngine::ObjectSystem
 		void UpdateMonoBehaviour();
 
 		/**
+		* パーティクルシステムの更新
+		*/
+		void UpdateParticleSystem();
+
+		/**
 		* Rigidbodyを更新
 		*/
 		void UpdateRigidbody();
@@ -123,6 +129,12 @@ namespace FGEngine::ObjectSystem
 			gameObjects.clear();
 		}
 
+		// パーティクルエミッタの操作
+		ParticleEmitterPtr AddParticleEmitter(const ParticleEmitterParameter& ep, const ParticleParameter& pp);
+		ParticleEmitterPtr FindParticleEmitter(const std::string& name) const;
+		void RemoveParticleEmitter(const ParticleEmitterPtr&);
+		void RemoveParticleEmitterAll();
+
 	private:
 
 		// ゲームオブジェクト配列
@@ -133,6 +145,9 @@ namespace FGEngine::ObjectSystem
 
 		// 破壊オブジェクトが存在するかどうか
 		bool isDestoryObject = false;
+
+		// パーティクル管理
+		ParticleManagerPtr particleManager;
 	};
 }
 

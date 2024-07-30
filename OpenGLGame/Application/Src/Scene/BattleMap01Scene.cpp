@@ -40,9 +40,6 @@ bool BattleMap01Scene::Initialize()
 	camera->AddComponent<Camera>();
 	objManager->SetMainCamera(camera);
 
-	// ステージの大きさを設定
-	mapSize.x = 150;
-	mapSize.y = 180;
 
 	// 復帰位置
 	std::vector<Vector3> responPoses;
@@ -142,7 +139,7 @@ bool BattleMap01Scene::Initialize()
 			auto ground = objManager->CreateGameObject("Ground", Vector3(0, -1.0f, 0));
 			ground->tag = "Ground";
 			auto renderer = ground->AddComponent<GltfMeshRenderer>();
-			renderer->glTFfile = resManager->GetGltfFile("Map01/Ground");
+			renderer->glTFfile = resManager->GetGltfFile("Map01");
 			renderer->shader = resManager->GetShader(DefalutShader::Standard3D);
 			auto col = ground->AddComponent<AabbCollider>();
 			col->min = Vector3(-mapSize.x, -10.0f, -mapSize.y);
