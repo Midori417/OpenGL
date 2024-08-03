@@ -1,12 +1,11 @@
 /**
 * @file Main.cpp
 */
-#include "My/EngineCore.h"
-
 #pragma warning(push)
 #pragma warning(disable:4005)
 #include <Windows.h>
 #pragma warning(pop)
+#include "FGEngine/Input/InputManager.h"
 
 /**
 * エントリーポイント
@@ -17,9 +16,5 @@ int WINAPI WinMain(
 	_In_ LPSTR lpCmdLine,
 	_In_ int nShowCmd)
 {
-	// エンジンを生成と取得
-	auto engineCore = FGEngine::MainSystem::EngineCore::GetInstance();
-	
-	// エンジンを始動
-	return engineCore->Run();
+	return 0;
 }
