@@ -3,8 +3,10 @@
 */
 #ifndef FGENGINE_INPUTKEY_H_INCLUDED
 #define FGENGINE_INPUTKEY_H_INCLUDED
-#include "InputInterface.h"
 #include <vector>
+
+// 先行宣言
+struct GLFWwindow;
 
 namespace FGEngine
 {
@@ -13,10 +15,12 @@ namespace FGEngine
 
 	/**
 	* キーボード入力
+	* 入力管理クラスのみ生成したいのでコンストラクタはprivate
 	*/
-	class InputKey : public InputInterface
+	class InputKey
 	{
-	public:
+		friend class InputManager;
+	private:
 
 		/**
 		* デフォルトコンストラクタ
@@ -31,16 +35,16 @@ namespace FGEngine
 		* @retval 0		初期化成功
 		* @retval 0以外	初期化失敗
 		*/
-		virtual int Initialize() override;
+		int Initialize();
 
 		/**
 		* キーボードの状態を更新
 		*
 		* @param window ウィンドウオブジェクト
 		*/
-		virtual void Update(GLFWwindow* window) override;
+		void Update(GLFWwindow* window);
 
-	public:
+	private:
 
 		/**
 		* キーが押されているかを取得

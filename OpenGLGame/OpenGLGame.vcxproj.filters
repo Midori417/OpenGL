@@ -67,9 +67,6 @@
     <Filter Include="FGEngine\Include\Math">
       <UniqueIdentifier>{17c75a49-0841-44c3-af41-b31e4220b658}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\Math">
-      <UniqueIdentifier>{711d9cf8-c782-448d-b12d-68c26c35bd44}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Include\Input">
       <UniqueIdentifier>{24007d4f-b38b-43f7-9c16-1e46f40e2cd3}</UniqueIdentifier>
     </Filter>
@@ -105,6 +102,9 @@
     </Filter>
     <Filter Include="FGEngine\Include\Math\Quaternion">
       <UniqueIdentifier>{18ce5105-20ff-4a22-9593-30a5d4a3a1d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Include\Sound">
+      <UniqueIdentifier>{b9e3f872-a9dd-480d-bde9-77452a956ee1}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +150,9 @@
     <ClCompile Include="FGEngine\Src\Math\Quaternion.cpp">
       <Filter>FGEngine\Include\Math\Quaternion</Filter>
     </ClCompile>
+    <ClCompile Include="FGEngine\Src\Sound\EasyAudio.cpp">
+      <Filter>FGEngine\Include\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Include\FGEngine\Package\Glad.h">
@@ -185,14 +188,8 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Input\MouseButton.h">
       <Filter>FGEngine\Include\Input\Device\Mouse</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\ManagerInterface.h">
-      <Filter>FGEngine\Include</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Debug\Debug.h">
       <Filter>FGEngine\Include\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputInterface.h">
-      <Filter>FGEngine\Include\Input\Device</Filter>
     </ClInclude>
     <ClInclude Include="Package\glad\include\glad\glad.h">
       <Filter>Package\glad</Filter>
@@ -223,6 +220,12 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Quaternion.h">
       <Filter>FGEngine\Include\Math\Quaternion</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Sound\EasyAudio.h">
+      <Filter>FGEngine\Include\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\ManagerInterface.h">
+      <Filter>FGEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

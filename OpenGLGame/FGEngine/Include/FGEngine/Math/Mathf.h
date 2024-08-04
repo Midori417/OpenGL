@@ -1,4 +1,4 @@
-/**
+/*-^
 * @file Mathf.h
 */
 #ifndef FGENGINE_MATHF_H_INCLUDED
@@ -12,7 +12,7 @@ namespace FGEngine
 	struct Mathf
 	{
 		/**
-		* f度のサインを返す
+	z	* f度のサインを返す
 		*/
 		static float Sin(float f);
 

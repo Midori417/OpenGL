@@ -10,19 +10,8 @@
 namespace FGEngine
 {
 	// 静的変数の初期化
-	std::vector<InputInterfacePtr> InputManager::inputDevices;
-
-	/**
-	* 入力デバイスの種類
-	*/
-	enum InputDeviceType
-	{
-		// キーボード
-		Key,
-
-		// マウス
-		Mouse,
-	};
+	std::shared_ptr<InputKey> InputManager::inputKey = nullptr;
+	std::shared_ptr<InputMouse> InputManager::inputMouse = nullptr;
 
 	/**
 	* インプットマネージャを初期化
@@ -32,16 +21,19 @@ namespace FGEngine
 	*/
 	int InputManager::Initialize()
 	{
-		// キーボードデバイスを追加
-		if(AddDevice(std::make_shared<InputKey>()) != 0)
+		// キーボードデバイス生成
+		inputKey = std::shared_ptr<InputKey>(new InputKey{});
+		if (inputKey->Initialize() != 0)
 		{
-			LOG_ERROR("キーボードデバイスの追加に失敗");
+			LOG_ERROR("キーボードデバイスの初期化に失敗");
 			return 1;
 		}
-		// マウスデバイスを追加
-		if (AddDevice(std::make_shared<InputMouse>()) != 0)
+
+		// マウスデバイス生成
+		inputMouse = std::shared_ptr<InputMouse>(new InputMouse{});
+		if (inputMouse->Initialize() != 0)
 		{
-			LOG_ERROR("マウスデバイスの追加に失敗");
+			LOG_ERROR("マウスデバイスの初期化に失敗");
 			return 1;
 		}
 
@@ -54,44 +46,30 @@ namespace FGEngine
 	*/
 	void InputManager::Update()
 	{
-		// デバイスの状態を更新
-		for (auto& x : inputDevices)
+		if (!window)
 		{
-			x->Update(window);
-		}
-	}
-
-	/**
-	* 入力デバイスを追加
-	*
-	* @param inputDeviec 追加するデバイス
-	*
-	* @retval 0		追加成功
-	* @retval 0以外	エラー発生
-	*/
-	int InputManager::AddDevice(InputInterfacePtr inputDevice)
-	{
-		// デバイスを初期化
-		int result = inputDevice->Initialize();
-
-		if (result != 0)
-		{
-			// デバイスの初期化に失敗
-			return result;
+			LOG_WARNINGS("(InputManger)ウィンドウオブジェクトが存在しません");
+			return;
 		}
 
-		// デバイスを配列に追加
-		inputDevices.push_back(inputDevice);
+		// 入力デバイスの状態を更新
 
-		return 0;
+		if (inputKey)
+		{
+			inputKey->Update(window);
+		}
+
+		if (inputMouse)
+		{
+			inputMouse->Update(window);
+		}
 	}
 
 	/**
 	* キーボードデバイスを取得
 	*/
-	std::shared_ptr<InputKey> InputManager::GetKeyDevice()
+	std::shared_ptr<InputKey> InputManager::GetInputKey()
 	{
-		auto inputKey = std::dynamic_pointer_cast<InputKey>(inputDevices[InputDeviceType::Key]);
 		if (!inputKey)
 		{
 			LOG_ERROR("キーボードデバイスが存在しません");
@@ -103,9 +81,8 @@ namespace FGEngine
 	/**
 	* マウスデバイスを取得
 	*/
-	std::shared_ptr<InputMouse> InputManager::GetMouseDevice()
+	std::shared_ptr<InputMouse> InputManager::GetInputMouse()
 	{
-		auto inputMouse = std::dynamic_pointer_cast<InputMouse>(inputDevices[InputDeviceType::Mouse]);
 		if (!inputMouse)
 		{
 			LOG_ERROR("マウスデバイスが存在しません");
@@ -126,7 +103,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetKey(KeyCode keyCode)
 	{
-		return GetKeyDevice()->GetKey(keyCode);
+		return GetInputKey()->GetKey(keyCode);
 	}
 
 	/**
@@ -139,7 +116,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetKeyUp(KeyCode keyCode)
 	{
-		return GetKeyDevice()->GetKeyUp(keyCode);
+		return GetInputKey()->GetKeyUp(keyCode);
 	}
 
 	/**
@@ -152,7 +129,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetKeyDown(KeyCode keyCode)
 	{
-		return GetKeyDevice()->GetKeyDown(keyCode);
+		return GetInputKey()->GetKeyDown(keyCode);
 	}
 
 	/**
@@ -163,7 +140,7 @@ namespace FGEngine
 	*/
 	bool InputManager::AnyKey()
 	{
-		return GetKeyDevice()->AnyKey();
+		return GetInputKey()->AnyKey();
 	}
 
 #pragma endregion
@@ -175,7 +152,7 @@ namespace FGEngine
 	*/
 	Vector2 InputManager::GetMousePosition()
 	{
-		return GetMouseDevice()->GetMousePosition();
+		return GetInputMouse()->GetMousePosition();
 	}
 
 	/**
@@ -188,7 +165,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetMouseButton(MouseButton mouseButton)
 	{
-		return GetMouseDevice()->GetMouseButton(mouseButton);
+		return GetInputMouse()->GetMouseButton(mouseButton);
 	}
 
 	/**
@@ -201,7 +178,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetMouseButtonUp(MouseButton mouseButton)
 	{
-		return GetMouseDevice()->GetMouseButtonUp(mouseButton);
+		return GetInputMouse()->GetMouseButtonUp(mouseButton);
 	}
 
 	/**
@@ -214,7 +191,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetMouseButtonDown(MouseButton mouseButton)
 	{
-		return GetMouseDevice()->GetMouseButtonDown(mouseButton);
+		return GetInputMouse()->GetMouseButtonDown(mouseButton);
 	}
 
 	/**
@@ -227,7 +204,7 @@ namespace FGEngine
 	*/
 	bool InputManager::GetMouseButtonClick(MouseButton mouseButton)
 	{
-		return GetMouseDevice()->GetMouseButtonClick(mouseButton);
+		return GetInputMouse()->GetMouseButtonClick(mouseButton);
 	}
 
 #pragma endregion

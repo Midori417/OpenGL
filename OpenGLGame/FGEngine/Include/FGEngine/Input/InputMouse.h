@@ -3,9 +3,11 @@
 */
 #ifndef FGENGINE_INPUTMOUSE_H_INCLUDED
 #define FGENGINE_INPUTMOUSE_H_INCLUDED
-#include "InputInterface.h"
 #include "FGEngine/Math/Vector2.h"
 #include <vector>
+
+// 先行宣言
+struct GLFWwindow;
 
 namespace FGEngine
 {
@@ -14,10 +16,12 @@ namespace FGEngine
 
 	/**
 	* マウス入力
+	* 入力管理クラスのみ生成したいのでコンストラクタはprivate
 	*/
-	class InputMouse : public InputInterface
+	class InputMouse
 	{
-	public:
+		friend class InputManager;
+	private:
 		
 		/**
 		* デフォルトコンストラクタ
@@ -32,16 +36,16 @@ namespace FGEngine
 		* @retval 0		正常に初期化
 		* @retval 0以外	エラー発生
 		*/
-		virtual int Initialize() override;
+		int Initialize();
 
 		/**
 		* マウスの状態を更新
 		*
 		* @param winndow ウィンドウオブジェクト
 		*/
-		virtual void Update(GLFWwindow* window) override;
+		void Update(GLFWwindow* window);
 
-	public:
+	private:
 
 		/**
 		* マウスの位置を取得

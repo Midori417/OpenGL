@@ -3,7 +3,7 @@
 */
 #ifndef EASYAUDIO_H_INCLUDED
 #define EASYAUDIO_H_INCLUDED
-#include "../VectorFrd.h"
+#include "FGEngine/Math/MathFrd.h"
 
 /**
 * 音声関連のコードを格納する名前空間

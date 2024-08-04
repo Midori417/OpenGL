@@ -7,8 +7,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define XAUDIO2_HELPER_FUNCTIONS
 
-#include "EasyAudio.h"
-#include "../Vector3.h"
+#include "FGEngine/Sound/EasyAudio.h"
+#include "FGEngine/Math/Vector3.h"
 #include <xaudio2.h>
 #include <vector>
 #include <list>

@@ -5,7 +5,6 @@
 #pragma warning(disable:4005)
 #include <Windows.h>
 #pragma warning(pop)
-#include "FGEngine/Input/InputManager.h"
 
 /**
 * エントリーポイント

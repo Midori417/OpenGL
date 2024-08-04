@@ -5,7 +5,6 @@
 #define FGENGINE_INPUTMANAGER_H_INCLUDED
 #include "FGEngine/Singleton.h"
 #include "FGEngine/ManagerInterface.h"
-#include "InputInterface.h"
 #include "KeyCode.h"
 #include "MouseButton.h"
 #include <unordered_map>
@@ -50,24 +49,14 @@ namespace FGEngine
 		virtual void Update() override;
 
 		/**
-		* 入力デバイスを追加
-		* 
-		* @param inputDeviec 追加するデバイス
-		* 
-		* @retval 0		追加成功
-		* @retval 0以外	エラー発生
-		*/
-		int AddDevice(InputInterfacePtr inputDevice);
-
-		/**
 		* キーボードデバイスを取得
 		*/
-		static std::shared_ptr<InputKey> GetKeyDevice();
+		static std::shared_ptr<InputKey> GetInputKey();
 
 		/**
 		* マウスデバイスを取得
 		*/
-		static std::shared_ptr<InputMouse> GetMouseDevice();
+		static std::shared_ptr<InputMouse> GetInputMouse();
 
 	public:
 
@@ -161,8 +150,11 @@ namespace FGEngine
 		// ウィンドウオブジェクト
 		GLFWwindow* window = nullptr;
 
-		// 入力デバイス配列
-		static std::vector<InputInterfacePtr> inputDevices;
+		// キーボードデバイス
+		static std::shared_ptr<InputKey> inputKey;
+
+		// マウスデバイス
+		static std::shared_ptr<InputMouse> inputMouse;
 	};
 }
 

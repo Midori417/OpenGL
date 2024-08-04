@@ -162,11 +162,11 @@
     <ClCompile Include="FGEngine\Src\Math\Vector2.cpp" />
     <ClCompile Include="FGEngine\Src\Math\Vector3.cpp" />
     <ClCompile Include="FGEngine\Src\Math\Vector4.cpp" />
+    <ClCompile Include="FGEngine\Src\Sound\EasyAudio.cpp" />
     <ClCompile Include="Package\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Include\FGEngine\Debug\Debug.h" />
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputInterface.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputKey.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputManager.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputMouse.h" />
@@ -187,6 +187,7 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Package\ImGUI.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Package\Nlohmann.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Singleton.h" />
+    <ClInclude Include="FGEngine\Include\FGEngine\Sound\EasyAudio.h" />
     <ClInclude Include="Package\glad\include\glad\glad.h" />
     <ClInclude Include="Package\glad\include\KHR\khrplatform.h" />
   </ItemGroup>
