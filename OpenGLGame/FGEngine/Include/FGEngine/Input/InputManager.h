@@ -4,7 +4,7 @@
 #ifndef FGENGINE_INPUTMANAGER_H_INCLUDED
 #define FGENGINE_INPUTMANAGER_H_INCLUDED
 #include "FGEngine/Singleton.h"
-#include "FGEngine/ManagerInterface.h"
+#include "FGEngine/Math/MathFrd.h"
 #include "KeyCode.h"
 #include "MouseButton.h"
 #include <unordered_map>
@@ -15,7 +15,6 @@ struct GLFWwindow;
 namespace FGEngine
 {
 	// 先行宣言
-	struct Vector2;
 	class InputKey;
 	class InputMouse;
 
@@ -23,15 +22,20 @@ namespace FGEngine
 	* インプットマネージャー
 	* 入力デバイス管理クラス
 	*/
-	class InputManager : public ManagerInterface, public Singleton<InputManager>
+	class InputManager : public Singleton<InputManager>
 	{
 		friend Singleton<InputManager>;
+		friend class GameEngine;
 	private:
 
 		/**
 		* デフォルトコンストラクタ
 		*/
 		InputManager() = default;
+
+		// コピーと代入を禁止
+		InputManager(const InputManager&) = delete;
+		InputManager& operator=(const InputManager&) = delete;
 
 	private:
 
@@ -41,12 +45,12 @@ namespace FGEngine
 		* @retval 0		正常に初期化
 		* @retval 0以外	エラー発生
 		*/
-		virtual int Initialize() override;
+		int Initialize();
 
 		/**
 		* インプットマネージャーの状態を更新
 		*/
-		virtual void Update() override;
+		void Update();
 
 		/**
 		* キーボードデバイスを取得

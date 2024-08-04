@@ -94,6 +94,7 @@ namespace FGEngine
 	int InputKey::Initialize()
 	{
 		keyState.resize((int)KeyCode::Max);
+
 		return 0;
 	}
 

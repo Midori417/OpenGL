@@ -55,141 +55,156 @@
     <Filter Include="FGEngine\Res\Particle">
       <UniqueIdentifier>{fd94a521-df4a-4d82-a3b0-72a9d5ace93d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src">
-      <UniqueIdentifier>{8e3050d7-d956-4d3a-aa87-a4c352160cb2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include">
-      <UniqueIdentifier>{48bbaebf-3b11-4f2e-9e83-63ff685ad358}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Package">
-      <UniqueIdentifier>{efed778d-4cfc-4086-a9fb-f1679ea3f359}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Math">
-      <UniqueIdentifier>{17c75a49-0841-44c3-af41-b31e4220b658}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Input">
-      <UniqueIdentifier>{24007d4f-b38b-43f7-9c16-1e46f40e2cd3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Debug">
-      <UniqueIdentifier>{fcb4df13-4de8-4199-bae6-5b08a1ae5203}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Input\Device">
-      <UniqueIdentifier>{08a41ec3-f7c5-4c3f-a00c-c0d6c2438c3b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Input\Device\Mouse">
-      <UniqueIdentifier>{9b47705a-e9dc-44c6-84ee-0b3ab3844210}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Include\Input\Device\Key">
-      <UniqueIdentifier>{dc6366e6-bb53-457a-a0a7-2181ce8da3b3}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Package">
       <UniqueIdentifier>{e10f9d45-f576-458d-8f22-de45f038e212}</UniqueIdentifier>
     </Filter>
     <Filter Include="Package\glad">
       <UniqueIdentifier>{ddba4e38-92f5-4923-814b-156afc0b0edd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Include\Math\Mathf">
+    <Filter Include="FGEngine\Src">
+      <UniqueIdentifier>{48bbaebf-3b11-4f2e-9e83-63ff685ad358}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Package">
+      <UniqueIdentifier>{efed778d-4cfc-4086-a9fb-f1679ea3f359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math">
+      <UniqueIdentifier>{17c75a49-0841-44c3-af41-b31e4220b658}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math\Mathf">
       <UniqueIdentifier>{56514d00-5a8e-44bb-94c1-ac36d1bc8323}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Include\Math\Matrix">
+    <Filter Include="FGEngine\Src\Math\Matrix">
       <UniqueIdentifier>{bee9e160-fd26-4695-ad5a-49061f7172de}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Include\Math\Vector">
+    <Filter Include="FGEngine\Src\Math\Vector">
       <UniqueIdentifier>{512d995b-ae75-40e2-9b52-13ef0ddd6594}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Include\Math\Random">
+    <Filter Include="FGEngine\Src\Math\Random">
       <UniqueIdentifier>{443773a9-d0c7-461b-99aa-c7493db121cb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Include\Math\Quaternion">
+    <Filter Include="FGEngine\Src\Math\Quaternion">
       <UniqueIdentifier>{18ce5105-20ff-4a22-9593-30a5d4a3a1d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Include\Sound">
+    <Filter Include="FGEngine\Src\Input">
+      <UniqueIdentifier>{24007d4f-b38b-43f7-9c16-1e46f40e2cd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Input\Device">
+      <UniqueIdentifier>{08a41ec3-f7c5-4c3f-a00c-c0d6c2438c3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Input\Device\Mouse">
+      <UniqueIdentifier>{9b47705a-e9dc-44c6-84ee-0b3ab3844210}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Input\Device\Key">
+      <UniqueIdentifier>{dc6366e6-bb53-457a-a0a7-2181ce8da3b3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Debug">
+      <UniqueIdentifier>{fcb4df13-4de8-4199-bae6-5b08a1ae5203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Sound">
       <UniqueIdentifier>{b9e3f872-a9dd-480d-bde9-77452a956ee1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Window">
+      <UniqueIdentifier>{e3266a5b-278c-408c-823d-a9b5f11f8893}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\GameEngine">
+      <UniqueIdentifier>{0249fd81-c824-4ae9-9415-2c168e5eb3b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Asset">
+      <UniqueIdentifier>{816c9d41-1c8a-4112-ae16-0ac16cba55e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FGEngine\Src\Main.cpp">
-      <Filter>FGEngine</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\Input\InputKey.cpp">
-      <Filter>FGEngine\Include\Input\Device\Key</Filter>
+      <Filter>FGEngine\Src\Input\Device\Key</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Input\InputManager.cpp">
-      <Filter>FGEngine\Include\Input</Filter>
+      <Filter>FGEngine\Src\Input</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Input\InputMouse.cpp">
-      <Filter>FGEngine\Include\Input\Device\Mouse</Filter>
+      <Filter>FGEngine\Src\Input\Device\Mouse</Filter>
     </ClCompile>
     <ClCompile Include="Package\glad\src\glad.c">
       <Filter>Package\glad</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Debug\Debug.cpp">
-      <Filter>FGEngine\Include\Debug</Filter>
+      <Filter>FGEngine\Src\Debug</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Mathf.cpp">
-      <Filter>FGEngine\Include\Math\Mathf</Filter>
+      <Filter>FGEngine\Src\Math\Mathf</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Matrix4x4.cpp">
-      <Filter>FGEngine\Include\Math\Matrix</Filter>
+      <Filter>FGEngine\Src\Math\Matrix</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Matrix3x3.cpp">
-      <Filter>FGEngine\Include\Math\Matrix</Filter>
+      <Filter>FGEngine\Src\Math\Matrix</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Vector2.cpp">
-      <Filter>FGEngine\Include\Math\Vector</Filter>
+      <Filter>FGEngine\Src\Math\Vector</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Vector3.cpp">
-      <Filter>FGEngine\Include\Math\Vector</Filter>
+      <Filter>FGEngine\Src\Math\Vector</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Vector4.cpp">
-      <Filter>FGEngine\Include\Math\Vector</Filter>
+      <Filter>FGEngine\Src\Math\Vector</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Random.cpp">
-      <Filter>FGEngine\Include\Math\Random</Filter>
+      <Filter>FGEngine\Src\Math\Random</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Quaternion.cpp">
-      <Filter>FGEngine\Include\Math\Quaternion</Filter>
+      <Filter>FGEngine\Src\Math\Quaternion</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Sound\EasyAudio.cpp">
-      <Filter>FGEngine\Include\Sound</Filter>
+      <Filter>FGEngine\Src\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Window\WindowManager.cpp">
+      <Filter>FGEngine\Src\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Main.cpp">
+      <Filter>FGEngine\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\GameEngine\GameEngine.cpp">
+      <Filter>FGEngine\Src\GameEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\My\EngineCore.cpp">
+      <Filter>FGEngine\Src\GameEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Include\FGEngine\Package\Glad.h">
-      <Filter>FGEngine\Include\Package</Filter>
+      <Filter>FGEngine\Src\Package</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Package\ImGUI.h">
-      <Filter>FGEngine\Include\Package</Filter>
+      <Filter>FGEngine\Src\Package</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Package\Nlohmann.h">
-      <Filter>FGEngine\Include\Package</Filter>
+      <Filter>FGEngine\Src\Package</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\MathFrd.h">
-      <Filter>FGEngine\Include\Math</Filter>
+      <Filter>FGEngine\Src\Math</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\MathPoint.h">
-      <Filter>FGEngine\Include\Math</Filter>
+      <Filter>FGEngine\Src\Math</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputManager.h">
-      <Filter>FGEngine\Include\Input</Filter>
+      <Filter>FGEngine\Src\Input</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputKey.h">
-      <Filter>FGEngine\Include\Input\Device\Key</Filter>
+      <Filter>FGEngine\Src\Input\Device\Key</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Input\KeyCode.h">
-      <Filter>FGEngine\Include\Input\Device\Key</Filter>
+      <Filter>FGEngine\Src\Input\Device\Key</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Singleton.h">
-      <Filter>FGEngine\Include</Filter>
+      <Filter>FGEngine\Src</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputMouse.h">
-      <Filter>FGEngine\Include\Input\Device\Mouse</Filter>
+      <Filter>FGEngine\Src\Input\Device\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Input\MouseButton.h">
-      <Filter>FGEngine\Include\Input\Device\Mouse</Filter>
+      <Filter>FGEngine\Src\Input\Device\Mouse</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Debug\Debug.h">
-      <Filter>FGEngine\Include\Debug</Filter>
+      <Filter>FGEngine\Src\Debug</Filter>
     </ClInclude>
     <ClInclude Include="Package\glad\include\glad\glad.h">
       <Filter>Package\glad</Filter>
@@ -198,34 +213,40 @@
       <Filter>Package\glad</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Mathf.h">
-      <Filter>FGEngine\Include\Math\Mathf</Filter>
+      <Filter>FGEngine\Src\Math\Mathf</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Matrix4x4.h">
-      <Filter>FGEngine\Include\Math\Matrix</Filter>
+      <Filter>FGEngine\Src\Math\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Matrix3x3.h">
-      <Filter>FGEngine\Include\Math\Matrix</Filter>
+      <Filter>FGEngine\Src\Math\Matrix</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Vector2.h">
-      <Filter>FGEngine\Include\Math\Vector</Filter>
+      <Filter>FGEngine\Src\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Vector3.h">
-      <Filter>FGEngine\Include\Math\Vector</Filter>
+      <Filter>FGEngine\Src\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Vector4.h">
-      <Filter>FGEngine\Include\Math\Vector</Filter>
+      <Filter>FGEngine\Src\Math\Vector</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Random.h">
-      <Filter>FGEngine\Include\Math\Random</Filter>
+      <Filter>FGEngine\Src\Math\Random</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Quaternion.h">
-      <Filter>FGEngine\Include\Math\Quaternion</Filter>
+      <Filter>FGEngine\Src\Math\Quaternion</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Sound\EasyAudio.h">
-      <Filter>FGEngine\Include\Sound</Filter>
+      <Filter>FGEngine\Src\Sound</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\ManagerInterface.h">
-      <Filter>FGEngine</Filter>
+    <ClInclude Include="FGEngine\Include\FGEngine\Window\WindowManager.h">
+      <Filter>FGEngine\Src\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\GameEngine\GameEngine.h">
+      <Filter>FGEngine\Src\GameEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\My\EngineCore.h">
+      <Filter>FGEngine\Src\GameEngine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

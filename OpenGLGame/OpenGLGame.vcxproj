@@ -149,7 +149,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="FGEngine\My\EngineCore.cpp" />
     <ClCompile Include="FGEngine\Src\Debug\Debug.cpp" />
+    <ClCompile Include="FGEngine\Src\GameEngine\GameEngine.cpp" />
     <ClCompile Include="FGEngine\Src\Input\InputKey.cpp" />
     <ClCompile Include="FGEngine\Src\Input\InputManager.cpp" />
     <ClCompile Include="FGEngine\Src\Input\InputMouse.cpp" />
@@ -163,16 +165,17 @@
     <ClCompile Include="FGEngine\Src\Math\Vector3.cpp" />
     <ClCompile Include="FGEngine\Src\Math\Vector4.cpp" />
     <ClCompile Include="FGEngine\Src\Sound\EasyAudio.cpp" />
+    <ClCompile Include="FGEngine\Src\Window\WindowManager.cpp" />
     <ClCompile Include="Package\glad\src\glad.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FGEngine\Include\FGEngine\Debug\Debug.h" />
+    <ClInclude Include="FGEngine\Include\FGEngine\GameEngine\GameEngine.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputKey.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputManager.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\InputMouse.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\KeyCode.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Input\MouseButton.h" />
-    <ClInclude Include="FGEngine\Include\FGEngine\ManagerInterface.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Mathf.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Matrix3x3.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Matrix4x4.h" />
@@ -188,6 +191,8 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Package\Nlohmann.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Singleton.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Sound\EasyAudio.h" />
+    <ClInclude Include="FGEngine\Include\FGEngine\Window\WindowManager.h" />
+    <ClInclude Include="FGEngine\My\EngineCore.h" />
     <ClInclude Include="Package\glad\include\glad\glad.h" />
     <ClInclude Include="Package\glad\include\KHR\khrplatform.h" />
   </ItemGroup>
