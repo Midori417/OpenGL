@@ -3,7 +3,7 @@
 */
 #ifndef BATTLESETTINGSCENE_H_INCLUDED
 #define BATTLESETTINGSCENE_H_INCLUDED
-#include "../FGEngine.h"
+#include "FGEngine.h"
 using namespace FGEngine::SceneSystem;
 
 /**

@@ -90,6 +90,18 @@ namespace FGEngine
 		// Vector2(1, 1)
 		static const Vector2 one;
 
+		// Vector2(0, 1)
+		static const Vector2 up;
+
+		// Vector2(0,-1)
+		static const Vector2 down;
+
+		// Vector2(0,-1)
+		static const Vector2 left;
+
+		// Vector2(0,1)
+		static const Vector2 right;
+
 		float operator[](size_t i)const
 		{
 			return *(&x + i);

@@ -3,100 +3,105 @@
 */
 #ifndef FGENGINE_WINDOWMANAGER_H_INCLUDED
 #define FGENGINE_WINDOWMANAGER_H_INCLUDED
+#include "FGEngine/Package/Glad.h"
+#include <GLFW/glfw3.h>
 #include "FGEngine/Singleton.h"
-#include "FGEngine/Math/MathFrd.h"
-#include <vector>
+#include "FGEngine/Math/Vector2.h"
+#include "FGEngine/Color.h"
 #include <string>
-
-// 先行宣言
-struct GLFWwindow;
-
-namespace FGEngine
+#include <vector>
+	
+namespace FGEngine::WindowSystem
 {
 	/**
 	* ウィンドウ管理クラス
 	*/
-	class WindowManager :  public Singleton<WindowManager>
+	class WindowManager : public Singleton<WindowManager>
 	{
-		friend Singleton<WindowManager>;
-		friend class GameEngine;
 	private:
 		
-		/**
-		* デフォルトコンストラクタ
-		*/
+		friend Singleton<WindowManager>;
+
+		// コンストラクタ
 		WindowManager() = default;
 
-		/**
-		* デストラクタ
-		*/
-		~WindowManager();
+	public:
+
+
 
 		// コピーと代入を禁止
 		WindowManager(const WindowManager&) = delete;
 		WindowManager& operator=(const WindowManager&) = delete;
 
-	private:
-
 		/**
-		* ウィンドウマネージャーを初期化
-		* 
-		* @retval 0		初期化成功
-		* @retval 0以外	初期化失敗
+		* ウィンドウを作成
+		*
+		* @param windowTitle ウィンドウタイトル
+		*
+		* @retval	作成したウィンドウオブジェクト
+		*			nullptr 作成に失敗
 		*/
-		int Initialze();
+		void CreateWindow(const std::string& windowTitle);
 
 		/**
-		* ウィンドウの描画開始
+		* ウィンドウの描画を開始
 		*/
 		void Begin();
 
 		/**
-		* ウィンドウの描画終了
+		* ウィンドウへの描画を終了
 		*/
 		void End();
 
-	public:
+		/**
+		* ウィンドウが閉じているか取得
+		*
+		* @retval true	閉じている
+		* @retval false	閉じていない
+		*/
+		bool IsClose(size_t index = 0);
 
 		/**
-		* ウィンドウタイトルを取得
+		* ウィンドウを終了
 		*/
-		std::string GetTitle() const;
-
-		/**
-		* ウィンドウタイトルを変更
-		* 
-		* @param title 変更するタイトル
-		*/
-		void SetTitle(const std::string& title);
-
-		/**
-		* ウィンドウのサイズを取得
-		*/
-		Vector2 GetSize() const;
+		void WindowClose(size_t index = 0);
 
 		/**
 		* ウィンドウオブジェクトを取得
 		*/
-		GLFWwindow& GetObject() const;
+		GLFWwindow& GetWindow(size_t index = 0);
 
 		/**
-		* ウィンドウが閉じているか取得
-		* 
-		* @retval true	ウィンドウが閉じている
-		* @retval false ウィンドウが開いている
+		* ウィンドウのサイズをVector2で取得
 		*/
-		bool IsClose() const;
+		Vector2 GetWindowSize(size_t index = 0);
 
 		/**
-		* ウィンドウを閉じる
+		* ウィンドウサイズを取得
+		*
+		* @param w ウィンドウの横幅を格納する
+		* @param h ウィンドウの縦幅を格納する
 		*/
-		void Close();
+		void GetWindowSize(GLsizei& w, GLsizei& h, size_t index = 0);
+
+		/**
+		* ウィンドウのサイズのアスペクトを取得
+		*/
+		float GetWindowAspectRatio();
+
+		/**
+		* バッファクリアのカラーを設定
+		*/
+		void SeteBufferClearColor(const Color& color);
 
 	private:
 
-		// ウィンドウオブジェクト
-		GLFWwindow* window = nullptr;
+		// ウィンドウオブジェクト配列
+		std::vector<GLFWwindow*> windows;
+
+		// クリアバッファのカラー
+		Color bufferColor = Color::black;
+
 	};
 }
 

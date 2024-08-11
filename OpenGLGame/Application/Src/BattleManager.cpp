@@ -236,7 +236,7 @@ void BattleManager::Start()
 		teum1->myMs->GetTransform()->position = responPoses[0] + Vector3(10.0f * i, 0, 0);
 		teum1->responPoss = responPoses;
 
-		Vector3 toTargetVector = Vector3(responPoses[1] - responPoses[0]).Normalized();
+		Vector3 toTargetVector = Vector3::Normalize(responPoses[1] - responPoses[0]);
 		teum1->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector * Vector3(0, 0, 1));
 	}
 	for (int i = 0; i < teum2ControlOwners.size(); ++i)
@@ -248,7 +248,7 @@ void BattleManager::Start()
 		// リスポーン位置を設定
 		teum2->responPoss = responPoses;
 
-		Vector3 toTargetVector = Vector3(responPoses[0] - responPoses[1]).Normalized();
+		Vector3 toTargetVector = Vector3::Normalize(responPoses[0] - responPoses[1]);
 		teum2->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector * Vector3(0, 0, 1));
 	}
 

@@ -53,7 +53,7 @@ void BaseSlash::OnTriggerEnter(const CollisionPtr other)
 		// ƒ_ƒ[ƒWî•ñ‚ðì¬
 		DamageInfo damageInfo;
 		damageInfo.damage = damage;
-		damageInfo.direction = Vector3(GetTransform()->position - obj->GetTransform()->position).Normalized();
+		damageInfo.direction = Vector3::Normalize(GetTransform()->position - obj->GetTransform()->position);
 		damageInfo.downPower = downPower;
 
 		audioSource->Play();

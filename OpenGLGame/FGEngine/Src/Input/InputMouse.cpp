@@ -2,39 +2,17 @@
 * @file InputMouse.cpp
 */
 #include "FGEngine/Input/InputMouse.h"
-#include "FGEngine/Input/MouseButton.h"
-//#include "FGEngine/Time.h"
-#include <GLFW/glfw3.h>
+#include "FGEngine/Time.h"
 
-namespace FGEngine
+namespace FGEngine::InputSystem
 {
-	/**
-	* マウスボタンリスト対応ビットマップ
-	*/
-	const int MOUSEBUTTON_ASSIGN[(int)MouseButton::Max]
-	{
-		GLFW_MOUSE_BUTTON_LEFT,
-		GLFW_MOUSE_BUTTON_RIGHT,
-		GLFW_MOUSE_BUTTON_MIDDLE,
-	};
-
-	/**
-	* マウス入力を初期化
-	*
-	* @retval 0		正常に初期化
-	* @retval 0以外	エラー発生
-	*/
-	int InputMouse::Initialize()
-	{
-		// マウスボタン配列を確保
-		mouseButtonsState.resize((int)MouseButton::Max);
-
-		return 0;
-	}
+	// スタティック変数の初期化
+	Vector2 InputMouse::mousePosition = Vector2(0, 0);
+	InputMouse::MouseButtonState InputMouse::mouseButtonsState[] = { InputMouse::MouseButtonState() };
 
 	/**
 	* マウスの状態を更新
-	*
+	* 
 	* @param window ウィンドウオブジェクト
 	*/
 	void InputMouse::Update(GLFWwindow* window)
@@ -54,9 +32,9 @@ namespace FGEngine
 			// 押されている時間を更新
 			if (mouseButtonsState[i].old)
 			{
-				//mouseButtonsState[i].timer += Time::DeltaTime();
+				mouseButtonsState[i].timer += Time::DeltaTime();
 			}
-			else
+			else 
 			{
 				mouseButtonsState[i].timer = 0;
 			}
@@ -76,6 +54,7 @@ namespace FGEngine
 			// 前回のフレームの更新
 			mouseButtonsState[i].old = now;
 		}
+
 	}
 
 	/**

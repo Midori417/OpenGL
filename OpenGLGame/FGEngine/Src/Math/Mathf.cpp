@@ -138,12 +138,10 @@ namespace FGEngine
     */
     float Mathf::Clamp(float value, float min, float max)
     {
-        if (value < min) 
-        {
+        if (value < min) {
             value = min;
         }
-        else if (value > max) 
-        {
+        else if (value > max) {
             value = max;
         }
         return value;
@@ -160,12 +158,10 @@ namespace FGEngine
     */
     int Mathf::Clamp(int value, int min, int max)
     {
-        if (value < min) 
-        {
+        if (value < min) {
             value = min;
         }
-        else if (value > max) 
-        {
+        else if (value > max) {
             value = max;
         }
         return value;
@@ -181,12 +177,10 @@ namespace FGEngine
     */
     float Mathf::Clamp01(float value)
     {
-        if (value < 0) 
-        {
+        if (value < 0) {
             value = 0;
         }
-        else if (value > 1) 
-        {
+        else if (value > 1) {
             value = 1;
         }
         return value;

@@ -3,54 +3,40 @@
 */
 #ifndef FGENGINE_INPUTMOUSE_H_INCLUDED
 #define FGENGINE_INPUTMOUSE_H_INCLUDED
+#include "FGEngine/SystemFrd.h"
+#include "MouseButton.h"
 #include "FGEngine/Math/Vector2.h"
-#include <vector>
 
-// 先行宣言
-struct GLFWwindow;
-
-namespace FGEngine
+namespace FGEngine::InputSystem
 {
-	// 先行宣言
-	enum class MouseButton;
-
 	/**
 	* マウス入力
-	* 入力管理クラスのみ生成したいのでコンストラクタはprivate
 	*/
 	class InputMouse
 	{
-		friend class InputManager;
-	private:
+	public:
+
+		friend InputSystem::InputManager;
 		
-		/**
-		* デフォルトコンストラクタ
-		*/
+		// コンストラクタ・デストラクタ
 		InputMouse() = default;
+		~InputMouse() = default;
 
 	private:
-
-		/**
-		* マウス入力を初期化
-		* 
-		* @retval 0		正常に初期化
-		* @retval 0以外	エラー発生
-		*/
-		int Initialize();
 
 		/**
 		* マウスの状態を更新
-		*
+		* 
 		* @param winndow ウィンドウオブジェクト
 		*/
-		void Update(GLFWwindow* window);
+		static void Update(GLFWwindow* window);
 
-	private:
+	public:
 
 		/**
 		* マウスの位置を取得
 		*/
-		Vector2 GetMousePosition();
+		static Vector2 GetMousePosition();
 
 		/**
 		* マウスのボタンを押しているを取得
@@ -60,7 +46,7 @@ namespace FGEngine
 		* @retval true	押している
 		* @retval false	押していない
 		*/
-		bool GetMouseButton(MouseButton mouseButton);
+		static bool GetMouseButton(MouseButton mouseButton);
 
 		/**
 		* マウスのボタンが上がったかを取得
@@ -70,7 +56,7 @@ namespace FGEngine
 		* @retval true	押しあがっている
 		* @retval false	押し上げっていない
 		*/
-		bool GetMouseButtonUp(MouseButton mouseButton);
+		static bool GetMouseButtonUp(MouseButton mouseButton);
 
 		/**
 		* マウスのボタンが下がったかを取得
@@ -80,7 +66,7 @@ namespace FGEngine
 		* @retval true	押し下がった
 		* @retval false	押し下がっていない
 		*/
-		bool GetMouseButtonDown(MouseButton mouseButton);
+		static bool GetMouseButtonDown(MouseButton mouseButton);
 
 		/**
 		* マウスがクリックしたかを取得
@@ -90,7 +76,7 @@ namespace FGEngine
 		* @retval true クリックした
 		* @retval false クリックしていない
 		*/
-		bool GetMouseButtonClick(MouseButton mouseButton);
+		static bool GetMouseButtonClick(MouseButton mouseButton);
 
 	private:
 
@@ -125,14 +111,15 @@ namespace FGEngine
 			float timer = 0;
 		};
 
+
 		// マウスの状態
-		std::vector<MouseButtonState> mouseButtonsState;
+		static MouseButtonState mouseButtonsState[(int)MouseButton::Max];
 
 		// マウスの位置
-		Vector2 mousePosition = Vector2::zero;
+		static Vector2 mousePosition;
 
 		// マウスのクリック受付時間
-		const float mouseClickSpeed = 0.3f;
+		static constexpr float mouseClickSpeed = 0.3f;
 	};
 }
 

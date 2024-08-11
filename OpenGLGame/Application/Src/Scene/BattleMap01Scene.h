@@ -3,7 +3,7 @@
 */
 #ifndef BATTLEMAP01SCENE_H_INCLUDED
 #define BATTLEMAP01SCENE_H_INCLUDED
-#include "../FGEngine.h"
+#include "FGEngine.h"
 using namespace FGEngine;
 using namespace FGEngine::SceneSystem;
 
@@ -31,7 +31,7 @@ private:
 private:
 
 	// マップの大きさ
-	Vector2 mapSize = Vector2(150, 180);
+	Vector2 mapSize = Vector2::zero;
 
 	// リソースの読み込み
 	static bool isResouceLoad;

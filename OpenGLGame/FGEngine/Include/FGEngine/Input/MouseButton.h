@@ -3,11 +3,12 @@
 */
 #ifndef FGENGINE_MOUSEBUTTON_H_INCLUDED
 #define FGENGINE_MOUSEBUTTON_H_INCLUDED
+#include <GLFW/glfw3.h>
 
-namespace FGEngine
+namespace FGEngine::InputSystem
 {
 	/**
-	* マウスボタンリスト
+	* マスボタンリスト
 	*/
 	enum class MouseButton
 	{
@@ -22,6 +23,17 @@ namespace FGEngine
 
 		// マウス登録ボタンマックス
 		Max,
+	};
+
+
+	/**
+	* マウスボタンリスト対応ビットマップ
+	*/
+	const int MOUSEBUTTON_ASSIGN[(int)MouseButton::Max]
+	{
+		GLFW_MOUSE_BUTTON_LEFT,
+		GLFW_MOUSE_BUTTON_RIGHT,
+		GLFW_MOUSE_BUTTON_MIDDLE,
 	};
 
 }

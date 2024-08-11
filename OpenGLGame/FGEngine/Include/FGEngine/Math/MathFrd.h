@@ -1,10 +1,12 @@
 /**
 * @file MathFrd.h
-* My数学機能の先行宣言が欲しい場合はこのヘッダーをインクルード
 */
 #ifndef FGENGINE_MATHFRD_H_INCLUDED
 #define FGENGINE_MATHFRD_H_INCLUDED
 
+/**
+* 数学構造体の前方宣言
+*/
 namespace FGEngine
 {
 	// 二次元ベクトル
@@ -24,9 +26,6 @@ namespace FGEngine
 
 	// クォータニオン
 	struct Quaternion;
-
-	// 乱数
-	struct Random;
 }
 
 #endif // !FGENGINE_MATHFRD_H_INCLUDED

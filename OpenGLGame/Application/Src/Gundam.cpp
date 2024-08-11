@@ -222,15 +222,16 @@ void Gundam::Update()
 		// アニメーションによって吹き飛ぶ方向を変える
 		if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
 		{
-			GetTransform()->position -= blowAway.power * GetTransform()->Forward() * Time::DeltaTime();
+			GetTransform()->position -= GetTransform()->Forward() * blowAway.power * Time::DeltaTime();
 		}
 		else if (anim->GetAnimationClip()->name == "BlowAway.Rifle.B")
 		{
-			GetTransform()->position += blowAway.power * GetTransform()->Forward() * Time::DeltaTime();
+			GetTransform()->position += GetTransform()->Forward() * blowAway.power * Time::DeltaTime();
 		}
 		if (blowAway.timer > blowAway.time && rb->IsGround())
 		{
 			blowAway.isNow = false;
+			rb->gravityScale = 2;
 
 			if (anim->GetAnimationClip()->name == "BlowAway.Rifle.F")
 			{
@@ -249,6 +250,7 @@ void Gundam::Update()
 		// バグ対策
 		if (blowAway.timer > 5)
 		{
+			rb->gravityScale = 2;
 			blowAway.isNow = false;
 		}
 	}
@@ -445,7 +447,7 @@ void Gundam::Move(const Vector2& moveAxis)
 	}
 
 	// カメラの方向から、X-Z単位ベクトル(正規化)を取得
-	Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
+	Vector3 cameraForward = Vector3::Normalize(cameraTrs->Forward() * Vector3(1, 0, 1));
 	Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
 
 	if (rb->IsGround())
@@ -530,7 +532,7 @@ void Gundam::Jump(bool isJump, const Vector2& moveAxis)
 			}
 
 			// カメラの方向から、X-Z単位ベクトル(正規化)を取得
-			Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
+			Vector3 cameraForward = Vector3::Normalize(cameraTrs->Forward() * Vector3(1, 0, 1));
 			Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
 
 			// 進行方向に回転
@@ -677,7 +679,7 @@ void Gundam::Dash(bool isDash, const Vector2& moveAxis)
 			}
 
 			// カメラの方向から、X-Z単位ベクトル(正規化)を取得
-			Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
+			Vector3 cameraForward = Vector3::Normalize(cameraTrs->Forward() * Vector3(1, 0, 1));
 			Vector3 moveForward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
 
 			// 進行方向に回転
@@ -792,7 +794,7 @@ void Gundam::Action1(bool attackKey)
 			handWeapon = HandWeapon::Rifle;
 
 			// ターゲットが自分から見てどの方向にいるか調べる
-			Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+			Vector3 directionToTarget = Vector3::Normalize(GetTargetMs()->GetTransform()->position - GetTransform()->position);
 			Vector3 perendicular = Vector3::Cross(directionToTarget, GetTransform()->Forward());
 			float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
 
@@ -812,7 +814,8 @@ void Gundam::Action1(bool attackKey)
 				anim->Play();
 			}
 			// アイドル・ジャンプ状態
-			else if (anim->GetAnimationClip()->name == "Idle.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle.Ground")
+			else if (anim->GetAnimationClip()->name == "Idle.Rifle" ||
+				anim->GetAnimationClip()->name == "Jump.Rifle" || anim->GetAnimationClip()->name == "Jump.Rifle.Ground")
 			{
 				rb->velocity = Vector3(0, 1, 0);
 				// 動きを止める
@@ -974,7 +977,7 @@ void Gundam::Action1(bool attackKey)
 			rifle->amo -= 1;
 
 			// ターゲットの方向を取得
-			Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+			Vector3 directionToTarget = Vector3::Normalize(GetTargetMs()->GetTransform()->position - GetTransform()->position);
 			Quaternion rot = Quaternion::LookRotation(directionToTarget);
 
 			// 弾の生成位置を計算
@@ -1058,7 +1061,7 @@ void Gundam::Action2(bool attackKey)
 			if (GetTargetMs())
 			{
 				// ターゲットが自分から見てどの方向にいるか調べる
-				Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+				Vector3 directionToTarget = Vector3::Normalize(GetTargetMs()->GetTransform()->position - GetTransform()->position);
 				float dot = Vector3::Dot(directionToTarget, GetTransform()->Forward());
 
 				// 重力を使わない
@@ -1265,7 +1268,7 @@ void Gundam::Action3(bool acttion3Btn)
 		else if (sable->move.isNow)
 		{
 			// 向いてる方向に進む
-			GetTransform()->position += sable->move.speed * GetTransform()->Forward() * Time::DeltaTime();
+			GetTransform()->position += GetTransform()->Forward() * sable->move.speed * Time::DeltaTime();
 
 			// エネルギーを消費
 			boostParamater.current -= sable->move.useEnergy * Time::DeltaTime();
@@ -1336,14 +1339,14 @@ void Gundam::Action3(bool acttion3Btn)
 					if (GetDistance() > sable->move.attackDistance)
 					{
 						// 向いている方向に進む
-						GetTransform()->position += sable->attack1.speed * GetTransform()->Forward() * Time::DeltaTime();
+						GetTransform()->position += GetTransform()->Forward()* sable->attack1.speed * Time::DeltaTime();
 					}
 				}
 				// 誘導無し
 				else
 				{
 					// 向いている方向に進む
-					GetTransform()->position += sable->attack1.speed * GetTransform()->Forward() * Time::DeltaTime();
+					GetTransform()->position += GetTransform()->Forward() * sable->attack1.speed * Time::DeltaTime();
 				}
 			}
 
@@ -1351,7 +1354,7 @@ void Gundam::Action3(bool acttion3Btn)
 			if (anim->time > sable->attack1.slashTime && !sable->attack1.isSlash)
 			{
 				// 攻撃判定を作成
-				auto slashObj = Instantate("Slash", Vector3(0, 0, 10));
+				auto slashObj = Instantate("Slash", Vector3(0, 0, 10), Quaternion::identity);
 				slashObj->GetTransform()->SetParent(GetTransform());
 				auto slash = slashObj->AddComponent<BaseSlash>();
 				slash->damage = sable->attack1.damage;
@@ -1406,14 +1409,14 @@ void Gundam::Action3(bool acttion3Btn)
 					if (GetDistance() > sable->move.attackDistance)
 					{
 						// 向いている方向に進む
-						GetTransform()->position += sable->attack2.speed * GetTransform()->Forward() * Time::DeltaTime();
+						GetTransform()->position += GetTransform()->Forward() * sable->attack2.speed * Time::DeltaTime();
 					}
 				}
 				// 誘導無し
 				else
 				{
 					// 向いている方向に進む
-					GetTransform()->position += sable->attack2.speed * GetTransform()->Forward() * Time::DeltaTime();
+					GetTransform()->position += GetTransform()->Forward() * sable->attack2.speed * Time::DeltaTime();
 				}
 			}
 
@@ -1421,7 +1424,7 @@ void Gundam::Action3(bool acttion3Btn)
 			if (anim->time > sable->attack2.slashTime && !sable->attack2.isSlash)
 			{
 				// 攻撃判定を作成
-				auto slashObj = Instantate("Slash", Vector3(0, 0, 10));
+				auto slashObj = Instantate("Slash", Vector3(0, 0, 10), Quaternion::identity);
 				slashObj->GetTransform()->SetParent(GetTransform());
 				auto slash = slashObj->AddComponent<BaseSlash>();
 				slash->damage = sable->attack2.damage;
@@ -1476,14 +1479,14 @@ void Gundam::Action3(bool acttion3Btn)
 					if (GetDistance() > sable->move.attackDistance)
 					{
 						// 向いている方向に進む
-						GetTransform()->position += sable->attack3.speed * GetTransform()->Forward() * Time::DeltaTime();
+						GetTransform()->position += GetTransform()->Forward() * sable->attack3.speed * Time::DeltaTime();
 					}
 				}
 				// 誘導無し
 				else
 				{
 					// 向いている方向に進む
-					GetTransform()->position += sable->attack3.speed * GetTransform()->Forward() * Time::DeltaTime();
+					GetTransform()->position += GetTransform()->Forward() * sable->attack3.speed * Time::DeltaTime();
 				}
 			}
 
@@ -1491,7 +1494,7 @@ void Gundam::Action3(bool acttion3Btn)
 			if (anim->time > sable->attack3.slashTime && !sable->attack3.isSlash)
 			{
 				// 攻撃判定を作成
-				auto slashObj = Instantate("Slash", Vector3(0, 0, 10));
+				auto slashObj = Instantate("Slash", Vector3(0, 0, 10), Quaternion::identity);
 				slashObj->GetTransform()->SetParent(GetTransform());
 				auto slash = slashObj->AddComponent<BaseSlash>();
 				slash->damage = sable->attack3.damage;
@@ -1557,11 +1560,11 @@ void Gundam::Step(bool stepBtm, const Vector2& moveAxis)
 			auto cameraTrs = GetCameraTransform();
 
 			// カメラの方向から、X-Z単位ベクトル(正規化)を取得
-			Vector3 cameraForward = cameraTrs->Forward() * Vector3(1, 0, 1).Normalized();
+			Vector3 cameraForward = Vector3::Normalize(cameraTrs->Forward() * Vector3(1, 0, 1));
 			Vector3 moveFoward = cameraForward * moveAxis.y + cameraTrs->Right() * moveAxis.x;
 
-			Vector3 perendicular = Vector3::Cross(moveFoward.Normalized(), GetTransform()->Forward());
-			float dot = Vector3::Dot(moveFoward.Normalized(), GetTransform()->Forward());
+			Vector3 perendicular = Vector3::Cross(moveFoward, GetTransform()->Forward());
+			float dot = Vector3::Dot(moveFoward, GetTransform()->Forward());
 			// サーベル攻撃状態をだった場合
 			if (sable->isNow)
 			{
@@ -1605,7 +1608,7 @@ void Gundam::Step(bool stepBtm, const Vector2& moveAxis)
 	if (moveParamater.step.isNow)
 	{
 
-		GetTransform()->position += moveParamater.step.speed * moveParamater.step.direction * Time::DeltaTime();
+		GetTransform()->position += moveParamater.step.direction * moveParamater.step.speed * Time::DeltaTime();
 		boostParamater.current -= moveParamater.step.useEnergy * Time::DeltaTime();
 		if (anim->time >= anim->GetAnimationClip()->totalTime)
 		{
@@ -1786,7 +1789,7 @@ void Gundam::Respon(const Vector3& removePos, float hpCut)
 	renderer->enabled = true;
 
 	// ターゲットの方向を取得
-	Vector3 directionToTarget = Vector3(GetTargetMs()->GetTransform()->position - GetTransform()->position).Normalized();
+	Vector3 directionToTarget = Vector3::Normalize(GetTargetMs()->GetTransform()->position - GetTransform()->position);
 	Quaternion rot = Quaternion::LookRotation(directionToTarget);
 	// 相手の逆方向を向く
 	GetTransform()->rotation = Quaternion::LookRotation(directionToTarget * Vector3(1, 0, 1));

@@ -3,7 +3,7 @@
 */
 #ifndef TITLESCENE_H_INCLUDED
 #define TITLESCENE_H_INCLUDED
-#include "../FGEngine.h"
+#include "FGEngine.h"
 using namespace FGEngine::SceneSystem;
 
 /**

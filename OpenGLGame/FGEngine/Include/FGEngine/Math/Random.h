@@ -7,7 +7,7 @@
 namespace FGEngine
 {
 	/**
-	* ƒ‰ƒ“ƒ_ƒ€ŠÖ”‚ğŠÇ—
+	* —”‚ğ¶¬‚·‚é
 	*/
 	struct Random
 	{

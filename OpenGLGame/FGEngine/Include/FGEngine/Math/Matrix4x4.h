@@ -166,6 +166,8 @@ namespace FGEngine
 		*/
 		static Matrix4x4 Orthogonal(float left, float right, float bottom, float top, float zNear, float zFar);
 
+		static Matrix4x4 Perspective(float fov, float aspect, float zNear, float zFar);
+
 	public:
 
 		float num00;

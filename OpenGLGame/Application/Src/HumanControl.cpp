@@ -28,7 +28,7 @@ void HumanControl::Start()
 	{
 		// 自身の情報背景を作成
 		{
-			auto myInfoBack = Instantate("MysInfo", Vector3(-725, 330, 0));
+			auto myInfoBack = Instantate("MysInfo", Vector3(-725, 330, 0), Quaternion::identity);
 			imgMyInfoBack = myInfoBack->AddComponent<Image>();
 			imgMyInfoBack->texture = resManager->GetTexture("PlayerInfo");
 			imgMyInfoBack->size = Vector2(imgMyInfoBack->texture->GetWidth() * 1.4f,
@@ -36,21 +36,21 @@ void HumanControl::Start()
 		}
 		// 自身の機体の体力を作成
 		{
-			auto myMsHp = Instantate("MyMsHp", Vector3(-670, 280, 0));
+			auto myMsHp = Instantate("MyMsHp", Vector3(-670, 280, 0), Quaternion::identity);
 			inMyMsHp = myMsHp->AddComponent<ImageNum>();
 			inMyMsHp->space = -70;
 			inMyMsHp->scale = 1.35f;
 		}
 		// ブーストバーの背景を作成
 		{
-			auto boostBarBack = Instantate("BoostBarBack", Vector3(250, 450, 0));
+			auto boostBarBack = Instantate("BoostBarBack", Vector3(250, 450, 0), Quaternion::identity);
 			imgBoostBarBack = boostBarBack->AddComponent<Image>();
 			imgBoostBarBack->texture = resManager->GetTexture("BoostBarBack");
 			imgBoostBarBack->size = imgBoostBarBack->texture->GetSize() * 1.2f;
 		}
 		// ブーストバーのオーバーヒートを作成
 		{
-			auto boostBarOverHeat = Instantate("BoosetBarOverHeat", Vector3(245, 435, 0));
+			auto boostBarOverHeat = Instantate("BoosetBarOverHeat", Vector3(245, 435, 0), Quaternion::identity);
 			imgBoostBarOverHeat = boostBarOverHeat->AddComponent<Image>();
 			imgBoostBarOverHeat->texture = resManager->GetTexture("BoostBarOVERHEAT");
 			imgBoostBarOverHeat->size = imgBoostBarOverHeat->texture->GetSize() * 1.2f;
@@ -61,7 +61,7 @@ void HumanControl::Start()
 		}
 		// ブーストバーを作成
 		{
-			auto boostBar = Instantate("BoostBar", Vector3(245, 435, 0));
+			auto boostBar = Instantate("BoostBar", Vector3(245, 435, 0), Quaternion::identity);
 			imgBoostBar = boostBar->AddComponent<Image>();
 			imgBoostBar->texture = resManager->GetTexture("BoostBar");
 			imgBoostBar->size = imgBoostBar->texture->GetSize() * 1.2f;
@@ -69,14 +69,14 @@ void HumanControl::Start()
 		}
 		// 覚醒バーの背景を作成
 		{
-			auto burstBarBack = Instantate("burstBarBack", Vector3(-250, 450, 0));
+			auto burstBarBack = Instantate("burstBarBack", Vector3(-250, 450, 0), Quaternion::identity);
 			imgBurstBarBack = burstBarBack->AddComponent<Image>();
 			imgBurstBarBack->texture = resManager->GetTexture("BurstBarBack");
 			imgBurstBarBack->size = imgBurstBarBack->texture->GetSize() * 1.2f;
 		}
 		// 覚醒バーを作成
 		{
-			auto burstBar = Instantate("burstBar", Vector3(-253, 428, 0));
+			auto burstBar = Instantate("burstBar", Vector3(-253, 428, 0), Quaternion::identity);
 			imgBurstBar = burstBar->AddComponent<Image>();
 			imgBurstBar->texture = resManager->GetTexture("BurstBar");
 			imgBurstBar->size = imgBurstBar->texture->GetSize() * 1.2f;
@@ -95,7 +95,7 @@ void HumanControl::Start()
 				{
 					// 武器アイコンの背景
 					{
-						auto weaponBack = Instantate("WeaponBack" + std::to_string(i), Vector3(765.0f, 400.0f + (-160.0f * i), 0));
+						auto weaponBack = Instantate("WeaponBack" + std::to_string(i), Vector3(765.0f, 400.0f + (-160.0f * i), 0), Quaternion::identity);
 						auto image = weaponBack->AddComponent<Image>();
 						image->texture = resManager->GetTexture("WeaponBack");
 						image->size = image->texture->GetSize() * 1.3f;
@@ -103,7 +103,7 @@ void HumanControl::Start()
 					}
 					// 武器の残弾
 					{
-						auto weaponAmo = Instantate("WeapnAmo" + std::to_string(i), Vector3(715.0f, 410.0f + (-160.0f * i), 0));
+						auto weaponAmo = Instantate("WeapnAmo" + std::to_string(i), Vector3(715.0f, 410.0f + (-160.0f * i), 0), Quaternion::identity);
 						auto imageNum = weaponAmo->AddComponent<ImageNum>();
 						imageNum->scale = 0.8f;
 						imageNum->space = -45;
@@ -111,7 +111,7 @@ void HumanControl::Start()
 					}
 					// 武器の残弾バー
 					{
-						auto weaponAmoBar = Instantate("WeapnAmoBar" + std::to_string(i), Vector3(665.0f, 448.0f + (-160 * i), 0));
+						auto weaponAmoBar = Instantate("WeapnAmoBar" + std::to_string(i), Vector3(665.0f, 448.0f + (-160 * i), 0), Quaternion::identity);
 						auto image = weaponAmoBar->AddComponent<Image>();
 						image->texture = resManager->GetTexture("WeaponBar");
 						image->size = image->texture->GetSize() * 1.3f;
@@ -119,7 +119,7 @@ void HumanControl::Start()
 					}
 					// 武器のアイコン
 					{
-						auto weaponIcon = Instantate(x->name, Vector3(830, 410 + (-160.0f * i), 0));
+						auto weaponIcon = Instantate(x->name, Vector3(830, 410 + (-160.0f * i), 0), Quaternion::identity);
 						auto image = weaponIcon->AddComponent<Image>();
 						image->texture = x->iconTexture;
 						image->size = image->texture->GetSize() * 1.3f;
@@ -134,7 +134,7 @@ void HumanControl::Start()
 		{
 			// パートナー機体体力背景
 			{
-				auto myPartnerMsHp = Instantate("PartnerMsHp", Vector3(-820, 110, 0));
+				auto myPartnerMsHp = Instantate("PartnerMsHp", Vector3(-820, 110, 0), Quaternion::identity);
 				imgPartnerHpBack = myPartnerMsHp->AddComponent<Image>();
 				imgPartnerHpBack->texture = resManager->GetTexture("PartnerHpBack");
 				imgPartnerHpBack->size = imgPartnerHpBack->texture->GetSize() * 1.2f;
@@ -142,7 +142,7 @@ void HumanControl::Start()
 
 			// 味方体力
 			{
-				auto myTeumOtherMsHp = Instantate("PartnerMsHp", Vector3(-770, 100, 0));
+				auto myTeumOtherMsHp = Instantate("PartnerMsHp", Vector3(-770, 100, 0), Quaternion::identity);
 				inPartnerMsHp = myTeumOtherMsHp->AddComponent<ImageNum>();
 				inPartnerMsHp->space = -40;
 				inPartnerMsHp->scale = 0.7f;
@@ -151,14 +151,14 @@ void HumanControl::Start()
 
 			// 味方機体の情報を作成
 			{
-				auto myTeumOtherMsInfo = Instantate("MyTeumOtherMsInfo", Vector3(120, -70, 0));
+				auto myTeumOtherMsInfo = Instantate("MyTeumOtherMsInfo", Vector3(120, -70, 0), Quaternion::identity);
 				imgMyTeumOtherMsInfo = myTeumOtherMsInfo->AddComponent<Image>();
 				imgMyTeumOtherMsInfo->texture = resManager->GetTexture("MyTeumOtherMsInfo");
 				imgMyTeumOtherMsInfo->size = imgMyTeumOtherMsInfo->texture->GetSize();
 			}
 			// 味方機体の体力バーを作成
 			{
-				auto myTeumOtherMsHpBar = Instantate("MyTeumOtherMsHpBar", Vector3(162, -75, 0));
+				auto myTeumOtherMsHpBar = Instantate("MyTeumOtherMsHpBar", Vector3(162, -75, 0), Quaternion::identity);
 				imgMyTeumOtherMsHpBar = myTeumOtherMsHpBar->AddComponent<Image>();
 				imgMyTeumOtherMsHpBar->texture = resManager->GetTexture("MyTeumOtherMsHpBar");
 				imgMyTeumOtherMsHpBar->size = imgMyTeumOtherMsHpBar->texture->GetSize();
@@ -182,7 +182,7 @@ void HumanControl::Start()
 		{
 			// ターゲットの情報を作成
 			{
-				auto targetMark = Instantate("OtherTeumMsInfo" + std::to_string(i), Vector3(120, -70, 0));
+				auto targetMark = Instantate("OtherTeumMsInfo" + std::to_string(i), Vector3(120, -70, 0), Quaternion::identity);
 				auto imgOtherTeumMsInfo = targetMark->AddComponent<Image>();
 				imgOtherTeumMsInfo->texture = resManager->GetTexture("OtherTeumMsInfo");
 				imgOtherTeumMsInfo->size = imgOtherTeumMsInfo->texture->GetSize();
@@ -190,7 +190,7 @@ void HumanControl::Start()
 			}
 			// ターゲットの体力バーを作成
 			{
-				auto otherMsHpBar = Instantate("OtherTeumMsHpBar" + std::to_string(i), Vector3(162, -75, 0));
+				auto otherMsHpBar = Instantate("OtherTeumMsHpBar" + std::to_string(i), Vector3(162, -75, 0), Quaternion::identity);
 				auto imgOtherMsHpBar = otherMsHpBar->AddComponent<Image>();
 				imgOtherMsHpBar->texture = resManager->GetTexture("OtherTeumMsHpBar");
 				imgOtherMsHpBar->size = imgOtherMsHpBar->texture->GetSize();
@@ -430,7 +430,7 @@ void HumanControl::UIUpdate()
 		if (!otherMs->IsDeath())
 		{
 			// MSの方向を調べる
-			Vector3 directionToTarget = Vector3(otherMs->GetTransform()->position - myCamera->GetTransform()->position).Normalized();
+			Vector3 directionToTarget = Vector3::Normalize(otherMs->GetTransform()->position - myCamera->GetTransform()->position);
 			float dot = Vector3::Dot(directionToTarget, myCamera->GetTransform()->Forward());
 			if (dot > 0.4f)
 			{
@@ -558,7 +558,7 @@ void HumanControl::UIUpdate()
 		if (!otherMs->IsDeath())
 		{
 			// MSの方向を調べる
-			Vector3 directionToTarget = Vector3(otherMs->GetTransform()->position - myCamera->GetTransform()->position).Normalized();
+			Vector3 directionToTarget = Vector3::Normalize(otherMs->GetTransform()->position - myCamera->GetTransform()->position);
 			float dot = Vector3::Dot(directionToTarget, myCamera->GetTransform()->Forward());
 			if (dot > 0.4f)
 			{

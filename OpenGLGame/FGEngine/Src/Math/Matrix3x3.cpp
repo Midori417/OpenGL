@@ -2,8 +2,8 @@
 * @file Matrix3x3.cpp
 */
 #include "FGEngine/Math/Matrix3x3.h"
-#include "FGEngine/Math/Vector3.h"
 #include "FGEngine/Math/Matrix4x4.h"
+#include "FGEngine/Math/Vector3.h"
 
 namespace FGEngine
 {

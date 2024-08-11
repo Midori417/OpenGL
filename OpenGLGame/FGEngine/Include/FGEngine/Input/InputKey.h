@@ -3,78 +3,64 @@
 */
 #ifndef FGENGINE_INPUTKEY_H_INCLUDED
 #define FGENGINE_INPUTKEY_H_INCLUDED
-#include <vector>
+#include "FGEngine/SystemFrd.h"
+#include "KeyCode.h"
 
-// 先行宣言
-struct GLFWwindow;
-
-namespace FGEngine
+namespace FGEngine::InputSystem
 {
-	// 先行宣言
-	enum class KeyCode;
-
 	/**
 	* キーボード入力
-	* 入力管理クラスのみ生成したいのでコンストラクタはprivate
 	*/
 	class InputKey
 	{
-		friend class InputManager;
-	private:
+	public:
 
-		/**
-		* デフォルトコンストラクタ
-		*/
+		friend InputSystem::InputManager;
+
+		// コンストラクタ・デストラクタ
 		InputKey() = default;
+		~InputKey() = default;
 
 	private:
-
-		/**
-		* キー入力を初期化
-		* 
-		* @retval 0		初期化成功
-		* @retval 0以外	初期化失敗
-		*/
-		int Initialize();
 
 		/**
 		* キーボードの状態を更新
-		*
+		* 
 		* @param window ウィンドウオブジェクト
 		*/
-		void Update(GLFWwindow* window);
+		static void Update(GLFWwindow* window);
 
-	private:
+	public:
 
 		/**
 		* キーが押されているかを取得
 		*
-		* @param keyCode 対応しているキー
+		* @param keyCod	対応しているキー
 		*
 		* @retval true	押している
 		* @retval false	押していない
 		*/
-		bool GetKey(KeyCode keyCode) const;
+		static bool GetKey(KeyCode keyCode);
 
 		/**
 		* キーが上がったかを取得
 		*
-		* @param keyCode 対応しているキー
+		* @param keyCod	対応しているキー
 		*
 		* @retval true	押しあがっている
 		* @retval false	押し上げっていない
 		*/
-		bool GetKeyUp(KeyCode keyCode) const;
+		static bool GetKeyUp(KeyCode keyCode);
 
 		/**
 		* キーが下がったかを取得
 		*
-		* @param keyCode 対応しているキー
+		* @param keyCod	対応しているキー
 		*
 		* @retval true	押し下がった
 		* @retval false	押し下がっていない
 		*/
-		bool GetKeyDown(KeyCode keyCode) const;
+		static bool GetKeyDown(KeyCode keyCode);
 
 		/**
 		* 何かしらのキーが押されているか取得
@@ -82,7 +68,7 @@ namespace FGEngine
 		* @retval true 押されている
 		* @retval false 押されていない
 		*/
-		bool AnyKey() const;
+		static bool AnyKey();
 
 	private:
 
@@ -108,11 +94,12 @@ namespace FGEngine
 			bool on = false;
 		};
 
+
 		// キーの状態配列
-		std::vector<KeyState> keyState;
+		static KeyState keyState[(int)KeyCode::Max];
 
 		// 何かしらのキーが押されていたらtrue:何も押されていなければfasle
-		bool isAnyKey = false;
+		static bool anyKey;
 	};
 }
 

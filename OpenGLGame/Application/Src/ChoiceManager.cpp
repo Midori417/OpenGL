@@ -21,7 +21,7 @@ void ChoiceManager::Start()
 
 	// バトルボタンを作成
 	{
-		auto battleButton = Instantate("BattleButton", Vector3(baseX, -200, 0));
+		auto battleButton = Instantate("BattleButton", Vector3(baseX, -200, 0), Quaternion::identity);
 		auto image = battleButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("BattleButton");
 		image->size = image->texture->GetSize() * 1.3f;
@@ -30,7 +30,7 @@ void ChoiceManager::Start()
 
 	// オプションボタンを作成
 	{
-		auto optionButton = Instantate("OptionButton", Vector3(baseX + spaceX, 0, 0));
+		auto optionButton = Instantate("OptionButton", Vector3(baseX + spaceX, 0, 0), Quaternion::identity);
 		auto image = optionButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("OptionButton");
 		image->size = image->texture->GetSize() * 1.3f;
@@ -39,7 +39,7 @@ void ChoiceManager::Start()
 
 	// やめるボタンを作成
 	{
-		auto exitButton = Instantate("ExitButton", Vector3(baseX + spaceX * 2, 200, 0));
+		auto exitButton = Instantate("ExitButton", Vector3(baseX + spaceX * 2, 200, 0), Quaternion::identity);
 		auto image = exitButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("ExitButton");
 		image->size = image->texture->GetSize() * 1.3f;

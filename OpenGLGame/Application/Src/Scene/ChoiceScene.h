@@ -3,7 +3,7 @@
 */
 #ifndef CHOICESCENE_H_INCLUDED
 #define CHOICESCENE_H_INCLUDED
-#include "../FGEngine.h"
+#include "FGEngine.h"
 using namespace FGEngine::SceneSystem;
 
 /**
