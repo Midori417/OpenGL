@@ -3,10 +3,10 @@
 */
 #ifndef FGENGINE_DRAWPARAMS_H_INCLUDED
 #define FGENGINE_DRAWPARAMS_H_INCLUDED
+#include "FGEngine/BufferAndVAO/BufferAndVAOFrd.h"
 #include "FGEngine/Package/Glad.h"
-#include "VertexArrayObject.h"
 
-namespace FGEngine::RenderingSystem
+namespace FGEngine
 {
 	/**
 	* •`‰æƒpƒ‰ƒ[ƒ^

@@ -9,7 +9,7 @@ using namespace FGEngine;
 /**
 * ロックオンカメラ
 */
-class LookOnCamera : public MonoBehaviour
+class LookOnCamera : public GameEvent
 {
 public:
 

@@ -8,8 +8,8 @@
 #include "FGEngine/Asset/GltfFile.h"
 #include "FGEngine/Asset/Shader.h"
 #include "FGEngine/Asset/StaticMesh.h"
-#include "FGEngine/Buffer/GltfFileBuffer.h"
-#include "FGEngine/Buffer/MeshBuffer.h"
+#include "FGEngine/BufferAndVAO/GltfFileBuffer.h"
+#include "FGEngine/BufferAndVAO/MeshBuffer.h"
 
 namespace FGEngine
 {

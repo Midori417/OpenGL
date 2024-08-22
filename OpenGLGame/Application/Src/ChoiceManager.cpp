@@ -5,8 +5,6 @@
 #include "FadeOut.h"
 using namespace FGEngine::InputSystem;
 using namespace FGEngine::WindowSystem;
-using namespace FGEngine::SceneSystem;
-using namespace FGEngine::ResouceSystem;
 
 /**
 * 最初に実行
@@ -14,7 +12,7 @@ using namespace FGEngine::ResouceSystem;
 void ChoiceManager::Start()
 {
 	// リソースシステムを取得
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 
 	float baseX = -570;
 	float spaceX = 100;

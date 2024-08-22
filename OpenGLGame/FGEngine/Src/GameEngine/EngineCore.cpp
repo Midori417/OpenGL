@@ -9,8 +9,7 @@
 #include "FGEngine/Audio/SoundManager.h"
 #include "FGEngine/Scene/SceneManager.h"
 #include "FGEngine/Input/InputManager.h"
-#include "FGEngine/ObjectManager.h"
-#include "FGEngine/Asset/ResouceManager.h"
+#include "FGEngine/Asset/AssetManager.h"
 #include "FGEngine/Audio/EasyAudio.h"
 #include "../../../Application/Src/Application.h"
 #include "FGEngine/Time.h"
@@ -134,16 +133,13 @@ namespace FGEngine::MainSystem
 		physicsEngine = PhysicsSystem::PhysicsEngine::GetInstance();
 
 		// リソースマネージャー
-		resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		resouceManager = AssetManager::GetInstance();
 
 		// シーンマネージャー
-		sceneManager = SceneSystem::SceneManager::GetInstance();
+		sceneManager = SceneManager::GetInstance();
 
 		// インプットマネージャー
 		inputManager = InputSystem::InputManager::GetInstance();
-
-		// オブジェクトマネージャー
-		objectManager = ObjectSystem::ObjectManager::GetInstance();
 
 		// サウンドマネージャー
 		soundManager = SoundSystem::SoundManager::GetInstance();
@@ -168,9 +164,6 @@ namespace FGEngine::MainSystem
 
 		// レンダリングエンジンーを初期化
 		renderingEngine->Initialize();
-
-		// オブジェクトマネージャーを初期化
-		objectManager->Initialize();
 
 		// アプリケーションを初期化
 		application->Initialize();
@@ -206,9 +199,6 @@ namespace FGEngine::MainSystem
 
 		// シーンマネージャーを更新
 		sceneManager->Update();
-
-		// オブジェクトマネージャを更新
-		objectManager->Update();
 
 		// レンダリングエンジンを更新
 		renderingEngine->Update();

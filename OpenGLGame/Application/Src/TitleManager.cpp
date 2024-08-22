@@ -4,7 +4,6 @@
 #include "TitleManager.h"
 #include "FadeOut.h"
 using namespace FGEngine::InputSystem;
-using namespace FGEngine::SceneSystem;
 
 /**
 * Å‰‚ÉÀs

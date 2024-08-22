@@ -2,7 +2,6 @@
 * @file FadeOut.cpp
 */
 #include "FadeOut.h"
-using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
 
 /**
@@ -44,7 +43,7 @@ void FadeOut::Start()
 {
 	// イメージコンポーネントを追加
 	image = OwnerObject()->AddComponent<Image>();
-	image->texture = ResouceManager::GetInstance()->GetTexture("white");
+	image->texture = AssetManager::GetInstance()->GetTexture("white");
 	image->color = Color::black;
 	image->size = WindowManager::GetInstance()->GetWindowSize();
 

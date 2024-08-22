@@ -27,8 +27,6 @@ namespace FGEngine::WindowSystem
 
 	public:
 
-
-
 		// ƒRƒs[‚Æ‘ã“ü‚ğ‹Ö~
 		WindowManager(const WindowManager&) = delete;
 		WindowManager& operator=(const WindowManager&) = delete;

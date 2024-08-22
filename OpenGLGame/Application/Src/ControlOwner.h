@@ -19,7 +19,7 @@ using GameInputPtr = std::shared_ptr<GameInput>;
 /**
 * ‘€ì
 */
-class ControlOwner : public MonoBehaviour
+class ControlOwner : public GameEvent
 {
 public:
 

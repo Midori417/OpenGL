@@ -12,11 +12,9 @@ namespace FGEngine
 	*/
 	class Rigidbody : public Component
 	{
-	public:
-
 		friend PhysicsSystem::PhysicsEngine;
-		friend ObjectSystem::ObjectManager;
-
+		friend Scene;
+	public:
 		// コンストラクタ・デストラクタ
 		Rigidbody() = default;
 		virtual ~Rigidbody() = default;

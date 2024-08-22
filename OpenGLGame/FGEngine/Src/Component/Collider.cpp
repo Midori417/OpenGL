@@ -2,7 +2,8 @@
 * @file Collider.cpp
 */
 #include "FGEngine/Component/Collider.h"
-#include "FGEngine/GameObject.h"
+#include "FGEngine/Component/ComponentHelper.h"
+#include "FGEngine/Component/Rigidbody.h"
 
 namespace FGEngine
 {
@@ -11,8 +12,8 @@ namespace FGEngine
 	*
 	* @return オーナーのRigidbody
 	*/
-	RigidbodyPtr FGEngine::Collider::GetAttachedRigidbody() const
+	RigidbodyPtr Collider::GetAttachedRigidbody() const
 	{
-		return OwnerObject()->rigidbody;
+		return GetComponent<Rigidbody>();
 	}
 }

@@ -13,7 +13,7 @@ using FadeOutPtr = std::shared_ptr<FadeOut>;
 /**
 * 選択シーン管理クラス
 */
-class ChoiceManager : public MonoBehaviour
+class ChoiceManager : public GameEvent
 {
 public:
 

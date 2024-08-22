@@ -4,13 +4,10 @@
 #ifndef FGENGINE_CAMERA_H_INCLUDED
 #define FGENGINE_CAMERA_H_INCLUDED
 #include "Component.h"
+#include "FGEngine/UsingNames/UsingMath.h"
 
 namespace FGEngine
 {
-	// 先行宣言
-	class Camera;
-	using CameraPtr = std::shared_ptr<Camera>;
-
 	/**
 	* カメラコンポーネント
 	*/

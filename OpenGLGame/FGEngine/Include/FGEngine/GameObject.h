@@ -3,40 +3,61 @@
 */
 #ifndef FGENGINE_GAMEOBJECT_H_INCLUDED
 #define FGENGINE_GAMEOBJECT_H_INCLUDED
-#include "Object.h"
+#include "FGEngine/SystemFrd.h"
+#include "FGEngine/UsingNames/UsingGameObject.h"
+#include "FGEngine/UsingNames/UsingComponent.h"
+#include "FGEngine/UsingNames/UsingScene.h"
 #include "FGEngine/Component/Component.h"
-#include "FGEngine/Component/Collider.h"
-#include "FGEngine/Component/MonoBehaviour.h"
-#include "FGEngine/Component/Transform.h"
-#include "FGEngine/Component/Renderer.h"
-#include "FGEngine/Component/Rigidbody.h"
-#include "FGEngine/Component/Animator.h"
-#include "FGEngine/Component/Camera.h"
-#include "FGEngine/Component/AudioListner.h"
-#include "FGEngine/Component/AudioSource.h"
+#include "FGEngine/Component/GameEvent.h"
 #include "FGEngine/Component/ImGuiLayout.h"
+#include <string>
 
 namespace FGEngine
 {
 	/**
-	* ゲームに登場する様々なオブジェクトの基本クラス
+	* ゲームオブジェクトの状態
 	*/
-	class GameObject : public Object
+	enum GameObjectState
 	{
-	public:
-		
-		friend ObjectSystem::ObjectManager;
+		// 通常
+		None,
+
+		// 破棄時間
+		DestroyTime,
+
+		// 破棄
+		Destory,
+	};
+
+	/**
+	* ゲームオブジェクト
+	*/
+	class GameObject 
+	{
+		friend Scene;
 		friend RenderingSystem::RenderingEngine;
 		friend PhysicsSystem::PhysicsEngine;
-		friend Collider;
-
-		// コンストラクタ・デストラクタ
+	public:	// コンストラクタ・デストラクタ
+		
+		/**
+		* デフォルトコンストラクタ
+		*/
 		GameObject() = default;
-		virtual ~GameObject() = default;
 
-		// コピーと代入を禁止
+		/**
+		* デフォルトデストラクタ
+		*/
+		virtual ~GameObject() = default;
+						
+	public:	// 禁止事項
+
+		// コピーを禁止
 		GameObject(GameObject&) = delete;
+
+		// 代入を禁止
 		GameObject& operator=(GameObject&) = delete;
+
+	public:	// コンポーネントの操作
 
 		/**
 		* T型のコンポーネントをゲームオブジェクトに追加
@@ -44,7 +65,7 @@ namespace FGEngine
 		template<class T>
 		std::shared_ptr<T> AddComponent()
 		{
-			// コンポーネントが基底クラスじゃなければnullptrを返す
+			// Tがコンポーネントの基底クラスじゃなければ何もしない
 			if constexpr (!std::is_base_of_v<Component, T>)
 			{
 				return nullptr;
@@ -53,70 +74,66 @@ namespace FGEngine
 			// コンポーネントを作成
 			auto p = std::make_shared<T>();
 
-			// 親オブジェクトを設定
+			// コンポーネントの所有者を設定
 			p->ownerObject = gameObject;
 
-			// 名前を設定
-			p->SetName(ToString());
-
-			// Transformが基底クラスの場合
+			// Tがトランスフォームの基底クラスの場合
 			if constexpr (std::is_base_of_v<Transform, T>)
 			{
 				transform = p;
 			}
 
-			// Colliderが基底クラスの場合
-			if constexpr (std::is_base_of_v<Collider, T>)
-			{
-				colliders.push_back(p);
-			}
-
-			// MonoBehaviourが基底クラスの場合
-			if constexpr (std::is_base_of_v<MonoBehaviour, T>)
-			{
-				monoBehaviours.push_back(p);
-				// 生成処理を実行
-				monoBehaviours.back()->Awake();
-			}
-
-			if constexpr (std::is_base_of_v<AudioSource, T>)
-			{
-				audioSources.push_back(p);
-				audioSources.back()->Awake();
-			}
-
-
-			// Rendererが基底クラスの場合
+			// Tがレンダラーコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Renderer, T>)
 			{
 				renderer = p;
 			}
 
-			// Rigidbodyが基底クラスの場合
+			// Tがリジッドボディコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Rigidbody, T>)
 			{
 				rigidbody = p;
 			}
-			// Cameraが基底クラスの場合
+
+			// Tがカメラコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Camera, T>)
 			{
 				camera = p;
 			}
-			// Animatorが基底クラスの場合
+
+			// Tがアニメータコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Animator, T>)
 			{
 				animator = p;
 			}
 
-			// ImGuiLayoutが基底クレスの場合
+			// TがimGUIコンポーネントの基底クラス
 			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
 			{
 				imGuiLayout = p;
 			}
 
-			// コンポーネント配列に登録
-			components.push_back(p);
+			// Tがコライダーコンポーネントの基底クラスの場合
+			if constexpr (std::is_base_of_v<Collider, T>)
+			{
+				colliders.push_back(p);
+			}
 
+			// Tがゲームイベントの基底クラスの場合
+			if constexpr (std::is_base_of_v<GameEvent, T>)
+			{
+				gameEvents.push_back(p);
+				// 生成イベント実行
+				gameEvents.back()->Awake();
+			}
+
+			// Tがオウディオコンポーネントの基底クラスの場合
+			if constexpr (std::is_base_of_v<AudioSource, T>)
+			{
+				audioSources.push_back(p);
+			}
+
+			// 作成したコンポーネントを追加
 			return p;
 		}
 
@@ -126,55 +143,88 @@ namespace FGEngine
 		template<class T>
 		std::shared_ptr<T> GetComponent() const
 		{
-			// コンポーネントが基底クラスじゃなければnullptrを返す
+			// Tがコンポーネントの基底クラスじゃなければ何もしない
 			if constexpr (!std::is_base_of_v<Component, T>)
 			{
 				return nullptr;
 			}
-			// Transformが基底クラスの場合
+
+			// Tがトランスフォームの基底クラスの場合
 			if constexpr (std::is_base_of_v<Transform, T>)
 			{
-				return transform;
+				return std::dynamic_pointer_cast<T>(transform);
 			}
-			// Rendererが基底クラスの場合
+
+			// Tがレンダラーコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Renderer, T>)
 			{
-				return renderer;
+				return std::dynamic_pointer_cast<T>(renderer);
 			}
 
-			// Rigidbodyが基底クラスの場合
+			// Tがリジッドボディコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Rigidbody, T>)
 			{
-				return rigidbody;
+				return std::dynamic_pointer_cast<T>(rigidbody);
 			}
-			// Cameraが基底クラスの場合
+
+			// Tがカメラコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Camera, T>)
 			{
-				return camera;
+				return std::dynamic_pointer_cast<T>(camera);
 			}
-			// Animatorが基底クラスの場合
+
+			// Tがアニメータコンポーネントの基底クラスの場合
 			if constexpr (std::is_base_of_v<Animator, T>)
 			{
-				return animator;
+				return std::dynamic_pointer_cast<T>(animator);
 			}
 
-			// ImGuiLayoutが基底クラスの場合
+			// TがimGUIコンポーネントの基底クラス
 			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
 			{
-				return imGuiLayout;
+				return std::dynamic_pointer_cast<T>(imGuiLayout);
 			}
 
-			for (auto& e : components)
+			// Tがコライダーコンポーネントの基底クラスの場合
+			if constexpr (std::is_base_of_v<Collider, T>)
 			{
-				// T型にアップキャストしている場合取得する
-				auto p = std::dynamic_pointer_cast<T>(e);
-				if (p)
+				for (auto& x : colliders)
 				{
-					// 見つかったコンポーネント
-					return p;
+					auto p = std::dynamic_pointer_cast<T>(x);
+					if (p)
+					{
+						return p;
+					}
 				}
 			}
-			// 見つかなかった
+
+			// Tがゲームイベントコンポーネントの基底クラスの場合
+			if constexpr (std::is_base_of_v<GameEvent, T>)
+			{
+				for (auto& x : gameEvents)
+				{
+					auto p = std::dynamic_pointer_cast<T>(x);
+					if (p)
+					{
+						return p;
+					}
+				}
+			}
+
+			// Tがオウディオコンポーネントの基底クラスの場合
+			if constexpr (std::is_base_of_v<AudioSource, T>)
+			{
+				for (auto& x : audioSources)
+				{
+					auto p = std::dynamic_pointer_cast<T>(x);
+					if (p)
+					{
+						return p;
+					}
+				}
+			}
+
+			// コンポーネントが見つからなかった
 			return nullptr;
 		}
 
@@ -184,27 +234,45 @@ namespace FGEngine
 		template<class T>
 		void RemoveComponent() const
 		{
-			// コンポーネントが基底クラスじゃなければnullptrを返す
-			if constexpr (!std::is_base_of_v<Component, T>)
+			auto p = GetComponent<T>();
+
+			// 取得したコンポーネントを破棄予定にする
+			if (p)
 			{
-				return nullptr;
+				p->isDestroyed = true;
 			}
-
-
-			// コンポーネントを取得
-			auto com = GetComponent<T>();
-
-			// 破棄予定にする
-			Destory(com);
 		}
+
+	public:
+
+		/**
+		* ゲームオブジェクトの状態を取得
+		*/
+		GameObjectState GetState() const;
+
+		/**
+		* シーンを取得
+		*/
+		Scene* GetScene() const;
 
 		/**
 		* トランスフォームコンポーネントを取得
 		*/
-		TransformPtr GetTransform() const
-		{
-			return transform;
-		}
+		TransformPtr GetTransform() const;
+
+		/**
+		* ゲームオブジェクトを破棄する
+		* 
+		* @param destroyTime 破棄までの時間
+		*/
+		void Destroy(float destroyTime = 0);
+
+	private:
+
+		/**
+		* クローンしたゲームオブジェクトを取得する
+		*/
+		static GameObjectPtr CloneGameObject(const GameObjectPtr& object, const TransformPtr& transform = nullptr);
 
 	private:
 
@@ -215,26 +283,30 @@ namespace FGEngine
 
 	public:
 
+		// オブジェクトの名前
+		std::string name = "GameObject";
+
 		// オブジェクトが有効かどうか
 		bool isActive = true;
 
 		// タグ
-		std::string tag = "Untagged";
-
+		std::string tag = "None";
 
 	private:
 
 		// 自身を管理するポインター
-		GameObjectPtr gameObject;
+		std::weak_ptr<GameObject> gameObject;
 
-		// コンポーネント配列
-		std::vector<ComponentPtr> components;
+		// 自身を管理するシーン
+		Scene* ownerScene;
 
-		// コライダー配列
-		std::vector<ColliderPtr> colliders;
+		// 状態
+		GameObjectState state = GameObjectState::None;
 
-		// 	モノビヘイビア配列
-		std::vector<MonoBehaviourPtr> monoBehaviours;
+		// 破棄までの時間
+		float destroyTime = 0;
+
+	private:	// コンポーネント変数
 
 		// トランスフォームコンポーネントポインター
 		TransformPtr transform;
@@ -254,9 +326,14 @@ namespace FGEngine
 		// UIレイアウトコンポーネントポインター
 		UI::ImGuiLayoutPtr imGuiLayout;
 
+		// コライダー配列
+		std::vector<ColliderPtr> colliders;
+
+		// 	ゲームイベント配列
+		std::vector<GameEventPtr> gameEvents;
+
 		// AudioSourceコンポーネント配列
 		std::vector<AudioSourcePtr> audioSources;
 	};
-	using GameObjectList = std::vector<GameObjectPtr>;
 }
 #endif // !FGENGINE_GAMOBJECYT_H_INCLUDED

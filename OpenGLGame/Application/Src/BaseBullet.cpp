@@ -23,7 +23,7 @@ void BaseBullet::Awake()
 /**
 * 他のコリジョンに触れたときに実行
 */
-void BaseBullet::OnTriggerEnter(const CollisionPtr other)
+void BaseBullet::OnCollisionEnter(const CollisionPtr other)
 {
 	auto obj = other->GetGameObject();
 
@@ -36,7 +36,7 @@ void BaseBullet::OnTriggerEnter(const CollisionPtr other)
 	if (obj->tag == "Ground" || obj->tag == "Wall")
 	{
 		// 自身を削除
-		Destroy(OwnerObject());
+		OwnerObject()->Destroy();
 		return;
 	}
 
@@ -61,7 +61,7 @@ void BaseBullet::OnTriggerEnter(const CollisionPtr other)
 		ms->Damage(damageInfo);
 
 		// 自身を削除
-		Destroy(OwnerObject());
+		OwnerObject()->Destroy();
 	}
 
 }

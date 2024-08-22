@@ -6,7 +6,7 @@
 #include "FGEngine.h"
 using namespace FGEngine;
 
-class ImageBlinking : public MonoBehaviour
+class ImageBlinking : public GameEvent
 {
 public:
 

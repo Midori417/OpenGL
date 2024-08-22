@@ -21,25 +21,15 @@ namespace FGEngine
 		// 描画エンジン
 		class RenderingEngine;
 	}
-	namespace ResouceSystem
-	{
-		// リソース管理クラス
-		class ResouceManager;
-	}
-	namespace SceneSystem
-	{
-		// シーン管理クラス
-		class SceneManager;
-	}
+	// リソース管理クラス
+	class AssetManager;
+	// シーン管理クラス
+	class SceneManager;
+
 	namespace InputSystem
 	{
 		// 入力管理クラス
 		class InputManager;
-	}
-	namespace ObjectSystem
-	{
-		// オブジェクト管理クラス
-		class ObjectManager;
 	}
 	namespace WindowSystem
 	{

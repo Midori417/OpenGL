@@ -3,26 +3,22 @@
 */
 #include "TestScene.h"
 using namespace FGEngine;
-using namespace FGEngine::ObjectSystem;
-using namespace FGEngine::ResouceSystem;
 
 bool TestScene::Initialize()
 {
-	auto objManager = ObjectManager::GetInstance();
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	// 空の画像
 	resManager->LoadTga("Sky", "Application/Res/Map/sky2.tga");
 
 	// カメラの作成
-	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10));
-	camera->AddComponent<Camera>();
-	objManager->SetMainCamera(camera);
-
+	auto camera = CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
+	auto cameraInfo = camera->AddComponent<Camera>();
+	SetMainCameraInfo(cameraInfo);
 
 	// スカイスフィアを設定
 	auto material = std::make_shared<Material>();
 	material->mainTexture = resManager->GetTexture("Sky");
-	skyMaterial = material;
+	skyBoxMaterial = material;
 
 	return 0;
 }

@@ -21,8 +21,7 @@ void HomingBullet::SetTargetMs(BaseMs* targetMs)
 */
 void HomingBullet::Start()
 {
-	// destoryTimeŒã‚Éíœ
-	Destroy(OwnerObject(), destroyTime);
+	OwnerObject()->Destroy(destroyTime);
 
 	// Œ‚‚Á‚½ˆÊ’u‚ðÝ’è
 	basePos = GetTransform()->position;

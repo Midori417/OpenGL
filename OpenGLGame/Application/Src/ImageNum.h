@@ -7,7 +7,7 @@
 using namespace FGEngine;
 using namespace FGEngine::UI;
 
-class ImageNum : public MonoBehaviour
+class ImageNum : public GameEvent
 {
 public:
 

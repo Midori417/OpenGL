@@ -12,10 +12,8 @@ namespace FGEngine
 	*/
 	class AudioSource : public Component
 	{
+		friend Scene;
 	public:
-
-		friend GameObject;
-		friend ObjectSystem::ObjectManager;
 
 		// コンストラクタ・デストラクタ
 		AudioSource() = default;

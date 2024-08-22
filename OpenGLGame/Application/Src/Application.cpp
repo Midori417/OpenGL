@@ -8,8 +8,6 @@
 #include "Scene/ChoiceScene.h"
 #include "Scene/TestScene.h"
 using namespace FGEngine;
-using namespace FGEngine::SceneSystem;
-using namespace FGEngine::ResouceSystem;
 
 /**
 * アプリケーションの初期化
@@ -19,7 +17,7 @@ using namespace FGEngine::ResouceSystem;
 */
 int Application::Initialize()
 {
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 
 	// リソースの読み込み
 	for (int i = 0; i < 10; i++)
@@ -88,8 +86,8 @@ int Application::Initialize()
 	SceneManager::AddScene<BattleMap01Scene>("バトルマップ01シーン");
 
 	// 最初に流すシーン
-	SceneManager::LoadScene("タイトルシーン");
-	//SceneManager::LoadScene("バトル設定シーン");
+	//SceneManager::LoadScene("タイトルシーン");
+	SceneManager::LoadScene("バトル設定シーン");
 
 	//SceneManager::AddScene<TestScene>("テストシーン");
 	//SceneManager::LoadScene("テストシーン");

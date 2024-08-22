@@ -8,11 +8,10 @@
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Asset/StaticMesh.h"
 #include "LightData.h"
-#include "FGEngine/Buffer/FrameBufferObject.h"
+#include "FGEngine/BufferAndVAO/FrameBufferObject.h"
 
 namespace FGEngine
 {
-
 	class GltfFileBuffer;
 }
 
@@ -56,7 +55,7 @@ namespace FGEngine::RenderingSystem
 		/**
 		* カメラに近いライトを選んでGPUメモリーにコピーする
 		*/
-		void UpdateShaderLight();
+		void UpdateShaderLight(const CameraPtr& camera);
 
 		/**
 		* デプスシャドウマップの作成
@@ -66,7 +65,7 @@ namespace FGEngine::RenderingSystem
 		/**
 		* スカイスフィアを描画
 		*/
-		void DrawSkySphere();
+		void DrawSkySphere(const CameraPtr& camera);
 
 	public:
 
@@ -76,7 +75,7 @@ namespace FGEngine::RenderingSystem
 		* @param レンダーコンポーネント範囲の先端
 		* @param レンダーコンポーネント範囲の終端
 		*/
-		void DrawGameObject(std::vector<RendererPtr> rendererList);
+		void DrawGameObject(std::vector<RendererPtr> rendererList, const CameraPtr& camera);
 
 	private:
 

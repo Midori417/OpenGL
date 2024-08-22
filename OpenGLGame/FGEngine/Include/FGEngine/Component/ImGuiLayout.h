@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_IMGUILAYOUT_H_INCLUDED
 #define FGENGINE_IMGUILAYOUT_H_INCLUDED
-#include "Behaviour.h"
+#include "Component.h"
 #include "FGEngine/Math/Vector2.h"
 
 namespace FGEngine::UI
@@ -11,11 +11,10 @@ namespace FGEngine::UI
 	/**
 	* ImGuiを使ったUIの基底クラス
 	*/
-	class ImGuiLayout : public Behaviour 
+	class ImGuiLayout : public Component
 	{
+		friend Scene;
 	public:
-
-		friend ObjectSystem::ObjectManager;
 
 		// コンストラクタ・デストラクタ
 		ImGuiLayout() = default;
@@ -36,6 +35,22 @@ namespace FGEngine::UI
 		virtual void UISetting(){}
 
 	public:
+
+		// オブジェクト状態を設定する
+		virtual void SetEnable(bool value)
+		{
+			enabled = value;
+		}
+
+		bool GetEnabled() const
+		{
+			return enabled;
+		}
+
+	public:
+
+		// 有効であれば更新され、無効であれば更新されません
+		bool enabled = true;
 
 		// UIの横幅
 		float w = 0;

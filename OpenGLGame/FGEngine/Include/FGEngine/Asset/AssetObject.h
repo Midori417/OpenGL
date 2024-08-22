@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_ASSETOBJECT_H_INCLUDED
 #define FGENGINE_ASSETOBJECT_H_INCLUDED
-#include "AssetFrd.h"
+#include "FGEngine/UsingNames/UsingAsset.h"
 #include <string>
 
 namespace FGEngine
@@ -49,8 +49,7 @@ namespace FGEngine
 	protected:
 
 		// オブジェクトの名前
-		std::string name = "AssetObject";
-
+		std::string name = "Object";
 	};
 }
 

@@ -47,28 +47,9 @@
 
 // ===================
 //
-// InputSystem | 入力システム
-//
-// ===================
-
-
-// ===================
-//
-// ObjectSystem | オブジェクトシステム
-//
-// ===================
-
-// オブジェクト管理クラス
-#include "FGEngine/ObjectManager.h"
-
-// ===================
-//
 // Object | オブジェクト関連
 //
 // ===================
-
-// オブジェクト
-#include "FGEngine/Object.h"
 
 // マテリアル
 #include "FGEngine/Asset/Material.h"
@@ -112,11 +93,10 @@
 
 // 物理(剛体)コンポーネント
 #include "FGEngine/Component/Rigidbody.h"
+#include "FGEngine/Component/Camera.h"
 
 // UIレイアウトの基底クラス
 #include "FGEngine/Component/ImGuiLayout.h"
-
-#include "FGEngine/Physics/Collision.h"
 
 // 画像(UI)描画コンポーネント
 #include "FGEngine/Component/Image.h"
@@ -142,8 +122,8 @@
 //
 // ===================
 
-// リソースマネージャー
-#include "FGEngine/Asset/ResouceManager.h"
+// アセットマネージャー
+#include "FGEngine/Asset/AssetManager.h"
 
 // デフォルトシェーダの種類
 #include "FGEngine/Asset/DefalutShader.h"

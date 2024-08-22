@@ -12,7 +12,7 @@ class BaseMs;
 /**
 * 弾の基底クラス
 */
-class BaseBullet : public MonoBehaviour
+class BaseBullet : public GameEvent
 {
 public:
 
@@ -30,7 +30,7 @@ private:
 	/**
 	* 他のコリジョンに触れたときに実行
 	*/
-	virtual void OnTriggerEnter(const CollisionPtr other) override;
+	virtual void OnCollisionEnter(const CollisionPtr other) override;
 
 public:
 

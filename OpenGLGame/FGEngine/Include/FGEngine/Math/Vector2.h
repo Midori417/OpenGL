@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_VECTOR2_H_INCLUDED
 #define FGENGINE_VECTOR2_H_INCLUDED
-#include "MathFrd.h"
+#include "FGEngine/UsingNames/UsingMath.h"
 
 namespace FGEngine
 {

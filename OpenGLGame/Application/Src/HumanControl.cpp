@@ -9,7 +9,6 @@
 #include "BaseWeapon.h"
 #include "Global.h"
 using namespace FGEngine::InputSystem;
-using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
 
 /**
@@ -18,7 +17,7 @@ using namespace FGEngine::WindowSystem;
 void HumanControl::Start()
 {
 	// 必要なマネージャーを取得
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	auto winManager = WindowManager::GetInstance();
 
 	// 初期する
@@ -255,7 +254,7 @@ void HumanControl::Start()
 	// UIを非表示にする
 	{
 		imgMyInfoBack->SetEnable(false);
-		inMyMsHp->SetEnable(false);
+		inMyMsHp->isActive = (false);
 		imgBoostBarBack->SetEnable(false);
 		imgBoostBar->SetEnable(false);
 		imgBoostBarOverHeat->SetEnable(false);
@@ -267,7 +266,7 @@ void HumanControl::Start()
 		}
 		for (auto x : inWeaponAmos)
 		{
-			x->SetEnable(false);
+			x->isActive = (false);
 		}
 		for (auto x : imgWeaponBars)
 		{
@@ -280,7 +279,7 @@ void HumanControl::Start()
 		if (myTeamOtherOwner)
 		{
 			imgPartnerHpBack->SetEnable(false);
-			inPartnerMsHp->SetEnable(false);
+			inPartnerMsHp->isActive = (false);
 			imgMyTeumOtherMsHpBar->SetEnable(false);
 			imgMyTeumOtherMsInfo->SetEnable(false);
 		}
@@ -344,7 +343,7 @@ void HumanControl::ControlStart()
 {
 	// UIを表示
 	imgMyInfoBack->SetEnable(true);
-	inMyMsHp->SetEnable(true);
+	inMyMsHp->isActive = (true);
 	imgBoostBarBack->SetEnable(true);
 	imgBoostBar->SetEnable(true);
 	imgBurstBarBack->SetEnable(true);
@@ -355,7 +354,7 @@ void HumanControl::ControlStart()
 	}
 	for (auto x : inWeaponAmos)
 	{
-		x->SetEnable(true);
+		x->isActive = (true);
 	}
 	for (auto x : imgWeaponBars)
 	{
@@ -368,7 +367,7 @@ void HumanControl::ControlStart()
 	if (inPartnerMsHp)
 	{
 		imgPartnerHpBack->SetEnable(true);
-		inPartnerMsHp->SetEnable(true);
+		inPartnerMsHp->isActive = (true);
 	}
 	imgTargetMark->SetEnable(true);
 	imgTeamHpFrame->SetEnable(true);

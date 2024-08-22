@@ -14,7 +14,7 @@ namespace FGEngine::UI
 	*/
 	void ImGuiLayout::UIUpdate()
 	{
-		auto name = OwnerObject()->ToString();
+		auto name = OwnerObject()->name;
 		Vector3 pos = OwnerObject()->GetTransform()->position;
 
 		Vector2 windowSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();

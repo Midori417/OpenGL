@@ -9,85 +9,90 @@
 
 namespace FGEngine
 {
-	struct Material;
-	using MaterialPtr = std::shared_ptr<Material>;
-
-	namespace SceneSystem
+	namespace MainSystem
 	{
-		/**
-		* シーンを管理するクラス
-		*/
-		class SceneManager : public Singleton<SceneManager>
-		{
-		private:
-			
-			friend Singleton<SceneManager>;
-			friend MainSystem::EngineCore;
-
-			// コンストラクタ
-			SceneManager() = default;
-
-			/**
-			* シーンマネージャーの初期化
-			*
-			* @retval 0		初期化成功
-			* @retval 0以外	初期化失敗
-			*/
-			int Initialize();
-
-			/**
-			* シーンマネージャーの更新
-			*/
-			void Update();
-
-		public:
-
-			/**
-			* シーンを登録する
-			*
-			* @parma name 登録するシーンの名前
-			*/
-			template<typename T>
-			static void AddScene(const std::string& name)
-			{
-				auto tmp = scenes.find(name);
-				if (tmp != scenes.end())
-				{
-					// 既に存在している
-					return;
-				}
-				auto scenePtr = std::make_shared<T>();
-				scenes.emplace(name, scenePtr);
-			}
-
-			/**
-			* シーンをロードする
-			*
-			* @param name ロードするシーンの名前
-			*/
-			static void LoadScene(const std::string& name);
-
-			/**
-			* 現在のシーンを取得
-			*/
-			ScenePtr CurrentScene() const
-			{
-				return scene;
-			}
-
-		private:
-
-			// 実行中のシーン
-			ScenePtr scene;
-
-			// 次のシーン
-			static ScenePtr nextScene;	
-
-			// シーン管理配列
-			static std::unordered_map<std::string, ScenePtr> scenes;
-
-		};
+		class EngineCore;
 	}
+
+	/**
+	* シーンを管理するクラス
+	*/
+	class SceneManager : public Singleton<SceneManager>
+	{
+	private:
+
+		friend Singleton<SceneManager>;
+		friend MainSystem::EngineCore;
+
+		// コンストラクタ
+		SceneManager() = default;
+
+		/**
+		* シーンマネージャーの初期化
+		*
+		* @retval 0		初期化成功
+		* @retval 0以外	初期化失敗
+		*/
+		int Initialize();
+
+		/**
+		* シーンマネージャーの更新
+		*/
+		void Update();
+
+	public:
+
+		/**
+		* シーンを登録する
+		*
+		* @parma name 登録するシーンの名前
+		*/
+		template<typename T>
+		static void AddScene(const std::string& name)
+		{
+			// 名前を検索する
+			auto tmp = scenes.find(name);
+			if (tmp != scenes.end())
+			{
+				// 既に存在している
+				return;
+			}
+
+			// シーンを作成
+			ScenePtr p = std::make_shared<T>();
+			p->name = name;
+			
+			// シーン配列に追加
+			scenes.emplace(name, p);
+		}
+
+		/**
+		* シーンをロードする
+		*
+		* @param name ロードするシーンの名前
+		*/
+		static void LoadScene(const std::string& name);
+
+		/**
+		* 現在のシーンを取得
+		*/
+		ScenePtr CurrentScene() const
+		{
+			return scene;
+		}
+
+	private:
+
+		// 実行中のシーン
+		ScenePtr scene;
+
+		// 次のシーン
+		static ScenePtr nextScene;
+
+		// シーン管理配列
+		static std::unordered_map<std::string, ScenePtr> scenes;
+
+	};
 }
 
 #endif // !SCENEMANAGER_H_INCLUDED

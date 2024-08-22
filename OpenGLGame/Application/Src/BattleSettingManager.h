@@ -15,7 +15,7 @@ using BattleInfoPtr = std::shared_ptr<BattleInfo>;
 /**
 * バトル設定マネージャ
 */
-class BattleSettingManager : public MonoBehaviour
+class BattleSettingManager : public GameEvent
 {
 public:
 

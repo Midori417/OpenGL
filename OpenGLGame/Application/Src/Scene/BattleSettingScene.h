@@ -4,7 +4,7 @@
 #ifndef BATTLESETTINGSCENE_H_INCLUDED
 #define BATTLESETTINGSCENE_H_INCLUDED
 #include "FGEngine.h"
-using namespace FGEngine::SceneSystem;
+using namespace FGEngine;
 
 /**
 * バトル設定シーン

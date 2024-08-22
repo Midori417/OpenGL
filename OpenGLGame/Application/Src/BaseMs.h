@@ -16,7 +16,7 @@ using UIWeaponPtr = std::shared_ptr<UIWeapon>;
 /**
 * MS‚ÌŠî’êƒNƒ‰ƒX
 */
-class BaseMs : public MonoBehaviour
+class BaseMs : public GameEvent
 {
 public:
 

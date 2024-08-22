@@ -5,7 +5,7 @@
 #include "HomingBullet.h"
 #include "BaseSlash.h"
 #include "DamageInfo.h"
-using namespace FGEngine::ResouceSystem;
+#include "FGEngine/Component/Animator.h"
 using namespace FGEngine::InputSystem;
 
 /**
@@ -48,7 +48,7 @@ void Gundam::Awake()
 	OwnerObject()->tag = "Ms";
 
 	// リソースマネージャーを取得
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	if (!isResoueLoad)
 	{
 		resManager->LoadGlTF("Gundam", "Application/Res/Ms/Gundam/Model/Gundam.gltf");

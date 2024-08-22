@@ -3,35 +3,41 @@
 */
 #ifndef FGENGINE_COMPONENT_H_INCLUDED
 #define FGENGINE_COMPONENT_H_INCLUDED
-#include "FGEngine/Object.h"
+#include "FGEngine/SystemFrd.h"
+#include "FGEngine/UsingNames/UsingGameObject.h"
+#include "FGEngine/UsingNames/UsingComponent.h"
+#include "FGEngine/UsingNames/UsingMath.h"
+#include "FGEngine/UsingNames/UsingScene.h"
+#include <string>
 
 namespace FGEngine
 {
-	// 先行宣言
-	class GameObject;
-	using GameObjectPtr = std::shared_ptr<GameObject>;
-	class Component;
-	using ComponentPtr = std::shared_ptr<Component>;
-	class Transform;
-
 	/**
 	* コンポーネントの基底クラス
 	*/
-	class Component : public Object
+	class Component
 	{
-	public:
 		friend GameObject;
+	protected:	// このクラスは実体化しない
 
-		// コンストラクタ・デストラクタ
+		/**
+		* デフォルトコンストラクタ
+		*/
 		Component() = default;
+
+		/**
+		* デフォルトデストラクタ
+		*/
 		virtual ~Component() = default;
+
+	public:
 
 		/**
 		* コンポーネントを所有しているオブジェクトを取得
 		*/
 		GameObjectPtr OwnerObject() const
 		{
-			std::shared_ptr<GameObject> ptr(ownerObject);
+			auto ptr = ownerObject.lock();
 			if (!ptr)
 			{
 				return nullptr;
@@ -55,10 +61,37 @@ namespace FGEngine
 		*/
 		std::string GetTag() const;
 
+		/**
+		* ゲームオブジェクトを生成する
+		*/
+		GameObjectPtr Instantate(const std::string& name);
+		GameObjectPtr Instantate(const std::string& name, const TransformPtr transform);
+		GameObjectPtr Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation);
+		GameObjectPtr Instantate(const std::string& name, const Vector3& position);
+
+		/**
+		* 破棄予定か取得
+		*
+		* @return true 破棄予定
+		* @return false 破棄予定じゃない
+		*/
+		bool IsDestroyed() const;
+
+		/**
+		* コンポーネントのクローンを作成する
+		*/
+		virtual ComponentPtr Clone() const
+		{
+			return nullptr;
+		}
+
 	private:
 
 		// コンポーネントの所有オブジェクト
 		std::weak_ptr<GameObject> ownerObject;
+
+		// trueなら破壊予定
+		bool isDestroyed = false;
 	};
 }
 #endif // !FGENGINE_COMPONENT_H_INCLUDED

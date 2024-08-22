@@ -10,7 +10,7 @@ using namespace FGEngine::UI;
 /**
 * フェードアウトコンポーネント
 */
-class FadeOut : public MonoBehaviour
+class FadeOut : public GameEvent
 {
 public:
 

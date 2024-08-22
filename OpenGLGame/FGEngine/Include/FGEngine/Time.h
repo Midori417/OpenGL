@@ -13,11 +13,14 @@ namespace FGEngine
 	class Time
 	{
 		friend  MainSystem::EngineCore;
+	public:		// コンストラクタ
+
+		/**
+		* デフォルトコンストラクタ
+		*/
+		Time() = default;
 
 	public:
-
-		// コンストラクタ
-		Time() = default;
 
 		/**
 		* 前回の更新からの経過時間を取得
@@ -25,6 +28,11 @@ namespace FGEngine
 		* @return 前回の更新からの経過時間
 		*/
 		static float DeltaTime();
+
+		/**
+		* FPSを取得
+		*/
+		static float Fps();
 
 	private:
 
@@ -40,6 +48,11 @@ namespace FGEngine
 
 		// 前回の更新時間
 		static double previousTime;
+
+		// FPS用変数
+		static double fpsTime;
+		static double fps;
+		static int fpsFrames;
 	};
 }
 #endif // !TIME_H_INCLUDED

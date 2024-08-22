@@ -16,13 +16,14 @@ namespace FGEngine
 	*/
 	class Transform : public Component
 	{
+		friend Scene;
 	public:
-
-		friend ObjectSystem::ObjectManager;
 
 		// コンストラクタ・デストラクタ
 		Transform() = default;
 		virtual ~Transform() = default;
+
+	public:	// 方向ベクトルの取得
 
 		/**
 		* 前方ベクトルを取得
@@ -38,6 +39,8 @@ namespace FGEngine
 		* 上方ベクトルを取得
 		*/
 		Vector3 Up() const;
+
+	public:
 
 		/**
 		* 位置と回転を設定する
@@ -75,6 +78,8 @@ namespace FGEngine
 		void LookAt(const Transform* target, const Vector3& worldUp = Vector3::up);
 		void LookAt(const TransformPtr target, const Vector3& worldUp = Vector3::up);
 
+	public:		// 親子
+
 		/**
 		* 親Transformを設定する
 		* 
@@ -103,6 +108,8 @@ namespace FGEngine
 		* 全ての子オブジェクトを切り離す
 		*/
 		void AllChildrenPurge();
+
+	public:	// 座標行列
 
 		/**
 		* ローカル座標変換行列を取得
@@ -154,7 +161,6 @@ namespace FGEngine
 		// 子オブジェクトのTransform
 		std::vector<std::weak_ptr<Transform>> childrens;
 	};
-	using TransformPtr = std::shared_ptr<Transform>;
 }
 
 #endif // !FGENGINE_TRANSFORM_H_INCLUDED

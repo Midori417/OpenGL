@@ -2,14 +2,13 @@
 * @file ImageNum.cpp
 */
 #include "ImageNum.h"
-using namespace FGEngine::ResouceSystem;
 
 /**
 * ¶¬‚ÉÀs
 */
 void ImageNum::Awake()
 {
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	// ”z—ñ‚ğ—\–ñ
 	texNums.reserve(10);
 
@@ -30,7 +29,7 @@ void ImageNum::Start()
 {
 	for(int i = 0; i < 3; ++i)
 	{
-		std::string name = OwnerObject()->ToString() + "Num" + std::to_string(i);
+		std::string name = OwnerObject()->name + "Num" + std::to_string(i);
 		auto num = Instantate(name, GetTransform()->position + Vector3(space * i, 0, 0));
 		auto image = num->AddComponent<Image>();
 		image->texture = texNums[0];
@@ -89,5 +88,5 @@ void ImageNum::Stop()
 		x->SetEnable(false);
 	}
 
-	SetEnable(false);
+	isActive = (false);
 }

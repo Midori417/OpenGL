@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_MATRIX4X4_H_INCLUDED
 #define FGENGINE_MATRIX4X4_H_INCLUDED
-#include "MathFrd.h"
+#include "FGEngine/UsingNames/UsingMath.h"
 
 namespace FGEngine
 {

@@ -20,9 +20,9 @@ namespace FGEngine
 	*/
 	class Collider : public Component
 	{
+		friend PhysicsSystem::PhysicsEngine;
 	public:
 
-		friend PhysicsSystem::PhysicsEngine;
 
 		// コンストラクタ・デストラクタ
 		Collider() = default;

@@ -6,8 +6,6 @@
 #include "Global.h"
 #include "FadeOut.h"
 using namespace FGEngine::UI;
-using namespace FGEngine::SceneSystem;
-using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::InputSystem;
 using namespace FGEngine::WindowSystem;
 
@@ -17,7 +15,7 @@ using namespace FGEngine::WindowSystem;
 void BattleSettingManager::Awake()
 {
 	// マネージャを取得
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	auto winManager = WindowManager::GetInstance();
 
 	// バトル設定画面を作成

@@ -2,14 +2,17 @@
 * RenderingEngine.cpp
 */
 #include "FGEngine/Rendering/RenderingEngine.h"
-#include "FGEngine/Buffer/MeshBuffer.h"
-#include "FGEngine/Buffer/GltfFileBuffer.h"
+#include "FGEngine/BufferAndVAO/MeshBuffer.h"
+#include "FGEngine/BufferAndVAO/GltfFileBuffer.h"
 #include "FGEngine/Window/WindowManager.h"
 #include "FGEngine/Scene/SceneManager.h"
-#include "FGEngine/Asset/ResouceManager.h"
+#include "FGEngine/Asset/AssetManager.h"
 #include "FGEngine/Asset/Shader.h"
-#include "FGEngine/ObjectManager.h"
+#include "FGEngine/Asset/Texture.h"
 #include "FGEngine/Math/Math.h"
+#include "FGEngine/Component/Transform.h"
+#include "FGEngine/Component/Renderer.h"
+#include "FGEngine/Component/Camera.h"
 #include <algorithm>
 
 namespace FGEngine::RenderingSystem
@@ -22,7 +25,7 @@ namespace FGEngine::RenderingSystem
 	*/
 	int RenderingEngine::Initialize()
 	{
-		auto resManager = ResouceSystem::ResouceManager::GetInstance();
+		auto resManager = AssetManager::GetInstance();
 
 		// スカイスフィアを設定
 		skySphere = resManager->GetStaticMesh("skySphere");
@@ -69,10 +72,10 @@ namespace FGEngine::RenderingSystem
 	/**
 	* カメラに近いライトを選んでGPUメモリーにコピーする
 	*/
-	void RenderingEngine::UpdateShaderLight()
+	void RenderingEngine::UpdateShaderLight(const CameraPtr& camera)
 	{
 		// シェーダの仕分け
-		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		auto resouceManager = AssetManager::GetInstance();
 		std::vector<ShaderPtr> programs;
 		programs.push_back(resouceManager->GetShader(DefalutShader::Standard3D));
 		programs.push_back(resouceManager->GetShader(DefalutShader::Skeletal3D));
@@ -108,10 +111,9 @@ namespace FGEngine::RenderingSystem
 		const auto itrUnique = std::unique(usedLights.begin(), usedLights.end());
 		usedLights.erase(itrUnique, usedLights.end());
 
-		auto camera = ObjectSystem::ObjectManager::GetInstance()->GetMainCamera();
 
 		// カメラの正面ベクトルを計算
-		const Vector3 front = camera->transform->Forward();
+		const Vector3 front = camera->GetTransform()->Forward();
 
 		// カメラからライトまでの距離を計算
 		struct Distance
@@ -124,7 +126,7 @@ namespace FGEngine::RenderingSystem
 		for (auto index : usedLights)
 		{
 			const auto& light = lights[index];
-			const Vector3 v = light.position - camera->transform->position;
+			const Vector3 v = light.position - camera->GetTransform()->position;
 			// カメラの後ろにあるライトを除外
 			if (Vector3::Dot(front, v) <= -light.radius)
 			{
@@ -209,7 +211,7 @@ namespace FGEngine::RenderingSystem
 		const Matrix4x4 matShadow = matShadowProj * matShadowView;
 
 		// シェーダの仕分け
-		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		auto resouceManager = AssetManager::GetInstance();
 		std::vector<ShaderPtr> shadowPrograms;
 
 		shadowPrograms.push_back(resouceManager->GetShader(DefalutShader::Shadow3D));
@@ -259,17 +261,17 @@ namespace FGEngine::RenderingSystem
 	/**
 	* スカイスフィアを描画
 	*/
-	void RenderingEngine::DrawSkySphere()
+	void RenderingEngine::DrawSkySphere(const CameraPtr& camera)
 	{
 		// シーンマネージャーを取得
-		auto sceneManger = SceneSystem::SceneManager::GetInstance();
+		auto sceneManger = SceneManager::GetInstance();
 
 		// リソースマネージャーを取得
-		auto resouceManager = ResouceSystem::ResouceManager::GetInstance();
+		auto resouceManager = AssetManager::GetInstance();
 		const auto progUnlit = resouceManager->GetShader("Unlit");
 
 		// スカイスフィアが設定されていない場合は描画しない
-		if (!skySphere || !sceneManger->CurrentScene()->skyMaterial)
+		if (!skySphere || !sceneManger->CurrentScene()->skyBoxMaterial)
 		{
 			return;
 		}
@@ -294,13 +296,11 @@ namespace FGEngine::RenderingSystem
 		progUnlit->SetVector3("cameraPosition", Vector3::zero);
 
 		// スカイスフィアを描画
-		const MaterialList materials(1, sceneManger->CurrentScene()->skyMaterial);
+		const MaterialList materials(1, sceneManger->CurrentScene()->skyBoxMaterial);
 		Draw(progUnlit, *skySphere, materials);
 
-		auto objectManager = ObjectSystem::ObjectManager::GetInstance();
-
 		// カメラ座標を元に戻す
-		progUnlit->SetVector3("cameraPosition", objectManager->GetMainCamera()->GetTransform()->position);
+		progUnlit->SetVector3("cameraPosition", camera->GetTransform()->position);
 		glDepthMask(GL_TRUE);	// 深度バッファへの書き込みを許可
 	}
 
@@ -310,7 +310,7 @@ namespace FGEngine::RenderingSystem
 	* @param レンダーコンポーネント範囲の先端
 	* @param レンダーコンポーネント範囲の終端
 	*/
-	void RenderingEngine::DrawGameObject(std::vector<RendererPtr> rendererList)
+	void RenderingEngine::DrawGameObject(std::vector<RendererPtr> rendererList, const CameraPtr& camera)
 	{
 		// ゲームオブジェクトをレンダーキュー順に並べる
 		std::stable_sort(rendererList.begin(), rendererList.end(),
@@ -336,7 +336,7 @@ namespace FGEngine::RenderingSystem
 		glBlendEquation(GL_FUNC_ADD);
 
 		// ライトの更新
-		UpdateShaderLight();
+		UpdateShaderLight(camera);
 
 		// デプスシャドウマップを作成
 		CreateShadowMap(rendererList.begin(), rendererList.end());
@@ -366,7 +366,7 @@ namespace FGEngine::RenderingSystem
 		Draw3DGameObject(rendererList.begin(), transparentBegin);
 
 		// スカイスフィアを描画
-		DrawSkySphere();
+		DrawSkySphere(camera);
 
 		// transparentからoverlayまでのキューを描画
 		glDepthMask(GL_FALSE); // 深度バッファへの書き込みを禁止

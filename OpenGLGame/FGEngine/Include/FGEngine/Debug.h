@@ -17,6 +17,11 @@ namespace Debug
 	};
 
 	void Log(Type type, const char* func, const char* format, ...);
+
+	/**
+	* OpenGLからのデバッグをする
+	*/
+	void OpenGLDebug();
 }
 
 // Debugかどうか

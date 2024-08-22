@@ -69,14 +69,11 @@ namespace FGEngine::MainSystem
 		// ウィンドウマネージャーポインター
 		std::shared_ptr<WindowSystem::WindowManager> windowManager;
 
-		// オブジェクトマネージャーポインター
-		std::shared_ptr<ObjectSystem::ObjectManager> objectManager;
-
 		// シーンマネージャーポインター
-		std::shared_ptr<SceneSystem::SceneManager> sceneManager;
+		std::shared_ptr<SceneManager> sceneManager;
 
 		// リソースマネージャー
-		std::shared_ptr<ResouceSystem::ResouceManager> resouceManager;
+		std::shared_ptr<AssetManager> resouceManager;
 
 		// インプットマネージャポインター
 		std::shared_ptr<InputSystem::InputManager> inputManager; 

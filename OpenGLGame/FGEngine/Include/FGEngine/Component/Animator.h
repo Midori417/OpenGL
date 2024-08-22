@@ -15,7 +15,7 @@ namespace FGEngine
 	*/
 	class Animator : public Component
 	{
-		friend ObjectSystem::ObjectManager;
+		friend Scene;
 	public:
 
 		// コンストラクタ・デストラクタ

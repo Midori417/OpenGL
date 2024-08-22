@@ -4,7 +4,7 @@
 #ifndef FGENGINE_SHADER_H_INCLUDED
 #define FGENGINE_SHADER_H_INCLUDED
 #include "AssetObject.h"
-#include "FGEngine/Math/MathFrd.h"
+#include "FGEngine/UsingNames/UsingMath.h"
 
 // 先行宣言
 typedef unsigned int GLuint;
@@ -23,8 +23,11 @@ namespace FGEngine
 
 		/**
 		* コンストラクタ
+		* 
+		* @param name			シェーダの名前
+		* @param filenameVS		頂点シェーダファイル
+		* @param filenameFS		フラグメントシェーダファイル
 		*/
-		Shader() = default;
 		Shader(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
 
 		/**
@@ -32,18 +35,33 @@ namespace FGEngine
 		*/
 		virtual ~Shader();
 
-		// コピーと代入を禁止
+	public:	// 禁止事項
+
+		// コピーを禁止
 		Shader(const Shader&) = delete;
+
+		// 代入を禁止
 		Shader& operator=(const Shader&) = delete;
 
 	public:
 
+		/**
+		* シェーダを作成
+		* 
+		* @param name			シェーダの名前
+		* @param filenameVS		頂点シェーダファイル
+		* @param filenameFS		フラグメントシェーダファイル
+		* 
+		* @return 作成したシェーダポインター
+		*/
 		static ShaderPtr Create(const std::string& name, const std::string& filenameVS, const std::string& filenameFS);
+
+	public:
 
 		void Use();
 
 		void SetBool(const std::string& name, bool value);
-
+		
 		void SetInt(const std::string& name, int value);
 
 		void SetFloat(const std::string& name, float value);
@@ -51,15 +69,11 @@ namespace FGEngine
 		void SetFloat3(const std::string& name, float value, float value2, float value3);
 		void SetFloat4(const std::string& name, float value, float value2, float value3, float value4);
 
-
 		void SetVector2(const std::string& name, const Vector2& value);
-
 		void SetVector3(const std::string& name, const Vector3& value);
-
 		void SetVector4(const std::string& name, const Vector4& value);
 
 		void SetMatrix3x3(const std::string& name, const Matrix3x3& value);
-
 		void SetMatrix4x4(const std::string& name, const Matrix4x4& value);
 
 		void SetColor(const std::string& name, const Color& value);

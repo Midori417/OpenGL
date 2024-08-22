@@ -13,7 +13,7 @@ using FadeOutPtr = std::shared_ptr<FadeOut>;
 /**
 * タイトル管理コンポーネント
 */
-class TitleManager : public MonoBehaviour
+class TitleManager : public GameEvent
 {
 public:
 

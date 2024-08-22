@@ -3,8 +3,6 @@
 */
 #include "ChoiceScene.h"
 #include "../ChoiceManager.h"
-using namespace FGEngine::ObjectSystem;
-using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
 using namespace FGEngine::UI;
 
@@ -14,22 +12,21 @@ using namespace FGEngine::UI;
 bool ChoiceScene::Initialize()
 {
 	// マネージャーを取得
-	auto objManager = ObjectManager::GetInstance();
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	auto winManager = WindowManager::GetInstance();
 
 	// カメラの作成
-	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
-	camera->AddComponent<Camera>();
-	objManager->SetMainCamera(camera);
+	auto camera = CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
+	auto cameraInfo = camera->AddComponent<Camera>();
+	SetMainCameraInfo(cameraInfo);
 
 	// 選択シーン管理マネージャーを作成
-	auto choiceManagerObj = objManager->CreateGameObject("ChoiceManager");
+	auto choiceManagerObj = CreateGameObject("ChoiceManager");
 	auto choiceManager = choiceManagerObj->AddComponent<ChoiceManager>();
 
 	// タイトル背景を作成
 	{
-		auto titleBack = objManager->CreateGameObject("TitleBack");
+		auto titleBack = CreateGameObject("TitleBack");
 		auto image = titleBack->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleBack");
 		image->size = winManager->GetWindowSize();
@@ -37,7 +34,7 @@ bool ChoiceScene::Initialize()
 
 	// ガンダムを作成
 	{
-		auto titleGundam = objManager->CreateGameObject("TitleGundam");
+		auto titleGundam = CreateGameObject("TitleGundam");
 		auto image = titleGundam->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleGundam");
 		image->size = winManager->GetWindowSize();
@@ -45,7 +42,7 @@ bool ChoiceScene::Initialize()
 
 	// ブラックオブジェクトを作成
 	{
-		auto blackObject = objManager->CreateGameObject("BlackObject");
+		auto blackObject = CreateGameObject("BlackObject");
 		auto image = blackObject->AddComponent<Image>();
 		image->texture = resManager->GetTexture("white");
 		image->color = Color(0, 0, 0, 0.7f);
@@ -54,7 +51,7 @@ bool ChoiceScene::Initialize()
 
 	// タイトルロゴを作成
 	{
-		auto titleLogo = objManager->CreateGameObject("TitleLogoA", Vector3(400, 0, 0));
+		auto titleLogo = CreateGameObject("TitleLogoA", Vector3(400, 0, 0), Quaternion::identity);
 		auto image = titleLogo->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleLogo");
 		image->size = Vector2(937, 383) * 0.9f;

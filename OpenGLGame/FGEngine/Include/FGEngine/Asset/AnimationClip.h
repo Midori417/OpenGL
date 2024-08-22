@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_ANIMATIONCLIP_H_INCLUDED
 #define FGENGINE_ANIMATIONCLIP_H_INCLUDED
-#include "FGEngine/Math/MathFrd.h"
+#include "FGEngine/UsingNames/UsingMath.h"
 #include <string>
 #include <vector>
 #include <memory>

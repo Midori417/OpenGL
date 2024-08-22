@@ -9,11 +9,8 @@
 #include "Gundam.h"
 #include "Global.h"
 #include "BgmList.h"
-using namespace FGEngine::ObjectSystem;
-using namespace FGEngine::ResouceSystem;
 using namespace FGEngine::WindowSystem;
 using namespace FGEngine::InputSystem;
-using namespace FGEngine::SceneSystem;
 using namespace FGEngine::SoundSystem;
 
 // スタティック変数を初期化
@@ -54,7 +51,7 @@ void BattleManager::SetResponPos(const std::vector<Vector3>& poses)
 void BattleManager::Awake()
 {
 	// 各マネージャを取得
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 	auto winManager = WindowManager::GetInstance();
 
 	// バトル情報を設定
@@ -95,7 +92,7 @@ void BattleManager::Awake()
 			hyumanControl->myMs = SetMs(ms, x->ms);
 
 			// カメラを設定
-			auto camera = ObjectManager::GetInstance()->GetMainCamera();
+			auto camera = OwnerObject()->GetScene()->GetMainCameraInfo()->OwnerObject();
 			hyumanControl->myCamera = camera->AddComponent<LookOnCamera>();
 			auto linstner = camera->AddComponent<AudioListner>();
 			SoundManager::GetInstance()->SetListner(linstner);
@@ -369,12 +366,12 @@ void BattleManager::Update()
 			for (auto teum1 : teum1ControlOwners)
 			{
 				teum1->Finish(teum1Victory);
-				teum1->SetEnable(false);
+				teum1->isActive = false;
 			}
 			for (auto teum2 : teum2ControlOwners)
 			{
 				teum2->Finish(teum2Victory);
-				teum2->SetEnable(false);
+				teum2->isActive = false;
 			}
 			battleState = BattleState::Victory;
 		}

@@ -2,9 +2,8 @@
 * @file SceneManager.cpp
 */
 #include "FGEngine/Scene/SceneManager.h"
-#include "FGEngine/ObjectManager.h"
 
-namespace FGEngine::SceneSystem
+namespace FGEngine
 {
 	ScenePtr SceneManager::nextScene;
 	std::unordered_map<std::string, ScenePtr> SceneManager::scenes;
@@ -42,19 +41,17 @@ namespace FGEngine::SceneSystem
 		{
 			if (scene)
 			{
-				scene->Finalize();
 				scene.reset();
-				// オブジェクトを全削除
-				ObjectSystem::ObjectManager::GetInstance()->AllClearGameObject();
 			}
+			nextScene->Awake();
 			nextScene->Initialize();
 			scene = std::move(nextScene);
 		}
 
-		// シーンの更新
 		if (scene)
 		{
 			scene->Update();
+			scene->Render();
 		}
 	}
 

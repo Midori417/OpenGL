@@ -3,12 +3,12 @@
 */
 #include "FGEngine/Physics/PhysicsEngine.h"
 #include "FGEngine/Physics/Intersect.h"
-#include "FGEngine/Physics/Collision.h"
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Component/Collider.h"
 #include "FGEngine/Component/AabbCollider.h"
 #include "FGEngine/Component/SphereCollider.h"
 #include "FGEngine/Component/BoxCollider.h"
+#include "FGEngine/Component/Rigidbody.h"
 #include "FGEngine/Math/Mathf.h"
 
 namespace FGEngine::PhysicsSystem
@@ -152,7 +152,7 @@ namespace FGEngine::PhysicsSystem
 					}
 
 					// イベント処理
-					if (!goA->monoBehaviours.empty())
+					if (!goA->gameEvents.empty())
 					{
 						// 衝突情報を作成
 						CollisionPtr colInfoB = std::make_shared<Collision>();
@@ -160,31 +160,17 @@ namespace FGEngine::PhysicsSystem
 						colInfoB->transform = goB->GetTransform();
 						colInfoB->rigidBody = goB->rigidbody;
 						colInfoB->collider = colB.origin;
-						for (auto x : goA->monoBehaviours)
+						for (auto x : goA->gameEvents)
 						{
-							// トリガー
-							if (colA.origin->isTrigger)
+							// 前回の時衝突していなければOnCollisionEnterを呼び出す
+							if (!colA.origin->old)
 							{
-								// 前回の時衝突していなければOnTriggerEnterを呼び出す
-								if (!colA.origin->old)
-								{
-									x->OnTriggerEnter(colInfoB);
-								}
-								x->OnTriggerStay(colInfoB);
+								x->OnCollisionEnter(colInfoB);
 							}
-							// コリジョン
-							else
-							{
-								// 前回の時衝突していなければOnCollisionEnterを呼び出す
-								if (!colA.origin->old)
-								{
-									x->OnCollisionEnter(colInfoB);
-								}
-								x->OnCollisionStay(colInfoB);
-							}
+							x->OnCollisionStay(colInfoB);
 						}
 					}
-					if (!goB->monoBehaviours.empty())
+					if (!goB->gameEvents.empty())
 					{
 						// 衝突情報を作成
 						CollisionPtr colInfoA = std::make_shared<Collision>();
@@ -192,28 +178,14 @@ namespace FGEngine::PhysicsSystem
 						colInfoA->transform = goA->GetTransform();
 						colInfoA->rigidBody = goA->rigidbody;
 						colInfoA->collider = colA.origin;
-						for (auto x : goB->monoBehaviours)
+						for (auto x : goB->gameEvents)
 						{
-							// トリガー
-							if (colB.origin->isTrigger)
+							// 前回の時衝突していなければOnCollisionEnterを呼び出す
+							if (!colB.origin->old)
 							{
-								// 前回の時衝突していなければOnTriggerEnterを呼び出す
-								if (!colB.origin->old)
-								{
-									x->OnTriggerEnter(colInfoA);
-								}
-								x->OnTriggerStay(colInfoA);
+								x->OnCollisionEnter(colInfoA);
 							}
-							// コリジョン
-							else
-							{
-								// 前回の時衝突していなければOnCollisionEnterを呼び出す
-								if (!colB.origin->old)
-								{
-									x->OnCollisionEnter(colInfoA);
-								}
-								x->OnCollisionStay(colInfoA);
-							}
+							x->OnCollisionStay(colInfoA);
 						}
 
 					}
@@ -222,7 +194,7 @@ namespace FGEngine::PhysicsSystem
 					colA.origin->old = true;
 					colB.origin->old = true;
 					// イベントの結果、どちらかのゲームオブジェクトが破壊されたらループ終了
-					if (goA->GetHideFlag() == Object::HideFlag::Destory || goB->GetHideFlag() == Object::HideFlag::Destory)
+					if (goA->GetState() == GameObjectState::Destory || goB->GetState() == GameObjectState::Destory)
 					{
 						return;	// 関数終了
 					}
@@ -234,7 +206,7 @@ namespace FGEngine::PhysicsSystem
 					GameObjectPtr goB = colB.origin->OwnerObject();
 
 					// イベント処理
-					if (!goA->monoBehaviours.empty())
+					if (!goA->gameEvents.empty())
 					{
 						// 衝突情報を作成
 						CollisionPtr colInfoB = std::make_shared<Collision>();
@@ -242,27 +214,15 @@ namespace FGEngine::PhysicsSystem
 						colInfoB->transform = goB->GetTransform();
 						colInfoB->rigidBody = goB->rigidbody;
 						colInfoB->collider = colB.origin;
-						for (auto x : goA->monoBehaviours)
+						for (auto x : goA->gameEvents)
 						{
-							// トリガー
-							if (colA.origin->isTrigger)
+							if (colA.origin->old)
 							{
-								if (colA.origin->old)
-								{
-									x->OnTriggerExit(colInfoB);
-								}
+								x->OnCollisionExit(colInfoB);
 							}
-							// コリジョン
-							else
-							{
-								if (colA.origin->old)
-								{
-									x->OnCollisionExit(colInfoB);
-								}
-							}					
 						}
 					}
-					if (!goB->monoBehaviours.empty())
+					if (!goB->gameEvents.empty())
 					{
 						// 衝突情報を作成
 						CollisionPtr colInfoA = std::make_shared<Collision>();
@@ -270,23 +230,11 @@ namespace FGEngine::PhysicsSystem
 						colInfoA->transform = goA->GetTransform();
 						colInfoA->rigidBody = goA->rigidbody;
 						colInfoA->collider = colA.origin;
-						for (auto x : goB->monoBehaviours)
+						for (auto x : goB->gameEvents)
 						{
-							// トリガー
-							if (colB.origin->isTrigger)
+							if (colB.origin->old)
 							{
-								if (colB.origin->old)
-								{
-									x->OnTriggerExit(colInfoA);
-								}
-							}
-							// コリジョン
-							else
-							{
-								if (colB.origin->old)
-								{
-									x->OnCollisionExit(colInfoA);
-								}
+								x->OnCollisionExit(colInfoA);
 							}
 						}
 					}
@@ -297,7 +245,7 @@ namespace FGEngine::PhysicsSystem
 					colB.origin->old = false;
 
 					// イベントの結果、どちらかのゲームオブジェクトが破壊されたらループ終了
-					if (goA->GetHideFlag() == Object::HideFlag::Destory || goB->GetHideFlag() == Object::HideFlag::Destory)
+					if (goA->GetState() == GameObjectState::Destory || goB->GetState() == GameObjectState::Destory)
 					{
 						return;	// 関数終了
 					}

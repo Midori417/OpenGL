@@ -9,7 +9,7 @@ using namespace FGEngine;
 /**
 * Šî‘bÕŒ‚”j
 */
-class BaseSlash : public MonoBehaviour
+class BaseSlash : public GameEvent
 {
 public:
 
@@ -32,7 +32,7 @@ private:
 	/**
 	* ‘¼‚ÌƒRƒŠƒWƒ‡ƒ“‚ÉG‚ê‚½‚Æ‚«‚ÉÀs
 	*/
-	virtual void OnTriggerEnter(const CollisionPtr other) override;
+	virtual void OnCollisionEnter(const CollisionPtr other) override;
 
 public:
 

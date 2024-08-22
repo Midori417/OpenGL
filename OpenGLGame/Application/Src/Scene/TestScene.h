@@ -4,7 +4,7 @@
 #ifndef TESTSCENE_H_INCLUDED
 #define TESTSCENE_H_INCLUDED
 #include "FGEngine.h"
-using namespace FGEngine::SceneSystem;
+using namespace FGEngine;
 
 /**
 * テストシーン「

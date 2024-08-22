@@ -5,7 +5,8 @@
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Asset/StaticMesh.h"
 #include "FGEngine/Asset/Shader.h"
-#include "FGEngine/Buffer/MeshBuffer.h"
+#include "FGEngine/BufferAndVAO/MeshBuffer.h"
+#include "FGEngine/Component/Transform.h"
 
 namespace FGEngine
 {

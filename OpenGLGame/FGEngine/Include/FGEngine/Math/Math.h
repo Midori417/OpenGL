@@ -10,5 +10,6 @@
 #include "Vector4.h"
 #include "Matrix3x3.h"
 #include "Matrix4x4.h"
+#include "Quaternion.h"
 
 #endif // !FGENGINE_MATH_H_INCLUDED

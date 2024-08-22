@@ -5,7 +5,6 @@
 #define BATTLEMAP01SCENE_H_INCLUDED
 #include "FGEngine.h"
 using namespace FGEngine;
-using namespace FGEngine::SceneSystem;
 
 /**
 * í“¬ƒV[ƒ“‚Ì‰Šú‰»

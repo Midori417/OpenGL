@@ -29,13 +29,13 @@ void BaseSlash::Start()
 {
 	GetTransform()->scale = Vector3(3);
 
-	Destroy(OwnerObject(), destoryTime);
+	OwnerObject()->Destroy(destoryTime);
 }
 
 /**
 * ‘¼‚ÌƒRƒŠƒWƒ‡ƒ“‚ÉG‚ê‚½‚Æ‚«‚ÉÀs
 */
-void BaseSlash::OnTriggerEnter(const CollisionPtr other)
+void BaseSlash::OnCollisionEnter(const CollisionPtr other)
 {
 	auto obj = other->GetGameObject();
 
@@ -61,15 +61,14 @@ void BaseSlash::OnTriggerEnter(const CollisionPtr other)
 		// ƒ_ƒ[ƒW‚ğ—^‚¦‚é
 		ms->Damage(damageInfo);
 
-		// ©g‚ğíœ
-		Destroy(OwnerObject());
+		OwnerObject()->Destroy();
 	}
 
 	// •Ç‚Æ’n–Ê‚È‚ç’e‚ğ”j‰ó
 	if (obj->tag == "Ground" || obj->tag == "Wall")
 	{
 		// ©g‚ğíœ
-		Destroy(OwnerObject());
+		OwnerObject()->Destroy();
 		return;
 	}
 

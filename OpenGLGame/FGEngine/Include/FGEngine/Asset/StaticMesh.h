@@ -20,7 +20,7 @@ namespace FGEngine
 		MaterialList materials;
 
 		// •`‰æƒpƒ‰ƒ[ƒ^
-		std::vector<RenderingSystem::DrawParams> drawParamsList;
+		std::vector<DrawParams> drawParamsList;
 	};
 	using StaticMeshPtr = std::shared_ptr<StaticMesh>;
 }

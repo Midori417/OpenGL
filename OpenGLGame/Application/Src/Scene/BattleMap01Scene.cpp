@@ -5,8 +5,6 @@
 #include "../BattleManager.h"
 #include <thread>
 #include <chrono>
-using namespace FGEngine::ResouceSystem;
-using namespace FGEngine::ObjectSystem;
 using namespace FGEngine::InputSystem;
 
 bool BattleMap01Scene::isResouceLoad = false;
@@ -20,8 +18,7 @@ bool BattleMap01Scene::isResouceLoad = false;
 bool BattleMap01Scene::Initialize()
 {
 	// 各マネージャを取得
-	auto objManager = ObjectManager::GetInstance();
-	auto resManager = ResouceManager::GetInstance();
+	auto resManager = AssetManager::GetInstance();
 
 	if (!isResouceLoad)
 	{
@@ -36,9 +33,9 @@ bool BattleMap01Scene::Initialize()
 		isResouceLoad = true;
 	}
 	// カメラを作成
-	auto camera = objManager->CreateGameObject("Camera", Vector3(0, 0, -20), Quaternion::identity);
-	camera->AddComponent<Camera>();
-	objManager->SetMainCamera(camera);
+	auto camera = CreateGameObject("Camera", Vector3(0, 0, -20), Quaternion::identity);
+	auto cameraInfo = camera->AddComponent<Camera>();
+	SetMainCameraInfo(cameraInfo);
 
 	// ステージの大きさを設定
 	mapSize.x = 150;
@@ -54,7 +51,7 @@ bool BattleMap01Scene::Initialize()
 
 	// バトルマネージャを作成
 	{
-		auto battleManagerObj = objManager->CreateGameObject("BattleManager");
+		auto battleManagerObj = CreateGameObject("BattleManager");
 		auto battleManager = battleManagerObj->AddComponent<BattleManager>();
 		battleManager->SetResponPos(responPoses);
 	}
@@ -63,13 +60,13 @@ bool BattleMap01Scene::Initialize()
 	{
 		// 前
 		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, mapSize.y));
+			auto wall = CreateGameObject("Wall", Vector3(0, -6.0f, mapSize.y), Quaternion::identity);
 			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
 			auto col = wall->AddComponent<AabbCollider>();
 			col->min = Vector3(-1, -1, -10);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, mapSize.y));
+			auto line = CreateGameObject("Line", Vector3(0, 1.0f, mapSize.y), Quaternion::identity);
 			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
@@ -80,13 +77,13 @@ bool BattleMap01Scene::Initialize()
 		}
 		// 後ろ
 		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(0, -6.0f, -mapSize.y));
+			auto wall = CreateGameObject("Wall", Vector3(0, -6.0f, -mapSize.y), Quaternion::identity);
 			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
 			auto col = wall->AddComponent<AabbCollider>();
 			col->max = Vector3(1, 1, 10);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(0, 1.0f, -mapSize.y));
+			auto line = CreateGameObject("Line", Vector3(0, 1.0f, -mapSize.y), Quaternion::identity);
 			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
@@ -99,13 +96,13 @@ bool BattleMap01Scene::Initialize()
 
 		// 右
 		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(mapSize.x, -6.0f, 0));
+			auto wall = CreateGameObject("Wall", Vector3(mapSize.x, -6.0f, 0), Quaternion::identity);
 			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
 			auto col = wall->AddComponent<AabbCollider>();
 			col->max = Vector3(10, 1, 1);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(mapSize.x, 1.0f, 0));
+			auto line = CreateGameObject("Line", Vector3(mapSize.x, 1.0f, 0), Quaternion::identity);
 			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
@@ -117,13 +114,13 @@ bool BattleMap01Scene::Initialize()
 		}
 		// 左
 		{
-			auto wall = objManager->CreateGameObject("Wall", Vector3(-mapSize.x, -6.0f, 0));
+			auto wall = CreateGameObject("Wall", Vector3(-mapSize.x, -6.0f, 0), Quaternion::identity);
 			wall->tag = "Wall";
 			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
 			auto col = wall->AddComponent<AabbCollider>();
 			col->min = Vector3(-10, -1, -1);
 
-			auto line = objManager->CreateGameObject("Line", Vector3(-mapSize.x, 1.0f, 0));
+			auto line = CreateGameObject("Line", Vector3(-mapSize.x, 1.0f, 0), Quaternion::identity);
 			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
@@ -139,7 +136,7 @@ bool BattleMap01Scene::Initialize()
 	{
 		// 土台
 		{
-			auto ground = objManager->CreateGameObject("Ground", Vector3(0, -1.0f, 0));
+			auto ground = CreateGameObject("Ground", Vector3(0, -1.0f, 0), Quaternion::identity);
 			ground->tag = "Ground";
 			auto renderer = ground->AddComponent<GltfMeshRenderer>();
 			renderer->glTFfile = resManager->GetGltfFile("Map01/Ground");
@@ -154,7 +151,7 @@ bool BattleMap01Scene::Initialize()
 	// スカイスフィアを設定
 	auto material = std::make_shared<Material>();
 	material->mainTexture = resManager->GetTexture("Sky");
-	skyMaterial = material;
+	skyBoxMaterial = material;
 
 	return true;
 }
