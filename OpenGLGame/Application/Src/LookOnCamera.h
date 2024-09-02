@@ -46,6 +46,12 @@ private:
 	*/
 	void PositionCamera();
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 public:
 
 

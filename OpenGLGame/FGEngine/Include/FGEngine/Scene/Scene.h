@@ -12,6 +12,34 @@
 
 namespace FGEngine
 {
+	namespace CreateObject
+	{
+		// 何もついてないゲームオブジェクト
+		const std::string Empty = "Empty";
+
+		// カメラ
+		const std::string Camera = "Camera";
+
+		// 3Dオブジェクト
+		namespace GameObject3D
+		{
+			// 四角形
+			const std::string Cube = "Cube";
+
+			// 球体
+			const std::string Sphere = "Sphere";
+		}
+		// ユーザーインターフェース
+		namespace UI
+		{
+			// 画像
+			const std::string Image = "Image";
+
+			// ボタン
+			const std::string Button = "Button";
+		}
+	}
+
 	/**
 	* シーンの基底クラス
 	*/
@@ -30,14 +58,28 @@ namespace FGEngine
 		*/
 		virtual ~Scene() = default;
 
-	public:	// オブジェクトの生成・破壊
+	private: // オブジェクトの生成・破壊
 
 		/**
 		* ゲームオブジェクトを作成
+		* 
+		* @param name オブジェクトの名前
+		* 
+		* @return 作成したゲームオブジェクト
 		*/
 		GameObjectPtr CreateGameObject(const std::string& name);
-		GameObjectPtr CreateGameObject(const std::string& name, const TransformPtr transform);
-		GameObjectPtr CreateGameObject(const std::string& name, const Vector3& position, const Quaternion& rotation);
+
+	public:	
+
+		/**
+		* nameにあったオブジェクトを生成する
+		* 
+		* @param name 生成したいオブジェクトの名前
+		* namespace CreateObjectから選択推奨
+		* 
+		* @return 生成したオブジェクト
+		*/
+		GameObjectPtr Create(const std::string& name);
 
 		/**
 		* ゲームオブジェクトをクローンする
@@ -168,7 +210,7 @@ namespace FGEngine
 		void UIRendererGameObject();
 
 		/**
-		* ゲームオブジェクトの削除処理
+		* ゲームオブジェクトの破棄処理
 		*/
 		void DestoryGameObject();
 

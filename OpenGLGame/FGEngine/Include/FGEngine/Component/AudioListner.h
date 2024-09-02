@@ -21,6 +21,8 @@ namespace FGEngine
 		* XV‚·‚é
 		*/
 		void PosUpdate();
+
+		virtual ComponentPtr Clone() const override;
 	};
 	using AudioListnerPtr = std::shared_ptr<AudioListner>;
 }

@@ -32,6 +32,10 @@ namespace FGEngine
 
 	public:
 
+		virtual ComponentPtr Clone() const override;
+
+	public:
+
 		// •`‰æ‚ÌƒƒbƒVƒ…
 		StaticMeshPtr mesh;
 		

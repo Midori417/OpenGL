@@ -21,6 +21,11 @@ public:
 	* @param targetMs ターゲット機体
 	*/
 	void SetTargetMs(BaseMs* targetMs);
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+	}
+
 
 private:
 

@@ -22,6 +22,11 @@ public:
 
 private:
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+	}
+
 	/**
 	* ¶¬‚ÉÀs
 	*/

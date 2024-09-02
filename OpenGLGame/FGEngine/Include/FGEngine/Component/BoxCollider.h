@@ -44,6 +44,8 @@ namespace FGEngine
 		*/
 		virtual ColliderPtr GetTransformedCollider(const Matrix4x4& transform) const;
 
+		virtual ComponentPtr Clone() const override;
+
 	public:
 
 		// ロカール座標でのコライダーの中心座標を返す
@@ -57,7 +59,6 @@ namespace FGEngine
 		// 図形
 		PhysicsSystem::Box box;
 	};
-	using BoxColliderPtr = std::shared_ptr<BoxCollider>;
 }
 
 #endif // !FGENGINE_BOXCOLLIDER_H_INCLUDEED

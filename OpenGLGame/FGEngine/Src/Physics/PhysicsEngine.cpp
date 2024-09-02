@@ -194,7 +194,7 @@ namespace FGEngine::PhysicsSystem
 					colA.origin->old = true;
 					colB.origin->old = true;
 					// イベントの結果、どちらかのゲームオブジェクトが破壊されたらループ終了
-					if (goA->GetState() == GameObjectState::Destory || goB->GetState() == GameObjectState::Destory)
+					if (goA->GetState() == GameObjectState::Destroyed || goB->GetState() == GameObjectState::Destroyed)
 					{
 						return;	// 関数終了
 					}
@@ -245,7 +245,7 @@ namespace FGEngine::PhysicsSystem
 					colB.origin->old = false;
 
 					// イベントの結果、どちらかのゲームオブジェクトが破壊されたらループ終了
-					if (goA->GetState() == GameObjectState::Destory || goB->GetState() == GameObjectState::Destory)
+					if (goA->GetState() == GameObjectState::Destroyed || goB->GetState() == GameObjectState::Destroyed)
 					{
 						return;	// 関数終了
 					}

@@ -2,6 +2,7 @@
 * @file Component.cpp
 */
 #include "FGEngine/Component/Component.h"
+#include "FGEngine/Component/Transform.h"
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Scene/Scene.h"
 #include "FGEngine/Math/Quaternion.h"
@@ -17,7 +18,8 @@ namespace FGEngine
 	*/
 	GameObjectPtr Component::Instantate(const std::string& name)
 	{
-		auto obj = OwnerObject()->GetScene()->CreateGameObject(name);
+		auto obj = OwnerObject()->GetScene()->Create(CreateObject::Empty);
+		obj->name = name;
 
 		return obj;
 	}
@@ -32,7 +34,9 @@ namespace FGEngine
 	*/
 	GameObjectPtr Component::Instantate(const std::string& name, const TransformPtr transform)
 	{
-		auto obj = OwnerObject()->GetScene()->CreateGameObject(name, transform);
+		auto obj = Instantate(name);
+		obj->GetTransform()->position = transform->position;
+		obj->GetTransform()->rotation = transform->rotation;
 
 		return obj;
 	}
@@ -48,7 +52,9 @@ namespace FGEngine
 	*/
 	GameObjectPtr Component::Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation)
 	{
-		auto obj = OwnerObject()->GetScene()->CreateGameObject(name, position, rotation);
+		auto obj = Instantate(name);
+		obj->GetTransform()->position = position;
+		obj->GetTransform()->rotation = rotation;
 
 		return obj;
 	}

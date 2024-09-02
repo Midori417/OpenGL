@@ -126,6 +126,10 @@ namespace FGEngine
 		*/
 		Matrix3x3 GetNormalMatrix() const;
 
+	public:
+
+		virtual ComponentPtr Clone() const override;
+
 	private:
 
 		/**

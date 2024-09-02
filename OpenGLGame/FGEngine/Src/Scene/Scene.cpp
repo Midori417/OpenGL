@@ -8,13 +8,22 @@
 #include "FGEngine/Component/Animator.h"
 #include "FGEngine/Component/Camera.h"
 #include "FGEngine/Component/AudioSource.h"
+#include "FGEngine/Component/MeshRenderer.h"
 #include "FGEngine/Physics/PhysicsEngine.h"
 #include "FGEngine/Asset/AssetManager.h"
 #include "FGEngine/Asset/Shader.h"
 #include "FGEngine/Rendering/RenderingEngine.h"
+#include <algorithm>
 
 namespace FGEngine
 {
+	/**
+	* ゲームオブジェクトを作成
+	*
+	* @param name オブジェクトの名前
+	*
+	* @return 作成したゲームオブジェクト
+	*/
 	GameObjectPtr Scene::CreateGameObject(const std::string& name)
 	{
 		auto obj = std::make_shared<GameObject>();
@@ -36,38 +45,58 @@ namespace FGEngine
 		return obj;
 	}
 
-	GameObjectPtr Scene::CreateGameObject(const std::string& name, const TransformPtr transform)
+	/**
+	* nameにあったオブジェクトを生成する
+	*
+	* @param name 生成したいオブジェクトの名前
+	* namespace CreateObjectから選択推奨
+	*
+	* @return 生成したオブジェクト
+	*/
+	GameObjectPtr Scene::Create(const std::string& name)
 	{
-		// ゲームオブジェクトを作成
-		auto obj = CreateGameObject(name);
+		if (name == CreateObject::Empty)
+		{
+			return CreateGameObject("GameObject");
+		}
+		else if(name == CreateObject::Camera)
+		{
+			GameObjectPtr p = CreateGameObject("Camera");
+			CameraPtr camera = p->AddComponent<Camera>();
 
-		// Tranformを設定
+			// メインカメラが存在しない場合設定する
+			SetMainCameraInfo(camera);
 
-		// 位置
-		obj->GetTransform()->position = transform->position;
+			return p;
+		}
+		else if (name == CreateObject::GameObject3D::Cube)
+		{
+			GameObjectPtr p = CreateGameObject("Cube");
+			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
+			
+			// メッシュを設定する
+			auto assetManger = AssetManager::GetInstance();
+			mesh->mesh = assetManger->GetStaticMesh("Cube");
+			mesh->shader = assetManger->GetShader(DefalutShader::Standard3D);
+			mesh->shadowShader = assetManger->GetShader(DefalutShader::Shadow3D);
 
-		// 回転
-		obj->GetTransform()->rotation = transform->rotation;
+			return p;
+		}
+		else if(name == CreateObject::GameObject3D::Sphere)
+		{
+			GameObjectPtr p = CreateGameObject("Sphere");
+			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
 
-		// 拡大縮小
-		obj->GetTransform()->scale = transform->scale;
+			// メッシュを生成
+			auto assetManger = AssetManager::GetInstance();
+			mesh->mesh = assetManger->GetStaticMesh("Sphere");
+			mesh->shader = assetManger->GetShader(DefalutShader::Standard3D);
+			mesh->shadowShader = assetManger->GetShader(DefalutShader::Shadow3D);
 
-		// 作成したゲームオブジェクト
-		return obj;
-	}
-	GameObjectPtr Scene::CreateGameObject(const std::string& name, const Vector3& position, const Quaternion& rotation)
-	{
-		// ゲームオブジェクトを作成
-		auto obj = CreateGameObject(name);
+			return p;
+		}
 
-		// 位置
-		obj->GetTransform()->position = position;
-
-		// 回転
-		obj->GetTransform()->rotation = rotation;
-
-		// 作成したゲームオブジェクト
-		return obj;
+		return nullptr;
 	}
 
 	/**
@@ -80,6 +109,9 @@ namespace FGEngine
 	GameObjectPtr Scene::CloneGameObject(const GameObjectPtr& gameObject)
 	{
 		GameObjectPtr p = GameObject::CloneGameObject(gameObject);
+
+		// シーンを設定する
+		p->ownerScene = this;
 
 		// 配列に追加
 		gameObjects.push_back(p);
@@ -98,6 +130,9 @@ namespace FGEngine
 	GameObjectPtr Scene::CloneGameObject(const GameObjectPtr& gameObject, const TransformPtr& tranform)
 	{
 		GameObjectPtr p = GameObject::CloneGameObject(gameObject, tranform);
+
+		// シーンを設定する
+		p->ownerScene = this;
 
 		// 配列に追加
 		gameObjects.push_back(p);
@@ -169,17 +204,18 @@ namespace FGEngine
 	*/
 	void Scene::Update()
 	{
-
 		if (!gameObjects.empty())
 		{
 			UpdateGameEvent();
-			UpdateAnimator();
 			UpdateAudioSource();
 			UpdateRigidbody();
 			UpdateTransform();
 			CollisionGameObject();
 			// 衝突後の座標に更新したいからもう一度呼び出す
 			UpdateTransform();
+			UpdateAnimator();
+
+			DestoryGameObject();
 		}
 	}
 
@@ -206,7 +242,6 @@ namespace FGEngine
 	*/
 	void Scene::UpdateGameEvent()
 	{
-
 		// Startイベント
 		for (auto& x : gameObjects)
 		{
@@ -408,14 +443,14 @@ namespace FGEngine
 			for (auto a = colliders.begin(); a != colliders.end() - 1; ++a)
 			{
 				const GameObjectPtr goA = a->at(0).origin->OwnerObject();
-				if (goA->GetState() == GameObjectState::Destory)
+				if (goA->GetState() == GameObjectState::Destroyed)
 				{
 					continue;	// 削除済みなので飛ばす
 				}
 				for (auto b = a + 1; b != colliders.end(); ++b)
 				{
 					const GameObjectPtr goB = b->at(0).origin->OwnerObject();
-					if (goB->GetState() == GameObjectState::Destory)
+					if (goB->GetState() == GameObjectState::Destroyed)
 					{
 						continue;	// 削除済みなので飛ばす
 					}
@@ -511,6 +546,52 @@ namespace FGEngine
 			if (x && x->enabled)
 			{
 				x->UIUpdate();
+			}
+		}
+	}
+
+	/**
+	* ゲームオブジェクトの破棄処理
+	*/
+	void Scene::DestoryGameObject()
+	{
+		// 破棄予定のコンポーネントを削除
+		for (auto& x : gameObjects)
+		{
+			x->DestroyComponent();
+		}
+
+		// 破棄状態の更新
+		for (auto& x : gameObjects)
+		{
+			x->UpdateDestroyTime();
+		}
+
+		// 破棄予定でゲームオブジェクトを分ける
+		const auto iter = std::stable_partition(
+			gameObjects.begin(), gameObjects.end(),
+			[](const GameObjectPtr p) {
+				return p->GetState() != GameObjectState::Destroyed;
+			});
+
+		// 破棄のゲームオブジェクト
+		GameObjectList destroyList(
+			std::move_iterator(iter),
+			std::move_iterator(gameObjects.end()));
+
+		// 配列から移動済みのゲームオブジェクトを削除
+		gameObjects.erase(iter, gameObjects.end());
+
+		// 削除イベント
+		for (auto& x : destroyList)
+		{
+			if (x->gameEvents.empty())
+			{
+				continue;
+			}
+			for (auto& event : x->gameEvents)
+			{
+				event->OnDestroy();
 			}
 		}
 	}

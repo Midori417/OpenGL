@@ -20,10 +20,30 @@ namespace FGEngine
 	class Renderer;
 	using RendererPtr = std::shared_ptr<Renderer>;
 
+	// メッシュレンダラー
+	class MeshRenderer;
+	using MeshRendererPtr = std::shared_ptr<MeshRenderer>;
+
+	// Gltfメッシュレンダラー
+	class GltfMeshRenderer;
+	using GltfMeshRendererPtr = std::shared_ptr<GltfMeshRenderer>;
+
 	//コライダー
 	class Collider;
 	using ColliderPtr = std::shared_ptr<Collider>;
 	using ColliderList = std::vector<ColliderPtr>;
+
+	// AABBコライダー
+	class AabbCollider;
+	using AabbColliderPtr = std::shared_ptr<AabbCollider>;
+
+	// スフィアコライダー
+	class SphereCollider;
+	using SphereColliderPtr = std::shared_ptr<SphereCollider>;
+
+	// ボックスコライダー
+	class BoxCollider;
+	using BoxColliderPtr = std::shared_ptr<BoxCollider>;
 
 	// リジッドボディ
 	class Rigidbody;

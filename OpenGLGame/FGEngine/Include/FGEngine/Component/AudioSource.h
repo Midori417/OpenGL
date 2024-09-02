@@ -19,6 +19,8 @@ namespace FGEngine
 		AudioSource() = default;
 		virtual ~AudioSource() = default;
 
+	public:
+
 		/**
 		* オーディオIDを設定
 		*/
@@ -69,6 +71,10 @@ namespace FGEngine
 		void SetPan(float pan);
 		float GetPan();
 
+	public:
+
+		virtual ComponentPtr Clone() const override;
+
 	private:
 
 		void Awake();
@@ -82,7 +88,6 @@ namespace FGEngine
 
 		// サウンドのファイル名
 		std::string filename = "NoFile";
-
 
 		int id = -1;
 

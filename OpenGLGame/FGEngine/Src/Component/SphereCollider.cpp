@@ -53,4 +53,19 @@ namespace FGEngine
 		return p;
 	}
 
+	ComponentPtr SphereCollider::Clone() const
+	{
+		SphereColliderPtr p = std::make_shared<SphereCollider>();
+
+		// 基底クラスの変数をコピー
+		p->enabled = this->enabled;
+		p->isTrigger = this->isTrigger;
+
+		p->ceneter = this->ceneter;
+		p->radius = this->radius;
+		p->sphere = this->sphere;
+
+		return p;
+	}
+
 }

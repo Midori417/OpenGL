@@ -25,8 +25,8 @@ namespace FGEngine
 		// 破棄時間
 		DestroyTime,
 
-		// 破棄
-		Destory,
+		// 破棄予定
+		Destroyed,
 	};
 
 	/**
@@ -271,10 +271,20 @@ namespace FGEngine
 
 		/**
 		* クローンしたゲームオブジェクトを取得する
+		* 
+		* @param object クローンもとのオブジェクト
+		* @oaram trasnform クローンするトランスフォーム
+		* 
+		* @return クローンしたゲームオブジェクト
 		*/
 		static GameObjectPtr CloneGameObject(const GameObjectPtr& object, const TransformPtr& transform = nullptr);
 
 	private:
+
+		/**
+		* 状態が破棄待ちなら破棄時間を更新
+		*/
+		void UpdateDestroyTime();
 
 		/**
 		* 削除予定のコンポーネントを削除
@@ -317,11 +327,11 @@ namespace FGEngine
 		// 物理コンポーネントポインター
 		RigidbodyPtr rigidbody;
 
-		// カメラコンポーネントポインター
-		CameraPtr camera;
-
 		// アニメータコンポーネントポインター
 		AnimatorPtr animator;
+
+		// カメラコンポーネントポインター
+		CameraPtr camera;
 
 		// UIレイアウトコンポーネントポインター
 		UI::ImGuiLayoutPtr imGuiLayout;

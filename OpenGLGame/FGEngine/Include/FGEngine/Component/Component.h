@@ -80,10 +80,7 @@ namespace FGEngine
 		/**
 		* コンポーネントのクローンを作成する
 		*/
-		virtual ComponentPtr Clone() const
-		{
-			return nullptr;
-		}
+		virtual ComponentPtr Clone() const = 0;
 
 	private:
 

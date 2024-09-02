@@ -25,7 +25,6 @@ namespace FGEngine
 	class AssetManager : public Singleton<AssetManager>
 	{
 		friend MainSystem::EngineCore;
-		friend RenderingSystem::RenderingEngine;
 		friend Singleton<AssetManager>;
 	private:	// コンストラクタ
 
@@ -46,7 +45,10 @@ namespace FGEngine
 
 	public:
 
-
+		/**
+		* Gltfファイルを取得
+		*/
+		GltfFileBuffer* GetGltfFileBuffer() const;
 
 	public:		// テクスチャ
 

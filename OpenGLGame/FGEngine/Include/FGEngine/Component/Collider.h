@@ -21,7 +21,7 @@ namespace FGEngine
 	class Collider : public Component
 	{
 		friend PhysicsSystem::PhysicsEngine;
-	public:
+	protected:
 
 
 		// コンストラクタ・デストラクタ

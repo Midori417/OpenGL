@@ -31,7 +31,7 @@ namespace FGEngine::RenderingSystem
 		skySphere = resManager->GetStaticMesh("skySphere");
 
 		// glTFファイルバッファを取得
-		glTFfileBuffer = resManager->gltfFileBuffer.get();
+		glTFfileBuffer = resManager->GetGltfFileBuffer();
 
 		// FBOを作成
 		auto texShadow = Texture::Create("FBO(depth)", 4096, 4096, GL_DEPTH_COMPONENT32, GL_CLAMP_TO_EDGE);

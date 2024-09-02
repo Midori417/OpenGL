@@ -23,6 +23,12 @@ public:
 	BattleSettingManager() = default;
 	virtual ~BattleSettingManager() = default;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 private:
 
 	/**

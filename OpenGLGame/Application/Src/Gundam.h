@@ -22,6 +22,11 @@ public:
 	*/
 	virtual void Awake() override;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+	}
+
 private:
 
 	// ‚Á‚Ä‚¢‚é•‘•

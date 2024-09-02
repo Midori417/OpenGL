@@ -175,4 +175,25 @@ namespace FGEngine
 			}
 		}
 	}
+
+	/**
+	* Gltfメッシュ
+	*/
+	ComponentPtr GltfMeshRenderer::Clone() const
+	{
+		GltfMeshRendererPtr p = std::make_shared<GltfMeshRenderer>();
+
+		// 基底クラスの変数をコピー
+		p->enabled = this->enabled;
+		p->renderQueue = this->renderQueue;
+		p->shader = this->shader;
+		p->shadowShader = this->shadowShader;
+
+		p->glTFfile = this->glTFfile;
+		p->materials = this->materials;
+		p->meshIndex = this->meshIndex;
+		p->glTFfile = this->glTFfile;
+
+		return p;
+	}
 }

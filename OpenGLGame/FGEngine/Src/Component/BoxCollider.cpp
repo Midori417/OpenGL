@@ -57,4 +57,22 @@ namespace FGEngine
 		}
 		return p;
 	}
+
+	/**
+	* Boxコライダーのクローンを作成
+	*/
+	ComponentPtr BoxCollider::Clone() const
+	{
+		BoxColliderPtr p = std::make_shared<BoxCollider>();
+
+		// 基底クラスの変数をコピー
+		p->enabled = this->enabled;
+		p->isTrigger = this->isTrigger;
+
+		p->center = this->center;
+		p->size = this->size;
+		p->box = this->box;
+
+		return p;
+	}
 }

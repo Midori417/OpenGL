@@ -4,7 +4,7 @@
 #ifndef FGENGINE_LIGHT_H_INCLUDED
 #define FGENGINE_LIHGT_H_INCLUDED
 #include "Component.h"
-#include "FGEngine/Rendering/Color.h"
+#include "FGEngine/Color.h"
 #include "FGEngine/Math/Mathf.h"
 
 namespace FGEngine

@@ -29,6 +29,10 @@ namespace FGEngine::UI
 
 	public:
 
+		virtual ComponentPtr Clone() const override;
+
+	public:
+
 
 		// 表示するテクスチャポインター
 		TexturePtr texture;

@@ -9,12 +9,10 @@
 */
 bool BattleSettingScene::Initialize()
 {
-
 	// バトル設定マネージャを作成
-	{
-		auto battleSettingManagerObj = CreateGameObject("BattleSettingManager");
-		battleSettingManagerObj->AddComponent<BattleSettingManager>();
-	}
+	GameObjectPtr manager = Create(CreateObject::Empty);
+	manager->name = "BattleSettingManager";
+	manager->AddComponent<BattleSettingManager>();
 
 	return false;
 }

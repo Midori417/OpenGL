@@ -38,6 +38,10 @@ namespace FGEngine
 
 	public:
 
+		virtual ComponentPtr Clone() const override;
+
+	public:
+
 		// glTFƒtƒ@ƒCƒ‹
 		GltfFilePtr glTFfile;
 
@@ -52,7 +56,6 @@ namespace FGEngine
 		// Ssbo
 		std::vector<AnimMatrixRange> ssboRanges;
 	};
-	using GltfMeshRendererPtr = std::shared_ptr<GltfMeshRenderer>;
 }
 
 #endif // !FGENGIEN_GLTFMESHRENDERER_H_INCLUDED

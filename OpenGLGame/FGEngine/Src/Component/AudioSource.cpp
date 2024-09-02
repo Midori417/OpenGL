@@ -132,6 +132,21 @@ namespace FGEngine
 		return pan;
 	}
 
+	ComponentPtr AudioSource::Clone() const
+	{
+		AudioSourcePtr p = std::make_shared<AudioSource>();
+
+		p->filename = this->filename;
+		p->id = this->id;
+		p->volume = this->volume;
+		p->picth = this->picth;
+		p->pan = this->pan;
+		p->is3DSound = this->is3DSound;
+		p->isLooop = this->isLooop;
+		
+		return p;
+	}
+
 	void AudioSource::Awake()
 	{
 		id = SoundSystem::SoundManager::GetInstance()->AudioIdAdd();

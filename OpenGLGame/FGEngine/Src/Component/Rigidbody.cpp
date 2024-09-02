@@ -56,4 +56,18 @@ namespace FGEngine
 	{
 		return isGround;
 	}
+	ComponentPtr Rigidbody::Clone() const
+	{
+		RigidbodyPtr p = std::make_shared<Rigidbody>();
+
+		p->velocity = this->velocity;
+		p->isGravity = this->isGravity;
+		p->gravityScale = this->gravityScale;
+		p->isVelocity = this->isVelocity;
+
+		p->isGrounded = this->isGrounded;
+		p->isGround = this->isGround;
+
+		return p;
+	}
 }

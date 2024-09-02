@@ -57,6 +57,15 @@ namespace FGEngine
 
 		return 0;
 	}
+
+	/**
+	* Gltfファイルを取得
+	*/
+	GltfFileBuffer* AssetManager::GetGltfFileBuffer() const
+	{
+		return gltfFileBuffer.get();
+	}
+
 	/**
 	* tgaファイルを読み込む
 	*

@@ -212,6 +212,26 @@ namespace FGEngine
 	}
 
 	/**
+	* 
+	*/
+	ComponentPtr Transform::Clone() const
+	{
+		TransformPtr p = std::make_shared<Transform>();
+
+		p->position = this->position;
+		p->rotation = this->rotation;
+		p->scale = this->scale;
+
+		p->localTransformMatrix = this->localTransformMatrix;
+		p->worldTransformMatrix = this->worldTransformMatrix;
+		p->normalMatrix = this->normalMatrix;
+
+		p->parent = this->parent;
+
+		return p;
+	}
+
+	/**
 	* ローカル座標行列を更新
 	*/
 	void Transform::LocalTransformUpdate()

@@ -60,4 +60,19 @@ namespace FGEngine
 			}
 		}
 	}
+	ComponentPtr MeshRenderer::Clone() const
+	{
+		MeshRendererPtr p = std::make_shared<MeshRenderer>();
+
+		// 基底クラスの変数をコピー
+		p->enabled = this->enabled;
+		p->renderQueue = this->renderQueue;
+		p->shader = this->shader;
+		p->shadowShader = this->shadowShader;
+
+		p->mesh = this->mesh;
+		p->materials = this->materials;
+		
+		return p;
+	}
 }

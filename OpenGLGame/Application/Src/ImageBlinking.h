@@ -21,6 +21,12 @@ private:
 	*/
 	virtual void Update() override;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 public:
 	
 	// 点滅させるImageコンポーネント

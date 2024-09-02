@@ -57,6 +57,13 @@ private:
 	*/
 	virtual void Finish(VictoryState victoryState) override;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
+
 private:
 
 	// ©g‚Ìî•ñ”wŒi

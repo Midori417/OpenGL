@@ -84,6 +84,11 @@ namespace FGEngine
 		*/
 		const AnimationClipPtr& GetAnimationClip() const;
 
+		/**
+		* アニメータのクローンを作成
+		*/
+		virtual ComponentPtr Clone() const override;
+
 	private:
 
 		/**

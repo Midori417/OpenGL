@@ -15,35 +15,40 @@ bool TitleScene::Initialize()
 {
 	auto resManager = AssetManager::GetInstance();
 
-	// カメラの作成
-	auto camera = CreateGameObject("Camera", Vector3(0, 0, -10), Quaternion::identity);
-	auto cameraInfo = camera->AddComponent<Camera>();
-	SetMainCameraInfo(cameraInfo);
+	// カメラを作成
+	GameObjectPtr camera = Create(CreateObject::Camera);
 
 	// タイトルマネージャを作成
-	auto titleManagerObj = CreateGameObject("TitleManager");
-	auto titleManager = titleManagerObj->AddComponent<TitleManager>();
+	GameObjectPtr titleManagerObject = Create(CreateObject::Empty);
+	titleManagerObject->name = "TitleManager";
+	auto titleManager = titleManagerObject->AddComponent<TitleManager>();
 
 	// タイトル背景を作成
 	{
-		auto titleBack = CreateGameObject("TitleBack");
+		GameObjectPtr titleBack = Create(CreateObject::Empty);
+		titleBack->name = "TitleBack";
 		auto image = titleBack->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleBack");
 		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
 	}
 	// ガンダムを作成
 	{
-		auto titleGundam = CreateGameObject("TitleGundam");
+		GameObjectPtr titleGundam = Create(CreateObject::Empty);
+		titleGundam->name = "TitleGundam";
 		auto image = titleGundam->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleGundam");
 		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
 	}
 	// ガンダムの眼を作成
 	{
-		auto gundamEye = CreateGameObject("GundamEye");
-		auto image =gundamEye->AddComponent<Image>();
+		GameObjectPtr gundamEye = Create(CreateObject::Empty);
+		gundamEye->name = "GundamEye";
+
+		auto image = gundamEye->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleGundamEye");
 		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+
+		// 点滅させたいので画像点滅コンポーネントを追加
 		auto eyeBlinking = gundamEye->AddComponent<ImageBlinking>();
 		eyeBlinking->image = image;
 		eyeBlinking->speed = 0.5f;
@@ -51,10 +56,15 @@ bool TitleScene::Initialize()
 
 	// PleaseButtonを作成
 	{
-		auto pleauseButton = CreateGameObject("PleaseButton", Vector3(-50, 350, 0), Quaternion::identity);
+		GameObjectPtr pleauseButton = Create(CreateObject::Empty);
+		pleauseButton->name = "PleaseButton";
+		pleauseButton->GetTransform()->position = Vector3(-50, 350, 0);
+
 		auto image = pleauseButton->AddComponent<Image>();
 		image->texture = resManager->GetTexture("PleaseButton");
 		image->size = image->texture->GetSize() * 1.5f;
+
+		// 点滅させたいので画像点滅コンポーネントを追加
 		auto imgBlinking = pleauseButton->AddComponent<ImageBlinking>();
 		imgBlinking->image = image;
 		imgBlinking->speed = 1;
@@ -62,7 +72,9 @@ bool TitleScene::Initialize()
 
 	// タイトルロゴを作成
 	{
-		auto titleLogo = CreateGameObject("TitleLogo");
+		GameObjectPtr titleLogo = Create(CreateObject::Empty);
+		titleLogo->name = "TitleLogo";
+
 		auto image = titleLogo->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleLogo");
 		image->size = Vector2(937, 383) * 1.3f;

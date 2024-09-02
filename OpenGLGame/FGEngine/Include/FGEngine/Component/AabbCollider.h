@@ -46,6 +46,10 @@ namespace FGEngine
 
 	public:
 
+		virtual ComponentPtr Clone() const override;
+
+	public:
+
 		// ç≈è¨íl
 		Vector3 min = Vector3(-1);
 

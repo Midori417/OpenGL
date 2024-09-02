@@ -43,6 +43,8 @@ namespace FGEngine
 		static Vector2 WorldPointToScreenPoint(const Vector3& targetPos, const CameraPtr& targetCamera,
 			float screenWidth, float screenHeight);
 
+		virtual ComponentPtr Clone() const override;
+
 	public:
 
 		float far = 1000;

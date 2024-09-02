@@ -18,6 +18,12 @@ public:
 
 private:
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 	/**
 	* Å‰‚ÉÀs
 	*/

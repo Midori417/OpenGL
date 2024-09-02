@@ -100,6 +100,12 @@ public:
 
 	bool GetHoimngCancel() const;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 protected:
 
 	/**

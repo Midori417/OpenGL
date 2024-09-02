@@ -33,6 +33,12 @@ private:
 	*/
 	virtual void Update() override;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 private:
 
 	/**

@@ -14,7 +14,7 @@ namespace FGEngine::UI
 	class ImGuiLayout : public Component
 	{
 		friend Scene;
-	public:
+	protected:
 
 		// コンストラクタ・デストラクタ
 		ImGuiLayout() = default;
@@ -46,6 +46,10 @@ namespace FGEngine::UI
 		{
 			return enabled;
 		}
+
+	public:
+
+		virtual ComponentPtr Clone() const = 0;
 
 	public:
 

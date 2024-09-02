@@ -87,7 +87,7 @@ namespace FGEngine
 		virtual void Awake() {}
 
 		// オブジェクトを破壊時に実行
-		virtual void OnDestory() {}
+		virtual void OnDestroy() {}
 
 	public:	// 開始・更新イベント
 
@@ -110,6 +110,10 @@ namespace FGEngine
 
 		// 他のコリジョンに触れ続けているときに実行
 		virtual void OnCollisionStay(const CollisionPtr ohter) {}
+
+	public:
+
+		virtual ComponentPtr Clone() const = 0;
 
 	public:
 

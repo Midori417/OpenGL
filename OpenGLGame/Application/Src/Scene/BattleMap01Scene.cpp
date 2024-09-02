@@ -32,10 +32,9 @@ bool BattleMap01Scene::Initialize()
 		//resManager->LoadGlTF("Map01/Biru03", "Application/Res/Map/Map01/Biru03.gltf");
 		isResouceLoad = true;
 	}
+
 	// カメラを作成
-	auto camera = CreateGameObject("Camera", Vector3(0, 0, -20), Quaternion::identity);
-	auto cameraInfo = camera->AddComponent<Camera>();
-	SetMainCameraInfo(cameraInfo);
+	GameObjectPtr camera = Create(CreateObject::Camera);
 
 	// ステージの大きさを設定
 	mapSize.x = 150;
@@ -51,23 +50,37 @@ bool BattleMap01Scene::Initialize()
 
 	// バトルマネージャを作成
 	{
-		auto battleManagerObj = CreateGameObject("BattleManager");
-		auto battleManager = battleManagerObj->AddComponent<BattleManager>();
+		GameObjectPtr battleManagerObject = Create(CreateObject::Empty);
+		battleManagerObject->name = "BattleManager";
+
+		auto battleManager = battleManagerObject->AddComponent<BattleManager>();
+		// マップのリスポーンの位置を伝える
 		battleManager->SetResponPos(responPoses);
 	}
+	
+	// 壁の高さ
+	const float wallHeight = 100;
 
 	// 壁を作成
 	{
 		// 前
 		{
-			auto wall = CreateGameObject("Wall", Vector3(0, -6.0f, mapSize.y), Quaternion::identity);
+			GameObjectPtr wall = Create(CreateObject::Empty);
+			wall->name = "Wall_F";
+			wall->GetTransform()->position = Vector3(0, -6.0f, mapSize.y);
+			wall->GetTransform()->scale = Vector3(mapSize.x, wallHeight, 1);
 			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
+
+			// 衝突判定を追加
 			auto col = wall->AddComponent<AabbCollider>();
 			col->min = Vector3(-1, -1, -10);
 
-			auto line = CreateGameObject("Line", Vector3(0, 1.0f, mapSize.y), Quaternion::identity);
+			// 赤色の線を作成
+			GameObjectPtr line = Create(CreateObject::Empty);
+			line->name = "Line_F";
+			line->GetTransform()->position = Vector3(0, 1.0f, mapSize.y);
 			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
+
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
 			render->shader = resManager->GetShader(DefalutShader::Unlit);
@@ -77,51 +90,72 @@ bool BattleMap01Scene::Initialize()
 		}
 		// 後ろ
 		{
-			auto wall = CreateGameObject("Wall", Vector3(0, -6.0f, -mapSize.y), Quaternion::identity);
+			GameObjectPtr wall = Create(CreateObject::Empty);
+			wall->name = "Wall_B";
+			wall->GetTransform()->position = Vector3(0, -6.0f, -mapSize.y);
+			wall->GetTransform()->scale = Vector3(mapSize.x, wallHeight, 1);
 			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(mapSize.x, 100, 1);
-			auto col = wall->AddComponent<AabbCollider>();
-			col->max = Vector3(1, 1, 10);
 
-			auto line = CreateGameObject("Line", Vector3(0, 1.0f, -mapSize.y), Quaternion::identity);
+			// 衝突判定を追加
+			auto col = wall->AddComponent<AabbCollider>();
+			col->max = Vector3(1, 1, -10);
+
+			// 赤色の線を作成
+			GameObjectPtr line = Create(CreateObject::Empty);
+			line->name = "Line_B";
+			line->GetTransform()->position = Vector3(0, 1.0f, -mapSize.y);
 			line->GetTransform()->scale = Vector3(mapSize.x, 1, 1);
+
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
 			render->shader = resManager->GetShader(DefalutShader::Unlit);
 			render->materials = CloneMaterialList(render->mesh);
 			render->materials[0]->mainTexture = resManager->GetTexture("white");
 			render->materials[0]->color = Color::red;
-
 		}
-
 		// 右
 		{
-			auto wall = CreateGameObject("Wall", Vector3(mapSize.x, -6.0f, 0), Quaternion::identity);
+			GameObjectPtr wall = Create(CreateObject::Empty);
+			wall->name = "Wall_R";
+			wall->GetTransform()->position = Vector3(mapSize.x, -6.0f, 1);
+			wall->GetTransform()->scale = Vector3(1, wallHeight, mapSize.y);
 			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
+
+			// 衝突判定を追加
 			auto col = wall->AddComponent<AabbCollider>();
 			col->max = Vector3(10, 1, 1);
 
-			auto line = CreateGameObject("Line", Vector3(mapSize.x, 1.0f, 0), Quaternion::identity);
+			// 赤色の線を作成
+			GameObjectPtr line = Create(CreateObject::Empty);
+			line->name = "Line_R";
+			line->GetTransform()->position = Vector3(mapSize.x, 1.0f, 0);
 			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
+
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
 			render->shader = resManager->GetShader(DefalutShader::Unlit);
 			render->materials = CloneMaterialList(render->mesh);
 			render->materials[0]->mainTexture = resManager->GetTexture("white");
 			render->materials[0]->color = Color::red;
-
 		}
 		// 左
 		{
-			auto wall = CreateGameObject("Wall", Vector3(-mapSize.x, -6.0f, 0), Quaternion::identity);
+			GameObjectPtr wall = Create(CreateObject::Empty);
+			wall->name = "Wall_R";
+			wall->GetTransform()->position = Vector3(-mapSize.x, -6.0f, 1);
+			wall->GetTransform()->scale = Vector3(1, wallHeight, mapSize.y);
 			wall->tag = "Wall";
-			wall->GetTransform()->scale = Vector3(1, 100, mapSize.y);
+
+			// 衝突判定を追加
 			auto col = wall->AddComponent<AabbCollider>();
 			col->min = Vector3(-10, -1, -1);
 
-			auto line = CreateGameObject("Line", Vector3(-mapSize.x, 1.0f, 0), Quaternion::identity);
+			// 赤色の線を作成
+			GameObjectPtr line = Create(CreateObject::Empty);
+			line->name = "Line_R";
+			line->GetTransform()->position = Vector3(-mapSize.x, 1.0f, 0);
 			line->GetTransform()->scale = Vector3(1, 1, mapSize.y);
+
 			auto render = line->AddComponent<MeshRenderer>();
 			render->mesh = resManager->GetStaticMesh("Cube");
 			render->shader = resManager->GetShader(DefalutShader::Unlit);
@@ -129,21 +163,26 @@ bool BattleMap01Scene::Initialize()
 			render->materials[0]->mainTexture = resManager->GetTexture("white");
 			render->materials[0]->color = Color::red;
 		}
-
 	}
 
 	// ステージを作成
 	{
 		// 土台
 		{
-			auto ground = CreateGameObject("Ground", Vector3(0, -1.0f, 0), Quaternion::identity);
-			ground->tag = "Ground";
+			GameObjectPtr ground = Create(CreateObject::Empty);
+			ground->name = "Ground";
+			ground->GetTransform()->position = Vector3::down;
+
 			auto renderer = ground->AddComponent<GltfMeshRenderer>();
 			renderer->glTFfile = resManager->GetGltfFile("Map01/Ground");
 			renderer->shader = resManager->GetShader(DefalutShader::Standard3D);
 			auto col = ground->AddComponent<AabbCollider>();
 			col->min = Vector3(-mapSize.x, -10.0f, -mapSize.y);
-			col->max = Vector3(mapSize.x, 1.0f, mapSize.y);
+			col->max = Vector3(mapSize.x, 1, mapSize.y);
+		}
+		// 建物
+		{
+
 		}
 	}
 

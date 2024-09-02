@@ -35,6 +35,10 @@ namespace FGEngine
 
 	public:
 
+		virtual ComponentPtr Clone() const override;
+
+	public:
+
 		// ï®ëÃÇÃë¨ìx
 		Vector3 velocity = Vector3::zero;
 
@@ -63,7 +67,6 @@ namespace FGEngine
 		// èdóÕâ¡ë¨ìx
 		static constexpr float gravity = 9.81f;
 	};
-	using RigidbodyPtr = std::shared_ptr<Rigidbody>;
 }
 
 #endif // !FGENGINE_RIGIDBODY_H_INCLUDED

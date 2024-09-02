@@ -63,4 +63,22 @@ namespace FGEngine::UI
 		h = size.y;
 
 	}
+	ComponentPtr Image::Clone() const
+	{
+		auto p = std::make_shared<Image>();
+		
+		// 基底クラスの変数にコピーする
+		p->enabled = this->enabled;
+		p->w = this->w;
+		p->h = this->h;
+		p->offsetPos = this->offsetPos;
+
+		p->texture = this->texture;
+		p->size = this->size;
+		p->color = this->color;
+		p->fillAmout = this->fillAmout;
+		p->fillType = this->fillType;
+
+		return p;
+	}
 }

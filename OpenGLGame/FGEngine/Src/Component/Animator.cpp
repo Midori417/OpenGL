@@ -135,6 +135,24 @@ namespace FGEngine
 	}
 
 	/**
+	* アニメータのクローンを作成
+	*/
+	ComponentPtr Animator::Clone() const
+	{
+		AnimatorPtr p = std::make_shared<Animator>();
+
+		p->time = this->time;
+		p->animationSpeed = this->animationSpeed;
+		p->isLoop = this->isLoop;
+		p->animationClips = this->animationClips;
+
+		p->state = this->state;
+		p->animationClip = this->animationClip;
+
+		return p;
+	}
+
+	/**
 	* アニメータを更新
 	*/
 	void Animator::Update()

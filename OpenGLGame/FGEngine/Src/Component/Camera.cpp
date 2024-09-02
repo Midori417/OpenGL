@@ -34,4 +34,19 @@ namespace FGEngine
 
         return screenSpacePos;
     }
+
+    ComponentPtr Camera::Clone() const
+    {
+        CameraPtr p = std::make_shared<Camera>();
+
+        p->far = this->far;
+        p->near = this->near;
+        p->aspect = this->aspect;
+
+        p->degFovY = this->degFovY;
+        p->radFovY = this->radFovY;
+        p->fovScale = this->fovScale;
+
+        return p;
+    }
 }

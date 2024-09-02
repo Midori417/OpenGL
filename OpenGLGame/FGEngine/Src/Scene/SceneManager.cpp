@@ -41,6 +41,7 @@ namespace FGEngine
 		{
 			if (scene)
 			{
+				scene->AllClearGameObject();
 				scene.reset();
 			}
 			nextScene->Awake();

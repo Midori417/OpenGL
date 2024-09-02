@@ -55,4 +55,22 @@ namespace FGEngine
 		return p;
 	}
 
+	/**
+	* Aabbコライダーのクローンを作成
+	*/
+	ComponentPtr AabbCollider::Clone() const
+	{
+		AabbColliderPtr p = std::make_shared<AabbCollider>();
+
+		// 基底クラスの変数をコピー
+		p->enabled = this->enabled;
+		p->isTrigger = this->isTrigger;
+
+		p->min = this->min;
+		p->max = this->max;
+		p->aabb = this->aabb;
+
+		return ComponentPtr();
+	}
+
 }

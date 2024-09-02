@@ -41,6 +41,12 @@ public:
 	void SetResponPos(const Vector3& pos);
 	void SetResponPos(const std::vector<Vector3>& poses);
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 private:
 
 	/**

@@ -50,6 +50,11 @@ public:
 	*/
 	void TeamHPInivinit();
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
 
 protected:
 

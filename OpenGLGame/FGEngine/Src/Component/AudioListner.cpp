@@ -18,4 +18,12 @@ namespace FGEngine
 			EasyAudio::SetListenr(trs->position, trs->Right());
 		}
 	}
+
+	/**
+	*
+	*/
+	ComponentPtr AudioListner::Clone() const
+	{
+		return ComponentPtr();
+	}
 }

@@ -46,6 +46,10 @@ namespace FGEngine
 
 	public:
 
+		virtual ComponentPtr Clone() const override;
+
+	public:
+
 		// オブジェクトのローカル座標でのコライダーの中心座標
 		Vector3 ceneter = Vector3::zero;
 
@@ -57,7 +61,6 @@ namespace FGEngine
 		// 図形
 		PhysicsSystem::Sphere sphere;
 	};
-	using SphereColliderPtr = std::shared_ptr<SphereCollider>;
 }
 
 #endif // !FGENGINE_SPHERECOLLIDER_H_INCLUDED

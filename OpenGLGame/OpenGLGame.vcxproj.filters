@@ -175,12 +175,6 @@
     <Filter Include="FGEngine\Src\Component\Collider">
       <UniqueIdentifier>{bd45e844-6a74-4dfd-b1da-e24d413e203f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\Component\Render">
-      <UniqueIdentifier>{e8f20416-0c96-42c3-b70a-305b4ee6fd0d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Component\GameEvent">
-      <UniqueIdentifier>{db1047df-d6a9-4577-a07b-520a52c79754}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\Component\Animator">
       <UniqueIdentifier>{c304b6c3-5d2b-4087-be9e-86f8dd900b38}</UniqueIdentifier>
     </Filter>
@@ -202,103 +196,46 @@
     <Filter Include="FGEngine\Src\Component\Transform">
       <UniqueIdentifier>{3e983904-cc07-420d-a648-908f133db929}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FGEngine\Src\UsingNames">
+      <UniqueIdentifier>{b8569ea8-5e1b-43f1-bbee-9d604bfc26ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component">
+      <UniqueIdentifier>{ed5ec094-1fc3-4a21-ba9c-61696bcdde81}</UniqueIdentifier>
+    </Filter>
     <Filter Include="FGEngine\Src\Component\AudioSource">
       <UniqueIdentifier>{7e5c687c-f94c-4790-a68e-57064618fcdf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\UsingNames">
-      <UniqueIdentifier>{b8569ea8-5e1b-43f1-bbee-9d604bfc26ac}</UniqueIdentifier>
+    <Filter Include="FGEngine\Src\Component\Collider\SphereCollider">
+      <UniqueIdentifier>{b68cf1e0-7ecc-4256-98fc-4410e531ed56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Component\Collider\AabbCollier">
+      <UniqueIdentifier>{dc0247f8-3e74-46f3-9b55-1f493b77513e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Component\Collider\BoxCollider">
+      <UniqueIdentifier>{ef02fcf3-08dd-497b-9d54-a2037964f2b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Manager">
+      <UniqueIdentifier>{5b80ca06-8c4e-48fe-b671-605c1f149261}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Ms">
+      <UniqueIdentifier>{84cf2825-a460-4e7b-a8bd-7d8943e1511a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Ms\Gundam">
+      <UniqueIdentifier>{f1a2cdf4-263e-468b-b88b-527e6b5d9c28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\UI">
+      <UniqueIdentifier>{79818de3-2f7c-4be4-be77-2838f867d822}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Component\Render">
+      <UniqueIdentifier>{e8f20416-0c96-42c3-b70a-305b4ee6fd0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Component\GameEvent">
+      <UniqueIdentifier>{db1047df-d6a9-4577-a07b-520a52c79754}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Package\glad\src\glad.c">
       <Filter>Package\glad</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui_demo.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui_draw.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui_impl_glfw.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui_impl_opengl3.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui_tables.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Package\ImGui\imgui_widgets.cpp">
-      <Filter>Package\Imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Application.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\BaseBullet.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\BaseMs.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\BaseSlash.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\BattleManager.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\BattleSettingManager.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\ChoiceManager.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\ControlOwner.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\CpuControl.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\FadeOut.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Gundam.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\HomingBullet.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\HumanControl.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\ImageBlinking.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\ImageNum.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\LookOnCamera.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Scene\BattleSettingScene.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Scene\ChoiceScene.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Scene\TestSene.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Scene\TitleScene.cpp">
-      <Filter>Application</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\TitleManager.cpp">
-      <Filter>Application</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Math\Mathf.cpp">
       <Filter>FGEngine\Src\Math\Mathf</Filter>
@@ -396,15 +333,6 @@
     <ClCompile Include="FGEngine\Src\Main.cpp">
       <Filter>FGEngine\Src</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\Component\AabbCollider.cpp">
-      <Filter>FGEngine\Src\Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Component\BoxCollider.cpp">
-      <Filter>FGEngine\Src\Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Component\SphereCollider.cpp">
-      <Filter>FGEngine\Src\Component\Collider</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\Component\GltfMeshRenderer.cpp">
       <Filter>FGEngine\Src\Component\Render</Filter>
     </ClCompile>
@@ -443,6 +371,102 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Scene\Scene.cpp">
       <Filter>FGEngine\Src\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp">
+      <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\BattleSettingScene.cpp">
+      <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\ChoiceScene.cpp">
+      <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\TestSene.cpp">
+      <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\TitleScene.cpp">
+      <Filter>Application\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BaseBullet.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BaseSlash.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ControlOwner.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\CpuControl.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\HomingBullet.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\HumanControl.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\LookOnCamera.cpp">
+      <Filter>Application\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Application.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Component\SphereCollider.cpp">
+      <Filter>FGEngine\Src\Component\Collider\SphereCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Component\AabbCollider.cpp">
+      <Filter>FGEngine\Src\Component\Collider\AabbCollier</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Component\BoxCollider.cpp">
+      <Filter>FGEngine\Src\Component\Collider\BoxCollider</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ChoiceManager.cpp">
+      <Filter>Application\Component\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BattleSettingManager.cpp">
+      <Filter>Application\Component\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BattleManager.cpp">
+      <Filter>Application\Component\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\TitleManager.cpp">
+      <Filter>Application\Component\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\BaseMs.cpp">
+      <Filter>Application\Component\Ms</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Gundam.cpp">
+      <Filter>Application\Component\Ms\Gundam</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\FadeOut.cpp">
+      <Filter>Application\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ImageBlinking.cpp">
+      <Filter>Application\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\ImageNum.cpp">
+      <Filter>Application\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui.cpp">
+      <Filter>Package\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui_demo.cpp">
+      <Filter>Package\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui_draw.cpp">
+      <Filter>Package\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui_impl_glfw.cpp">
+      <Filter>Package\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui_impl_opengl3.cpp">
+      <Filter>Package\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui_tables.cpp">
+      <Filter>Package\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Package\ImGui\imgui_widgets.cpp">
+      <Filter>Package\Imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -521,33 +545,6 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Window\WindowManager.h">
       <Filter>FGEngine\Src\Window</Filter>
     </ClInclude>
-    <ClInclude Include="Package\ImGui\imconfig.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imgui.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imgui_impl_glfw.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imgui_impl_opengl3.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imgui_impl_opengl3_loader.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imgui_internal.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imstb_rectpack.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imstb_textedit.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="Package\ImGui\imstb_truetype.h">
-      <Filter>Package\Imgui</Filter>
-    </ClInclude>
     <ClInclude Include="Package\nlohmann\json.hpp">
       <Filter>Package\Json</Filter>
     </ClInclude>
@@ -571,90 +568,6 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Color.h">
       <Filter>FGEngine\Src</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Application.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BaseBullet.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BaseMs.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BaseSlash.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BaseWeapon.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BattleManager.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BattleSettingManager.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\BgmList.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\ChoiceManager.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\ControlOwner.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\CpuControl.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\DamageInfo.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\FadeOut.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\GameInput.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Global.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Gundam.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\HomingBullet.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\HumanControl.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\ImageBlinking.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\ImageNum.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\LookOnCamera.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\MsLilst.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Scene\BattleSettingScene.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Scene\ChoiceScene.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Scene\TestScene.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Scene\TitleScene.h">
-      <Filter>Application</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\TitleManager.h">
-      <Filter>Application</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine.h">
       <Filter>FGEngine</Filter>
@@ -740,15 +653,6 @@
     <ClInclude Include="FGEngine\Include\FGEngine\BufferAndVAO\GltfFileBuffer.h">
       <Filter>FGEngine\Src\BufferAndVAO\GltfFileBuffer</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Component\AabbCollider.h">
-      <Filter>FGEngine\Src\Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Component\BoxCollider.h">
-      <Filter>FGEngine\Src\Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Component\SphereCollider.h">
-      <Filter>FGEngine\Src\Component\Collider</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Component\Collider.h">
       <Filter>FGEngine\Src\Component\Collider</Filter>
     </ClInclude>
@@ -802,6 +706,126 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\UsingNames\UsingComponent.h">
       <Filter>FGEngine\Src\UsingNames</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\BattleSettingScene.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\ChoiceScene.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\TestScene.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\TitleScene.h">
+      <Filter>Application\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\LookOnCamera.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BaseBullet.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BaseSlash.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\ControlOwner.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\CpuControl.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\HomingBullet.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\HumanControl.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Application.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Component\SphereCollider.h">
+      <Filter>FGEngine\Src\Component\Collider\SphereCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Component\AabbCollider.h">
+      <Filter>FGEngine\Src\Component\Collider\AabbCollier</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Component\BoxCollider.h">
+      <Filter>FGEngine\Src\Component\Collider\BoxCollider</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\ChoiceManager.h">
+      <Filter>Application\Component\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BattleSettingManager.h">
+      <Filter>Application\Component\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BattleManager.h">
+      <Filter>Application\Component\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\TitleManager.h">
+      <Filter>Application\Component\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Global.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\MsLilst.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BaseMs.h">
+      <Filter>Application\Component\Ms</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Gundam.h">
+      <Filter>Application\Component\Ms\Gundam</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\GameInput.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BaseWeapon.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\FadeOut.h">
+      <Filter>Application\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\DamageInfo.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\ImageBlinking.h">
+      <Filter>Application\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\ImageNum.h">
+      <Filter>Application\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BgmList.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imconfig.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imgui.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imgui_impl_glfw.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imgui_impl_opengl3.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imgui_impl_opengl3_loader.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imgui_internal.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imstb_rectpack.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imstb_textedit.h">
+      <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Package\ImGui\imstb_truetype.h">
+      <Filter>Package\Imgui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

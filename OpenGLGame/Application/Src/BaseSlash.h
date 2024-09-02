@@ -34,6 +34,11 @@ private:
 	*/
 	virtual void OnCollisionEnter(const CollisionPtr other) override;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+	}
+
 public:
 
 	// —^‚¦‚éƒ_ƒ[ƒW

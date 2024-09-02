@@ -24,6 +24,12 @@ public:
 
 	void Stop();
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
+
 private:
 
 	/**

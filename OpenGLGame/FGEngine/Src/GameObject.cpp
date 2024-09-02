@@ -9,6 +9,8 @@
 #include "FGEngine/Component/Renderer.h"
 #include "FGEngine/Component/Collider.h"
 #include "FGEngine/Component/AudioSource.h"
+#include "FGEngine/Component/GameEvent.h"
+#include "FGEngine/Time.h"
 #include <algorithm>
 
 namespace FGEngine
@@ -47,12 +49,12 @@ namespace FGEngine
 		// 引数の破棄時間が0秒いかなら状態を破棄にする
 		if (destroyTime <= 0)
 		{
-			state = GameObjectState::Destory;
+			state = GameObjectState::Destroyed;
 			return;
 		}
 
 		// すでに破棄なら何もしない
-		if (state == GameObjectState::Destory)
+		if (state == GameObjectState::Destroyed)
 		{
 			return;
 		}
@@ -69,6 +71,11 @@ namespace FGEngine
 
 	/**
 	* クローンしたゲームオブジェクトを取得する
+	*
+	* @param object クローンもとのオブジェクト
+	* @oaram trasnform クローンするトランスフォーム
+	*
+	* @return クローンしたゲームオブジェクト
 	*/
 	GameObjectPtr GameObject::CloneGameObject(const GameObjectPtr& object, const TransformPtr& transform)
 	{
@@ -165,10 +172,107 @@ namespace FGEngine
 	}
 
 	/**
+	* コンポーネントが破棄予定だったらnullptrにする
+	*/
+	void ComponentDestroyCheck(ComponentPtr& component)
+	{
+		if (component)
+		{
+			if (component->IsDestroyed())
+			{
+				component = nullptr;
+			}
+		}
+	}
+
+	/**
+	* 状態が破棄待ちなら破棄時間を更新
+	*/
+	void GameObject::UpdateDestroyTime()
+	{
+		// 破棄予定以外なら何もしない
+		if (state != GameObjectState::DestroyTime)
+		{
+			return;
+		}
+		if (destroyTime > 0)
+		{
+			destroyTime -= Time::DeltaTime();
+		}
+		// 破棄時間が0以下なら状態を破棄にする
+		if (destroyTime <= 0)
+		{
+			state = GameObjectState::Destroyed;
+		}
+	}
+
+	/**
 	* 削除予定のコンポーネントを削除
 	*/
 	void GameObject::DestroyComponent()
 	{
+		// Tranfsform
+		{
+			ComponentPtr p = transform;
+			ComponentDestroyCheck(p);
+		}
+		// Renderer
+		{
+			ComponentPtr p = renderer;
+			ComponentDestroyCheck(p);
+		}
+		// Animator
+		{
+			ComponentPtr p = animator;
+			ComponentDestroyCheck(p);
+		}
+		// Rigidbody
+		{
+			ComponentPtr p = rigidbody;
+			ComponentDestroyCheck(p);
+		}
+		// Camera
+		{
+			ComponentPtr p = camera;
+			ComponentDestroyCheck(p);
+		}
+		// UI
+		{
+			ComponentPtr p = imGuiLayout;
+			ComponentDestroyCheck(p);
+		}
+		// コライダーの破棄処理
+		if(!colliders.empty())
+		{
+			const auto iter = std::remove_if(
+				colliders.begin(), colliders.end(),
+				[](const ColliderPtr& p) {
+					return p->IsDestroyed();
+				});
 
+			// コライダー配列から削除
+			colliders.erase(iter, colliders.end());
+		}
+		// イベントの破棄処理
+		if(!gameEvents.empty())
+		{
+			const auto iter = std::stable_partition(
+				gameEvents.begin(), gameEvents.end(),
+				[](const GameEventPtr& p) {
+					return !p->IsDestroyed();
+				});
+
+			// 破棄されたときの関数を呼びたいので配列を移動
+			std::vector<GameEventPtr> destroys(std::move_iterator(iter), std::move_iterator(gameEvents.end()));
+
+			// 元の配列から消しておく
+			gameEvents.erase(iter, gameEvents.end());
+
+			// 破棄イベント
+			for (auto& x : destroys)
+			{
+				x->OnDestroy();
+			}
+		}
 	}
 }
