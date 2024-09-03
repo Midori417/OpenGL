@@ -139,7 +139,7 @@ namespace FGEngine::MainSystem
 		sceneManager = SceneManager::GetInstance();
 
 		// インプットマネージャー
-		inputManager = InputSystem::InputManager::GetInstance();
+		inputManager = InputManager::GetInstance();
 
 		// サウンドマネージャー
 		soundManager = SoundSystem::SoundManager::GetInstance();
@@ -172,7 +172,7 @@ namespace FGEngine::MainSystem
 		sceneManager->Initialize();
 
 		// インプットマネージャを初期化
-		inputManager->Initialize();
+		inputManager->Initialize(&windowManager->GetWindow());
 
 		// サウンドマネージャーを初期化
 		soundManager->Inititalize();
@@ -195,7 +195,7 @@ namespace FGEngine::MainSystem
 		Random::Initialize((unsigned int)time(NULL));
 
 		// インプットマネージャを更新
-		inputManager->Update(&windowManager->GetWindow());
+		inputManager->Update();
 
 		// シーンマネージャーを更新
 		sceneManager->Update();

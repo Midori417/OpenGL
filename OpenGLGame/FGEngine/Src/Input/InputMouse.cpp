@@ -3,12 +3,37 @@
 */
 #include "FGEngine/Input/InputMouse.h"
 #include "FGEngine/Time.h"
+#include <GLFW/glfw3.h>
 
-namespace FGEngine::InputSystem
+namespace FGEngine
 {
-	// スタティック変数の初期化
+	// 静的変数の初期化
 	Vector2 InputMouse::mousePosition = Vector2(0, 0);
-	InputMouse::MouseButtonState InputMouse::mouseButtonsState[] = { InputMouse::MouseButtonState() };
+	std::vector<InputMouse::MouseButtonState> InputMouse::mouseButtonsState;
+
+	/**
+	* マウスボタンリスト対応ビットマップ
+	*/
+	const int MOUSEBUTTON_ASSIGN[(int)MouseButton::Max]
+	{
+		GLFW_MOUSE_BUTTON_LEFT,
+		GLFW_MOUSE_BUTTON_RIGHT,
+		GLFW_MOUSE_BUTTON_MIDDLE,
+	};
+
+	/**
+	* マウス入力を初期化
+	*
+	* @retval true	正常に初期化
+	* @retval false	初期化失敗
+	*/
+	bool InputMouse::Initialize()
+	{	
+		// マウス状態配列を生成
+		mouseButtonsState.resize((int)MouseButton::Max);
+
+		return true;
+	}
 
 	/**
 	* マウスの状態を更新

@@ -10,7 +10,6 @@
 #include "Global.h"
 #include "BgmList.h"
 using namespace FGEngine::WindowSystem;
-using namespace FGEngine::InputSystem;
 using namespace FGEngine::SoundSystem;
 
 // スタティック変数を初期化

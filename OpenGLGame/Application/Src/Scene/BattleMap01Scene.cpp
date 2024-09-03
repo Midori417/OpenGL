@@ -5,7 +5,6 @@
 #include "../BattleManager.h"
 #include <thread>
 #include <chrono>
-using namespace FGEngine::InputSystem;
 
 bool BattleMap01Scene::isResouceLoad = false;
 

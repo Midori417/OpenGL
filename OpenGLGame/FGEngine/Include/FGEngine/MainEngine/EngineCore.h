@@ -76,7 +76,7 @@ namespace FGEngine::MainSystem
 		std::shared_ptr<AssetManager> resouceManager;
 
 		// インプットマネージャポインター
-		std::shared_ptr<InputSystem::InputManager> inputManager; 
+		std::shared_ptr<InputManager> inputManager; 
 
 		// サウンドマネージャーポインター
 		std::shared_ptr<SoundSystem::SoundManager> soundManager;

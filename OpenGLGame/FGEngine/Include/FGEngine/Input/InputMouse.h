@@ -3,33 +3,46 @@
 */
 #ifndef FGENGINE_INPUTMOUSE_H_INCLUDED
 #define FGENGINE_INPUTMOUSE_H_INCLUDED
-#include "FGEngine/SystemFrd.h"
-#include "MouseButton.h"
+#include "FGEngine/Singleton.h"
 #include "FGEngine/Math/Vector2.h"
+#include "MouseButton.h"
+#include <vector>
 
-namespace FGEngine::InputSystem
+// 先行宣言
+struct GLFWwindow;
+
+namespace FGEngine
 {
 	/**
 	* マウス入力
 	*/
-	class InputMouse
+	class InputMouse : public Singleton<InputMouse>
 	{
-	public:
-
-		friend InputSystem::InputManager;
-		
-		// コンストラクタ・デストラクタ
-		InputMouse() = default;
-		~InputMouse() = default;
-
+		friend Singleton<InputMouse>;
+		friend class InputManager;
 	private:
 
 		/**
-		* マウスの状態を更新
+		* デフォルトコンストラクタ
+		*/
+		InputMouse() = default;
+		
+	private: // InputMangerで呼び出す
+
+		/**
+		* マウス入力を初期化
+		* 
+		* @retval true	正常に初期化
+		* @retval false	初期化失敗
+		*/
+		bool Initialize();
+
+		/**
+		* マウス入力の状態を更新
 		* 
 		* @param winndow ウィンドウオブジェクト
 		*/
-		static void Update(GLFWwindow* window);
+		void Update(GLFWwindow* window);
 
 	public:
 
@@ -111,9 +124,8 @@ namespace FGEngine::InputSystem
 			float timer = 0;
 		};
 
-
-		// マウスの状態
-		static MouseButtonState mouseButtonsState[(int)MouseButton::Max];
+		// マウスの状態配列
+		static std::vector<MouseButtonState> mouseButtonsState;
 
 		// マウスの位置
 		static Vector2 mousePosition;

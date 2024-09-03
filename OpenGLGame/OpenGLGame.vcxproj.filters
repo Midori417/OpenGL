@@ -232,6 +232,15 @@
     <Filter Include="FGEngine\Src\Component\GameEvent">
       <UniqueIdentifier>{db1047df-d6a9-4577-a07b-520a52c79754}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FGEngine\Src\Input\Key">
+      <UniqueIdentifier>{62292c6f-30a4-4ea8-b310-d0031ca5a31c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Input\Manager">
+      <UniqueIdentifier>{37990afd-1fb3-4a0d-9307-9fea73a2607a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Input\Mouse">
+      <UniqueIdentifier>{c078f9a2-8cba-493c-a629-f53df7f13cad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Package\glad\src\glad.c">
@@ -308,15 +317,6 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Audio\SoundManager.cpp">
       <Filter>FGEngine\Src\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Input\InputKey.cpp">
-      <Filter>FGEngine\Src\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Input\InputManager.cpp">
-      <Filter>FGEngine\Src\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Input\InputMouse.cpp">
-      <Filter>FGEngine\Src\Input</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Window\WindowManager.cpp">
       <Filter>FGEngine\Src\Window</Filter>
@@ -468,6 +468,15 @@
     <ClCompile Include="Package\ImGui\imgui_widgets.cpp">
       <Filter>Package\Imgui</Filter>
     </ClCompile>
+    <ClCompile Include="FGEngine\Src\Input\InputKey.cpp">
+      <Filter>FGEngine\Src\Input\Key</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Input\InputManager.cpp">
+      <Filter>FGEngine\Src\Input\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Input\InputMouse.cpp">
+      <Filter>FGEngine\Src\Input\Mouse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Package\glad\include\glad\glad.h">
@@ -475,21 +484,6 @@
     </ClInclude>
     <ClInclude Include="Package\glad\include\KHR\khrplatform.h">
       <Filter>Package\glad</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputKey.h">
-      <Filter>FGEngine\Src\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputManager.h">
-      <Filter>FGEngine\Src\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputMouse.h">
-      <Filter>FGEngine\Src\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\KeyCode.h">
-      <Filter>FGEngine\Src\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Input\MouseButton.h">
-      <Filter>FGEngine\Src\Input</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Package\Glad.h">
       <Filter>FGEngine\Src\Package</Filter>
@@ -826,6 +820,21 @@
     </ClInclude>
     <ClInclude Include="Package\ImGui\imstb_truetype.h">
       <Filter>Package\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputKey.h">
+      <Filter>FGEngine\Src\Input\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Input\KeyCode.h">
+      <Filter>FGEngine\Src\Input\Key</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputManager.h">
+      <Filter>FGEngine\Src\Input\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Input\InputMouse.h">
+      <Filter>FGEngine\Src\Input\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Input\MouseButton.h">
+      <Filter>FGEngine\Src\Input\Mouse</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

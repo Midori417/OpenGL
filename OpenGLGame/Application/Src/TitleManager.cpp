@@ -3,7 +3,6 @@
 */
 #include "TitleManager.h"
 #include "FadeOut.h"
-using namespace FGEngine::InputSystem;
 
 /**
 * Å‰‚ÉÀs

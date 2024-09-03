@@ -6,7 +6,6 @@
 #include "BaseSlash.h"
 #include "DamageInfo.h"
 #include "FGEngine/Component/Animator.h"
-using namespace FGEngine::InputSystem;
 
 /**
 * Œø‰Ê‰¹İ’è

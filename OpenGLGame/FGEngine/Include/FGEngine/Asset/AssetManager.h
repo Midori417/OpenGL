@@ -8,6 +8,7 @@
 #include "FGEngine/UsingNames/UsingAsset.h"
 #include "FGEngine/Asset/DefalutShader.h"
 #include <unordered_map>
+#include <string>
 
 typedef unsigned int GLenum;
 
@@ -26,7 +27,7 @@ namespace FGEngine
 	{
 		friend MainSystem::EngineCore;
 		friend Singleton<AssetManager>;
-	private:	// コンストラクタ
+	private:
 
 		/**
 		* デフォルトコンストラクタ

@@ -3,7 +3,6 @@
 */
 #include "ChoiceManager.h"
 #include "FadeOut.h"
-using namespace FGEngine::InputSystem;
 using namespace FGEngine::WindowSystem;
 
 /**

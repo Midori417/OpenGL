@@ -5,7 +5,6 @@
 #include "../ImageBlinking.h"
 #include "../FadeOut.h"
 #include "../TitleManager.h"
-using namespace FGEngine::InputSystem;
 using namespace FGEngine::UI;
 
 /**

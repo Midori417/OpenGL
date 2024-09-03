@@ -6,35 +6,68 @@
 #include "FGEngine/Input/InputMouse.h"
 #include <GLFW/glfw3.h>
 
-namespace FGEngine::InputSystem
+namespace FGEngine
 {
-	// スタティック変数の初期化
+	// 静的変数の初期化
+	std::shared_ptr<InputKey> InputManager::inputKey;
+	std::shared_ptr<InputMouse> InputManager::inputMouse;
 	std::unordered_map<Axis, float> InputManager::axisList;
 
 	/**
 	* インプットマネージャを初期化
+	* 
+	* @param window ウィンドウオブジェクト
+	* 
+	* @retval true	正常に初期化
+	* @retval false	初期化失敗
 	*/
-	int InputManager::Initialize()
+	bool InputManager::Initialize(GLFWwindow* window)
 	{
+		this->window = window;
+
+		// 入力を生成
+		inputKey = InputKey::GetInstance();
+		if (!inputKey)
+		{
+			return false;
+		}
+		inputMouse = InputMouse::GetInstance();
+		if (!inputMouse)
+		{
+			return false;
+		}
+
+		// 入力を初期化
+		if (!inputKey->Initialize())
+		{
+			return false;
+		}
+		if (!inputMouse->Initialize())
+		{
+			return false;
+		}
+
 		// Axisの追加
 		axisList.emplace(Axis::Horizontal, 0.0f);
 		axisList.emplace(Axis::Vertical, 0.0f);
 
-		return 0;
+		return true;
 	}
 
 	/**
-	* インプットマネージャを更新
-	* 
-	* @param window ウィンドウオブジェクト
+	* インプットマネージャーの状態を更新
 	*/
-	void InputManager::Update(GLFWwindow* window)
+	void InputManager::Update()
 	{
-		// キーボードの更新
-		InputKey::Update(window);
+		// ウィンドウオブジェクトがなければ何もしない
+		if (!window)
+		{
+			return;
+		}
 
-		// マウスを更新
-		InputMouse::Update(window);
+		// 入力を更新
+		inputKey->Update(window);
+		inputMouse->Update(window);
 
 		// アクシズの更新
 		AxisUpdate();

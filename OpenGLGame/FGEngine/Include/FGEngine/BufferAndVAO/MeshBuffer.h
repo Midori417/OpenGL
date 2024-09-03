@@ -7,6 +7,7 @@
 #include "FGEngine/UsingNames/UsingAsset.h"
 #include <unordered_map>
 #include <functional>
+#include <string>
 
 namespace FGEngine
 {

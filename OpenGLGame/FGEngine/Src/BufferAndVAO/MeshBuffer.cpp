@@ -2,7 +2,6 @@
 * @file Mesh.cpp
 */
 #define _CRT_SECURE_NO_WARNINGS
-
 #include "FGEngine/BufferAndVAO/MeshBuffer.h"
 #include "FGEngine/BufferAndVAO/BufferObject.h"
 #include "FGEngine/BufferAndVAO/VertexArrayObject.h"

@@ -3,32 +3,45 @@
 */
 #ifndef FGENGINE_INPUTKEY_H_INCLUDED
 #define FGENGINE_INPUTKEY_H_INCLUDED
-#include "FGEngine/SystemFrd.h"
+#include "FGEngine/Singleton.h"
 #include "KeyCode.h"
+#include <vector>
 
-namespace FGEngine::InputSystem
+// 先行宣言
+struct GLFWwindow;
+
+namespace FGEngine
 {
 	/**
 	* キーボード入力
 	*/
-	class InputKey
+	class InputKey : public Singleton<InputKey>
 	{
-	public:
-
-		friend InputSystem::InputManager;
-
-		// コンストラクタ・デストラクタ
-		InputKey() = default;
-		~InputKey() = default;
-
+		friend Singleton<InputKey>;
+		friend class InputManager;
 	private:
 
 		/**
-		* キーボードの状態を更新
+		* デフォルトコンストラクタ
+		*/
+		InputKey() = default;
+
+	private: // InputMangerで呼び出す
+
+		/**
+		* キーボード入力を初期化
+		* 
+		* @retval true	正常に初期化
+		* @retval false	初期化失敗
+		*/
+		bool Initialize();
+
+		/**
+		* キーボード入力の状態を更新
 		* 
 		* @param window ウィンドウオブジェクト
 		*/
-		static void Update(GLFWwindow* window);
+		void Update(GLFWwindow* window);
 
 	public:
 
@@ -94,11 +107,10 @@ namespace FGEngine::InputSystem
 			bool on = false;
 		};
 
-
 		// キーの状態配列
-		static KeyState keyState[(int)KeyCode::Max];
+		static std::vector<KeyState> keyState;
 
-		// 何かしらのキーが押されていたらtrue:何も押されていなければfasle
+		// 何かしらのキーが押されていたらtrue
 		static bool anyKey;
 	};
 }

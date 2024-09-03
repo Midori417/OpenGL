@@ -25,12 +25,9 @@ namespace FGEngine
 	class AssetManager;
 	// シーン管理クラス
 	class SceneManager;
+	// 入力管理クラス
+	class InputManager;
 
-	namespace InputSystem
-	{
-		// 入力管理クラス
-		class InputManager;
-	}
 	namespace WindowSystem
 	{
 		// ウィンドウ管理クラス
