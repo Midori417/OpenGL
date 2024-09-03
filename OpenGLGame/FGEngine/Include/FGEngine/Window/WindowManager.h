@@ -3,43 +3,53 @@
 */
 #ifndef FGENGINE_WINDOWMANAGER_H_INCLUDED
 #define FGENGINE_WINDOWMANAGER_H_INCLUDED
-#include "FGEngine/Package/Glad.h"
-#include <GLFW/glfw3.h>
 #include "FGEngine/Singleton.h"
 #include "FGEngine/Math/Vector2.h"
 #include "FGEngine/Color.h"
 #include <string>
 #include <vector>
+
+// 先行宣言
+struct GLFWwindow;
 	
-namespace FGEngine::WindowSystem
+namespace FGEngine
 {
+	namespace MainSystem
+	{
+		class EngineCore;
+	}
+
 	/**
 	* ウィンドウ管理クラス
 	*/
 	class WindowManager : public Singleton<WindowManager>
 	{
-	private:
-		
 		friend Singleton<WindowManager>;
-
-		// コンストラクタ
-		WindowManager() = default;
-
-	public:
-
-		// コピーと代入を禁止
-		WindowManager(const WindowManager&) = delete;
-		WindowManager& operator=(const WindowManager&) = delete;
+		friend MainSystem::EngineCore;
+	private:
 
 		/**
-		* ウィンドウを作成
-		*
-		* @param windowTitle ウィンドウタイトル
-		*
-		* @retval	作成したウィンドウオブジェクト
-		*			nullptr 作成に失敗
+		* デフォルトコンストラクタ
 		*/
-		void CreateWindow(const std::string& windowTitle);
+		WindowManager() = default;
+
+	public:	// 禁止事項
+
+		// コピーを禁止
+		WindowManager(const WindowManager&) = delete;
+
+		// 代入を禁止
+		WindowManager& operator=(const WindowManager&) = delete;
+
+	private: // EngineCoreで呼び出す
+
+		/**
+		* ウィンドウマネージャーを初期化
+		* 
+		* @retval true	正常に初期化
+		* @retval false	初期化失敗
+		*/
+		bool Initialize();
 
 		/**
 		* ウィンドウの描画を開始
@@ -51,55 +61,57 @@ namespace FGEngine::WindowSystem
 		*/
 		void End();
 
+	public:	// 名前を取得と設定
+
+		/**
+		* ウィンドウタイトルを取得
+		*/
+		static std::string GetTitle();
+
+		/**
+		* ウィンドウタイトルを設定
+		* 
+		* @param title 設定するウィンドウタイトル
+		*/
+		static void SetTitle(const std::string& title);
+
+	public:
+
+		/**
+		* ウィンドウを終了
+		*/
+		static void WindowClose();
+
 		/**
 		* ウィンドウが閉じているか取得
 		*
 		* @retval true	閉じている
 		* @retval false	閉じていない
 		*/
-		bool IsClose(size_t index = 0);
-
-		/**
-		* ウィンドウを終了
-		*/
-		void WindowClose(size_t index = 0);
+		static bool IsClose();
 
 		/**
 		* ウィンドウオブジェクトを取得
 		*/
-		GLFWwindow& GetWindow(size_t index = 0);
+		static GLFWwindow& GetWindow();
 
 		/**
 		* ウィンドウのサイズをVector2で取得
 		*/
-		Vector2 GetWindowSize(size_t index = 0);
-
-		/**
-		* ウィンドウサイズを取得
-		*
-		* @param w ウィンドウの横幅を格納する
-		* @param h ウィンドウの縦幅を格納する
-		*/
-		void GetWindowSize(GLsizei& w, GLsizei& h, size_t index = 0);
-
-		/**
-		* ウィンドウのサイズのアスペクトを取得
-		*/
-		float GetWindowAspectRatio();
+		static Vector2 GetWindowSize();
 
 		/**
 		* バッファクリアのカラーを設定
 		*/
-		void SeteBufferClearColor(const Color& color);
+		static void SeteBufferClearColor(const Color& color);
 
 	private:
 
-		// ウィンドウオブジェクト配列
-		std::vector<GLFWwindow*> windows;
+		// ウィンドウオブジェクト
+		static GLFWwindow* window;
 
 		// クリアバッファのカラー
-		Color bufferColor = Color::black;
-
+		static Color bufferColor;
 	};
 }
 

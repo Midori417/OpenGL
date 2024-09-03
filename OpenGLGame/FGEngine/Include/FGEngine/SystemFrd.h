@@ -21,23 +21,20 @@ namespace FGEngine
 		// 描画エンジン
 		class RenderingEngine;
 	}
+	namespace SoundSystem
+	{
+		// サウンド管理クラス
+		class SoundManager;
+	}
+
 	// リソース管理クラス
 	class AssetManager;
 	// シーン管理クラス
 	class SceneManager;
 	// 入力管理クラス
 	class InputManager;
-
-	namespace WindowSystem
-	{
-		// ウィンドウ管理クラス
-		class WindowManager;
-	}
-	namespace SoundSystem
-	{
-		// サウンド管理クラス
-		class SoundManager;
-	}
+	// ウィンドウ管理クラス
+	class WindowManager;
 }
 
 #endif // !FGENGINE_SYSTEMFRD_H_INCLUDED

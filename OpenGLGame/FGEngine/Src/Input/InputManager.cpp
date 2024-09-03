@@ -23,6 +23,11 @@ namespace FGEngine
 	*/
 	bool InputManager::Initialize(GLFWwindow* window)
 	{
+		if (!window)
+		{
+			// ウィンドウオブジェクトが存在しない
+			return false;
+		}
 		this->window = window;
 
 		// 入力を生成

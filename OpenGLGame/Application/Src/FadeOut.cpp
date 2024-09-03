@@ -2,7 +2,6 @@
 * @file FadeOut.cpp
 */
 #include "FadeOut.h"
-using namespace FGEngine::WindowSystem;
 
 /**
 * フェードを開始する

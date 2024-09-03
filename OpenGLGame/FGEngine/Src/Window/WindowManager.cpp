@@ -2,18 +2,22 @@
 * @file WindowManager.cpp
 */
 #include "FGEngine/Window/WindowManager.h"
+#include "FGEngine/Package/Glad.h"
+#include <GLFW/glfw3.h>
 
-namespace FGEngine::WindowSystem
+namespace FGEngine
 {
+	// 静的変数の初期化
+	GLFWwindow* WindowManager::window = nullptr;
+	Color WindowManager::bufferColor = Color::black;
+
 	/**
-	* ウィンドウを作成
+	* ウィンドウマネージャーを初期化
 	*
-	* @param windowTitle ウィンドウタイトル
-	*
-	* @retval	作成したウィンドウオブジェクト
-	*			nullptr 作成に失敗
+	* @retval true	正常に初期化
+	* @retval false	初期化失敗
 	*/
-	void WindowManager::CreateWindow(const std::string& windowTitle)
+	bool WindowManager::Initialize()
 	{
 		// デバッグコンテキストの作成
 		glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
@@ -22,11 +26,13 @@ namespace FGEngine::WindowSystem
 		glfwWindowHint(GLFW_MAXIMIZED, GLFW_TRUE);
 
 		// 描画ウィンドウの作成
-		auto window = glfwCreateWindow(1280, 720, windowTitle.c_str(), nullptr, nullptr);
+		window = glfwCreateWindow(1280, 720, "Window", nullptr, nullptr);
+		if (!window)
+		{
+			return false;
+		}
 
-		// ウィンドウ配列に追加
-		windows.push_back(window);
-
+		return true;
 	}
 
 	/**
@@ -34,21 +40,17 @@ namespace FGEngine::WindowSystem
 	*/
 	void WindowManager::Begin()
 	{
-		if (windows.empty())
+		if (!window)
 		{
 			return;
 		}
 
-		for (auto window : windows)
-		{
-			// 描画先のウィンドウを設定
-			glfwMakeContextCurrent(window);
+		// 描画先のウィンドウを設定
+		glfwMakeContextCurrent(window);
 
-			// バックバッファをクリア
-			glClearColor(bufferColor.r, bufferColor.g, bufferColor.b, bufferColor.a);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		}
-
+		// バックバッファをクリア
+		glClearColor(bufferColor.r, bufferColor.g, bufferColor.b, bufferColor.a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	/**
@@ -56,28 +58,49 @@ namespace FGEngine::WindowSystem
 	*/
 	void WindowManager::End()
 	{
-		size_t i = 0;
-		for (auto window : windows)
+		// フロントバッファとバックバッファを入れ替え
+		glfwSwapBuffers(window);
+
+		// OSからの要求を処理する
+		glfwPollEvents();
+
+		// ウィンドウが閉じれられたら
+		// ウィンドウとウィンドウオブジェクトを削除する
+		if (IsClose())
 		{
-
-			// フロントバッファとバックバッファを入れ替え
-			glfwSwapBuffers(window);
-
-			// OSからの要求を処理する
-			glfwPollEvents();
-
-			// ウィンドウが閉じれられたら
-			// ウィンドウとウィンドウオブジェクトを削除する
-			if (IsClose(i))
-			{
-				glfwDestroyWindow(window);
-			}
-
-			// 描画先ウィンドウの設定を解除
-			glfwMakeContextCurrent(nullptr);
-			i++;
+			WindowClose();
 		}
 
+		// 描画先ウィンドウの設定を解除
+		glfwMakeContextCurrent(nullptr);
+	}
+
+	/**
+	* ウィンドウタイトルを取得
+	*/
+	std::string WindowManager::GetTitle()
+	{
+		if (!window)
+		{
+			return "";
+		}
+
+		return glfwGetWindowTitle(window);
+	}
+
+	/**
+	* ウィンドウタイトルを設定
+	*
+	* @param title 設定するウィンドウタイトル
+	*/
+	void WindowManager::SetTitle(const std::string& title)
+	{
+		if (!window)
+		{
+			return;
+		}
+
+		glfwSetWindowTitle(window, title.c_str());
 	}
 
 	/**
@@ -86,69 +109,46 @@ namespace FGEngine::WindowSystem
 	* @retval true	閉じている
 	* @retval false	閉じていない
 	*/
-	bool WindowManager::IsClose(size_t index)
+	bool WindowManager::IsClose()
 	{
-		if (!windows[index])
+		if (!window)
 		{
 			return true;
 		}
-		return glfwWindowShouldClose(windows[index]);
+		return glfwWindowShouldClose(window);
 	}
 
 	/**
 	* ウィンドウを終了
 	*/
-	void WindowManager::WindowClose(size_t index)
+	void WindowManager::WindowClose()
 	{
-		if (!windows[index])
+		if (!window)
 		{
 			return;
 		}
-		glfwSetWindowShouldClose(windows[index], GLFW_TRUE);
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
 	}
 
 
 	/**
 	* ウィンドウオブジェクトを取得
 	*/
-	GLFWwindow& WindowManager::GetWindow(size_t index)
+	GLFWwindow& WindowManager::GetWindow()
 	{
-		return *windows[index];
+		return *window;
 	}
 
 	/**
 	* ウィンドウのサイズをVector2で取得
 	*/
-	Vector2 WindowManager::GetWindowSize(size_t index)
+	Vector2 WindowManager::GetWindowSize()
 	{
 		// フレームバッファの大きさを取得
 		int w, h;
-		glfwGetFramebufferSize(windows[index], &w, &h);
+		glfwGetFramebufferSize(window, &w, &h);
 
 		return Vector2{ static_cast<float>(w), static_cast<float>(h) };
-	}
-
-	/**
-	* ウィンドウサイズを取得
-	*
-	* @param w ウィンドウの横幅を格納する
-	* @param h ウィンドウの縦幅を格納する
-	*/
-	void WindowManager::GetWindowSize(GLsizei& w, GLsizei& h, size_t index)
-	{
-		glfwGetFramebufferSize(windows[index], &w, &h);
-	}
-
-	/**
-	* ウィンドウのサイズのアスペクトを取得
-	*/
-	float WindowManager::GetWindowAspectRatio()
-	{
-		// フレームバッファの大きさを取得
-		const Vector2 size = GetWindowSize();
-
-		// アスペクト比を返す
-		return size.x / size.y;
 	}
 
 	/**

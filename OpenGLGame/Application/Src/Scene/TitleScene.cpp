@@ -28,7 +28,7 @@ bool TitleScene::Initialize()
 		titleBack->name = "TitleBack";
 		auto image = titleBack->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleBack");
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		image->size = WindowManager::GetInstance()->GetWindowSize();
 	}
 	// ガンダムを作成
 	{
@@ -36,7 +36,7 @@ bool TitleScene::Initialize()
 		titleGundam->name = "TitleGundam";
 		auto image = titleGundam->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleGundam");
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		image->size = WindowManager::GetInstance()->GetWindowSize();
 	}
 	// ガンダムの眼を作成
 	{
@@ -45,7 +45,7 @@ bool TitleScene::Initialize()
 
 		auto image = gundamEye->AddComponent<Image>();
 		image->texture = resManager->GetTexture("TitleGundamEye");
-		image->size = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		image->size = WindowManager::GetInstance()->GetWindowSize();
 
 		// 点滅させたいので画像点滅コンポーネントを追加
 		auto eyeBlinking = gundamEye->AddComponent<ImageBlinking>();

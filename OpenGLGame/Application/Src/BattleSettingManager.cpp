@@ -6,7 +6,6 @@
 #include "Global.h"
 #include "FadeOut.h"
 using namespace FGEngine::UI;
-using namespace FGEngine::WindowSystem;
 
 /**
 * ê∂ê¨éûÇ…é¿çs

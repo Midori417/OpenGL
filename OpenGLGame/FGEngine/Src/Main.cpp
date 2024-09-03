@@ -2,6 +2,7 @@
 * @file Main.cpp
 */
 #include "FGEngine/MainEngine/EngineCore.h"
+using namespace FGEngine::MainSystem;
 
 #pragma warning(push)
 #pragma warning(disable:4005)
@@ -18,7 +19,7 @@ int WINAPI WinMain(
 	_In_ int nShowCmd)
 {
 	// エンジンを生成と取得
-	auto engineCore = FGEngine::MainSystem::EngineCore::GetInstance();
+	auto engineCore = EngineCore::GetInstance();
 	
 	// エンジンを始動
 	return engineCore->Run();

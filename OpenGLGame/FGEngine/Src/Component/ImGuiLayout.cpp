@@ -17,7 +17,7 @@ namespace FGEngine::UI
 		auto name = OwnerObject()->name;
 		Vector3 pos = OwnerObject()->GetTransform()->position;
 
-		Vector2 windowSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		Vector2 windowSize = WindowManager::GetInstance()->GetWindowSize();
 
 		auto uiPos = Vector2(pos.x - (w / 2), pos.y - (h / 2)) + (windowSize / 2);
 

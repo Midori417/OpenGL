@@ -67,7 +67,7 @@ namespace FGEngine::MainSystem
 		std::shared_ptr<PhysicsSystem::PhysicsEngine> physicsEngine;
 
 		// ウィンドウマネージャーポインター
-		std::shared_ptr<WindowSystem::WindowManager> windowManager;
+		std::shared_ptr<WindowManager> windowManager;
 
 		// シーンマネージャーポインター
 		std::shared_ptr<SceneManager> sceneManager;

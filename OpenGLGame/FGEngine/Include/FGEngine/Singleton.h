@@ -15,17 +15,23 @@ namespace FGEngine
 	{
 	protected:
 
-		// コンストラクタ
+		/**
+		* デフォルトコンストラクタ
+		*/
 		Singleton() = default;
 
 	public:
 
-		// デストラクタ
+		/**
+		* デフォルトデストラクタ
+		*/
 		virtual ~Singleton() = default;
 
 		// コピーと代入を禁止
 		Singleton(const Singleton&) = delete;
 		Singleton& operator=(const Singleton&) = delete;
+
+	public:
 
 		/**
 		* 自身のインスタンスを取得する
@@ -53,7 +59,6 @@ namespace FGEngine
 	// スタティック変数を初期化
 	template <typename T>
 	inline std::weak_ptr<T> Singleton<T>::instance;
-
 }
 
 #endif // !SINGLETON_H_INCLUDED

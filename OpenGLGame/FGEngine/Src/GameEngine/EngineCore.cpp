@@ -16,6 +16,8 @@
 #include "FGEngine/Math/Random.h"
 #include "FGEngine/Package/ImGUI.h"
 #include "FGEngine/Debug.h"
+#include "FGEngine/Package/Glad.h"
+#include "GLFW/glfw3.h"
 #include <fstream>
 #include <filesystem>
 
@@ -79,7 +81,6 @@ namespace FGEngine::MainSystem
 			// imGuiを描画
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
 		}
 
 		// エンジンコアの終了
@@ -103,10 +104,10 @@ namespace FGEngine::MainSystem
 		}
 
 		// ウィンドウマネージャーを作成と取得
-		windowManager = WindowSystem::WindowManager::GetInstance();
+		windowManager = WindowManager::GetInstance();
 
-		// ウィンドウを作成
-		windowManager->CreateWindow("Window");
+		// ウィンドウマネージャーの初期化
+		windowManager->Initialize();
 
 		// OpenGLコンテキストの作成
 		glfwMakeContextCurrent(&windowManager->GetWindow());
@@ -156,7 +157,7 @@ namespace FGEngine::MainSystem
 		// ====================
 
 		// ImGuiの初期化
-		ImGui_ImplGlfw_InitForOpenGL(&windowManager->GetWindow(0), true);	// GLFW
+		ImGui_ImplGlfw_InitForOpenGL(&windowManager->GetWindow(), true);	// GLFW
 		ImGui_ImplOpenGL3_Init("#version 450");		// GLSLのバージョンを指定
 
 		// リソースマネージャーを初期化

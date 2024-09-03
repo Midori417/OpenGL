@@ -8,7 +8,6 @@
 #include "ImageNum.h"
 #include "BaseWeapon.h"
 #include "Global.h"
-using namespace FGEngine::WindowSystem;
 
 /**
 * ç≈èâÇ…é¿çs

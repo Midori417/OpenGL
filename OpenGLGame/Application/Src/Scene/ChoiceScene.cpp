@@ -3,7 +3,6 @@
 */
 #include "ChoiceScene.h"
 #include "../ChoiceManager.h"
-using namespace FGEngine::WindowSystem;
 using namespace FGEngine::UI;
 
 /**

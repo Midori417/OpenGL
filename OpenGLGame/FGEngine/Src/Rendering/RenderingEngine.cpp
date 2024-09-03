@@ -342,7 +342,7 @@ namespace FGEngine::RenderingSystem
 		CreateShadowMap(rendererList.begin(), rendererList.end());
 
 		// 描画先をデフォルトフレームバッファに戻す
-		auto fbSize = WindowSystem::WindowManager::GetInstance()->GetWindowSize();
+		auto fbSize = WindowManager::GetInstance()->GetWindowSize();
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
 		glViewport(0, 0, (GLsizei)fbSize.x, (GLsizei)fbSize.y);
 
