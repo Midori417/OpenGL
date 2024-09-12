@@ -10,6 +10,11 @@
 #include <Windows.h>
 #pragma warning(pop)
 
+#include "FGEngine/Package/Glad.h"
+#include <string>
+#include <fstream>
+#include <filesystem>
+
 namespace Debug
 {
 
@@ -40,5 +45,41 @@ namespace Debug
 
 		// 作成した文字列をデバッグウィンドウに表示
 		OutputDebugString(buffer);
+	}
+
+	/**
+	* OpenGLからのメッセージを処理するコールバック関数
+	*
+	* @param source		メッセージの発信者
+	* @param type		メッセージの種類
+	* @param id			メッセージを一位に選別する値
+	* @param severiry	メッセージの重要度(高、中、小、最低)
+	* @param length		メッセージの文字数、負数ならメッセージは0終端されている
+	* @param message	メッセージ本体
+	* @param userParam	コールバック設定時に指定したポインタ
+	*/
+	void APIENTRY DebugCallback(GLenum source, GLenum type, GLuint id,
+		GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
+	{
+		std::string s;
+		if (length < 0)
+		{
+			s = message;
+		}
+		else
+		{
+			s.assign(message, message + length);
+		}
+		s += '\n';
+		LOG(s.c_str());
+	}
+
+	/**
+	* OpenGLからのデバッグをする
+	*/
+	void OpenGLDebug()
+	{
+		// メッセージコールバック設定
+		glDebugMessageCallback(DebugCallback, nullptr);
 	}
 }

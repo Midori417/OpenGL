@@ -7,7 +7,7 @@
 #include "FGEngine/Window/WindowManager.h"
 #include "FGEngine/Package/ImGUI.h"
 
-namespace FGEngine::UI
+namespace FGEngine
 {
 	/**
 	* UI‚ğXV

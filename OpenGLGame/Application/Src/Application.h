@@ -3,25 +3,29 @@
 */
 #ifndef APPLICATION_H_INCLUDED
 #define APPLICATION_H_INCLUDED
-#include "FGEngine.h"
+#include "FGEngine/Other/Singleton.h"
 
 namespace FGEngine
 {
 	class EngineCore;
 }
 
+
 /**
 * アプリケーションクラス
 */
 class Application : public FGEngine::Singleton<Application>
 {
-private:
-
 	friend FGEngine::Singleton<Application>;
 	friend FGEngine::EngineCore;
+private:
 
-	// コンストラクタ
+	/**
+	* デフォルトコンストラクタ
+	*/
 	Application() = default;
+
+private: // EngineCoreで呼び出す
 
 	/**
 	* アプリケーションの初期化

@@ -3,7 +3,7 @@
 */
 #include "FGEngine/Component/Rigidbody.h"
 #include "FGEngine/Component/Transform.h"
-#include "FGEngine/Time.h"
+#include "FGEngine/Other/Time.h"
 
 namespace FGEngine
 {

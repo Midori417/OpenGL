@@ -13,42 +13,14 @@
 #include "FGEngine/Audio/EasyAudio.h"
 #include "../../../Application/Src/Application.h"
 #include "FGEngine/Other/Time.h"
-#include "FGEngine/Package/ImGUI.h"
 #include "FGEngine/Debug.h"
+
+#include "FGEngine/Package/ImGUI.h"
 #include "FGEngine/Package/Glad.h"
 #include "GLFW/glfw3.h"
-#include <fstream>
-#include <filesystem>
 
 namespace FGEngine
 {
-	/**
-	* OpenGLからのメッセージを処理するコールバック関数
-	*
-	* @param source		メッセージの発信者
-	* @param type		メッセージの種類
-	* @param id			メッセージを一位に選別する値
-	* @param severiry	メッセージの重要度(高、中、小、最低)
-	* @param length		メッセージの文字数、負数ならメッセージは0終端されている
-	* @param message	メッセージ本体
-	* @param userParam	コールバック設定時に指定したポインタ
-	*/
-	void APIENTRY DebugCallback(GLenum source, GLenum type, GLuint id,
-		GLenum severity, GLsizei length, const GLchar* message, const void* userParam)
-	{
-		std::string s;
-		if (length < 0)
-		{
-			s = message;
-		}
-		else
-		{
-			s.assign(message, message + length);
-		}
-		s += '\n';
-		LOG(s.c_str());
-	}
-
 	/**
 	* ゲームエンジンを実行する
 	*
@@ -64,7 +36,6 @@ namespace FGEngine
 			// エラー発生
 			return result;
 		}
-
 
 		// ループ
 		while (!windowManager->IsClose())
@@ -118,9 +89,6 @@ namespace FGEngine
 			glfwTerminate();
 			return 1;	// アドレスの取得失敗
 		}
-
-		// メッセージコールバック設定
-		glDebugMessageCallback(DebugCallback, nullptr);
 
 		// ====================
 		// 各機能を生成と取得
@@ -190,9 +158,6 @@ namespace FGEngine
 
 		// 時間ライブラリを更新
 		Time::Update();
-
-		// 乱数の初期化
-		Random::Initialize((unsigned int)time(NULL));
 
 		// インプットマネージャを更新
 		inputManager->Update();

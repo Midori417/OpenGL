@@ -59,6 +59,12 @@ namespace FGEngine
 			// シーンを作成
 			ScenePtr p = std::make_shared<T>();
 			p->name = name;
+
+			// 最初のシーンが設定されていなければ設定する
+			if (!nextScene)
+			{
+				nextScene = p;
+			}
 			
 			// シーン配列に追加
 			scenes.emplace(name, p);

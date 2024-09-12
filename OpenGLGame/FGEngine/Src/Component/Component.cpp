@@ -10,58 +10,44 @@
 namespace FGEngine
 {
 	/**
-	* ゲームオブジェクトを生成する
-	*
-	* @param name　オブジェクトの名前
-	*
-	* @return 生成したオブジェクト
+	* 自身を所有しているオブジェクトを取得
 	*/
-	GameObjectPtr Component::Instantate(const std::string& name)
+	GameObjectPtr Component::OwnerObject() const
 	{
-		auto obj = OwnerObject()->GetScene()->Create(CreateObject::Empty);
-		obj->name = name;
-
-		return obj;
+		auto ptr = ownerObject.lock();
+		if (!ptr)
+		{
+			return nullptr;
+		}
+		return ptr;
 	}
 
 	/**
-	* ゲームオブジェクトを生成する
-	*
-	* @param name		オブジェクトの名前
-	* @param transform	オブジェクトのTransform
-	*
-	* @return 生成したオブジェクト
+	* Transformを取得
 	*/
-	GameObjectPtr Component::Instantate(const std::string& name, const TransformPtr transform)
+	TransformPtr Component::GetTransform() const
 	{
-		auto obj = Instantate(name);
-		obj->GetTransform()->position = transform->position;
-		obj->GetTransform()->rotation = transform->rotation;
+		GameObjectPtr obj = OwnerObject();
+		if (!obj)
+		{
+			return nullptr;
+		}
 
-		return obj;
+		return obj->GetTransform();
 	}
 
 	/**
-	* ゲームオブジェクトを生成する
-	*
-	* @param name		オブジェクトの名前
-	* @param position	生成する位置
-	* @param rotation	生成したときの回転度
-	*
-	* @return 生成したオブジェクト
+	* Tagを取得
 	*/
-	GameObjectPtr Component::Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation)
+	std::string Component::GetTag() const
 	{
-		auto obj = Instantate(name);
-		obj->GetTransform()->position = position;
-		obj->GetTransform()->rotation = rotation;
+		GameObjectPtr obj = OwnerObject();
+		if (!obj)
+		{
+			return "";
+		}
 
-		return obj;
-	}
-
-	GameObjectPtr Component::Instantate(const std::string& name, const Vector3& position)
-	{
-		return Instantate(name, position, Quaternion::identity);
+		return obj->tag;
 	}
 
 	/**
@@ -74,4 +60,142 @@ namespace FGEngine
 	{
 		return isDestroyed;
 	}
+
+#pragma region Instantate
+
+	/**
+	* typeにあったオブジェクトを生成する
+	*
+	* @param type 生成したいオブジェクトのタイプ
+	* namespace CreateObjectから選択推奨
+	*
+	* @return 生成したオブジェクト
+	*/
+	GameObjectPtr Component::Instantate(const std::string& type)
+	{
+		auto owner = OwnerObject();
+		if (!owner)
+		{
+			return nullptr;
+		}
+
+		auto scene = owner->GetScene();
+		if (!scene)
+		{
+			return nullptr;
+		}
+
+		auto obj = scene->Instantate(type);
+
+		return obj;
+	}
+
+	/**
+	* typeにあったオブジェクトを生成する
+	*
+	* @param type 生成したいオブジェクトのタイプ
+	* namespace CreateObjectから選択推奨
+	* @param position 位置
+	* @param rotation 回転
+	*
+	* @return 生成したオブジェクト
+	*/
+	GameObjectPtr Component::Instantate(const std::string& type, const Vector3& position, const Quaternion& rotation)
+	{
+		auto obj = Instantate(type);
+		if (!obj)
+		{
+			return nullptr;
+		}
+
+		obj->GetTransform()->position = position;
+		obj->GetTransform()->rotation = rotation;
+
+		return obj;
+	}
+
+	/**
+	* gameObjectのクローンを作成
+	*
+	* @param gameObject クローンもとのゲームオブジェクト
+	*
+	* @return 生成したゲームオブジェクト
+	*/
+	GameObjectPtr Component::Instantate(const GameObjectPtr& gameObject)
+	{
+		auto obj = OwnerObject();
+		if (!obj)
+		{
+			return nullptr;
+		}
+
+		auto scene = obj->GetScene();
+		if (!scene)
+		{
+			return nullptr;
+		}
+
+		return scene->Instantate(gameObject);
+	}
+
+	/**
+	* gameObjectのクローンを作成
+	*
+	* @param gameObject クローン元のゲームオブジェクト
+	* @param transform	クローンするトランスフォーム
+	*
+	* @return 作成したゲームオブジェクト
+	*/
+	GameObjectPtr Component::Instantate(const GameObjectPtr& gameObject, const TransformPtr& tranform)
+	{
+		auto obj = OwnerObject();
+		if (!obj)
+		{
+			return nullptr;
+		}
+
+		auto scene = obj->GetScene();
+		if (!scene)
+		{
+			return nullptr;
+		}
+
+		return scene->Instantate(gameObject, tranform);
+	}
+
+	/**
+	* gameObjectのクローンを作成
+	*
+	* @param gameObject クローン元のゲームオブジェクト
+	* @param position	クローンした時の位置
+	* @param rotation	クローンした時の回転
+	*
+	* @return 作成したゲームオブジェクト
+	*/
+	GameObjectPtr Component::Instantate(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation)
+	{
+		auto owner = OwnerObject();
+		if (!owner)
+		{
+			return nullptr;
+		}
+
+		auto scene = owner->GetScene();
+		if (!scene)
+		{
+			return nullptr;
+		}
+
+		auto obj = scene->Instantate(gameObject);
+
+		// トランスフォームを取得して位置と回転を設定
+		auto transform = obj->GetTransform();
+		transform->position = position;
+		transform->rotation = rotation;
+
+		return obj;
+	}
+
+#pragma endregion
+
 }

@@ -56,6 +56,15 @@ namespace FGEngine
 		// 代入を禁止
 		GameObject& operator=(GameObject&) = delete;
 
+	public:
+
+		/**
+		* ゲームオブジェクトを生成
+		*
+		* @param name ゲームオブジェクトの名前
+		*/
+		static GameObjectPtr Create(const std::string& name);
+
 	public:	// コンポーネントの操作
 
 		/**
@@ -107,7 +116,7 @@ namespace FGEngine
 			}
 
 			// TがimGUIコンポーネントの基底クラス
-			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
+			if constexpr (std::is_base_of_v<ImGuiLayout, T>)
 			{
 				imGuiLayout = p;
 			}
@@ -179,7 +188,7 @@ namespace FGEngine
 			}
 
 			// TがimGUIコンポーネントの基底クラス
-			if constexpr (std::is_base_of_v<UI::ImGuiLayout, T>)
+			if constexpr (std::is_base_of_v<ImGuiLayout, T>)
 			{
 				return std::dynamic_pointer_cast<T>(imGuiLayout);
 			}
@@ -276,7 +285,7 @@ namespace FGEngine
 		* 
 		* @return クローンしたゲームオブジェクト
 		*/
-		static GameObjectPtr CloneGameObject(const GameObjectPtr& object, const TransformPtr& transform = nullptr);
+		static GameObjectPtr Clone(const GameObjectPtr& object, const TransformPtr& transform = nullptr);
 
 	private:
 
@@ -333,7 +342,7 @@ namespace FGEngine
 		CameraPtr camera;
 
 		// UIレイアウトコンポーネントポインター
-		UI::ImGuiLayoutPtr imGuiLayout;
+		ImGuiLayoutPtr imGuiLayout;
 
 		// コライダー配列
 		std::vector<ColliderPtr> colliders;

@@ -6,7 +6,7 @@
 #include "Component.h"
 #include "FGEngine/Math/Vector2.h"
 
-namespace FGEngine::UI
+namespace FGEngine
 {
 	/**
 	* ImGui‚ğg‚Á‚½UI‚ÌŠî’êƒNƒ‰ƒX

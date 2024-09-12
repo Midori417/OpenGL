@@ -20,21 +20,5 @@ namespace FGEngine
 	{
 		return OwnerObject()->GetComponent<T>();
 	}
-
-	/**
-	* Transform‚ðŽæ“¾
-	*/
-	inline TransformPtr Component::GetTransform() const
-	{
-		return OwnerObject()->GetTransform();
-	}
-
-	/**
-	* Tag‚ðŽæ“¾
-	*/
-	inline std::string Component::GetTag() const
-	{
-		return OwnerObject()->tag;
-	}
 }
 #endif // !FGENGINE_COMPONENT_HELPER_H_INCLUDED

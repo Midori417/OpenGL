@@ -3,10 +3,10 @@
 */
 #include "FGEngine/Component/Image.h"
 #include "FGEngine/Package/ImGUI.h"
-#include "FGEngine/Time.h"
+#include "FGEngine/Other/Time.h"
 #include "FGEngine/Window/WindowManager.h"
 
-namespace FGEngine::UI
+namespace FGEngine
 {
 	/**
 	* UIの設定
@@ -28,7 +28,7 @@ namespace FGEngine::UI
 		
 		switch (fillType)
 		{
-		case FGEngine::UI::Image::FillType::Horizontal:
+		case Image::FillType::Horizontal:
 
 		{
 			float imageW = size.x * fillAmout;
@@ -36,7 +36,7 @@ namespace FGEngine::UI
 			ImGui::Image(texId, ImVec2(imageW, size.y), ImVec2(0, 1), ImVec2(fillAmout, 0), basecolor);
 		}
 		break;
-		case FGEngine::UI::Image::FillType::HorizontalInverse:
+		case Image::FillType::HorizontalInverse:
 
 		{
 			float imageW = size.x * fillAmout;
@@ -48,7 +48,7 @@ namespace FGEngine::UI
 		}
 
 		break;
-		case FGEngine::UI::Image::FillType::Vertical:
+		case Image::FillType::Vertical:
 
 		{
 			float imageH = size.y * fillAmout;
@@ -63,6 +63,10 @@ namespace FGEngine::UI
 		h = size.y;
 
 	}
+
+	/**
+	* イメージコンポーネントのクローンを作成
+	*/
 	ComponentPtr Image::Clone() const
 	{
 		auto p = std::make_shared<Image>();

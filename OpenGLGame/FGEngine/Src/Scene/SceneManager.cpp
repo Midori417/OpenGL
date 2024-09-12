@@ -5,6 +5,7 @@
 
 namespace FGEngine
 {
+	// 静的変数の初期化
 	ScenePtr SceneManager::nextScene;
 	std::unordered_map<std::string, ScenePtr> SceneManager::scenes;
 
@@ -22,12 +23,8 @@ namespace FGEngine
 			return 1;
 		}
 
-		// 最初のシーンが設定されていなければシーン配列の最初を入れる
-		if (!nextScene)
-		{
-			nextScene = scenes.begin()->second;
-		}
 
+		// 初期化成功
 		return 0;
 	}
 

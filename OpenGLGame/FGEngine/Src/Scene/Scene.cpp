@@ -2,6 +2,7 @@
 * @file Scene.cpp
 */
 #include "FGEngine/Scene/Scene.h"
+#include "FGEngine/Debug.h"
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Component/Transform.h"
 #include "FGEngine/Component/Rigidbody.h"
@@ -26,17 +27,9 @@ namespace FGEngine
 	*/
 	GameObjectPtr Scene::CreateGameObject(const std::string& name)
 	{
-		auto obj = std::make_shared<GameObject>();
-
-		// 名前を設定
-		obj->name = (name);
-
-		obj->gameObject = obj;
+		auto obj = GameObject::Create(name);
 
 		obj->ownerScene = this;
-
-		// Transformを追加
-		obj->AddComponent<Transform>();
 
 		// ゲームオブジェクト配列に登録
 		gameObjects.push_back(obj);
@@ -46,20 +39,20 @@ namespace FGEngine
 	}
 
 	/**
-	* nameにあったオブジェクトを生成する
+	* typeにあったオブジェクトを生成する
 	*
-	* @param name 生成したいオブジェクトの名前
+	* @param type 生成したいオブジェクトの名前
 	* namespace CreateObjectから選択推奨
 	*
 	* @return 生成したオブジェクト
 	*/
-	GameObjectPtr Scene::Create(const std::string& name)
+	GameObjectPtr Scene::Instantate(const std::string& type)
 	{
-		if (name == CreateObject::Empty)
+		if (type == CreateObjectType::Empty)
 		{
 			return CreateGameObject("GameObject");
 		}
-		else if (name == CreateObject::Camera)
+		else if (type == CreateObjectType::Camera)
 		{
 			GameObjectPtr p = CreateGameObject("Camera");
 			CameraPtr camera = p->AddComponent<Camera>();
@@ -69,7 +62,7 @@ namespace FGEngine
 
 			return p;
 		}
-		else if (name == CreateObject::GameObject3D::Cube)
+		else if (type == CreateObjectType::GameObject3D::Cube)
 		{
 			GameObjectPtr p = CreateGameObject("Cube");
 			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
@@ -82,7 +75,7 @@ namespace FGEngine
 
 			return p;
 		}
-		else if (name == CreateObject::GameObject3D::Sphere)
+		else if (type == CreateObjectType::GameObject3D::Sphere)
 		{
 			GameObjectPtr p = CreateGameObject("Sphere");
 			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
@@ -96,6 +89,7 @@ namespace FGEngine
 			return p;
 		}
 
+		LOG_ERROR("(%s)このタイプのオブジェクトは存在しません", type);
 		return nullptr;
 	}
 
@@ -106,9 +100,9 @@ namespace FGEngine
 	*
 	* @return 作成したゲームオブジェクト
 	*/
-	GameObjectPtr Scene::CloneGameObject(const GameObjectPtr& gameObject)
+	GameObjectPtr Scene::Instantate(const GameObjectPtr& gameObject)
 	{
-		GameObjectPtr p = GameObject::CloneGameObject(gameObject);
+		GameObjectPtr p = GameObject::Clone(gameObject);
 
 		// シーンを設定する
 		p->ownerScene = this;
@@ -127,9 +121,9 @@ namespace FGEngine
 	*
 	* @return 作成したゲームオブジェクト
 	*/
-	GameObjectPtr Scene::CloneGameObject(const GameObjectPtr& gameObject, const TransformPtr& tranform)
+	GameObjectPtr Scene::Instantate(const GameObjectPtr& gameObject, const TransformPtr& tranform)
 	{
-		GameObjectPtr p = GameObject::CloneGameObject(gameObject, tranform);
+		GameObjectPtr p = GameObject::Clone(gameObject, tranform);
 
 		// シーンを設定する
 		p->ownerScene = this;
@@ -149,9 +143,9 @@ namespace FGEngine
 	*
 	* @return 作成したゲームオブジェクト
 	*/
-	GameObjectPtr Scene::CloneGameObject(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation)
+	GameObjectPtr Scene::Instantate(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation)
 	{
-		GameObjectPtr p = CloneGameObject(gameObject);
+		GameObjectPtr p = Instantate(gameObject);
 
 		// 位置と回転を設定
 		TransformPtr transform = p->GetTransform();
@@ -524,7 +518,7 @@ namespace FGEngine
 	void Scene::UIRendererGameObject()
 	{
 		// UI描画コンポーネントの有無で仕分する
-		std::vector<UI::ImGuiLayoutPtr> imguiList;
+		std::vector<ImGuiLayoutPtr> imguiList;
 		imguiList.reserve(gameObjects.size());
 
 		for (auto x : gameObjects)

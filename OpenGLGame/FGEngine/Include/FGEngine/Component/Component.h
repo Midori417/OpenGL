@@ -32,22 +32,19 @@ namespace FGEngine
 	public:
 
 		/**
-		* コンポーネントを所有しているオブジェクトを取得
+		* 自身を所有しているオブジェクトを取得
 		*/
-		GameObjectPtr OwnerObject() const
-		{
-			auto ptr = ownerObject.lock();
-			if (!ptr)
-			{
-				return nullptr;
-			}
-			return ptr;
-		}
+		GameObjectPtr OwnerObject() const;
 
 		/**
 		* トランスフォームを取得
 		*/
 		TransformPtr GetTransform() const;
+
+		/**
+		* Tagを取得
+		*/
+		std::string GetTag() const;
 
 		/**
 		* T型のコンポーネントを取得
@@ -56,25 +53,68 @@ namespace FGEngine
 		std::shared_ptr<T> GetComponent() const;
 
 		/**
-		* Tagを取得
-		*/
-		std::string GetTag() const;
-
-		/**
-		* ゲームオブジェクトを生成する
-		*/
-		GameObjectPtr Instantate(const std::string& name);
-		GameObjectPtr Instantate(const std::string& name, const TransformPtr transform);
-		GameObjectPtr Instantate(const std::string& name, const Vector3& position, const Quaternion& rotation);
-		GameObjectPtr Instantate(const std::string& name, const Vector3& position);
-
-		/**
 		* 破棄予定か取得
 		*
 		* @return true 破棄予定
 		* @return false 破棄予定じゃない
 		*/
 		bool IsDestroyed() const;
+
+	public:	// オブジェクトの生成
+
+		/**
+		* typeにあったオブジェクトを生成する
+		*
+		* @param type 生成したいオブジェクトのタイプ
+		* namespace CreateObjectから選択推奨
+		*
+		* @return 生成したオブジェクト
+		*/
+		GameObjectPtr Instantate(const std::string& type);
+
+		/**
+		* typeにあったオブジェクトを生成する
+		*
+		* @param type 生成したいオブジェクトのタイプ
+		* namespace CreateObjectから選択推奨
+		* @param position 位置
+		* @param rotation 回転
+		*
+		* @return 生成したオブジェクト
+		*/
+		GameObjectPtr Instantate(const std::string& type, const Vector3& position, const Quaternion& rotation);
+
+		/**
+		* gameObjectのクローンを作成
+		* 
+		* @param gameObject クローンもとのゲームオブジェクト
+		* 
+		* @return 生成したゲームオブジェクト
+		*/
+		GameObjectPtr Instantate(const GameObjectPtr& gameObject);
+
+		/**
+		* gameObjectのクローンを作成
+		*
+		* @param gameObject クローン元のゲームオブジェクト
+		* @param transform	クローンするトランスフォーム
+		*
+		* @return 作成したゲームオブジェクト
+		*/
+		GameObjectPtr Instantate(const GameObjectPtr& gameObject, const TransformPtr& tranform);
+
+		/**
+		* gameObjectのクローンを作成
+		*
+		* @param gameObject クローン元のゲームオブジェクト
+		* @param position	クローンした時の位置
+		* @param rotation	クローンした時の回転
+		*
+		* @return 作成したゲームオブジェクト
+		*/
+		GameObjectPtr Instantate(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation);
+
+	protected:
 
 		/**
 		* コンポーネントのクローンを作成する

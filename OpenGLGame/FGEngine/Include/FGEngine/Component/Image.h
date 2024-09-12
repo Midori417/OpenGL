@@ -7,7 +7,7 @@
 #include "FGEngine/Asset/Texture.h"
 #include "FGEngine/Color.h"
 
-namespace FGEngine::UI
+namespace FGEngine
 {
 	/**
 	* UI‚Ì‰æ‘œ‚ð•`‰æ

@@ -16,6 +16,27 @@
 namespace FGEngine
 {
 	/**
+	* ゲームオブジェクトを生成
+	* シーンは設定されていない
+	*
+	* @param name ゲームオブジェクトの名前
+	*/
+	GameObjectPtr GameObject::Create(const std::string& name)
+	{
+		auto obj = std::make_shared<GameObject>();
+
+		// 名前を設定
+		obj->name = name;
+
+		obj->gameObject = obj;
+
+		// Transformを追加
+		obj->AddComponent<Transform>();
+
+		return obj;
+	}
+
+	/**
 	* ゲームオブジェクトの状態を取得
 	*/
 	GameObjectState GameObject::GetState() const
@@ -77,7 +98,7 @@ namespace FGEngine
 	*
 	* @return クローンしたゲームオブジェクト
 	*/
-	GameObjectPtr GameObject::CloneGameObject(const GameObjectPtr& object, const TransformPtr& transform)
+	GameObjectPtr GameObject::Clone(const GameObjectPtr& object, const TransformPtr& transform)
 	{
 		auto p = std::make_shared<GameObject>();
 
@@ -128,7 +149,7 @@ namespace FGEngine
 		{
 			ComponentPtr clone = object->imGuiLayout->Clone();
 			clone->ownerObject = p;
-			p->imGuiLayout = std::dynamic_pointer_cast<UI::ImGuiLayout>(clone);
+			p->imGuiLayout = std::dynamic_pointer_cast<ImGuiLayout>(clone);
 		}
 		// クローンもとにカメラコンポーネントがあれば
 		if (object->camera)

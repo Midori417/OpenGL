@@ -3,6 +3,7 @@
 */
 #ifndef FGENGINE_SCENE_H_INCLUDED
 #define FGENGINE_SCENE_H_INCLUDED
+#include "FGEngine/CreateGameObjectType.h"
 #include "FGEngine/UsingNames/UsingScene.h"
 #include "FGEngine/UsingNames/UsingAsset.h"
 #include "FGEngine/UsingNames/UsingGameObject.h"
@@ -12,34 +13,6 @@
 
 namespace FGEngine
 {
-	namespace CreateObject
-	{
-		// 何もついてないゲームオブジェクト
-		inline const std::string Empty = "Empty";
-
-		// カメラ
-		inline const std::string Camera = "Camera";
-
-		// 3Dオブジェクト
-		namespace GameObject3D
-		{
-			// 四角形
-			inline const std::string Cube = "Cube";
-
-			// 球体
-			inline const std::string Sphere = "Sphere";
-		}
-		// ユーザーインターフェース
-		namespace UI
-		{
-			// 画像
-			inline const std::string Image = "Image";
-
-			// ボタン
-			inline const std::string Button = "Button";
-		}
-	}
-
 	/**
 	* シーンの基底クラス
 	*/
@@ -58,7 +31,7 @@ namespace FGEngine
 		*/
 		virtual ~Scene() = default;
 
-	private: // オブジェクトの生成・破壊
+	private: // Sceneで完結オブジェクトの生成
 
 		/**
 		* ゲームオブジェクトを作成
@@ -69,17 +42,17 @@ namespace FGEngine
 		*/
 		GameObjectPtr CreateGameObject(const std::string& name);
 
-	public:	
+	public:	// オブジェクトの生成・破壊
 
 		/**
-		* nameにあったオブジェクトを生成する
+		* typeにあったオブジェクトを生成する
 		* 
-		* @param name 生成したいオブジェクトの名前
+		* @param type 生成したいオブジェクトのタイプ
 		* namespace CreateObjectから選択推奨
 		* 
 		* @return 生成したオブジェクト
 		*/
-		GameObjectPtr Create(const std::string& name);
+		GameObjectPtr Instantate(const std::string& type);
 
 		/**
 		* ゲームオブジェクトをクローンする
@@ -88,7 +61,7 @@ namespace FGEngine
 		* 
 		* @return 作成したゲームオブジェクト
 		*/
-		GameObjectPtr CloneGameObject(const GameObjectPtr& gameObject);
+		GameObjectPtr Instantate(const GameObjectPtr& gameObject);
 
 		/**
 		* ゲームオブジェクトをクローンする
@@ -98,7 +71,7 @@ namespace FGEngine
 		*
 		* @return 作成したゲームオブジェクト
 		*/
-		GameObjectPtr CloneGameObject(const GameObjectPtr& gameObject, const TransformPtr& tranform);
+		GameObjectPtr Instantate(const GameObjectPtr& gameObject, const TransformPtr& tranform);
 
 		/**
 		* ゲームオブジェクトをクローンする
@@ -109,7 +82,7 @@ namespace FGEngine
 		*
 		* @return 作成したゲームオブジェクト
 		*/
-		GameObjectPtr CloneGameObject(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation);
+		GameObjectPtr Instantate(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation);
 
 		/**
 		* 全てのゲームオブジェクトを削除する
