@@ -68,9 +68,6 @@ namespace FGEngine
 		*/
 		GltfFileBuffer(size_t bufferSize, size_t maxMatrixCount);
 
-		// デストラクタ
-		~GltfFileBuffer();
-
 		/**
 		* glTFFileBufferを作成
 		*
@@ -87,16 +84,7 @@ namespace FGEngine
 		* @parma name		保存したい名前
 		* @parma filename	ファイルの名前
 		*/
-		void LoadGltf(const std::string& name, const std::string& filename);
-
-		/**
-		* glTFファイルを取得
-		*
-		* @parma name		取得したいglTFファイルの名前
-		*
-		* @return glTFファイルポインター
-		*/
-		GltfFilePtr GetGltf(const std::string& name);
+		GltfFilePtr LoadGltf(const std::string& name, const std::string& filename);
 
 		/**
 		* アニメーションメッシュの描画用データをすべて削除
@@ -158,9 +146,6 @@ namespace FGEngine
 
 		// マテリアル未設定時に使用するマテリアル
 		MaterialPtr defaultMaterial;
-
-		// glTFファイル配列
-		std::unordered_map<std::string, GltfFilePtr> glTFfiles;
 
 		// アニメーションの姿勢行列バッファ
 		MappedBufferObjectPtr animationBuffer;

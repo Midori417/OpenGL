@@ -2,7 +2,7 @@
 * @file InputMouse.cpp
 */
 #include "FGEngine/Input/InputMouse.h"
-#include "FGEngine/Time.h"
+#include "FGEngine/Other/Time.h"
 #include <GLFW/glfw3.h>
 
 namespace FGEngine

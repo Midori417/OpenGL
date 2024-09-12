@@ -20,7 +20,7 @@ namespace FGEngine
 	*/
 	class Collider : public Component
 	{
-		friend PhysicsSystem::PhysicsEngine;
+		friend class PhysicsEngine;
 	protected:
 
 
@@ -34,7 +34,7 @@ namespace FGEngine
 		/**
 		* コライダーのタイプを取得
 		*/
-		virtual PhysicsSystem::CollisionType GetType() const = 0;
+		virtual CollisionType GetType() const = 0;
 
 		/**
 		* 座標を変更する

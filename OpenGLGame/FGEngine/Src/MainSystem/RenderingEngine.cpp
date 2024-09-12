@@ -1,7 +1,7 @@
 /**
 * RenderingEngine.cpp
 */
-#include "FGEngine/Rendering/RenderingEngine.h"
+#include "FGEngine/MainSystem/RenderingEngine.h"
 #include "FGEngine/BufferAndVAO/MeshBuffer.h"
 #include "FGEngine/BufferAndVAO/GltfFileBuffer.h"
 #include "FGEngine/Window/WindowManager.h"
@@ -15,7 +15,7 @@
 #include "FGEngine/Component/Camera.h"
 #include <algorithm>
 
-namespace FGEngine::RenderingSystem
+namespace FGEngine
 {
 	/**
 	* グラフィックエンジンを初期化
@@ -360,7 +360,6 @@ namespace FGEngine::RenderingSystem
 
 		// アニメーションバッファをGPUメモリにコピーする
 		glTFfileBuffer->UploadAnimationBuffer();
-
 
 		// transparent以前のキューを描画
 		Draw3DGameObject(rendererList.begin(), transparentBegin);

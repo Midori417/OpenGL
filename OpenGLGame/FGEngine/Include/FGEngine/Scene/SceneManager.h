@@ -3,29 +3,27 @@
 */
 #ifndef FGENGINE_SCENEMANAGER_H_INCLUDED
 #define FGENGINE_SCENEMANAGER_H_INCLUDED
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
 #include "Scene.h"
 #include <unordered_map>
 
 namespace FGEngine
 {
-	namespace MainSystem
-	{
-		class EngineCore;
-	}
-
 	/**
 	* シーンを管理するクラス
 	*/
 	class SceneManager : public Singleton<SceneManager>
 	{
+		friend Singleton<SceneManager>;
+		friend class EngineCore;
 	private:
 
-		friend Singleton<SceneManager>;
-		friend MainSystem::EngineCore;
-
-		// コンストラクタ
+		/**
+		* デフォルトコンストラクタ
+		*/
 		SceneManager() = default;
+
+	private:
 
 		/**
 		* シーンマネージャーの初期化

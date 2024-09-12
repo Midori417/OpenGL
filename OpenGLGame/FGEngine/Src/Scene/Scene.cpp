@@ -9,10 +9,10 @@
 #include "FGEngine/Component/Camera.h"
 #include "FGEngine/Component/AudioSource.h"
 #include "FGEngine/Component/MeshRenderer.h"
-#include "FGEngine/Physics/PhysicsEngine.h"
+#include "FGEngine/MainSystem/PhysicsEngine.h"
+#include "FGEngine/MainSystem/RenderingEngine.h"
 #include "FGEngine/Asset/AssetManager.h"
 #include "FGEngine/Asset/Shader.h"
-#include "FGEngine/Rendering/RenderingEngine.h"
 #include <algorithm>
 
 namespace FGEngine
@@ -59,7 +59,7 @@ namespace FGEngine
 		{
 			return CreateGameObject("GameObject");
 		}
-		else if(name == CreateObject::Camera)
+		else if (name == CreateObject::Camera)
 		{
 			GameObjectPtr p = CreateGameObject("Camera");
 			CameraPtr camera = p->AddComponent<Camera>();
@@ -73,7 +73,7 @@ namespace FGEngine
 		{
 			GameObjectPtr p = CreateGameObject("Cube");
 			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
-			
+
 			// メッシュを設定する
 			auto assetManger = AssetManager::GetInstance();
 			mesh->mesh = assetManger->GetStaticMesh("Cube");
@@ -82,16 +82,15 @@ namespace FGEngine
 
 			return p;
 		}
-		else if(name == CreateObject::GameObject3D::Sphere)
+		else if (name == CreateObject::GameObject3D::Sphere)
 		{
 			GameObjectPtr p = CreateGameObject("Sphere");
 			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
 
 			// メッシュを生成
-			auto assetManger = AssetManager::GetInstance();
-			mesh->mesh = assetManger->GetStaticMesh("Sphere");
-			mesh->shader = assetManger->GetShader(DefalutShader::Standard3D);
-			mesh->shadowShader = assetManger->GetShader(DefalutShader::Shadow3D);
+			mesh->mesh = AssetManager::GetStaticMesh("Sphere");
+			mesh->shader = AssetManager::GetShader(DefalutShader::Standard3D);
+			mesh->shadowShader = AssetManager::GetShader(DefalutShader::Shadow3D);
 
 			return p;
 		}
@@ -409,7 +408,7 @@ namespace FGEngine
 	void Scene::CollisionGameObject()
 	{
 		// ワールド座標系の衝突判定を作成
-		std::vector<PhysicsSystem::WorldColliderList> colliders;
+		std::vector<WorldColliderList> colliders;
 		colliders.reserve(gameObjects.size());
 		for (const auto& e : gameObjects)
 		{
@@ -424,7 +423,7 @@ namespace FGEngine
 			}
 
 			// 衝突判定を作成
-			PhysicsSystem::WorldColliderList list(e->colliders.size());
+			WorldColliderList list(e->colliders.size());
 			for (int i = 0; i < e->colliders.size(); ++i)
 			{
 				// オリジナルのコライダーをコピー
@@ -455,7 +454,7 @@ namespace FGEngine
 						continue;	// 削除済みなので飛ばす
 					}
 					// コライダー単位の衝突判定
-					PhysicsSystem::PhysicsEngine::GetInstance()->HandleWorldColliderCollision(&*a, &*b);
+					PhysicsEngine::GetInstance()->HandleWorldColliderCollision(&*a, &*b);
 				}
 			}
 		}
@@ -515,7 +514,7 @@ namespace FGEngine
 		}
 
 		// レンダリングエンジンに描画してもらう
-		RenderingSystem::RenderingEngine::GetInstance()->DrawGameObject(rendererList, mainCamera);
+		RenderingEngine::GetInstance()->DrawGameObject(rendererList, mainCamera);
 	}
 
 	/**

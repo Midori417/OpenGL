@@ -664,7 +664,7 @@ namespace FGEngine
 		pBuffer = static_cast<uint8_t*>(glMapNamedBuffer(*buffer, GL_WRITE_ONLY));
 
 		// バッファの先頭にダミーデータを設定
-		const RenderingSystem::Vertex defaultData;
+		const Vertex defaultData;
 		memcpy(pBuffer, &defaultData, sizeof(defaultData));
 		curBufferSize = sizeof(defaultData);
 
@@ -688,14 +688,6 @@ namespace FGEngine
 	}
 
 	/**
-	* デストラクタ
-	*/
-	GltfFileBuffer::~GltfFileBuffer()
-	{
-		glTFfiles.clear();
-	}
-
-	/**
 	* glTFFileBufferを作成
 	*
 	* @param bufferSize 格納できる頂点データのサイズ(バイト数)
@@ -714,20 +706,13 @@ namespace FGEngine
 	* @parma name		保存したい名前
 	* @parma filename	ファイルの名前
 	*/
-	void GltfFileBuffer::LoadGltf(const std::string& name, const std::string& filename)
+	GltfFilePtr GltfFileBuffer::LoadGltf(const std::string& name, const std::string& filename)
 	{
-		// 以前に読み込んだファイルなら、作成済みのファイルを返す
-		auto itr = glTFfiles.find(filename.c_str());
-		if (itr != glTFfiles.end())
-		{
-			return;
-		}
-
 		// glTFファイルを読み込む
 		std::vector<char> buf = ReadFile(filename.c_str());
 		if (buf.empty())
 		{
-			return;
+			return nullptr;
 		}
 		buf.push_back('\0'); // テキスト終端を追加
 
@@ -739,13 +724,12 @@ namespace FGEngine
 		if (!p)
 		{
 			LOG_ERROR("'%s'の読み込みに失敗しました", filename.c_str());
-			return;
+			return nullptr;
 		}
 
 		// 作成したファイルを連想配列に追加
 		p->gltfFileBuffer = this;
 		p->name = name;
-		glTFfiles.emplace(name, p);
 
 		// 読み込んだファイル名とメッシュ名をデバッグ情報として出力
 		LOG("%sを読み込みました", filename.c_str());
@@ -767,24 +751,8 @@ namespace FGEngine
 				LOG(R"( animations[%d]="%s"time=%f )", i, name.c_str(), time);
 			}
 		}
-	}
 
-	/**
-	* glTFファイルを取得
-	*
-	* @parma name		取得したいglTFファイルの名前
-	*
-	* @return glTFファイルポインター
-	*/
-	GltfFilePtr GltfFileBuffer::GetGltf(const std::string& name)
-	{
-		auto itr = glTFfiles.find(name);
-		if (itr != glTFfiles.end())
-		{
-			return itr->second;
-		}
-		LOG_ERROR("(glTFFile)%sは登録されていません", name.c_str());
-		return nullptr;
+		return p;
 	}
 
 	/**
@@ -972,7 +940,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasPosition)
 				{
-					SetDefaultAttribute(AttribIndex::position, 3, offsetof(RenderingSystem::Vertex, position), *buffer);
+					SetDefaultAttribute(AttribIndex::position, 3, offsetof(Vertex, position), *buffer);
 				}
 
 				// 頂点アトリビュート(テクスチャ座標)を取得
@@ -980,7 +948,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasTexcoord0)
 				{
-					SetDefaultAttribute(AttribIndex::texcoord0, 2, offsetof(RenderingSystem::Vertex, texcoord0), *buffer);
+					SetDefaultAttribute(AttribIndex::texcoord0, 2, offsetof(Vertex, texcoord0), *buffer);
 				}
 
 				// 頂点アトリビュート(法線)を取得
@@ -988,7 +956,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasNormal)
 				{
-					SetDefaultAttribute(AttribIndex::normal, 3, offsetof(RenderingSystem::Vertex, normal), *buffer);
+					SetDefaultAttribute(AttribIndex::normal, 3, offsetof(Vertex, normal), *buffer);
 				}
 
 				// 頂点アトリビュート(タンジェント)を取得
@@ -1004,7 +972,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasJoints)
 				{
-					SetDefaultAttribute(AttribIndex::joints0, 4, offsetof(RenderingSystem::Vertex, joints0), *buffer);
+					SetDefaultAttribute(AttribIndex::joints0, 4, offsetof(Vertex, joints0), *buffer);
 				}
 
 				// 頂点アトリビュート(ジョイントウェイン)を取得
@@ -1012,7 +980,7 @@ namespace FGEngine
 					accessors, bufferViews, binaryList);
 				if (!hasWeights)
 				{
-					SetDefaultAttribute(AttribIndex::weights0, 4, offsetof(RenderingSystem::Vertex, weights0), *buffer);
+					SetDefaultAttribute(AttribIndex::weights0, 4, offsetof(Vertex, weights0), *buffer);
 				}
 
 

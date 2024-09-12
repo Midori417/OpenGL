@@ -5,7 +5,7 @@
 #define FGENGINE_COLLISIONTYPE_H_INCLUDED
 #include "FGEngine/Math/Vector3.h"
 
-namespace FGEngine::PhysicsSystem
+namespace FGEngine
 {
 	/**
 	* コリジョンのタイプ

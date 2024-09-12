@@ -5,7 +5,7 @@
 #define FGENGINE_VERTEX_H_INCLUDED
 #include "FGEngine/Math/Math.h"
 
-namespace FGEngine::RenderingSystem
+namespace FGEngine
 {
 	/**
 	* 頂点データ形式

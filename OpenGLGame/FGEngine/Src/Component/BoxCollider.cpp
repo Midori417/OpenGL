@@ -9,15 +9,15 @@ namespace FGEngine
 	/**
 	* コリジョンタイプを取得
 	*/
-	PhysicsSystem::CollisionType BoxCollider::GetType() const
+	CollisionType BoxCollider::GetType() const
 	{
-		return PhysicsSystem::CollisionType::Box;
+		return CollisionType::Box;
 	}
 
 	/**
 	* 図形を取得
 	*/
-	const PhysicsSystem::Box& BoxCollider::GetShape() const
+	const Box& BoxCollider::GetShape() const
 	{
 		return box;
 	}

@@ -10,7 +10,7 @@
 #include "FGEngine/Component/Collider.h"
 #include "FGEngine/Component/AudioSource.h"
 #include "FGEngine/Component/GameEvent.h"
-#include "FGEngine/Time.h"
+#include "FGEngine/Other/Time.h"
 #include <algorithm>
 
 namespace FGEngine

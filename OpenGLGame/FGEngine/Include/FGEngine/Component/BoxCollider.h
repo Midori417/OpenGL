@@ -21,12 +21,12 @@ namespace FGEngine
 		/**
 		* コリジョンタイプを取得
 		*/
-		virtual PhysicsSystem::CollisionType GetType() const;
+		virtual CollisionType GetType() const;
 
 		/**
 		* 図形を取得
 		*/
-		const PhysicsSystem::Box& GetShape() const;
+		const Box& GetShape() const;
 
 		/**
 		* 座標を変更する
@@ -57,7 +57,7 @@ namespace FGEngine
 	private:
 
 		// 図形
-		PhysicsSystem::Box box;
+		Box box;
 	};
 }
 

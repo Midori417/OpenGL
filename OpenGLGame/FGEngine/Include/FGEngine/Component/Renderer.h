@@ -32,9 +32,8 @@ namespace FGEngine
 	*/
 	class Renderer : public Component
 	{
+		friend class RenderingEngine;
 	public:
-
-		friend RenderingSystem::RenderingEngine;
 
 		// コンストラクタ・デストラクタ
 		Renderer() = default;

@@ -2,7 +2,7 @@
 * @file Animator.cpp
 */
 #include "FGEngine/Component/Animator.h"
-#include "FGEngine/Time.h"
+#include "FGEngine/Other/Time.h"
 #include "FGEngine/Asset/AnimationClip.h"
 #include "FGEngine/Math/Mathf.h"
 #include <cmath>

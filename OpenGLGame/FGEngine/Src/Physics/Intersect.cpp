@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace FGEngine::PhysicsSystem
+namespace FGEngine
 {
 	/**
 	* AABB“¯m‚ÌŒğ·”»’è
@@ -336,7 +336,6 @@ namespace FGEngine::PhysicsSystem
 	*/
 	bool Intersect(const Box& a, const Box& b, Vector3& penetration)
 	{
-
 		return false;
 	}
 }

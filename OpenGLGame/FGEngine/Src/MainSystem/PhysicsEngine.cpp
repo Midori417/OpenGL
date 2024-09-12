@@ -1,7 +1,7 @@
 /**
 * @file PhysicsEngine.cpp
 */
-#include "FGEngine/Physics/PhysicsEngine.h"
+#include "FGEngine/MainSystem/PhysicsEngine.h"
 #include "FGEngine/Physics/Intersect.h"
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Component/Collider.h"
@@ -11,7 +11,7 @@
 #include "FGEngine/Component/Rigidbody.h"
 #include "FGEngine/Math/Mathf.h"
 
-namespace FGEngine::PhysicsSystem
+namespace FGEngine
 {
 	/**
 	* 型によって交差判定関数を呼び分けるための関数テンプレート

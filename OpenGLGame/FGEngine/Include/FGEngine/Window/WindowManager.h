@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_WINDOWMANAGER_H_INCLUDED
 #define FGENGINE_WINDOWMANAGER_H_INCLUDED
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
 #include "FGEngine/Math/Vector2.h"
 #include "FGEngine/Color.h"
 #include <string>
@@ -14,18 +14,13 @@ struct GLFWwindow;
 	
 namespace FGEngine
 {
-	namespace MainSystem
-	{
-		class EngineCore;
-	}
-
 	/**
 	* ウィンドウ管理クラス
 	*/
 	class WindowManager : public Singleton<WindowManager>
 	{
 		friend Singleton<WindowManager>;
-		friend MainSystem::EngineCore;
+		friend class EngineCore;
 	private:
 
 		/**

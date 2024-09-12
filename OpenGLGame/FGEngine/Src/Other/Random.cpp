@@ -1,7 +1,7 @@
 /**
 * @file Random.cpp
 */
-#include "FGEngine/Math/Random.h"
+#include "FGEngine/Other/Random.h"
 #include <random>
 
 namespace FGEngine

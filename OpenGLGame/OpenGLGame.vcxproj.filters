@@ -100,35 +100,8 @@
     <Filter Include="FGEngine\Src\Debug">
       <UniqueIdentifier>{af5801cd-22c0-4aea-990e-0cdc88d6ccfd}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\GameEngine">
-      <UniqueIdentifier>{cf3255ba-e015-4903-857d-a8ab3d7c0f96}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\GameObject">
       <UniqueIdentifier>{2b797ef1-2b23-4be1-a163-9d14de8c060e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Input">
-      <UniqueIdentifier>{ea643d5e-21f8-457d-bc8f-e295e4ea314c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Math">
-      <UniqueIdentifier>{c7150c4a-83f4-4f56-9923-3911b9a76a56}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Math\Vector">
-      <UniqueIdentifier>{0bc1e3df-0dbc-4ad5-8761-bd1c6c07985b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Math\Matrix">
-      <UniqueIdentifier>{c0432b41-2053-428a-ae10-6603e1a65abd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Math\Mathf">
-      <UniqueIdentifier>{6b2d19f1-f051-401e-adbc-ca30519e0e93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Math\Quaternion">
-      <UniqueIdentifier>{16a80cde-0e26-447d-8fe3-12d94baa874a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Math\Random">
-      <UniqueIdentifier>{f74abd08-f7f0-4839-9fda-13ec6df1c27c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Package">
-      <UniqueIdentifier>{a6cc0ad0-98bb-4a27-bea3-2350bdf02836}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Src\Physics">
       <UniqueIdentifier>{4821134b-7d4b-4df6-80ee-e6b30b420aab}</UniqueIdentifier>
@@ -142,35 +115,8 @@
     <Filter Include="FGEngine\Src\Audio">
       <UniqueIdentifier>{3a55e612-afcb-40c1-b0b9-9621501099ae}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FGEngine\Src\Window">
-      <UniqueIdentifier>{93e17b3f-bb07-447e-a9d4-b53615184fa6}</UniqueIdentifier>
-    </Filter>
     <Filter Include="FGEngine\Src\Component">
       <UniqueIdentifier>{46bd8c89-6124-4de7-a9fd-e91c31dc2852}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\Time">
-      <UniqueIdentifier>{fd9f0107-770c-4c00-9924-6af8b0566569}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO">
-      <UniqueIdentifier>{8e736477-3322-498a-b759-d8365a2a4463}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO\Buffer">
-      <UniqueIdentifier>{87edd90f-53d5-424c-8382-255ca0a926d4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO\VAO">
-      <UniqueIdentifier>{2055d960-96f4-4bef-b4ed-8b531f509b8f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO\FrameBuffer">
-      <UniqueIdentifier>{11488878-f726-4e56-9e75-b8ceea7ae376}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO\MapBuffer">
-      <UniqueIdentifier>{4d692a32-57fa-406e-8357-95bcbd0246fc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO\MeshBuffer">
-      <UniqueIdentifier>{331edc81-5359-422d-837a-a719425144ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\BufferAndVAO\GltfFileBuffer">
-      <UniqueIdentifier>{51d94294-b9bf-4fe6-9b59-ade728d3a93b}</UniqueIdentifier>
     </Filter>
     <Filter Include="FGEngine\Src\Component\Collider">
       <UniqueIdentifier>{bd45e844-6a74-4dfd-b1da-e24d413e203f}</UniqueIdentifier>
@@ -195,9 +141,6 @@
     </Filter>
     <Filter Include="FGEngine\Src\Component\Transform">
       <UniqueIdentifier>{3e983904-cc07-420d-a648-908f133db929}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="FGEngine\Src\UsingNames">
-      <UniqueIdentifier>{b8569ea8-5e1b-43f1-bbee-9d604bfc26ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Component">
       <UniqueIdentifier>{ed5ec094-1fc3-4a21-ba9c-61696bcdde81}</UniqueIdentifier>
@@ -232,6 +175,33 @@
     <Filter Include="FGEngine\Src\Component\GameEvent">
       <UniqueIdentifier>{db1047df-d6a9-4577-a07b-520a52c79754}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FGEngine\Src\GltfFileBuffer">
+      <UniqueIdentifier>{51d94294-b9bf-4fe6-9b59-ade728d3a93b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\MainSystem">
+      <UniqueIdentifier>{f0baf5a3-102a-445b-ae17-bca610ba1c21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\BufferAndVAO">
+      <UniqueIdentifier>{8e736477-3322-498a-b759-d8365a2a4463}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\BufferAndVAO\Buffer">
+      <UniqueIdentifier>{87edd90f-53d5-424c-8382-255ca0a926d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\BufferAndVAO\VAO">
+      <UniqueIdentifier>{2055d960-96f4-4bef-b4ed-8b531f509b8f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\BufferAndVAO\FrameBuffer">
+      <UniqueIdentifier>{11488878-f726-4e56-9e75-b8ceea7ae376}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\BufferAndVAO\MapBuffer">
+      <UniqueIdentifier>{4d692a32-57fa-406e-8357-95bcbd0246fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\BufferAndVAO\MeshBuffer">
+      <UniqueIdentifier>{331edc81-5359-422d-837a-a719425144ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Input">
+      <UniqueIdentifier>{ea643d5e-21f8-457d-bc8f-e295e4ea314c}</UniqueIdentifier>
+    </Filter>
     <Filter Include="FGEngine\Src\Input\Key">
       <UniqueIdentifier>{62292c6f-30a4-4ea8-b310-d0031ca5a31c}</UniqueIdentifier>
     </Filter>
@@ -240,6 +210,39 @@
     </Filter>
     <Filter Include="FGEngine\Src\Input\Mouse">
       <UniqueIdentifier>{c078f9a2-8cba-493c-a629-f53df7f13cad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math">
+      <UniqueIdentifier>{c7150c4a-83f4-4f56-9923-3911b9a76a56}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math\Vector">
+      <UniqueIdentifier>{0bc1e3df-0dbc-4ad5-8761-bd1c6c07985b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math\Matrix">
+      <UniqueIdentifier>{c0432b41-2053-428a-ae10-6603e1a65abd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math\Mathf">
+      <UniqueIdentifier>{6b2d19f1-f051-401e-adbc-ca30519e0e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Math\Quaternion">
+      <UniqueIdentifier>{16a80cde-0e26-447d-8fe3-12d94baa874a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Package">
+      <UniqueIdentifier>{a6cc0ad0-98bb-4a27-bea3-2350bdf02836}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\UsingNames">
+      <UniqueIdentifier>{b8569ea8-5e1b-43f1-bbee-9d604bfc26ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Window">
+      <UniqueIdentifier>{93e17b3f-bb07-447e-a9d4-b53615184fa6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Other">
+      <UniqueIdentifier>{629d51cb-a2de-4210-85f7-cfb7524621bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Other\Time">
+      <UniqueIdentifier>{fd9f0107-770c-4c00-9924-6af8b0566569}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FGEngine\Src\Other\Random">
+      <UniqueIdentifier>{e8bb0846-19e4-4dea-b3ce-aa9639662684}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -267,20 +270,11 @@
     <ClCompile Include="FGEngine\Src\Math\Quaternion.cpp">
       <Filter>FGEngine\Src\Math\Quaternion</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\Math\Random.cpp">
-      <Filter>FGEngine\Src\Math\Random</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\Asset\Shader.cpp">
       <Filter>FGEngine\Src\Asset\Shader</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Asset\Texture.cpp">
       <Filter>FGEngine\Src\Asset\Texture</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Time.cpp">
-      <Filter>FGEngine\Src\Time</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Rendering\RenderingEngine.cpp">
-      <Filter>FGEngine\Src\Rendering</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Debug.cpp">
       <Filter>FGEngine\Src\Debug</Filter>
@@ -307,15 +301,9 @@
       <Filter>FGEngine\Src\BufferAndVAO\MeshBuffer</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\BufferAndVAO\GltfFileBuffer.cpp">
-      <Filter>FGEngine\Src\BufferAndVAO\GltfFileBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\GameEngine\EngineCore.cpp">
-      <Filter>FGEngine\Src\GameEngine</Filter>
+      <Filter>FGEngine\Src\GltfFileBuffer</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Audio\EasyAudio.cpp">
-      <Filter>FGEngine\Src\Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Audio\SoundManager.cpp">
       <Filter>FGEngine\Src\Audio</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Window\WindowManager.cpp">
@@ -324,14 +312,8 @@
     <ClCompile Include="FGEngine\Src\Physics\Intersect.cpp">
       <Filter>FGEngine\Src\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="FGEngine\Src\Physics\PhysicsEngine.cpp">
-      <Filter>FGEngine\Src\Physics</Filter>
-    </ClCompile>
     <ClCompile Include="FGEngine\Src\GameObject.cpp">
       <Filter>FGEngine\Src\GameObject</Filter>
-    </ClCompile>
-    <ClCompile Include="FGEngine\Src\Main.cpp">
-      <Filter>FGEngine\Src</Filter>
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Component\GltfMeshRenderer.cpp">
       <Filter>FGEngine\Src\Component\Render</Filter>
@@ -477,6 +459,27 @@
     <ClCompile Include="FGEngine\Src\Input\InputMouse.cpp">
       <Filter>FGEngine\Src\Input\Mouse</Filter>
     </ClCompile>
+    <ClCompile Include="FGEngine\Src\Main.cpp">
+      <Filter>FGEngine\Src</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\MainSystem\EngineCore.cpp">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\MainSystem\PhysicsEngine.cpp">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\MainSystem\RenderingEngine.cpp">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\MainSystem\SoundManager.cpp">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Other\Time.cpp">
+      <Filter>FGEngine\Src\Other\Time</Filter>
+    </ClCompile>
+    <ClCompile Include="FGEngine\Src\Other\Random.cpp">
+      <Filter>FGEngine\Src\Other\Random</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Package\glad\include\glad\glad.h">
@@ -500,29 +503,14 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Physics\Intersect.h">
       <Filter>FGEngine\Src\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Physics\PhysicsEngine.h">
-      <Filter>FGEngine\Src\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Physics\WorldCollider.h">
-      <Filter>FGEngine\Src\Physics</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Rendering\DrawParams.h">
       <Filter>FGEngine\Src\Rendering</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Rendering\LightData.h">
       <Filter>FGEngine\Src\Rendering</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Rendering\RenderingEngine.h">
-      <Filter>FGEngine\Src\Rendering</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Rendering\Vertex.h">
       <Filter>FGEngine\Src\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Singleton.h">
-      <Filter>FGEngine\Src</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\SystemFrd.h">
-      <Filter>FGEngine\Src</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Scene\Scene.h">
       <Filter>FGEngine\Src\Scene</Filter>
@@ -531,9 +519,6 @@
       <Filter>FGEngine\Src\Scene</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Audio\EasyAudio.h">
-      <Filter>FGEngine\Src\Audio</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Audio\SoundManager.h">
       <Filter>FGEngine\Src\Audio</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Window\WindowManager.h">
@@ -551,17 +536,11 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Component\Light.h">
       <Filter>FGEngine\Src\Component</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\MainEngine\EngineCore.h">
-      <Filter>FGEngine\Src\GameEngine</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\GameObject.h">
       <Filter>FGEngine\Src\GameObject</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Debug.h">
       <Filter>FGEngine\Src\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Color.h">
-      <Filter>FGEngine\Src</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine.h">
       <Filter>FGEngine</Filter>
@@ -586,9 +565,6 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Quaternion.h">
       <Filter>FGEngine\Src\Math\Quaternion</Filter>
-    </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Math\Random.h">
-      <Filter>FGEngine\Src\Math\Random</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Math\Math.h">
       <Filter>FGEngine\Src\Math</Filter>
@@ -617,9 +593,6 @@
     <ClInclude Include="FGEngine\Include\FGEngine\Asset\Sprite.h">
       <Filter>FGEngine\Src\Asset\Sprite</Filter>
     </ClInclude>
-    <ClInclude Include="FGEngine\Include\FGEngine\Time.h">
-      <Filter>FGEngine\Src\Time</Filter>
-    </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Asset\AssetObject.h">
       <Filter>FGEngine\Src\Asset</Filter>
     </ClInclude>
@@ -645,7 +618,7 @@
       <Filter>FGEngine\Src\BufferAndVAO\MeshBuffer</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\BufferAndVAO\GltfFileBuffer.h">
-      <Filter>FGEngine\Src\BufferAndVAO\GltfFileBuffer</Filter>
+      <Filter>FGEngine\Src\GltfFileBuffer</Filter>
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Component\Collider.h">
       <Filter>FGEngine\Src\Component\Collider</Filter>
@@ -835,6 +808,30 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\Input\MouseButton.h">
       <Filter>FGEngine\Src\Input\Mouse</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Color.h">
+      <Filter>FGEngine\Src</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\MainSystem\EngineCore.h">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\MainSystem\PhysicsEngine.h">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\MainSystem\RenderingEngine.h">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\MainSystem\SoundManager.h">
+      <Filter>FGEngine\Src\MainSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Other\Singleton.h">
+      <Filter>FGEngine\Src\Other</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Other\Time.h">
+      <Filter>FGEngine\Src\Other\Time</Filter>
+    </ClInclude>
+    <ClInclude Include="FGEngine\Include\FGEngine\Other\Random.h">
+      <Filter>FGEngine\Src\Other\Random</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

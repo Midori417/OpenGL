@@ -11,15 +11,15 @@ namespace FGEngine
 	/**
 	* コリジョンタイプを取得
 	*/
-	PhysicsSystem::CollisionType AabbCollider::GetType() const
+	CollisionType AabbCollider::GetType() const
 	{
-		return PhysicsSystem::CollisionType::AABB;
+		return CollisionType::AABB;
 	}
 
 	/**
 	* 図形を取得
 	*/
-	const PhysicsSystem::AABB& AabbCollider::GetShape() const
+	const AABB& AabbCollider::GetShape() const
 	{
 		return aabb;
 	}

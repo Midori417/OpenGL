@@ -3,8 +3,7 @@
 */
 #ifndef FGENGINE_INPUTMANAGER_H_INCLUDED
 #define FGENGINE_INPUTMANAGER_H_INCLUDED
-#include "FGEngine/SystemFrd.h"
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
 #include <unordered_map>
 
 // êÊçsêÈåæ
@@ -28,7 +27,7 @@ namespace FGEngine
 	class InputManager : public Singleton<InputManager>
 	{
 		friend Singleton<InputManager>;
-		friend MainSystem::EngineCore;
+		friend class EngineCore;
 	private:
 
 		/**

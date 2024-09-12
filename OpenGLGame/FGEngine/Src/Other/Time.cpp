@@ -1,7 +1,7 @@
 /**
 * @file Texture.cpp
 */
-#include "FGEngine/Time.h"
+#include "FGEngine/Other/Time.h"
 #include <GLFW/glfw3.h>
 
 namespace FGEngine

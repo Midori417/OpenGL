@@ -2,18 +2,17 @@
 * @file EngineCore.cpp
 */
 #define _CRT_SECURE_NO_WARNINGS
-#include "FGEngine/MainEngine/EngineCore.h"
-#include "FGEngine/Rendering/RenderingEngine.h"
-#include "FGEngine/Physics/PhysicsEngine.h"
+#include "FGEngine/MainSystem/EngineCore.h"
+#include "FGEngine/MainSystem/RenderingEngine.h"
+#include "FGEngine/MainSystem/PhysicsEngine.h"
+#include "FGEngine/MainSystem/SoundManager.h"
 #include "FGEngine/Window/WindowManager.h"
-#include "FGEngine/Audio/SoundManager.h"
 #include "FGEngine/Scene/SceneManager.h"
 #include "FGEngine/Input/InputManager.h"
 #include "FGEngine/Asset/AssetManager.h"
 #include "FGEngine/Audio/EasyAudio.h"
 #include "../../../Application/Src/Application.h"
-#include "FGEngine/Time.h"
-#include "FGEngine/Math/Random.h"
+#include "FGEngine/Other/Time.h"
 #include "FGEngine/Package/ImGUI.h"
 #include "FGEngine/Debug.h"
 #include "FGEngine/Package/Glad.h"
@@ -21,7 +20,7 @@
 #include <fstream>
 #include <filesystem>
 
-namespace FGEngine::MainSystem
+namespace FGEngine
 {
 	/**
 	* OpenGLからのメッセージを処理するコールバック関数
@@ -127,23 +126,23 @@ namespace FGEngine::MainSystem
 		// 各機能を生成と取得
 		// ====================
 		
-		// レンダリングエンジン
-		renderingEngine = RenderingSystem::RenderingEngine::GetInstance();
+		// レンダリングエンeジン
+		renderingEngine = RenderingEngine::GetInstance();
 
 		// 物理エンジン
-		physicsEngine = PhysicsSystem::PhysicsEngine::GetInstance();
+		physicsEngine = PhysicsEngine::GetInstance();
+
+		// サウンドマネージャー
+		soundManager = SoundManager::GetInstance();
 
 		// リソースマネージャー
-		resouceManager = AssetManager::GetInstance();
+		assetManager = std::make_shared<AssetManager>();
 
 		// シーンマネージャー
 		sceneManager = SceneManager::GetInstance();
 
 		// インプットマネージャー
 		inputManager = InputManager::GetInstance();
-
-		// サウンドマネージャー
-		soundManager = SoundSystem::SoundManager::GetInstance();
 
 		// アプリケーション
 		application = Application::GetInstance();
@@ -160,8 +159,8 @@ namespace FGEngine::MainSystem
 		ImGui_ImplGlfw_InitForOpenGL(&windowManager->GetWindow(), true);	// GLFW
 		ImGui_ImplOpenGL3_Init("#version 450");		// GLSLのバージョンを指定
 
-		// リソースマネージャーを初期化
-		resouceManager->Initialize();
+		// アセットマネージャーを初期化
+		assetManager->Initialize();
 
 		// レンダリングエンジンーを初期化
 		renderingEngine->Initialize();
@@ -228,6 +227,9 @@ namespace FGEngine::MainSystem
 
 		// 音声ライブラリを終了
 		soundManager->Fainalize();
+
+		// アセットマネージャーの開放
+		assetManager->Fainalize();
 
 		// ImGuiの終了
 		ImGui_ImplGlfw_Shutdown();

@@ -3,8 +3,7 @@
 */
 #ifndef FGENGINE_ENGINECORE_H_INCLUDED
 #define FGENGINE_ENGINECORE_H_INCLUDED
-#include "FGEngine/Singleton.h"
-#include "FGEngine/SystemFrd.h"
+#include "FGEngine/Other/Singleton.h"
 #include <string>
 #include <utility>
 #include <functional>
@@ -14,7 +13,7 @@
 class Application;
 using ApplicationPtr = std::shared_ptr<Application>;
 
-namespace FGEngine::MainSystem
+namespace FGEngine
 {
 	/**
 	* ゲームエンジン
@@ -61,25 +60,25 @@ namespace FGEngine::MainSystem
 		ApplicationPtr application;
 
 		// レンダリングエンジン
-		std::shared_ptr<RenderingSystem::RenderingEngine> renderingEngine;
+		std::shared_ptr<class RenderingEngine> renderingEngine;
 
 		// 物理エンジン
-		std::shared_ptr<PhysicsSystem::PhysicsEngine> physicsEngine;
+		std::shared_ptr<class PhysicsEngine> physicsEngine;
 
 		// ウィンドウマネージャーポインター
-		std::shared_ptr<WindowManager> windowManager;
+		std::shared_ptr<class WindowManager> windowManager;
 
 		// シーンマネージャーポインター
-		std::shared_ptr<SceneManager> sceneManager;
+		std::shared_ptr<class SceneManager> sceneManager;
 
 		// リソースマネージャー
-		std::shared_ptr<AssetManager> resouceManager;
+		std::shared_ptr<class AssetManager> assetManager;
 
 		// インプットマネージャポインター
-		std::shared_ptr<InputManager> inputManager; 
+		std::shared_ptr<class InputManager> inputManager; 
 
 		// サウンドマネージャーポインター
-		std::shared_ptr<SoundSystem::SoundManager> soundManager;
+		std::shared_ptr<class SoundManager> soundManager;
 	};
 }
 #endif // !ENGINE_H_INCLUDED

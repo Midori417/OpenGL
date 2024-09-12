@@ -3,7 +3,6 @@
 */
 #ifndef FGENGINE_TIME_H_INCLUDED
 #define FGENGINE_TIME_H_INCLUDED
-#include "SystemFrd.h"
 
 namespace FGEngine
 {
@@ -12,8 +11,8 @@ namespace FGEngine
 	*/
 	class Time
 	{
-		friend  MainSystem::EngineCore;
-	public:		// コンストラクタ
+		friend class EngineCore;
+	public:
 
 		/**
 		* デフォルトコンストラクタ

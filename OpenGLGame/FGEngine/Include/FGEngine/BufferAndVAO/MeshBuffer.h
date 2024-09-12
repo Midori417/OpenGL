@@ -11,10 +11,7 @@
 
 namespace FGEngine
 {
-	namespace RenderingSystem
-	{
-		struct Vertex;
-	}
+	struct Vertex;
 	struct DrawParams;
 	class MeshBuffer;
 	using MeshBufferPtr = std::shared_ptr<MeshBuffer>;
@@ -36,7 +33,7 @@ namespace FGEngine
 		/**
 		* デストラクタ
 		*/
-		~MeshBuffer() = default;
+		~MeshBuffer();
 
 	public:	// 禁止事項
 
@@ -58,26 +55,12 @@ namespace FGEngine
 	public:
 
 		/**
-		* すべての頂点データの削除
-		*/
-		void Clear();
-
-		/**
 		* Objファイルの読み込み
 		*
 		* @param name 保存する名前
 		* @param filename Objファイル名
 		*/
-		void LoadObj(const std::string& name, const std::string& filename);
-
-		/**
-		* スタティックメッシュの取得
-		*
-		* @param name 取得したいスタティックメッシュの名前
-		*
-		* @param nameに対応したスケルタルメッシュ
-		*/
-		StaticMeshPtr GetStaticMesh(const std::string& name) const;
+		StaticMeshPtr LoadObj(const std::string& name, const std::string& filename);
 
 	private:
 
@@ -112,7 +95,7 @@ namespace FGEngine
 		*/
 		struct MeshData
 		{
-			std::vector<RenderingSystem::Vertex> vertices;	// 頂点データ
+			std::vector<Vertex> vertices;	// 頂点データ
 			std::vector<uint16_t> indices;	// インデックスデータ
 			std::vector<DrawParams> drawParamsList; // 描画パラメータ配列
 			MaterialList materials;
@@ -134,9 +117,6 @@ namespace FGEngine
 
 		// スタティックメッシュ頂点アトリビュート
 		VertexArrayObjectPtr vao;
-
-		// スタティックメッシュ配列
-		std::unordered_map<std::string, StaticMeshPtr> meshes;
 
 		// 描画パラメータ配列
 		std::vector<DrawParams> drawParamsList;
@@ -165,6 +145,6 @@ namespace FGEngine
 	void Draw(const ShaderPtr& shader, const StaticMesh& mesh, const MaterialList& materials);
 
 	// 欠けている法線を補う
-	void FillMissingNormals(RenderingSystem::Vertex* vertices, size_t vertexCount, const uint16_t* indices, size_t indexCount);
+	void FillMissingNormals(Vertex* vertices, size_t vertexCount, const uint16_t* indices, size_t indexCount);
 }
 #endif // !MESH_H_INCLUDE

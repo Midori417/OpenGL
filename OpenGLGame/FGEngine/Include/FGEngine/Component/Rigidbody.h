@@ -12,7 +12,7 @@ namespace FGEngine
 	*/
 	class Rigidbody : public Component
 	{
-		friend PhysicsSystem::PhysicsEngine;
+		friend class PhysicsEngine;
 		friend Scene;
 	public:
 		// コンストラクタ・デストラクタ

@@ -4,7 +4,7 @@
 #include "FGEngine/Component/AudioSource.h"
 #include "FGEngine/Component/Transform.h"
 #include "FGEngine/Audio/EasyAudio.h"
-#include "FGEngine/Audio/SoundManager.h"
+#include "FGEngine/MainSystem/SoundManager.h"
 
 namespace FGEngine
 {
@@ -149,7 +149,7 @@ namespace FGEngine
 
 	void AudioSource::Awake()
 	{
-		id = SoundSystem::SoundManager::GetInstance()->AudioIdAdd();
+		id = SoundManager::GetInstance()->AudioIdAdd();
 	}
 
 	void AudioSource::Set3DSoundPos()

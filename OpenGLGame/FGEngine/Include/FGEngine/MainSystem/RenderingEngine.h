@@ -3,33 +3,30 @@
 */
 #ifndef FGENGINE_RENDERINGENGINE_H_INCLUDED
 #define FGENGINE_RENDERINGENGINE_H_INCLUDED
-#include "FGEngine/Singleton.h"
-#include "FGEngine/SystemFrd.h"
+#include "FGEngine/Other/Singleton.h"
 #include "FGEngine/GameObject.h"
 #include "FGEngine/Asset/StaticMesh.h"
-#include "LightData.h"
+#include "FGEngine/Rendering/LightData.h"
 #include "FGEngine/BufferAndVAO/FrameBufferObject.h"
 
 namespace FGEngine
 {
 	class GltfFileBuffer;
-}
-
-namespace FGEngine::RenderingSystem
-{
-
 	/**
 	* 描画エンジン
 	*/
 	class RenderingEngine : public Singleton<RenderingEngine>
 	{
+		friend Singleton<RenderingEngine>;
+		friend class EngineCore;
 	private:
 
-		friend Singleton<RenderingEngine>;
-		friend MainSystem::EngineCore;
-
-		// コンストラクタ
+		/**
+		* デフォルトコンストラクタ
+		*/
 		RenderingEngine() = default;
+
+	private:		// EngineCoreで呼び出す
 
 		/**
 		* レンダリングエンジンを初期化
@@ -43,6 +40,8 @@ namespace FGEngine::RenderingSystem
 		* レンダリングエンジンを更新
 		*/
 		void Update();
+
+	private:
 
 		/**
 		* 3Dオブジェクトの描画
@@ -101,7 +100,6 @@ namespace FGEngine::RenderingSystem
 
 		// glTFファイルバッファ
 		GltfFileBuffer* glTFfileBuffer;
-
 	};
 }
 

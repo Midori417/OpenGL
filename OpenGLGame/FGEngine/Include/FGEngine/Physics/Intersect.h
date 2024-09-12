@@ -5,7 +5,7 @@
 #define FGENGINE_INTERSECT_H_INCLUDED
 #include "CollisionType.h"
 
-namespace FGEngine::PhysicsSystem
+namespace FGEngine
 {
 
 	/**

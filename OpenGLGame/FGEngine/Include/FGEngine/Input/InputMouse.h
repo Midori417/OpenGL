@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_INPUTMOUSE_H_INCLUDED
 #define FGENGINE_INPUTMOUSE_H_INCLUDED
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
 #include "FGEngine/Math/Vector2.h"
 #include "MouseButton.h"
 #include <vector>

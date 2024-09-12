@@ -3,7 +3,6 @@
 */
 #ifndef FGENGINE_GAMEOBJECT_H_INCLUDED
 #define FGENGINE_GAMEOBJECT_H_INCLUDED
-#include "FGEngine/SystemFrd.h"
 #include "FGEngine/UsingNames/UsingGameObject.h"
 #include "FGEngine/UsingNames/UsingComponent.h"
 #include "FGEngine/UsingNames/UsingScene.h"
@@ -35,8 +34,8 @@ namespace FGEngine
 	class GameObject 
 	{
 		friend Scene;
-		friend RenderingSystem::RenderingEngine;
-		friend PhysicsSystem::PhysicsEngine;
+		friend class RenderingEngine;
+		friend class PhysicsEngine;
 	public:	// コンストラクタ・デストラクタ
 		
 		/**

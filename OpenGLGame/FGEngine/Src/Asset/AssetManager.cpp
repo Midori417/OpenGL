@@ -9,6 +9,8 @@
 #include "FGEngine/BufferAndVAO/MeshBuffer.h"
 #include "FGEngine/BufferAndVAO/GltfFileBuffer.h"
 
+#include "FGEngine/GameObject.h"
+
 #include "FGEngine/Package/Glad.h"
 #include <GLFW/glfw3.h>
 
@@ -20,9 +22,17 @@
 #include <Windows.h>
 #pragma warning(pop)
 
-
 namespace FGEngine
 {
+	// 静的変数の初期化
+	std::unordered_map<std::string, TexturePtr> AssetManager::textureCache;
+	std::unordered_map<std::string, StaticMeshPtr> AssetManager::staticMeshCache;
+	std::unordered_map<std::string, GltfFilePtr> AssetManager::gltfFileCache;
+	std::unordered_map<std::string, ShaderPtr> AssetManager::shaderCache;
+	std::unordered_map<std::string, GameObjectPtr> AssetManager::gameObjectChache;
+	MeshBufferPtr AssetManager::meshBuffer;
+	GltfFileBufferPtr AssetManager::gltfFileBuffer;
+
 	/**
 	* リソースマネージャーを初期化
 	*
@@ -59,12 +69,26 @@ namespace FGEngine
 	}
 
 	/**
+	* アセットマネージャーの終了処理
+	*/
+	void AssetManager::Fainalize()
+	{
+		textureCache.clear();
+		staticMeshCache.clear();
+		gltfFileCache.clear();
+		shaderCache.clear();
+		gameObjectChache.clear();
+	}
+
+	/**
 	* Gltfファイルを取得
 	*/
 	GltfFileBuffer* AssetManager::GetGltfFileBuffer() const
 	{
 		return gltfFileBuffer.get();
 	}
+
+#pragma region Texture
 
 	/**
 	* tgaファイルを読み込む
@@ -96,10 +120,40 @@ namespace FGEngine
 		textureCache.emplace(name, texture);
 	}
 
+	/**
+	* tgaファイルを読み込む
+	*
+	* @param name		保存する名前
+	* @param filename	Tgaファイル名
+	*/
 	void AssetManager::LoadTga(const std::string& name, const std::string& filename)
 	{
 		LoadTga(name, filename, GL_NEAREST);
 	}
+
+	/**
+	* テクスチャを取得
+	*
+	* @param name テクスチャの名前
+	*
+	* @return nameにあったテクスチャ
+	*/
+	TexturePtr AssetManager::GetTexture(const std::string& name)
+	{
+		// キャッシュがあれば、キャッシュされたテクスチャを返す
+		auto itr = textureCache.find(name);
+		if (itr != textureCache.end())
+		{
+			return itr->second;
+		}
+
+		LOG_ERROR("(Texture)%sは登録されていません", name.c_str());
+		return nullptr;
+	}
+
+#pragma endregion
+
+#pragma region Mesh
 
 	/**
 	* OBJファイルを読み込む
@@ -109,7 +163,24 @@ namespace FGEngine
 	*/
 	void AssetManager::LoadObj(const std::string& name, const std::string& filename)
 	{
-		meshBuffer->LoadObj(name, filename);
+		// meshBufferが生成されていない
+		if (!meshBuffer)
+		{
+			return;
+		}
+
+		auto itr = staticMeshCache.find(name);
+		if (itr != staticMeshCache.end())
+		{
+			LOG_ERROR("(StaticMesh)%sはすでに登録されているため登録できません", name.c_str());
+			return;
+		}
+
+		// メッシュを読み込む
+		auto mesh = meshBuffer->LoadObj(name, filename);
+
+		// 登録
+		staticMeshCache.emplace(name, mesh);
 	}
 
 	/**
@@ -120,8 +191,65 @@ namespace FGEngine
 	*/
 	void AssetManager::LoadGlTF(const std::string& name, const std::string& filename)
 	{
-		gltfFileBuffer->LoadGltf(name, filename);
+		// glTFFileバッファが生成されていない
+		if (!gltfFileBuffer)
+		{
+			return;
+		}
+
+		auto itr = gltfFileCache.find(name);
+		if (itr != gltfFileCache.end())
+		{
+			LOG_ERROR("(GltfFile)%sはすでに登録されているため登録できません", name.c_str());
+			return;
+		}
+
+		// メッシュを読み込む
+		auto gltfFile = gltfFileBuffer->LoadGltf(name, filename);
+
+		// 登録
+		gltfFileCache.emplace(name, gltfFile);
 	}
+
+	/**
+	* スタティックメッシュを取得
+	*
+	* @param name スタティックメッシュの名前
+	*
+	* @return nameにあったスタティックメッシュ
+	*/
+	StaticMeshPtr AssetManager::GetStaticMesh(const std::string& name)
+	{
+		auto itr = staticMeshCache.find(name);
+		if (itr != staticMeshCache.end())
+		{
+			return itr->second;
+		}
+		LOG_ERROR("(StaticMesh)%sは登録されていません", name.c_str());
+		return nullptr;
+	}
+
+	/**
+	* glTFファイルを取得
+	*
+	* @param name glTFファイルの名前
+	*
+	* @return nameにあったglTFファイル
+	*/
+	GltfFilePtr AssetManager::GetGltfFile(const std::string& name)
+	{
+		auto itr = gltfFileCache.find(name);
+		if (itr != gltfFileCache.end())
+		{
+			return itr->second;
+		}
+		LOG_ERROR("(glTFFile)%sは登録されていません", name.c_str());
+		return nullptr;
+	}
+
+#pragma endregion
+
+#pragma region Shader
 
 	/**
 	* シェーダファイルを読み込む
@@ -151,50 +279,6 @@ namespace FGEngine
 		// 作成したシェーダを配列に登録する
 		LOG("(Shader)%sを登録", name.c_str());
 		shaderCache.emplace(name, shader);
-	}
-
-	/**
-	* テクスチャを取得
-	*
-	* @param name テクスチャの名前
-	*
-	* @return nameにあったテクスチャ
-	*/
-	TexturePtr AssetManager::GetTexture(const std::string& name)
-	{
-		// キャッシュがあれば、キャッシュされたテクスチャを返す
-		auto itr = textureCache.find(name);
-		if (itr != textureCache.end())
-		{
-			return itr->second;
-		}
-
-		LOG_ERROR("(Texture)%sは登録されていません", name.c_str());
-		return nullptr;
-	}
-
-	/**
-	* スタティックメッシュを取得
-	*
-	* @param name スタティックメッシュの名前
-	*
-	* @return nameにあったスタティックメッシュ
-	*/
-	StaticMeshPtr AssetManager::GetStaticMesh(const std::string& name)
-	{
-		return meshBuffer->GetStaticMesh(name);
-	}
-
-	/**
-	* glTFファイルを取得
-	*
-	* @param name glTFファイルの名前
-	*
-	* @return nameにあったglTFファイル
-	*/
-	GltfFilePtr AssetManager::GetGltfFile(const std::string& name)
-	{
-		return gltfFileBuffer->GetGltf(name);
 	}
 
 	/**
@@ -259,6 +343,50 @@ namespace FGEngine
 
 		return GetShader(name);
 	}
+
+#pragma endregion
+
+#pragma region GameObject
+
+	/**
+	* ゲームオブジェクトを読み込む
+	*
+	* @param object 読み込むゲームオブジェクト
+	*/
+	void AssetManager::LoadGameObject(const GameObjectPtr& object)
+	{
+		if (!object)
+		{
+			return;
+		}
+
+		auto itr = gameObjectChache.find(object->name);
+		if (gameObjectChache.end() != itr)
+		{
+			return;
+		}
+
+		// オブジェクトの登録
+		gameObjectChache.emplace(object->name, object);
+	}
+
+	/**
+	* ゲームオブジェクトを取得する
+	*
+	* @param name オブジェクトの名前
+	*/
+	GameObjectPtr AssetManager::GetGameObjet(const std::string& name)
+	{
+		auto itr = gameObjectChache.find(name);
+		if (itr != gameObjectChache.end())
+		{
+			itr->second;
+		}
+
+		return nullptr;
+	}
+
+#pragma endregion
 
 	/**
 	* 共有マテリアルを複製

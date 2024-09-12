@@ -5,7 +5,7 @@
 #define FGENGINE_LIGHTDATA_H_INCLUDED
 #include "FGEngine/Math/Vector3.h"
 
-namespace FGEngine::RenderingSystem
+namespace FGEngine
 {
 
 	/**

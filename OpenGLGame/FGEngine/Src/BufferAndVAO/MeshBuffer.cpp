@@ -41,17 +41,14 @@ namespace FGEngine
 		glBindBuffer(GL_ARRAY_BUFFER, *buffer);
 
 		// 頂点アトリビュートを設定
-		vao->SetAttribute(0, 3, sizeof(RenderingSystem::Vertex), offsetof(RenderingSystem::Vertex, position));
-		vao->SetAttribute(1, 2, sizeof(RenderingSystem::Vertex), offsetof(RenderingSystem::Vertex, texcoord0));
-		vao->SetAttribute(2, 3, sizeof(RenderingSystem::Vertex), offsetof(RenderingSystem::Vertex, normal));
+		vao->SetAttribute(0, 3, sizeof(Vertex), offsetof(Vertex, position));
+		vao->SetAttribute(1, 2, sizeof(Vertex), offsetof(Vertex, texcoord0));
+		vao->SetAttribute(2, 3, sizeof(Vertex), offsetof(Vertex, normal));
 
 		// 誤った操作が行われないようにバインドを解除
 		glBindVertexArray(0);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-		// スタティックメッシュの容量を予約
-		meshes.reserve(1000);
 
 		// 描画パラメータ配列の容量を確保
 		drawParamsList.reserve(100);
@@ -69,6 +66,15 @@ namespace FGEngine
 		glTextureSubImage2D(*defaultMaterial->mainTexture, 0, 0, 0,
 			+4, 4, GL_BGRA, GL_UNSIGNED_BYTE, img);
 
+	}
+
+	/**
+	* デストラクタ
+	*/
+	MeshBuffer::~MeshBuffer()
+	{
+		usedBytes = 0;
+		drawParamsList.clear();
 	}
 
 	/**
@@ -90,27 +96,20 @@ namespace FGEngine
 	*
 	* @return filenameから作成したメッシュ
 	*/
-	void MeshBuffer::LoadObj(const std::string& name, const std::string& filename)
+	StaticMeshPtr MeshBuffer::LoadObj(const std::string& name, const std::string& filename)
 	{
-		// 以前に読み込んだメッシュなら何もしない
-		auto itr = meshes.find(filename.c_str());
-		if (itr != meshes.end())
-		{
-			return;
-		}
-
 		// OBJファイルからメッシュデータを作成
 		MeshData meshData = CreateMeshDataFormObj(filename);
 		if (meshData.vertices.empty())
 		{
-			return;	// 読み込みを失敗
+			return nullptr;	// 読み込みを失敗
 		}
 
 		// 変換したデータをバッファに追加
 		AddVertexData(
-			meshData.vertices.data(), meshData.vertices.size() * sizeof(RenderingSystem::Vertex),
+			meshData.vertices.data(), meshData.vertices.size() * sizeof(Vertex),
 			meshData.indices.data(), meshData.indices.size() * sizeof(uint16_t),
-			sizeof(RenderingSystem::Vertex));
+			sizeof(Vertex));
 
 		// メッシュを作成
 		auto pMesh = std::make_shared<StaticMesh>();
@@ -118,7 +117,6 @@ namespace FGEngine
 		pMesh->name = name;
 		pMesh->drawParamsList.swap(meshData.drawParamsList);
 		pMesh->materials.swap(meshData.materials);
-		meshes.emplace(name, pMesh);
 
 		// AddVertexDataでコピーしたデータの位置を、描画パラメータに反映
 		const intptr_t baseIndexOffset = reinterpret_cast<intptr_t>(drawParamsList.back().indices);
@@ -131,36 +129,10 @@ namespace FGEngine
 		}
 
 		LOG("%sを読み込みました(頂点数=%d, インデックス数=%d)", filename.c_str(), meshData.vertices.size(), meshData.indices.size());
+	
+		return pMesh;
 	}
 	
-	/**
-	* すべての頂点データの削除
-	*/
-	void MeshBuffer::Clear()
-	{
-		usedBytes = 0;
-		meshes.clear();
-		drawParamsList.clear();
-	}
-
-	/**
-	* スタティックメッシュを取得
-	*
-	* @param name スタティックメッシュの名前
-	*
-	* @return 名前がnameと一致するスタティックメッシュ
-	*/
-	StaticMeshPtr MeshBuffer::GetStaticMesh(const std::string& name) const
-	{
-		auto itr = meshes.find(name);
-		if (itr != meshes.end())
-		{
-			return itr->second;
-		}
-		LOG_ERROR("(StaticMesh)%sは登録されていません", name.c_str());
-		return nullptr;
-	}
-
 	/**
 	* 頂点データの追加
 	*
@@ -209,7 +181,7 @@ namespace FGEngine
 
 		// 次のデータ格納開始位置を計算
 		/// std::lcm(数値その１、数値その２)最小公倍数
-		constexpr size_t a = std::lcm(sizeof(uint16_t), sizeof(RenderingSystem::Vertex));
+		constexpr size_t a = std::lcm(sizeof(uint16_t), sizeof(Vertex));
 		usedBytes += ((totalBytes + a - 1) / a) * a;
 
 	}
@@ -487,7 +459,7 @@ namespace FGEngine
 
 		// 読み込んだデータを、OpenGLで使えるデータに変換
 		MeshData meshData;
-		std::vector<RenderingSystem::Vertex>& vertices = meshData.vertices;
+		std::vector<Vertex>& vertices = meshData.vertices;
 		vertices.reserve(faceIndexSet.size());
 		std::vector<uint16_t>& indices = meshData.indices;
 		indices.reserve(faceIndexSet.size());
@@ -509,7 +481,7 @@ namespace FGEngine
 			else
 			{
 				// 対応表にないので新しい頂点データを作成し、頂点配列に追加
-				RenderingSystem::Vertex v;
+				Vertex v;
 				v.position = positions[e.v - 1];
 				v.texcoord0 = texcoords[e.vt - 1];
 				// 法線が設定されていない場合は0を設定(後で計算)
@@ -664,7 +636,7 @@ namespace FGEngine
 	* @param indices		インデックス配列
 	* @param indexCount		インデックス配列の要素数
 	*/
-	void FillMissingNormals(RenderingSystem::Vertex* vertices, size_t vertexCount, const uint16_t* indices, size_t indexCount)
+	void FillMissingNormals(Vertex* vertices, size_t vertexCount, const uint16_t* indices, size_t indexCount)
 	{
 		// 法線が設定されていない頂点を見つける
 		std::vector<bool> missingNormals(vertexCount, false);

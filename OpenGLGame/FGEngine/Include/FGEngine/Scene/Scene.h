@@ -15,28 +15,28 @@ namespace FGEngine
 	namespace CreateObject
 	{
 		// 何もついてないゲームオブジェクト
-		const std::string Empty = "Empty";
+		inline const std::string Empty = "Empty";
 
 		// カメラ
-		const std::string Camera = "Camera";
+		inline const std::string Camera = "Camera";
 
 		// 3Dオブジェクト
 		namespace GameObject3D
 		{
 			// 四角形
-			const std::string Cube = "Cube";
+			inline const std::string Cube = "Cube";
 
 			// 球体
-			const std::string Sphere = "Sphere";
+			inline const std::string Sphere = "Sphere";
 		}
 		// ユーザーインターフェース
 		namespace UI
 		{
 			// 画像
-			const std::string Image = "Image";
+			inline const std::string Image = "Image";
 
 			// ボタン
-			const std::string Button = "Button";
+			inline const std::string Button = "Button";
 		}
 	}
 

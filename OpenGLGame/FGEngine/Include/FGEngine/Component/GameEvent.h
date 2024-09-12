@@ -12,7 +12,7 @@ namespace FGEngine
 	*/
 	struct Collision
 	{
-		friend PhysicsSystem::PhysicsEngine;
+		friend class PhysicsEngine;
 	public:
 
 		/**

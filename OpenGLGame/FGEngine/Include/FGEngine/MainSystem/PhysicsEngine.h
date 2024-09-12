@@ -3,24 +3,47 @@
 */
 #ifndef FGENGINE_PHYSICSENGINE_H_INCLUDED
 #define FGENGINE_PHYSICSENGINE_H_INCLUDED
-#include "FGEngine/Singleton.h"
-#include "FGEngine/SystemFrd.h"
-#include "WorldCollider.h"
+#include "FGEngine/Other/Singleton.h"
+#include "FGEngine/Component/Collider.h"
+#include "FGEngine/Component/Transform.h"
 
-namespace FGEngine::PhysicsSystem
+namespace FGEngine
 {
+	/**
+	* ワールド座標系のコライダー
+	*/
+	struct WorldCollider
+	{
+		/**
+		* 座標を変更する
+		*
+		* @param v 変更する値
+		*/
+		void AddPosition(const Vector3& v)
+		{
+			origin->GetTransform()->position += v;
+			world->AddPosition(v);
+		}
+		ColliderPtr origin;
+		ColliderPtr world;
+	};
+	using WorldColliderList = std::vector<WorldCollider>;
+
 	/**
 	* 物理エンジン
 	*/
 	class PhysicsEngine : public Singleton<PhysicsEngine>
 	{
+		friend Singleton<PhysicsEngine>;
+		friend class EngineCore;
 	private:
 
-		friend Singleton<PhysicsEngine>;
-		friend MainSystem::EngineCore;
-
-		// コンストラクタ
+		/**
+		* デフォルトコンストラクタ
+		*/
 		PhysicsEngine() = default;
+
+	private:
 
 		/**
 		* 貫通ベクトルをゲームオブジェクトに反映する
@@ -36,7 +59,6 @@ namespace FGEngine::PhysicsSystem
 		* @param b 判定対象のワールドコライダー配列その２
 		*/
 		void HandleWorldColliderCollision(WorldColliderList* a, WorldColliderList* b);
-
 	};
 }
 

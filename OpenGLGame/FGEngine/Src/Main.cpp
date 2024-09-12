@@ -1,8 +1,8 @@
 /**
 * @file Main.cpp
 */
-#include "FGEngine/MainEngine/EngineCore.h"
-using namespace FGEngine::MainSystem;
+#include "FGEngine/MainSystem/EngineCore.h"
+using namespace FGEngine;
 
 #pragma warning(push)
 #pragma warning(disable:4005)

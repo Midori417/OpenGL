@@ -3,7 +3,6 @@
 */
 #ifndef FGENGINE_COMPONENT_H_INCLUDED
 #define FGENGINE_COMPONENT_H_INCLUDED
-#include "FGEngine/SystemFrd.h"
 #include "FGEngine/UsingNames/UsingGameObject.h"
 #include "FGEngine/UsingNames/UsingComponent.h"
 #include "FGEngine/UsingNames/UsingMath.h"

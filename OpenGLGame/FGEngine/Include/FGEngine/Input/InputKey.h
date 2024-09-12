@@ -3,7 +3,7 @@
 */
 #ifndef FGENGINE_INPUTKEY_H_INCLUDED
 #define FGENGINE_INPUTKEY_H_INCLUDED
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
 #include "KeyCode.h"
 #include <vector>
 

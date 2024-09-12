@@ -21,12 +21,12 @@ namespace FGEngine
 		/**
 		* コライダーのタイプを取得
 		*/
-		virtual PhysicsSystem::CollisionType GetType() const;
+		virtual CollisionType GetType() const;
 
 		/**
 		* 図形を取得する
 		*/
-		const PhysicsSystem::AABB& GetShape() const;
+		const AABB& GetShape() const;
 
 		/**
 		* 座標を変更する
@@ -59,7 +59,7 @@ namespace FGEngine
 	private:
 
 		// 図形
-		PhysicsSystem::AABB aabb;
+		AABB aabb;
 	};
 }
 
