@@ -88,9 +88,10 @@ namespace FGEngine
 			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
 
 			// ƒƒbƒVƒ…‚ð¶¬
-			mesh->mesh = AssetManager::GetStaticMesh("Sphere");
-			mesh->shader = AssetManager::GetShader(DefalutShader::Standard3D);
-			mesh->shadowShader = AssetManager::GetShader(DefalutShader::Shadow3D);
+			auto assetManger = AssetManager::GetInstance();
+			mesh->mesh = assetManger->GetStaticMesh("Sphere");
+			mesh->shader = assetManger->GetShader(DefalutShader::Standard3D);
+			mesh->shadowShader = assetManger->GetShader(DefalutShader::Shadow3D);
 
 			return p;
 		}

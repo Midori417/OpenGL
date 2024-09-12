@@ -12,11 +12,10 @@
 #include "FGEngine/Math/Math.h"
 
 // ŠÔ
-#include "FGEngine/Time.h"
-#include <time.h>
+#include "FGEngine/Other/Time.h"
 
 // —”
-#include "FGEngine/Math/Random.h"
+#include "FGEngine/Other/Random.h"
 
 // ===================
 //
@@ -34,7 +33,7 @@
 // ===================
 
 // ƒVƒ“ƒOƒ‹ƒgƒ“
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
 
 // ===================
 //
@@ -137,7 +136,7 @@
 
 #include "FGEngine/Window/WindowManager.h"
 
-#include "FGEngine/Audio/SoundManager.h"
+#include "FGEngine/MainSystem/SoundManager.h"
 
 // “ü—ÍŠÇ—
 #include "FGEngine/Input/InputManager.h"

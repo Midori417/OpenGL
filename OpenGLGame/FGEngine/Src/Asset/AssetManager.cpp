@@ -25,13 +25,13 @@
 namespace FGEngine
 {
 	// 静的変数の初期化
-	std::unordered_map<std::string, TexturePtr> AssetManager::textureCache;
-	std::unordered_map<std::string, StaticMeshPtr> AssetManager::staticMeshCache;
-	std::unordered_map<std::string, GltfFilePtr> AssetManager::gltfFileCache;
-	std::unordered_map<std::string, ShaderPtr> AssetManager::shaderCache;
-	std::unordered_map<std::string, GameObjectPtr> AssetManager::gameObjectChache;
-	MeshBufferPtr AssetManager::meshBuffer;
-	GltfFileBufferPtr AssetManager::gltfFileBuffer;
+	//std::unordered_map<std::string, TexturePtr> AssetManager::textureCache;
+	//std::unordered_map<std::string, StaticMeshPtr> AssetManager::staticMeshCache;
+	//std::unordered_map<std::string, GltfFilePtr> AssetManager::gltfFileCache;
+	//std::unordered_map<std::string, ShaderPtr> AssetManager::shaderCache;
+	//std::unordered_map<std::string, GameObjectPtr> AssetManager::gameObjectChache;
+	//MeshBufferPtr AssetManager::meshBuffer;
+	//GltfFileBufferPtr AssetManager::gltfFileBuffer;
 
 	/**
 	* リソースマネージャーを初期化
@@ -77,7 +77,7 @@ namespace FGEngine
 		staticMeshCache.clear();
 		gltfFileCache.clear();
 		shaderCache.clear();
-		gameObjectChache.clear();
+		gameObjectCache.clear();
 	}
 
 	/**
@@ -360,25 +360,28 @@ namespace FGEngine
 			return;
 		}
 
-		auto itr = gameObjectChache.find(object->name);
-		if (gameObjectChache.end() != itr)
+		auto itr = gameObjectCache.find(object->name);
+		if (gameObjectCache.end() != itr)
 		{
 			return;
 		}
 
 		// オブジェクトの登録
-		gameObjectChache.emplace(object->name, object);
+		gameObjectCache.emplace(object->name, object);
 	}
 
 	/**
 	* ゲームオブジェクトを取得する
 	*
 	* @param name オブジェクトの名前
+	* 
+	* @return	nameにあったゲームオブジェクト
+	*			存在しない場合nullptrを返す
 	*/
-	GameObjectPtr AssetManager::GetGameObjet(const std::string& name)
+	GameObjectPtr AssetManager::GetGameObject(const std::string& name)
 	{
-		auto itr = gameObjectChache.find(name);
-		if (itr != gameObjectChache.end())
+		auto itr = gameObjectCache.find(name);
+		if (itr != gameObjectCache.end())
 		{
 			itr->second;
 		}

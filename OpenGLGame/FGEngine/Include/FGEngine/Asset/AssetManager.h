@@ -3,8 +3,8 @@
 */
 #ifndef FGENGINE_ASSETMANAGER_H_INCLUDED
 #define FGENGINE_ASSETMANAGER_H_INCLUDED
-#include "FGEngine/SystemFrd.h"
-#include "FGEngine/Singleton.h"
+#include "FGEngine/Other/Singleton.h"
+#include "FGEngine/UsingNames/UsingGameObject.h"
 #include "FGEngine/UsingNames/UsingAsset.h"
 #include "FGEngine/Asset/DefalutShader.h"
 #include <unordered_map>
@@ -25,7 +25,7 @@ namespace FGEngine
 	*/
 	class AssetManager : public Singleton<AssetManager>
 	{
-		friend MainSystem::EngineCore;
+		friend class EngineCore;
 		friend Singleton<AssetManager>;
 	private:
 
@@ -43,6 +43,11 @@ namespace FGEngine
 		* @retval 0以外	初期化失敗
 		*/
 		int Initialize();
+
+		/**
+		* リソースマネージャーの終了
+		*/
+		void Fainalize();
 
 	public:
 
@@ -136,6 +141,25 @@ namespace FGEngine
 		*/
 		ShaderPtr GetShader(DefalutShader shader);
 
+	public:
+
+		/**
+		* ゲームオブジェクトを読み込む
+		*
+		* @param object 読み込むゲームオブジェクト
+		*/
+		void LoadGameObject(const GameObjectPtr& object);
+
+		/**
+		* ゲームオブジェクトを取得する
+		*
+		* @param name オブジェクトの名前
+		*
+		* @return	nameにあったゲームオブジェクト
+		*			存在しない場合nullptrを返す
+		*/
+		GameObjectPtr GetGameObject(const std::string& name);
+
 	private:
 
 		// テクスチャキャッシュ
@@ -143,6 +167,14 @@ namespace FGEngine
 
 		// シェーダキャッシュ
 		std::unordered_map<std::string, ShaderPtr> shaderCache;
+
+		std::unordered_map<std::string, StaticMeshPtr> staticMeshCache;
+
+		std::unordered_map<std::string, GltfFilePtr> gltfFileCache;
+
+		std::unordered_map<std::string, GameObjectPtr> gameObjectCache;
+
+	private:
 
 		// メッシュバッファ
 		MeshBufferPtr meshBuffer;

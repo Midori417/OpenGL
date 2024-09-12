@@ -136,7 +136,7 @@ namespace FGEngine
 		soundManager = SoundManager::GetInstance();
 
 		// リソースマネージャー
-		assetManager = std::make_shared<AssetManager>();
+		assetManager = AssetManager::GetInstance();
 
 		// シーンマネージャー
 		sceneManager = SceneManager::GetInstance();

@@ -5,6 +5,11 @@
 #define APPLICATION_H_INCLUDED
 #include "FGEngine.h"
 
+namespace FGEngine
+{
+	class EngineCore;
+}
+
 /**
 * アプリケーションクラス
 */
@@ -13,7 +18,7 @@ class Application : public FGEngine::Singleton<Application>
 private:
 
 	friend FGEngine::Singleton<Application>;
-	friend FGEngine::MainSystem::EngineCore;
+	friend FGEngine::EngineCore;
 
 	// コンストラクタ
 	Application() = default;
