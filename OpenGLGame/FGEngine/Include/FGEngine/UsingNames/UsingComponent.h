@@ -61,6 +61,9 @@ namespace FGEngine
 	class AudioSource;
 	using AudioSourcePtr = std::shared_ptr<AudioSource>;
 
+	// イメージコンポーネント
+	class Image;
+	using ImagePtr = std::shared_ptr<Image>;
 }
 
 #endif // !FGENGINE_USINGCOMPONENT_H_INCLUDED

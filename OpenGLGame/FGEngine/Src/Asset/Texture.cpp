@@ -239,7 +239,13 @@ namespace FGEngine
 	std::shared_ptr<Texture> Texture::Create(const std::string& name, const std::string& filename, 
 		TextureType type, GLenum filterMode)
 	{
-		return std::make_shared<Texture>(name, filename, type, filterMode);
+		auto tex = std::make_shared<Texture>(name, filename, type, filterMode);
+		if (tex->id == 0)
+		{
+			// 作成に失敗
+			return nullptr;
+		}
+		return  tex;
 	}
 
 	/**
@@ -255,6 +261,12 @@ namespace FGEngine
 	*/
 	std::shared_ptr<Texture> Texture::Create(const std::string& name, int width, int height, GLenum gpuFormat, GLenum wrapMode)
 	{
-		return std::make_shared<Texture>(name, width, height, gpuFormat, wrapMode);
+		auto tex = std::make_shared<Texture>(name, width, height, gpuFormat, wrapMode);
+		if (tex->id == 0)
+		{
+			// テクスチャの作成に失敗
+			return nullptr;
+		}
+		return tex;
 	}
 }

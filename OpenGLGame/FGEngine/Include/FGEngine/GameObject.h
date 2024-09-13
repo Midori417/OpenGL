@@ -275,7 +275,7 @@ namespace FGEngine
 		*/
 		void Destroy(float destroyTime = 0);
 
-	private:
+	public:
 
 		/**
 		* クローンしたゲームオブジェクトを取得する

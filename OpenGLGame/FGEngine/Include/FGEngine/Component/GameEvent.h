@@ -113,10 +113,6 @@ namespace FGEngine
 
 	public:
 
-		virtual ComponentPtr Clone() const = 0;
-
-	public:
-
 		// trueならイベントを実行する
 		bool isActive = true;
 

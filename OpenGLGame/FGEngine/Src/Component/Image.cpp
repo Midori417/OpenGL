@@ -9,6 +9,14 @@
 namespace FGEngine
 {
 	/**
+	* 現在のウィンドウのサイズに設定
+	*/
+	void Image::SetWindowSize()
+	{
+		size = WindowManager::GetInstance()->GetWindowSize();
+	}
+
+	/**
 	* UIの設定
 	*/
 	void Image::UISetting()
@@ -61,18 +69,19 @@ namespace FGEngine
 		// 基底クラスに大きさを伝える
 		w = size.x;
 		h = size.y;
-
 	}
 
 	/**
 	* イメージコンポーネントのクローンを作成
+	*
+	* @return クローンしたイメージコンポーネント
 	*/
 	ComponentPtr Image::Clone() const
 	{
 		auto p = std::make_shared<Image>();
 		
 		// 基底クラスの変数にコピーする
-		p->enabled = this->enabled;
+		p->isActive = this->isActive;
 		p->w = this->w;
 		p->h = this->h;
 		p->offsetPos = this->offsetPos;

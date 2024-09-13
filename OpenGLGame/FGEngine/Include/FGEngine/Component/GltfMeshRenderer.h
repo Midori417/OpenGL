@@ -4,14 +4,12 @@
 #ifndef FGENGIEN_GLTFMESHRENDERER_H_INCLUDED
 #define FGENGINE_GLTFMESHRENDERER_H_INCLUDED
 #include "Renderer.h"
+#include "FGEngine/Asset/GltfFile.h"
 
 namespace FGEngine
 {
-	struct GltfFile;
-	using GltfFilePtr = std::shared_ptr<GltfFile>;
 	struct Material;
 	using MaterialPtr = std::shared_ptr<Material>;
-	struct AnimMatrixRange;
 
 	/**
 	* glTFメッシュ描画コンポーネント

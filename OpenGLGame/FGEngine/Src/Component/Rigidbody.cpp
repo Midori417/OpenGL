@@ -56,6 +56,12 @@ namespace FGEngine
 	{
 		return isGround;
 	}
+
+	/**
+	* リジッドボディコンポーネントをクローンする
+	* 
+	* @return クローンしたリジッドボディコンポーネント
+	*/
 	ComponentPtr Rigidbody::Clone() const
 	{
 		RigidbodyPtr p = std::make_shared<Rigidbody>();

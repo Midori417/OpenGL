@@ -10,7 +10,6 @@ namespace FGEngine
 	class EngineCore;
 }
 
-
 /**
 * アプリケーションクラス
 */

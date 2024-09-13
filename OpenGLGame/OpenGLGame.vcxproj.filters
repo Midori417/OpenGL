@@ -244,6 +244,45 @@
     <Filter Include="FGEngine\Src\Other\Random">
       <UniqueIdentifier>{e8bb0846-19e4-4dea-b3ce-aa9639662684}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Application\Scene\Title">
+      <UniqueIdentifier>{6cf654ca-08ed-41fb-be7a-d990e65b462f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\Select">
+      <UniqueIdentifier>{ba4e2d49-cd5a-473a-ae14-9bf3f4bb65f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Manager\Title">
+      <UniqueIdentifier>{f29bf28e-b73e-4f6e-bc29-34586be27a3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Manager\Select">
+      <UniqueIdentifier>{e097b65a-4dc0-4933-b05f-b0fbc6121d94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\BattleSetting">
+      <UniqueIdentifier>{6c278650-b4fc-4d14-9cb0-ce0d424709e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Manager\BattleSetting">
+      <UniqueIdentifier>{cbbb9c36-f0dd-4755-af2f-73b290ea957b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\BattleMap">
+      <UniqueIdentifier>{dc194874-a315-4cbf-a0e4-31f5080bf3e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Scene\BattleMap\1">
+      <UniqueIdentifier>{903859b1-9410-46ab-90c7-9542f00239b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Manager\Battle">
+      <UniqueIdentifier>{a4ccbafa-2554-46ea-a106-5035ad8374e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Control">
+      <UniqueIdentifier>{8572d4ea-68a9-45ef-803f-f37f89dd1c5b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Camera">
+      <UniqueIdentifier>{e0a24d24-1bfe-479a-a749-7cc258843320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Control\Hyuman">
+      <UniqueIdentifier>{da2bc426-ac67-4c57-87bd-c555e34fd02c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Control\Cpu">
+      <UniqueIdentifier>{65dcbd74-30c0-4bb0-aa10-04ff8b999cfc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Package\glad\src\glad.c">
@@ -416,6 +455,54 @@
     </ClCompile>
     <ClCompile Include="FGEngine\Src\Other\Random.cpp">
       <Filter>FGEngine\Src\Other\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\TitleScene.cpp">
+      <Filter>Application\Scene\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\ImageBlinking.cpp">
+      <Filter>Application\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\FadeOut.cpp">
+      <Filter>Application\Component\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\SelectScene.cpp">
+      <Filter>Application\Scene\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\TitleManager.cpp">
+      <Filter>Application\Component\Manager\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\SelectManager.cpp">
+      <Filter>Application\Component\Manager\Select</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\BattleSettingScene.cpp">
+      <Filter>Application\Scene\BattleSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\BattleSettingManager.cpp">
+      <Filter>Application\Component\Manager\BattleSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp">
+      <Filter>Application\Scene\BattleMap\1</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\BattleManger.cpp">
+      <Filter>Application\Component\Manager\Battle</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\Gundam.cpp">
+      <Filter>Application\Component\Ms\Gundam</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\LookOnCamera.cpp">
+      <Filter>Application\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\HyumanControl.cpp">
+      <Filter>Application\Component\Control\Hyuman</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\BaseControl.cpp">
+      <Filter>Application\Component\Control</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\CpuControl.cpp">
+      <Filter>Application\Component\Control\Cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\BaseMs.cpp">
+      <Filter>Application\Component\Ms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -691,6 +778,66 @@
     </ClInclude>
     <ClInclude Include="FGEngine\Include\FGEngine\CreateGameObjectType.h">
       <Filter>FGEngine\Src\GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\TitleScene.h">
+      <Filter>Application\Scene\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\ImageBlinking.h">
+      <Filter>Application\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\FadeOut.h">
+      <Filter>Application\Component\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\GameSoundName.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\SelectScene.h">
+      <Filter>Application\Scene\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\TitleManager.h">
+      <Filter>Application\Component\Manager\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\SelectManager.h">
+      <Filter>Application\Component\Manager\Select</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\BattleSettingScene.h">
+      <Filter>Application\Scene\BattleSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\BattleSettingManager.h">
+      <Filter>Application\Component\Manager\BattleSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h">
+      <Filter>Application\Scene\BattleMap\1</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\BattleManger.h">
+      <Filter>Application\Component\Manager\Battle</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\BattleSettingInfo.h">
+      <Filter>Application\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\MSList.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\BaseControl.h">
+      <Filter>Application\Component\Control</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\GameInput.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\BaseMs.h">
+      <Filter>Application\Component\Ms</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\Gundam.h">
+      <Filter>Application\Component\Ms\Gundam</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\LookOnCamera.h">
+      <Filter>Application\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\HyumanControl.h">
+      <Filter>Application\Component\Control\Hyuman</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\CpuControl.h">
+      <Filter>Application\Component\Control\Cpu</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,9 +16,17 @@ namespace FGEngine
 	{
 	public:
 
-		// コンストラクタ・デストラクタ
+		/**
+		* デフォルトコンストラクタ
+		*/
 		Image() = default;
-		virtual ~Image() = default;
+
+	public:
+
+		/**
+		* 現在のウィンドウのサイズに設定
+		*/
+		void SetWindowSize();
 
 	private:
 
@@ -27,12 +35,14 @@ namespace FGEngine
 		*/
 		virtual void UISetting() override;
 
-	public:
-
+		/**
+		* イメージコンポーネントのクローンを作成
+		* 
+		* @return クローンしたイメージコンポーネント
+		*/
 		virtual ComponentPtr Clone() const override;
 
 	public:
-
 
 		// 表示するテクスチャポインター
 		TexturePtr texture;
@@ -43,14 +53,19 @@ namespace FGEngine
 		// カラー
 		Color color = Color::white;
 
+		// 画像埋めタイプ
 		enum class FillType
 		{
+			// 右から左
 			Horizontal,
 
+			// 左から右
 			HorizontalInverse,
 
+			// 上から下
 			Vertical,
 
+			// 下から上
 			VerticalInverse,
 		};
 		FillType fillType = FillType::Horizontal;

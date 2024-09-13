@@ -123,6 +123,12 @@ namespace FGEngine
 	*/
 	GameObjectPtr Component::Instantate(const GameObjectPtr& gameObject)
 	{
+		// クローン元が存在しない場合は何もしない
+		if (!gameObject)
+		{
+			return nullptr;
+		}
+
 		auto obj = OwnerObject();
 		if (!obj)
 		{
@@ -148,6 +154,12 @@ namespace FGEngine
 	*/
 	GameObjectPtr Component::Instantate(const GameObjectPtr& gameObject, const TransformPtr& tranform)
 	{
+		// クローン元が存在しない場合は何もしない
+		if (!gameObject)
+		{
+			return nullptr;
+		}
+
 		auto obj = OwnerObject();
 		if (!obj)
 		{
@@ -174,6 +186,12 @@ namespace FGEngine
 	*/
 	GameObjectPtr Component::Instantate(const GameObjectPtr& gameObject, const Vector3& position, const Quaternion& rotation)
 	{
+		// クローン元が存在しない場合は何もしない
+		if (!gameObject)
+		{
+			return nullptr;
+		}
+
 		auto owner = OwnerObject();
 		if (!owner)
 		{

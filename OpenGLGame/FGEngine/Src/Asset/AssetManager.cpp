@@ -366,8 +366,9 @@ namespace FGEngine
 			return;
 		}
 
-		// オブジェクトの登録
-		gameObjectCache.emplace(object->name, object);
+		// クローンを作成してオブジェクトの登録
+		auto obj = GameObject::Clone(object);
+		gameObjectCache.emplace(obj->name, obj);
 	}
 
 	/**
@@ -383,7 +384,7 @@ namespace FGEngine
 		auto itr = gameObjectCache.find(name);
 		if (itr != gameObjectCache.end())
 		{
-			itr->second;
+			return itr->second;
 		}
 
 		return nullptr;

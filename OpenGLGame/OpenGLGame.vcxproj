@@ -150,6 +150,22 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Src\Application.cpp" />
+    <ClCompile Include="Application\Src\Component\BaseControl.cpp" />
+    <ClCompile Include="Application\Src\Component\BaseMs.cpp" />
+    <ClCompile Include="Application\Src\Component\BattleManger.cpp" />
+    <ClCompile Include="Application\Src\Component\BattleSettingManager.cpp" />
+    <ClCompile Include="Application\Src\Component\CpuControl.cpp" />
+    <ClCompile Include="Application\Src\Component\FadeOut.cpp" />
+    <ClCompile Include="Application\Src\Component\Gundam.cpp" />
+    <ClCompile Include="Application\Src\Component\HyumanControl.cpp" />
+    <ClCompile Include="Application\Src\Component\ImageBlinking.cpp" />
+    <ClCompile Include="Application\Src\Component\LookOnCamera.cpp" />
+    <ClCompile Include="Application\Src\Component\SelectManager.cpp" />
+    <ClCompile Include="Application\Src\Component\TitleManager.cpp" />
+    <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp" />
+    <ClCompile Include="Application\Src\Scene\BattleSettingScene.cpp" />
+    <ClCompile Include="Application\Src\Scene\SelectScene.cpp" />
+    <ClCompile Include="Application\Src\Scene\TitleScene.cpp" />
     <ClCompile Include="FGEngine\Src\Asset\AssetManager.cpp" />
     <ClCompile Include="FGEngine\Src\Asset\Shader.cpp" />
     <ClCompile Include="FGEngine\Src\Asset\Texture.cpp" />
@@ -209,6 +225,26 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Application\Src\Application.h" />
+    <ClInclude Include="Application\Src\BattleSettingInfo.h" />
+    <ClInclude Include="Application\Src\Component\BaseControl.h" />
+    <ClInclude Include="Application\Src\Component\BaseMs.h" />
+    <ClInclude Include="Application\Src\Component\BattleManger.h" />
+    <ClInclude Include="Application\Src\Component\BattleSettingManager.h" />
+    <ClInclude Include="Application\Src\Component\CpuControl.h" />
+    <ClInclude Include="Application\Src\Component\FadeOut.h" />
+    <ClInclude Include="Application\Src\Component\Gundam.h" />
+    <ClInclude Include="Application\Src\Component\HyumanControl.h" />
+    <ClInclude Include="Application\Src\Component\ImageBlinking.h" />
+    <ClInclude Include="Application\Src\Component\LookOnCamera.h" />
+    <ClInclude Include="Application\Src\Component\SelectManager.h" />
+    <ClInclude Include="Application\Src\Component\TitleManager.h" />
+    <ClInclude Include="Application\Src\GameInput.h" />
+    <ClInclude Include="Application\Src\GameSoundName.h" />
+    <ClInclude Include="Application\Src\MSList.h" />
+    <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h" />
+    <ClInclude Include="Application\Src\Scene\BattleSettingScene.h" />
+    <ClInclude Include="Application\Src\Scene\SelectScene.h" />
+    <ClInclude Include="Application\Src\Scene\TitleScene.h" />
     <ClInclude Include="FGEngine\Include\FGEngine.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Asset\AnimationClip.h" />
     <ClInclude Include="FGEngine\Include\FGEngine\Asset\AssetObject.h" />

@@ -107,6 +107,9 @@ namespace FGEngine
 		// シーンを設定する
 		p->ownerScene = this;
 
+		// 自身を持たせる
+		p->gameObject = p;
+
 		// 配列に追加
 		gameObjects.push_back(p);
 
@@ -127,6 +130,9 @@ namespace FGEngine
 
 		// シーンを設定する
 		p->ownerScene = this;
+
+		// 自身を持たせる
+		p->gameObject = p;
 
 		// 配列に追加
 		gameObjects.push_back(p);
@@ -517,30 +523,25 @@ namespace FGEngine
 	*/
 	void Scene::UIRendererGameObject()
 	{
-		// UI描画コンポーネントの有無で仕分する
-		std::vector<ImGuiLayoutPtr> imguiList;
-		imguiList.reserve(gameObjects.size());
-
-		for (auto x : gameObjects)
+		for (auto& x : gameObjects)
 		{
-			if (x->imGuiLayout)
+			if (!x->isActive)
 			{
-				imguiList.push_back(x->imGuiLayout);
+				// ゲームオブジェクトが非アクティブのため飛ばす
+				continue;
 			}
-		}
-
-		// UIがないため処理を終わる
-		if (imguiList.empty())
-		{
-			return;
-		}
-
-		for (auto x : imguiList)
-		{
-			if (x && x->enabled)
+			if (!x->imGuiLayout)
 			{
-				x->UIUpdate();
+				// ImGUIコンポーネントを所持していないため飛ばす
+				continue;
 			}
+			if (!x->imGuiLayout->isActive)
+			{
+				// IMGUIコンポーネントが非アクティブのため飛ばす
+				continue;
+			}		
+			// UIの更新
+			x->imGuiLayout->UIUpdate();
 		}
 	}
 

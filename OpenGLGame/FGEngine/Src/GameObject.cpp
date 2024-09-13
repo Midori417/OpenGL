@@ -100,28 +100,32 @@ namespace FGEngine
 	*/
 	GameObjectPtr GameObject::Clone(const GameObjectPtr& object, const TransformPtr& transform)
 	{
+		// クローンもとが存在しなければ何もしない
+		if (!object)
+		{
+			return nullptr;
+		}
 		auto p = std::make_shared<GameObject>();
 
 		p->isActive = object->isActive;
-		p->name = object->name + "Clone";
+		p->name = object->name;
 		p->tag = object->tag;
 
 		// クローンするトランスフォームがなければobjectのトランスフォームをクローンするする
 		if (transform != nullptr)
 		{
-			// クローンもとにトランスフォームコンポーネントがあれば
+			ComponentPtr clone = transform->Clone();
+			clone->ownerObject = p;
+			p->transform = std::dynamic_pointer_cast<Transform>(clone);
+		}
+		else
+		{			// クローンもとにトランスフォームコンポーネントがあれば
 			if (object->transform)
 			{
 				ComponentPtr clone = object->transform->Clone();
 				clone->ownerObject = p;
 				p->transform = std::dynamic_pointer_cast<Transform>(clone);
 			}
-		}
-		else
-		{
-			ComponentPtr clone = transform->Clone();
-			clone->ownerObject = p;
-			p->transform = std::dynamic_pointer_cast<Transform>(clone);
 		}
 		// クローンもとにレンダラーコンポーネントがあれば
 		if (object->renderer)

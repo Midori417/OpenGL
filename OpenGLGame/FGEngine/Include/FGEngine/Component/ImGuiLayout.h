@@ -36,25 +36,8 @@ namespace FGEngine
 
 	public:
 
-		// オブジェクト状態を設定する
-		virtual void SetEnable(bool value)
-		{
-			enabled = value;
-		}
-
-		bool GetEnabled() const
-		{
-			return enabled;
-		}
-
-	public:
-
-		virtual ComponentPtr Clone() const = 0;
-
-	public:
-
 		// 有効であれば更新され、無効であれば更新されません
-		bool enabled = true;
+		bool isActive = true;
 
 		// UIの横幅
 		float w = 0;

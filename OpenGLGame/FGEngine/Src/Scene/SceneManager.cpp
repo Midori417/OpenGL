@@ -2,6 +2,7 @@
 * @file SceneManager.cpp
 */
 #include "FGEngine/Scene/SceneManager.h"
+#include "FGEngine/Debug.h"
 
 namespace FGEngine
 {
@@ -65,6 +66,7 @@ namespace FGEngine
 		{
 			nextScene = scenePtr->second;
 		}
+		LOG_ERROR("%sГVБ[ГУВЌСґНЁВµВ№ВєВс", name);
 	}
 }
 
