@@ -50,6 +50,35 @@ int Application::Initialize()
 	{
 		assetManager->LoadTga("Standbay",	"Application/Res/UI/Battle/Standbay.tga");
 		assetManager->LoadTga("Go",			"Application/Res/UI/Battle/Go.tga");
+
+		assetManager->LoadTga("BoostBar",			"Application/Res/UI/Battle/BoostBar.tga");
+		assetManager->LoadTga("BoostBarBack",		"Application/Res/UI/Battle/BoostBarBack.tga");
+		assetManager->LoadTga("BoostBarOVERHEAT",	"Application/Res/UI/Battle/BoostBarOverHeat.tga");
+
+		assetManager->LoadTga("PlayerInfo", "Application/Res/UI/Battle/PlayerInfo.tga");
+
+
+		assetManager->LoadTga("OtherTeumMsInfo", "Application/Res/UI/Battle/TargetMsInfo.tga");
+		assetManager->LoadTga("OtherTeumMsHpBar", "Application/Res/UI/Battle/TargetMsHpBar.tga");
+
+		assetManager->LoadTga("TargetMarkGreen", "Application/Res/UI/Battle/TargetMark/TargetMarkGreen.tga");
+		assetManager->LoadTga("TargetMarkRed", "Application/Res/UI/Battle/TargetMark/TargetMarkRed.tga");
+		assetManager->LoadTga("TargetMarkLock", "Application/Res/UI/Battle/TargetMark/TargetMarkLock.tga");
+		assetManager->LoadTga("TargetMarkYellow", "Application/Res/UI/Battle/TargetMark/TargetMarkYellow.tga");
+
+		assetManager->LoadTga("MyTeumOtherMsInfo", "Application/Res/UI/Battle/TeumOtherMsInfo.tga");
+		assetManager->LoadTga("MyTeumOtherMsHpBar", "Application/Res/UI/Battle/TeumOtherMsHpBar.tga");
+		assetManager->LoadTga("PartnerHpBack", "Application/Res/UI/Battle/PartnerHpBack.tga");
+
+		assetManager->LoadTga("WeaponBack", "Application/Res/UI/Battle/WeaponBack.tga");
+		assetManager->LoadTga("WeaponBar", "Application/Res/UI/Battle/WeaponBar.tga");
+
+		assetManager->LoadTga("TeamHpFrame",	"Application/Res/UI/Battle/TeamHpFrame.tga");
+		assetManager->LoadTga("MyTeamHpBar",	"Application/Res/UI/Battle/MyTeamHpBar.tga");
+		assetManager->LoadTga("OtherTeamHpBar", "Application/Res/UI/Battle/OtherTeamHpBar.tga");
+
+		assetManager->LoadTga("Win", "Application/Res/UI/Battle/Win.tga");
+		assetManager->LoadTga("Lose", "Application/Res/UI/Battle/Lose.tga");
 	}
 	// バトルマップ01
 	{
