@@ -6,7 +6,6 @@
 #include "FGEngine/Component/GameEvent.h"
 using namespace FGEngine;
 
-#include "MsLilst.h"
 
 // æséŒ¾
 class BaseMs;

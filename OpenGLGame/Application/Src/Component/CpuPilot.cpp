@@ -3,7 +3,8 @@
 */
 #include "CpuPilot.h"
 #include "BaseMs.h"
-#include "Global.h"
+
+#include "../Global.h"
 
 /**
 * ç≈èâÇ…é¿çs

@@ -250,9 +250,11 @@
     <ClInclude Include="Application\Src\Component\MapRangeLimit.h" />
     <ClInclude Include="Application\Src\Component\SelectManager.h" />
     <ClInclude Include="Application\Src\Component\TitleManager.h" />
+    <ClInclude Include="Application\Src\DamageInfo.h" />
     <ClInclude Include="Application\Src\GameInput.h" />
     <ClInclude Include="Application\Src\GameSoundName.h" />
-    <ClInclude Include="Application\Src\MSList.h" />
+    <ClInclude Include="Application\Src\Global.h" />
+    <ClInclude Include="Application\Src\MsList.h" />
     <ClInclude Include="Application\Src\Scene\BattleMap01Scene.h" />
     <ClInclude Include="Application\Src\Scene\BattleSettingScene.h" />
     <ClInclude Include="Application\Src\Scene\SelectScene.h" />

@@ -3,10 +3,12 @@
 */
 #ifndef GLOBAL_H_INCLUDED
 #define GLOBAL_H_INCLUDED
-#include "MsLilst.h"
+#include "MsList.h"
+#include <memory>
+#include <vector>
 
 // チーム最大体力
-static const int teumMaxHp = 6000;
+static const int teamMaxHp = 6000;
 
 // 最大プレイヤー数
 static const int playerMax = 4;
@@ -36,7 +38,7 @@ struct ControlInfo
 {
 	// チームId
 	// 0 = 出場無し, 1 = チーム１, 2 = チーム2
-	int teumId = -1;
+	int teamId = -1;
 
 	// PlayerId
 	// 0 = 人間 , 1 = CPU
@@ -54,11 +56,11 @@ struct BattleInfo
 {
 	// チーム1体力
 	// -1 = ∞
-	int teum1Hp = teumMaxHp;
+	int team1Hp = teamMaxHp;
 
 	// チーム2体力
 	// -1 = ∞
-	int teum2Hp = teumMaxHp;
+	int team2Hp = teamMaxHp;
 
 	// ゲーム時間
 	// -1 = ∞
@@ -66,7 +68,6 @@ struct BattleInfo
 
 	// コントロール情報配列
 	std::vector<ControlInfoPtr> controlInfo;
-
 };
 
 #endif // !GLOBAL_H_INCLUDED

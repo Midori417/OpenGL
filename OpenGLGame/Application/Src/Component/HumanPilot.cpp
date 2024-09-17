@@ -9,12 +9,13 @@
 #include "ImageBlinking.h"
 #include "ImageNum.h"
 #include "BaseWeapon.h"
-#include "Global.h"
+
+#include "../Global.h"
 
 /**
 * 最初に実行
 */
-void HumanControl::Start()
+void HumanPilot::Start()
 {
 	// 必要なマネージャーを取得
 	auto resManager = AssetManager::GetInstance();
@@ -206,7 +207,7 @@ void HumanControl::Start()
 				imgMyTeamHpBar->texture = resManager->GetTexture("MyTeamHpBar");
 				imgMyTeamHpBar->size = imgMyTeamHpBar->texture->GetSize() * 1.2f;
 
-				float max = static_cast<float>(teumMaxHp);
+				float max = static_cast<float>(teamMaxHp);
 				float hp = static_cast<float>(MyTeamHp());
 				imgMyTeamHpBar->fillAmout = (max - (max - hp)) / max;
 			}
@@ -219,7 +220,7 @@ void HumanControl::Start()
 				imgOtherTeamHpBar->texture = resManager->GetTexture("OtherTeamHpBar");
 				imgOtherTeamHpBar->size = imgOtherTeamHpBar->texture->GetSize() * 1.2f;
 
-				float max = static_cast<float>(teumMaxHp);
+				float max = static_cast<float>(teamMaxHp);
 				float hp = static_cast<float>(OtherTeamHp());
 				imgOtherTeamHpBar->fillAmout = (max - (max - hp)) / max;
 			}
@@ -301,7 +302,7 @@ void HumanControl::Start()
 /**
 * 毎フレーム実行
 */
-void HumanControl::Update()
+void HumanPilot::Update()
 {
 	// スタート呼び出されていなければ何もしない
 	if (!isStart)
@@ -335,7 +336,7 @@ void HumanControl::Update()
 /**
 * コントロールをスタートする
 */
-void HumanControl::ControlStart()
+void HumanPilot::ControlStart()
 {
 	// UIを表示
 	imgMyInfoBack->isActive =(true);
@@ -374,7 +375,7 @@ void HumanControl::ControlStart()
 /**
 * ゲーム入力を更新
 */
-void HumanControl::GameInputUpdate()
+void HumanPilot::GameInputUpdate()
 {
 	// ゲーム入力
 	gameInput->moveAxis = Vector2(InputManager::GetAxis(Axis::Horizontal), InputManager::GetAxis(Axis::Vertical));
@@ -390,19 +391,19 @@ void HumanControl::GameInputUpdate()
 /**
 * UIの更新
 */
-void HumanControl::UIUpdate()
+void HumanPilot::UIUpdate()
 {
 	// 自チーム体力の設定
 	if (imgMyTeamHpBar)
 	{
-		float max = static_cast<float>(teumMaxHp);
+		float max = static_cast<float>(teamMaxHp);
 		float hp = static_cast<float>(MyTeamHp());
 		imgMyTeamHpBar->fillAmout = (max - (max - hp)) / max;
 	}
 	// 相手チームの体力の設定
 	if (imgOtherTeamHpBar)
 	{
-		float max = static_cast<float>(teumMaxHp);
+		float max = static_cast<float>(teamMaxHp);
 		float hp = static_cast<float>(OtherTeamHp());
 		imgOtherTeamHpBar->fillAmout = (max - (max - hp)) / max;
 	}
@@ -602,7 +603,7 @@ void HumanControl::UIUpdate()
 /**
 * 終了処理
 */
-void HumanControl::Finish(VictoryState victoryState)
+void HumanPilot::Finish(VictoryState victoryState)
 {
 	// 機体の挙動を止める
 	myMs->Stop();

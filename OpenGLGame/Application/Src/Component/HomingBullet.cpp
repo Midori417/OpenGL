@@ -3,7 +3,8 @@
 */
 #include "HomingBullet.h"
 #include "BaseMs.h"
-#include "DamageInfo.h"
+
+#include "../DamageInfo.h"
 
 /**
 * ターゲットを設定

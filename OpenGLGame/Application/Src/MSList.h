@@ -5,18 +5,12 @@
 #define MSLIST_H_INCLUDED
 
 /**
-* MSリスト
+* 機体リスト
 */
 enum class MsList
 {
-	// 何もなし
 	None,
 
-	// ガンダム
 	Gundam,
-
-	//// ストライクガンダム
-	//StrikeGundam,
 };
-
 #endif // !MSLIST_H_INCLUDED

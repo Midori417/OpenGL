@@ -3,7 +3,7 @@
 */
 #ifndef GAMEINPUT_H_INCLUDED
 #define GAMEINPUT_H_INCLUDED
-#include "FGEngine/Math/Vector2.h"
+#include "FGEngine.h"
 using namespace FGEngine;
 
 /**
@@ -34,6 +34,5 @@ struct GameInput
 	// ターゲット切り替えボタン
 	bool targetChangeBtn = false;
 };
-using GameInputPtr = std::shared_ptr<GameInput>;
 
 #endif // !MSCONTROL_H_INCLUDED

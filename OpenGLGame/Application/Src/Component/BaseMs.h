@@ -4,8 +4,8 @@
 #ifndef BASEMS_H_INCLUDED
 #define BASEMS_H_INCLUDED
 #include "FGEngine.h"
-#include "GameInput.h"
 using namespace FGEngine;
+#include "../GameInput.h"
 
 // æséŒ¾
 struct DamageInfo;

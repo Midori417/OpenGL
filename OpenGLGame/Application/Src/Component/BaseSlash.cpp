@@ -2,8 +2,9 @@
 * @file BaseSlash.cpp
 */
 #include "BaseSlash.h"
-#include "DamageInfo.h"
 #include "BaseMs.h"
+
+#include "../DamageInfo.h"
 
 /**
 * ê∂ê¨éûÇ…é¿çs

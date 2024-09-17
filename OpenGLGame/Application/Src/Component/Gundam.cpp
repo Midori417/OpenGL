@@ -4,8 +4,9 @@
 #include "Gundam.h"
 #include "HomingBullet.h"
 #include "BaseSlash.h"
-#include "DamageInfo.h"
 #include "FGEngine/Component/Animator.h"
+
+#include "../DamageInfo.h"
 
 namespace Animation
 {

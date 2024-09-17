@@ -4,8 +4,9 @@
 #ifndef BATTLEMANAGER_H_INCLUDED
 #define BATTLEMANAGER_H_INCLUDED
 #include "FGEngine.h"
-#include "MsLilst.h"
 using namespace FGEngine;
+
+#include "../MsList.h"
 
 // 先行宣言
 class FadeOut;
@@ -69,6 +70,8 @@ public:
 	void SetResponPos(const std::vector<Vector3>& poses);
 
 private:
+
+	void BattleSetting();
 
 	/**
 	* msに対応するコンポーネントをobjに追加する

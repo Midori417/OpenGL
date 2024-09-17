@@ -16,14 +16,14 @@ using ImageNumPtr = std::shared_ptr<ImageNum>;
 /**
 * 人間パイロット
 */
-class HumanControl : public BasePilot
+class HumanPilot : public BasePilot
 {
 public:
 
 	/**
 	* デフォルトコンストラクタ
 	*/
-	HumanControl() = default;
+	HumanPilot() = default;
 
 private:	// イベント
 
