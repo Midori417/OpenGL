@@ -48,7 +48,7 @@ int Application::Initialize()
 	}
 	// ƒoƒgƒ‹
 	{
-		assetManager->LoadTga("Standbay",	"Application/Res/UI/Battle/Standbay.tga");
+		assetManager->LoadTga("Standby",	"Application/Res/UI/Battle/Standbay.tga");
 		assetManager->LoadTga("Go",			"Application/Res/UI/Battle/Go.tga");
 
 		assetManager->LoadTga("BoostBar",			"Application/Res/UI/Battle/BoostBar.tga");
@@ -84,6 +84,9 @@ int Application::Initialize()
 	{
 		assetManager->LoadTga("SkyBox",			"Application/Res/Map/skyBox.tga");
 		assetManager->LoadGlTF("Map01/Ground",	"Application/Res/Map/Map01/Ground.gltf");
+		assetManager->LoadGlTF("Map01/BiruA",	"Application/Res/Map/Map01/BuildingA.gltf");
+		assetManager->LoadGlTF("Map01/BiruB",	"Application/Res/Map/Map01/BuildingB.gltf");
+		assetManager->LoadGlTF("Map01/BiruC",	"Application/Res/Map/Map01/BuildingC.gltf");
 	}
 	// MS
 	{

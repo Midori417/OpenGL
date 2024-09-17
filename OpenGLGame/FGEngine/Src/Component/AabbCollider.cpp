@@ -70,7 +70,7 @@ namespace FGEngine
 		p->max = this->max;
 		p->aabb = this->aabb;
 
-		return ComponentPtr();
+		return p;
 	}
 
 }

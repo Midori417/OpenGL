@@ -3,6 +3,7 @@
 */
 #ifndef FGENGINE_MATERIAL_H_INCLUDED
 #define FGENGINE_MATERIAL_H_INCLUDED
+#include "FGEngine/UsingNames/UsingAsset.h"
 #include "FGEngine/Color.h"
 #include "FGEngine/Math/Vector2.h"
 #include <memory>
@@ -11,10 +12,6 @@
 
 namespace FGEngine
 {
-	// 先行宣言
-	class Texture;
-	using TexturePtr = std::shared_ptr<Texture>;
-
 	/**
 	* マテリアル
 	*/
@@ -55,8 +52,23 @@ namespace FGEngine
 
 		// 表面の粗さ、なめらか0～1粗い
 		float rouhness = 1;
+
+	public:
+
+		/**
+		* マテリアルを作成する
+		* 
+		* @param name マテリアルの名前
+		* 
+		* @return 作成したマテリアル
+		*/
+		static MaterialPtr Create(const std::string& name)
+		{
+			auto p = std::make_shared<Material>();
+			p->name = name;
+			return p;
+		}
+
 	};
-	using MaterialPtr = std::shared_ptr<Material>;
-	using MaterialList = std::vector<MaterialPtr>;
 }
 #endif // !MATERIAL_H_INCLUDED

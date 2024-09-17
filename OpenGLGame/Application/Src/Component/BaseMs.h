@@ -3,39 +3,72 @@
 */
 #ifndef BASEMS_H_INCLUDED
 #define BASEMS_H_INCLUDED
-#include "FGEngine/Component/GameEvent.h"
+#include "FGEngine.h"
+#include "GameInput.h"
 using namespace FGEngine;
 
 // 先行宣言
+struct DamageInfo;
 struct GameInput;
+class UIWeapon;
+using UIWeaponPtr = std::shared_ptr<UIWeapon>;
 
 /**
-* MSの基底コンポーネント
+* MSの基底クラス
 */
 class BaseMs : public GameEvent
 {
-protected: // このコンポーネント継承先で実体化する
-
-	/**
-	* デフォルトコンストラクタ
-	*/
-	BaseMs() = default;
-
 public:
 
+	// コンストラクタ・デストラクタ
+	BaseMs() = default;
+	virtual ~BaseMs() = default;
+
 	/**
-	* 攻撃を受けたときに相手に呼び出してもらう
-	* 
-	* @parama damage 与えるダメージ
+	* Hpを取得
 	*/
-	virtual void Damage(float damage){}
+	int GetHP() const;
+	float GetHP01();
+
+	/**
+	* エネルギー残量の取得(0～1)
+	*/
+	float GetBoostEnergy() const;
+
+	/**
+	* 機体コストを取得
+	*/
+	int GetCost() const;
+
+	/**
+	* 死亡状態を取得
+	* 
+	* @retval true	死亡
+	* @retval false 生存
+	*/
+	bool IsDeath() const;
 
 	/**
 	* 敵との距離を設定
-	*
+	* 
 	* @param distance 敵との距離
 	*/
 	void SetDistance(float distance);
+
+	/**
+	* 生き返る
+	* 
+	* @param removePos	生き返る位置
+	* @param hpCut		体力のカット率
+	*/
+	virtual void Respon(const Vector3& removePos, float hpCut){}
+
+	/**
+	* ダメージを与える
+	*
+	* @param damageInfo ダメージ情報
+	*/
+	virtual void Damage(const DamageInfo& damgeInfo) {}
 
 	/**
 	* カメラトランスフォームの設定
@@ -48,16 +81,45 @@ public:
 	void SetTargetMS(BaseMs* baseMS);
 
 	/**
-	* 機体入力を設定する
+	* ゲーム入力を設定
 	*/
 	void SetGameInput(GameInput* gameInput);
 
 	/**
-	* 機体が破壊されているか取得
+	* 停止させる
 	*/
-	bool IsDestroy() const;
+	void Stop();
+
+	/**
+	* 誘導可能かチェック
+	*
+	* @retval true  誘導可能
+	* @retval false 誘導不可
+	*/
+	bool HomingCheck() const;
+
+	bool GetHoimngCancel() const;
+
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+
+	}
 
 protected:
+
+	/**
+	* 死亡チェック
+	* 
+	* @retval true	死亡
+	* @retval false 生存
+	*/
+	bool DeadChaeck();
+
+	/**
+	* ブーストエネルギーの更新
+	*/
+	void BoostEnergyUpdate();
 
 	/**
 	* カメラのトランスフォームを取得
@@ -79,60 +141,60 @@ protected:
 	*/
 	void BoostCheck();
 
-	/**
-	* 破壊チェック
-	*/
-	bool DestroyCheck() const;
 
-	/**
-	* 破壊する
-	*/
-	void Destroy();
+public:
+
+	// UIに表示する武装
+	std::vector<UIWeaponPtr> uiWeapons;
+
+	// 近接距離
+	float proximityDistance = 0;
+
+	// 赤ロック距離(平行)
+	float redLookDistaceXZ = 0;
+
+	// 赤ロック距離(+Y)
+	float redLookDistanceMaxY = 0;
+
+	// 赤ロック距離(-Y)
+	float redLookDistanceMinY = 0;
 
 protected:
 
-	// 機体の名前
-	std::string name = "MS";
+	// リギボ
+	RigidbodyPtr rb;
 
+	// アニメータ
+	AnimatorPtr anim;
+
+	// レンダラー
+	GltfMeshRendererPtr renderer;
+
+	// 入力
 	GameInput* gameInput = nullptr;
 
-	// コンポーネント
-	RigidbodyPtr rb = nullptr;
-	GltfMeshRendererPtr meshRender = nullptr;
-	AnimatorPtr anim = nullptr;
-	std::vector<AudioSourcePtr> audioSource;
-
-private:
-
-	//trueだと破壊されている
-	bool isDestroy = false;
-
-	// ターゲットとの距離
-	float distance = 0;
-
-	// カメラのトランスフォーム
-	Transform* trsCamera;
-
-	// ターゲットMS
-	BaseMs* targetMs;
-
-protected:
+	// リソース読み込み
+	static bool isResoueLoad;
 
 	/**
 	* 基礎パラメータ
 	*/
-	struct Paramater
+	struct BaseParamater
 	{
+		// MSの名前
+		std::string name;
+
 		// 機体のコスト
 		int cost = 0;
 
-		// 機体の最大耐久値
+		// 機体のHPの最大値
 		float hpMax = 0;
 
-		// 機体耐久値
+		// 機体のHP
 		float hp = 0;
+
 	};
-	Paramater paramater;
+	BaseParamater baseParamater;
 
 	/**
 	* ブーストパラメータ
@@ -160,63 +222,144 @@ protected:
 		// エネルギーを回復するか
 		bool chageLock = false;
 	};
-	BoostParamater boost;
-
-protected: // 移動
+	BoostParamater boostParamater;
 
 	/**
 	* 移動パラメータ
 	*/
 	struct MoveParamater
 	{
-		// 移動速度
+	private:
+
+		/**
+		* ダッシュパラメータ
+		*/
+		struct DashParamater
+		{
+			// 移動速度
+			float speed = 0;
+
+			// 旋回速度
+			float rotationSpeed = 0;
+
+			// エネルギーの消費量
+			float useEnergy = 0;
+
+			// ダッシュ中か
+			bool isNow = false;
+		};
+
+		/**
+		* ジャンプパラメータ
+		*/
+		struct JumpPramter
+		{
+			// ジャンプ力
+			float power = 0;
+
+			// 移動速度
+			float speed = 0;
+
+			// 旋回速度
+			float rotationSpeed = 0;
+
+			// エネルギーの消費量
+			float useEnergy = 0;
+
+			// ジャンプ中か
+			bool isNow = false;
+		};
+
+		struct Step
+		{
+			Vector3 direction = Vector3::zero;
+
+			float useEnergy = 0.0f;
+			
+			bool isNow = false;
+
+			float speed = 0.0f;
+		};
+
+	public:
+
+		// 通常速度
 		float speed = 0;
 
-		// 旋回速度
+		// 通常時の旋回速度
 		float rotationSpeed = 0;
+
+		float moveTimer = 0;
+
+		const float moveTime = 0.3f;
+
+		// ダッシュパラメータ
+		DashParamater dash;
+
+		// ジャンプパラメータ
+		JumpPramter jump;
+
+		// ステップパラメータ
+		Step step;
 	};
-	MoveParamater move;
+	MoveParamater moveParamater;
+
+	// 死亡状態
+	bool isDeath = false;
+
+	// ダウン値
+	float downValue = 0;
 
 	/**
-	* ジャンプパラメータ
+	* 吹き飛び構造体
 	*/
-	struct JumpParamater
+	struct BlowAway
 	{
-		// ジャンプ力
-		float power = 0;
-
-		// 移動速度
-		float speed = 0;
-
-		// 旋回速度
-		float rotationSpeed = 0;
-
-		// エネルギーの消費量
-		float useEnergy = 0;
-
-		// ジャンプ中か
+		// 吹き飛び状態か
 		bool isNow = false;
+
+		// 吹き飛ぶ時間
+		float timer = 0;
+
+		float time = 0.5f;
+
+		float power = 70.0f;
 	};
-	JumpParamater jump;
+	BlowAway blowAway;
 
-	/**
-	* ダッシュパラメータ
-	*/
-	struct DashParamater
-	{
-		// 移動速度
-		float speed = 0;
+	bool isDownCancel = false;
 
-		// 旋回速度
-		float rotationSpeed = 0;
+	bool isDown = false;
 
-		// エネルギーの消費量
-		float useEnergy = 0;
+	// ダウンしてからの時間
+	float downTimer = 0;
+	
+	// ダウンしてから強制立ち上がりの時間
+	const float downStandUpTime = 3;
 
-		// ダッシュ中か
-		bool isNow = false;
-	};
-	DashParamater dash;
+	// ダメージ状態の有無
+	bool isDamage = false;
+
+	float responTimer = 0;
+	float responTime = 0.5f;
+
+	// リスポーン状態
+	bool isRespon = false;
+
+	// ストップさせる
+	bool isStop = false;
+
+private:
+
+	// 敵との距離
+	float distance = 0;
+
+	// カメラの位置
+	Transform* cameraTrasform;
+
+	// ターゲットのMS
+	BaseMs* targetMs;
+
 };
 
 #endif // !BASEMS_H_INCLUDED

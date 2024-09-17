@@ -10,6 +10,7 @@
 #include "FGEngine/Component/Camera.h"
 #include "FGEngine/Component/AudioSource.h"
 #include "FGEngine/Component/MeshRenderer.h"
+#include "FGEngine/Component/AabbCollider.h"
 #include "FGEngine/MainSystem/PhysicsEngine.h"
 #include "FGEngine/MainSystem/RenderingEngine.h"
 #include "FGEngine/Asset/AssetManager.h"
@@ -65,13 +66,13 @@ namespace FGEngine
 		else if (type == CreateObjectType::GameObject3D::Cube)
 		{
 			GameObjectPtr p = CreateGameObject("Cube");
+			p->AddComponent<AabbCollider>();
 			MeshRendererPtr mesh = p->AddComponent<MeshRenderer>();
 
 			// メッシュを設定する
 			auto assetManger = AssetManager::GetInstance();
 			mesh->mesh = assetManger->GetStaticMesh("Cube");
-			mesh->shader = assetManger->GetShader(DefalutShader::Standard3D);
-			mesh->shadowShader = assetManger->GetShader(DefalutShader::Shadow3D);
+			mesh->shader = assetManger->GetShader(DefalutShader::Unlit);
 
 			return p;
 		}
@@ -83,8 +84,7 @@ namespace FGEngine
 			// メッシュを生成
 			auto assetManger = AssetManager::GetInstance();
 			mesh->mesh = assetManger->GetStaticMesh("Sphere");
-			mesh->shader = assetManger->GetShader(DefalutShader::Standard3D);
-			mesh->shadowShader = assetManger->GetShader(DefalutShader::Shadow3D);
+			mesh->shader = assetManger->GetShader(DefalutShader::Unlit);
 
 			return p;
 		}
@@ -207,12 +207,10 @@ namespace FGEngine
 		if (!gameObjects.empty())
 		{
 			UpdateGameEvent();
+			UpdateTransform();
 			UpdateAudioSource();
-			UpdateRigidbody();
-			UpdateTransform();
 			CollisionGameObject();
-			// 衝突後の座標に更新したいからもう一度呼び出す
-			UpdateTransform();
+			UpdateRigidbody();
 			UpdateAnimator();
 
 			DestoryGameObject();
@@ -224,8 +222,8 @@ namespace FGEngine
 	*/
 	void Scene::Render()
 	{
-		RendererGameObject();
 		UIRendererGameObject();
+		RendererGameObject();
 	}
 
 	/**
@@ -253,13 +251,13 @@ namespace FGEngine
 					continue;
 				}
 
-				for (auto& e : x->gameEvents)
+				for (int i = 0; i < x->gameEvents.size(); ++i)
 				{
-					// 一度だけ関数を実行
-					if (e->isActive && !e->isStart)
+					auto event = x->gameEvents[i];
+					if (event->isActive && !event->isStart)
 					{
-						e->Start();
-						e->isStart = true;
+						event->Start();
+						event->isStart = true;
 					}
 				}
 			}
@@ -276,11 +274,12 @@ namespace FGEngine
 					continue;
 				}
 
-				for (auto& e : x->gameEvents)
+				for (int i = 0; i < x->gameEvents.size(); ++i)
 				{
-					if (e->isActive && e->isStart)
+					auto event = x->gameEvents[i];
+					if (event->isActive && event->isStart)
 					{
-						e->Update();
+						event->Update();
 					}
 				}
 			}
@@ -297,11 +296,12 @@ namespace FGEngine
 					continue;
 				}
 
-				for (auto& e : x->gameEvents)
+				for (int i = 0; i < x->gameEvents.size(); ++i)
 				{
-					if (e->isActive && e->isStart)
+					auto event = x->gameEvents[i];
+					if (event->isActive && event->isStart)
 					{
-						e->LateUpdate();
+						event->LateUpdate();
 					}
 				}
 			}

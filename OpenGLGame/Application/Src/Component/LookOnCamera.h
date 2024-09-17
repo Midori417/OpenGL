@@ -16,35 +16,21 @@ public:
 
 	// コンストラクタ・デストラクタ
 	LookOnCamera() = default;
-	virtual ~LookOnCamera() = default;
+
+public:
+
+	virtual void Start() override;
 
 	/**
-	* ターゲットを設定
-	*
-	* @param target ターゲットのTrs
+	* ロックオンカメラの挙動
+	* 
+	* @param target ターゲットのトランスフォーム
+	* @param myMs	自身の機体
 	*/
-	void SelectTarget(Transform* targetMs);
-
-	/**
-	* とりつくMSのトランスフォームを設定
-	*
-	* @param msTrs とりつくMsのTrss
-	*/
-	void SetMsTransform(Transform* myMs);
-
-	void StartOk();
+	void LookCamera(Transform* target, Transform* myMs);
 
 private:
 
-
-	/**
-	* 毎フレーム実行(Updateよりあと)
-	*/
-	virtual void LateUpdate() override;
-
-	/**
-	*
-	*/
 	virtual ComponentPtr Clone() const override
 	{
 		return nullptr;
@@ -52,33 +38,14 @@ private:
 
 private:
 
-	/**
-	* カメラの位置を調整
-	*/
-	void PositionCamera();
-
-
-public:
-
-
-	// カメラのオフセット位置
+	// カメラのオフセット位置最小
 	Vector3 offsetMinPos = Vector3(0, 4, -12);
+
+	// カメラのオフセット位置最大
 	Vector3 offsetMaxPos = Vector3(0, 10, -15);
-
-private:
-
-	// プレイヤーMsのトランスフォーム
-	Transform* myMs;
-
-	// ターゲットのトランスフォーム
-	Transform* targetMs;
 
 	// カメラの旋回速度
 	float rotationSpeed = 0.5f;
-
-	bool isStart = false;
-
 };
-
 
 #endif // !LOOKONCAMERA_H_INCLUDED

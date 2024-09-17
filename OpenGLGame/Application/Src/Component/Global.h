@@ -1,11 +1,9 @@
 /**
-* @file BattleSettingInfo.h
+* @file Global.h
 */
-#ifndef BATTLESETTINGINFO_H_INCLUDED
-#define BATTLESETTINGINFO_H_INCLUDED
-#include "MSList.h"
-#include <memory>
-#include <vector>
+#ifndef GLOBAL_H_INCLUDED
+#define GLOBAL_H_INCLUDED
+#include "MsLilst.h"
 
 // チーム最大体力
 static const int teumMaxHp = 6000;
@@ -50,9 +48,9 @@ struct ControlInfo
 using ControlInfoPtr = std::shared_ptr<ControlInfo>;
 
 /**
-* バトル設定情報
+* バトル前情報
 */
-struct BattleSettingInfo
+struct BattleInfo
 {
 	// チーム1体力
 	// -1 = ∞
@@ -68,7 +66,7 @@ struct BattleSettingInfo
 
 	// コントロール情報配列
 	std::vector<ControlInfoPtr> controlInfo;
-};
-using BattleSettingInfoPtr = std::shared_ptr<BattleSettingInfo>;
 
-#endif // !BATTLESETTINGINF_H_INCLUDED
+};
+
+#endif // !GLOBAL_H_INCLUDED

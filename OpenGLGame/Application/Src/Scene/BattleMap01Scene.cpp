@@ -9,7 +9,8 @@
 #include "FGEngine/Asset/AssetManager.h"
 #include "FGEngine/Asset/Material.h"
 
-#include "../Component/BattleManger.h"
+#include "../Component/MapRangeLimit.h"
+#include "../Component/BattleManager.h"
 
 /**
 * バトルマップ01シーンの初期化
@@ -28,9 +29,11 @@ bool BattleMap01Scene::Initialize()
     // バトルマネージャーを作成
     GameObjectPtr manager = Instantate(CreateObjectType::Empty);
     auto batManager = manager->AddComponent<BattleManager>();
+    auto mapRangeLimit = manager->AddComponent<MapRangeLimit>();
     
     // ステージの大きさを設定
     const Vector2 mapSize(150, 180);
+    mapRangeLimit->mapSize = mapSize;
 
     // 復帰位置
     std::vector<Vector3> responPoses;
@@ -59,9 +62,64 @@ bool BattleMap01Scene::Initialize()
             col->min = Vector3(-mapSize.x, -10.0f, -mapSize.y);
             col->max = Vector3(mapSize.x, 1, mapSize.y);
         }
-        // 建物
+        // 建物A
         {
+            GameObjectPtr biru = Instantate(CreateObjectType::Empty);
+            biru->name = "BiruA";
+            biru->tag = "Bilding";
+            biru->GetTransform()->position = Vector3(-26, 1, -7);
+            biru->GetTransform()->rotation = Quaternion::AngleAxis(Vector3::up, 90);
+            
+            GltfMeshRendererPtr render = biru->AddComponent<GltfMeshRenderer>();
+            render->glTFfile = assetManager->GetGltfFile("Map01/BiruA");
+            render->shader = assetManager->GetShader(DefalutShader::Standard3D);
 
+            auto col = biru->AddComponent<AabbCollider>();
+            col->min = Vector3(-16, 1, -10);
+            col->max = Vector3(16, 18, 10);
+
+            // 同じ建物を設置するので複製する
+            GameObjectPtr biru01 = Instantate(biru);
+            biru01->GetTransform()->position = Vector3(70, 1, -105);
+            biru01->GetTransform()->rotation = Quaternion::AngleAxis(Vector3::up, -90);
+        }
+        // 建物B
+        {
+            GameObjectPtr biru = Instantate(CreateObjectType::Empty);
+            biru->name = "BiruB";
+            biru->tag = "Bilding";
+            biru->GetTransform()->position = Vector3(-27, 1, 96);
+
+            GltfMeshRendererPtr render = biru->AddComponent<GltfMeshRenderer>();
+            render->glTFfile = assetManager->GetGltfFile("Map01/BiruB");
+            render->shader = assetManager->GetShader(DefalutShader::Standard3D);
+
+            auto col = biru->AddComponent<AabbCollider>();
+            col->min = Vector3(-14, 1, -11.5f);
+            col->max = Vector3(14, 14, 11.5f);
+
+            // 同じ建物を設置するので複製する
+            GameObjectPtr biru01 = Instantate(biru);
+            biru01->GetTransform()->position = Vector3(-70, 1, -1);
+        }
+        // 建物C
+        {
+            GameObjectPtr biru = Instantate(CreateObjectType::Empty);
+            biru->name = "BiruC";
+            biru->tag = "Bilding";
+            biru->GetTransform()->position = Vector3(-28, 1, 40);
+
+            GltfMeshRendererPtr render = biru->AddComponent<GltfMeshRenderer>();
+            render->glTFfile = assetManager->GetGltfFile("Map01/BiruC");
+            render->shader = assetManager->GetShader(DefalutShader::Standard3D);
+
+            auto col = biru->AddComponent<AabbCollider>();
+            col->min = Vector3(-12, 1, -10);
+            col->max = Vector3(12, 14, 10);
+
+            // 同じ建物を設置するので複製する
+            GameObjectPtr biru01 = Instantate(biru);
+            biru01->GetTransform()->position = Vector3(-75, 1, 91);
         }
     }
 

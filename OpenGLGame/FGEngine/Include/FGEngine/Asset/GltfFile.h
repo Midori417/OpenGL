@@ -3,6 +3,7 @@
 */
 #ifndef FGENGINE_GLTFFILE_H_INCLUDED
 #define FGENGINE_GLTFFILE_H_INCLUDED
+#include "FGEngine/UsingNames/UsingAsset.h" 
 #include "FGEngine/Package/Glad.h"
 #include "FGEngine/Math/Matrix4x4.h"
 #include <string>

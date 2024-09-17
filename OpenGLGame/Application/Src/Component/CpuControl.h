@@ -3,12 +3,13 @@
 */
 #ifndef CPUCONTROL_H_INCLUDED
 #define CPUCONTROL_H_INCLUDED
-#include "BaseControl.h"
+#include "BasePilot.h"
+#include "FGEngine/Math/Vector2.h"
 
 /**
-* CPU操作コンポーネント
+* コンピュータ操作
 */
-class CpuControl : public BaseControl
+class CpuControl : public BasePilot
 {
 public:
 
@@ -20,7 +21,7 @@ public:
 private:
 
 	/**
-	* Updateが始まる前に一度実行
+	* 最初に実行
 	*/
 	virtual void Start() override;
 
@@ -40,9 +41,19 @@ private:
 private:
 
 	/**
-	* 機体の操作を更新
+	* コントロールをスタートさせる
+	*/
+	virtual void ControlStart() override;
+
+	/**
+	* ゲーム入力を更新
 	*/
 	virtual void GameInputUpdate() override;
+
+	/**
+	* 終了処理
+	*/
+	virtual void Finish(VictoryState victoryState) override;
 
 private:
 
@@ -96,7 +107,6 @@ private:
 
 	// 次の行動を変更するまでの時間
 	float cpuTime = 0;
-
 };
 
-#endif // !CPUCONTROL_H_INCLUDED
+#endif // !CPU_H_INCLUDED

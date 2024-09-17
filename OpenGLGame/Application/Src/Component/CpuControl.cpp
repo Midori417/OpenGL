@@ -2,16 +2,15 @@
 * @file CpuControl.cpp
 */
 #include "CpuControl.h"
-#include "FGEngine/Other/Time.h"
-#include "FGEngine/Other/Random.h"
-
 #include "BaseMs.h"
+#include "Global.h"
 
 /**
-* Updateが始まる前に一度実行
+* 最初に実行
 */
 void CpuControl::Start()
 {
+	// 初期する
 	Initialize();
 
 	// CPUの行動切り替え時間を設定
@@ -34,27 +33,48 @@ void CpuControl::Start()
 */
 void CpuControl::Update()
 {
-	// スタート合図が出ていければ何もしない
-	if (!IsStart())
+	if (!isStart)
 	{
 		return;
 	}
 
-	GameInputUpdate();
+	// ゲーム入力の更新
+	if (isInputUpdate)
+	{
+		GameInputUpdate();
+	}
 
-	// 破壊されていなければ
-	if (!myMs->IsDestroy())
+	// 自身の機体が死んでいた時の処理
+	if (myMs->IsDeath())
+	{
+		MyMsDeadUpdate();
+	}
+	else
 	{
 		myMs->SetDistance(GetDistance());
+
+		// ターゲットの更新処理
 		TargetUpdate();
 	}
+
 }
 
 /**
-* 機体の操作を更新
+* コントロールをスタートする
+*/
+void CpuControl::ControlStart()
+{
+	isStart = true;
+}
+
+/**
+* ゲーム入力を更新
 */
 void CpuControl::GameInputUpdate()
 {
+	//return;
+	auto targetMs = targetOwner->myMs;
+
 	// 移動方向を乱数で決める
 	moveTimer -= Time::DeltaTime();
 	if (moveTimer <= 0)
@@ -71,7 +91,7 @@ void CpuControl::GameInputUpdate()
 	{
 		cpuState = (int)Random::Range(CpuState::None, CpuState::Max - 1);
 		cpuTimer = cpuTime;
-		targetNum = (int)Random::Range(0, static_cast<int>(otherTeamControls.size() - 1));
+		targetNum = (int)Random::Range(0, static_cast<int>(otherTeamOwner.size() - 1));
 	}
 
 
@@ -93,24 +113,42 @@ void CpuControl::GameInputUpdate()
 	gameInput->action1Btn = false;
 	if (cpuState == CpuState::Attack || cpuState == CpuState::DashAttack)
 	{
-		gameInput->action1Btn = true;
+		if (!targetMs->IsDeath())
+		{
+			gameInput->action1Btn = true;
+		}
 	}
 
 	// 攻撃2
 	gameInput->action2Btn = false;
 	if (cpuState == CpuState::Attack2)
 	{
-		gameInput->action2Btn = true;
+		if (!targetMs->IsDeath())
+		{
+			gameInput->action2Btn = true;
+		}
 	}
 	// 攻撃3
 	gameInput->action3Btn = false;
 	if (cpuState == CpuState::Attack3)
 	{
-		gameInput->action3Btn = true;
+		if (!targetMs->IsDeath())
+		{
+			gameInput->action3Btn = true;
+		}
 	}
 
 	if (targetNum == 0)
 	{
 		gameInput->targetChangeBtn = true;
 	}
+}
+
+/**
+* 終了処理
+*/
+void CpuControl::Finish(VictoryState victoryState)
+{
+	// 基底を停止
+	myMs->Stop();
 }
