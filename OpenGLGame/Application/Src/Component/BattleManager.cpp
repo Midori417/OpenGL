@@ -69,6 +69,8 @@ void BattleManager::Awake()
 		}
 	}
 
+	BattleSetting();
+
 	//// コントロールの作成
 	//int i = 0;
 	//for (auto x : battleInfo->controlInfo)
@@ -465,7 +467,7 @@ void BattleManager::BattleSetting()
 				control->myCamera = camera->AddComponent<CameraManager>();
 
 				// チームを設定
-				//SetTeum(control, info->teamId);
+				SetTeum(control, info->teamId);
 			}
 			// CPUが操作
 			else
@@ -486,7 +488,7 @@ void BattleManager::BattleSetting()
 				control->myCamera = camera->AddComponent<CameraManager>();
 
 				// チームを設定
-				//SetTeum(control, info->teamId);
+				SetTeum(control, info->teamId);
 			}
 		}
 	}
@@ -496,14 +498,14 @@ void BattleManager::BattleSetting()
 		{
 			for (auto teum2 : team2Pilots)
 			{
-				//teum1->otherTeamControls.push_back(teum2.get());
+				teum1->otherTeamOwner.push_back(teum2.get());
 			}
 		}
 		for (auto teum2 : team2Pilots)
 		{
 			for (auto teum1 : team2Pilots)
 			{
-				//teum2->otherTeamControls.push_back(teum1.get());
+				teum2->otherTeamOwner.push_back(teum1.get());
 			}
 		}
 	}
@@ -528,4 +530,39 @@ BaseMsPtr BattleManager::SetMs(GameObjectPtr obj, MsList ms)
 	}
 
 	return nullptr;
+}
+
+
+/**
+* チームを設定する
+*
+* @param control	設定するコントロール
+* @param id			チームID
+*/
+void BattleManager::SetTeum(const BasePilotPtr& control, int id)
+{
+	if (id == 1)
+	{
+		// チーム1に登録
+		team1Pilots.push_back(control);
+
+		// チーム人数が1以上なら自チームのコントロールを設定
+		if (team1Pilots.size() > 1)
+		{
+			control->myTeamOtherOwner = team1Pilots.begin()->get();
+			team1Pilots.begin()->get()->myTeamOtherOwner = control.get();
+		}
+	}
+	else
+	{
+		// チーム2に登録
+		team2Pilots.push_back(control);
+
+		// チーム人数が1以上なら自チームのコントロールを設定
+		if (team2Pilots.size() > 1)
+		{
+			control->myTeamOtherOwner = team2Pilots.begin()->get();
+			team2Pilots.begin()->get()->myTeamOtherOwner = control.get();
+		}
+	}
 }

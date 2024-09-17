@@ -81,6 +81,14 @@ private:
 	*/
 	BaseMsPtr SetMs(GameObjectPtr obj,  MsList ms);
 
+	/**
+	* チームを設定する
+	*
+	* @param control	設定するコントロール
+	* @param id			チームID
+	*/
+	void SetTeum(const BasePilotPtr& control, int id);
+
 private:
 
 	// バトル情報
