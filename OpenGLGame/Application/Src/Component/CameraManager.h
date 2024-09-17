@@ -24,8 +24,6 @@ public:
 
 private:
 
-	virtual void Awake() override;
-
 	/**
 	* Updateが始まる前に一度実行
 	*/

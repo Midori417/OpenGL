@@ -6,10 +6,6 @@
 
 #include "LookOnCamera.h"
 
-void CameraManager::Awake()
-{
-}
-
 /**
 * Updateが始まる前に一度実行
 */

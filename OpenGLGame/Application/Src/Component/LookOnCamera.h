@@ -19,8 +19,6 @@ public:
 
 public:
 
-	virtual void Start() override;
-
 	/**
 	* ロックオンカメラの挙動
 	* 

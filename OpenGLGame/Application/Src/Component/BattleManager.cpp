@@ -11,7 +11,7 @@
 #include "Gundam.h"
 
 #include "HumanPilot.h"
-#include "CpuControl.h"
+#include "CpuPilot.h"
 
 // スタティック変数を初期化
 BattleInfoPtr BattleManager::battleInfo = nullptr;
@@ -124,7 +124,7 @@ void BattleManager::Awake()
 		}
 		else if (x->playerId == 1)
 		{
-			auto cpuControl = player->AddComponent<CpuControl>();
+			auto cpuControl = player->AddComponent<CpuPilot>();
 			pilots.push_back(cpuControl);
 
 			// 機体を設定

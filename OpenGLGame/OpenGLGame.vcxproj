@@ -157,7 +157,7 @@
     <ClCompile Include="Application\Src\Component\BattleSettingManager.cpp" />
     <ClCompile Include="Application\Src\Component\BasePilot.cpp" />
     <ClCompile Include="Application\Src\Component\CameraManager.cpp" />
-    <ClCompile Include="Application\Src\Component\CpuControl.cpp" />
+    <ClCompile Include="Application\Src\Component\CpuPilot.cpp" />
     <ClCompile Include="Application\Src\Component\FadeOut.cpp" />
     <ClCompile Include="Application\Src\Component\Gundam.cpp" />
     <ClCompile Include="Application\Src\Component\HomingBullet.cpp" />
@@ -239,7 +239,7 @@
     <ClInclude Include="Application\Src\Component\BattleSettingManager.h" />
     <ClInclude Include="Application\Src\Component\BasePilot.h" />
     <ClInclude Include="Application\Src\Component\CameraManager.h" />
-    <ClInclude Include="Application\Src\Component\CpuControl.h" />
+    <ClInclude Include="Application\Src\Component\CpuPilot.h" />
     <ClInclude Include="Application\Src\Component\FadeOut.h" />
     <ClInclude Include="Application\Src\Component\Gundam.h" />
     <ClInclude Include="Application\Src\Component\HomingBullet.h" />

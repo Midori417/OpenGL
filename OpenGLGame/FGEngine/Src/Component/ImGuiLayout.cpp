@@ -35,7 +35,7 @@ namespace FGEngine
 		// UIの設定を更新
 		UISetting();
 
-		// ImBUiの描画終了
+		// ImGUiの描画終了
 		ImGui::End();
 	}
 }

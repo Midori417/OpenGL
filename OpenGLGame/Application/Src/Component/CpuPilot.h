@@ -1,22 +1,22 @@
 /**
-* @file CpuControl.h
+* @file CpuPilot.h
 */
-#ifndef CPUCONTROL_H_INCLUDED
-#define CPUCONTROL_H_INCLUDED
+#ifndef CPUPILOT_H_INCLUDED
+#define CPUPILOT_H_INCLUDED
 #include "BasePilot.h"
 #include "FGEngine/Math/Vector2.h"
 
 /**
-* コンピュータ操作
+* コンピュータパイロット
 */
-class CpuControl : public BasePilot
+class CpuPilot : public BasePilot
 {
 public:
 
 	/**
 	* デフォルトコンストラクタ
 	*/
-	CpuControl() = default;
+	CpuPilot() = default;
 
 private:
 
@@ -109,4 +109,4 @@ private:
 	float cpuTime = 0;
 };
 
-#endif // !CPU_H_INCLUDED
+#endif // !CPUPILOT_H_INCLUDED

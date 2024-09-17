@@ -6,11 +6,6 @@
 #include "FGEngine/Math/Mathf.h"
 #include "FGEngine/Other/Time.h"
 
-void LookOnCamera::Start()
-{
-	int i = 0;
-}
-
 /**
 * ロックオンカメラの挙動
 */

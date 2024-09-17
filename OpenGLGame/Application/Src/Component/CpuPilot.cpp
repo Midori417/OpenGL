@@ -1,14 +1,14 @@
 /**
-* @file CpuControl.cpp
+* @file CpuPilot.cpp
 */
-#include "CpuControl.h"
+#include "CpuPilot.h"
 #include "BaseMs.h"
 #include "Global.h"
 
 /**
 * 最初に実行
 */
-void CpuControl::Start()
+void CpuPilot::Start()
 {
 	// 初期する
 	Initialize();
@@ -31,7 +31,7 @@ void CpuControl::Start()
 /**
 * 毎フレーム実行
 */
-void CpuControl::Update()
+void CpuPilot::Update()
 {
 	if (!isStart)
 	{
@@ -62,7 +62,7 @@ void CpuControl::Update()
 /**
 * コントロールをスタートする
 */
-void CpuControl::ControlStart()
+void CpuPilot::ControlStart()
 {
 	isStart = true;
 }
@@ -70,9 +70,9 @@ void CpuControl::ControlStart()
 /**
 * ゲーム入力を更新
 */
-void CpuControl::GameInputUpdate()
+void CpuPilot::GameInputUpdate()
 {
-	//return;
+	return;
 	auto targetMs = targetOwner->myMs;
 
 	// 移動方向を乱数で決める
@@ -147,7 +147,7 @@ void CpuControl::GameInputUpdate()
 /**
 * 終了処理
 */
-void CpuControl::Finish(VictoryState victoryState)
+void CpuPilot::Finish(VictoryState victoryState)
 {
 	// 基底を停止
 	myMs->Stop();
