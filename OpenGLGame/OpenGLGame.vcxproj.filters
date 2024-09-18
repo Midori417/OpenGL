@@ -286,14 +286,14 @@
     <Filter Include="Application\Component\Pilot">
       <UniqueIdentifier>{8572d4ea-68a9-45ef-803f-f37f89dd1c5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Component\Pilot\Hyuman">
-      <UniqueIdentifier>{da2bc426-ac67-4c57-87bd-c555e34fd02c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Component\Pilot\Cpu">
       <UniqueIdentifier>{65dcbd74-30c0-4bb0-aa10-04ff8b999cfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Application\Component\Camera\Manager">
       <UniqueIdentifier>{a9603786-fab6-4910-94ed-cf498683b846}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Pilot\Human">
+      <UniqueIdentifier>{da2bc426-ac67-4c57-87bd-c555e34fd02c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -501,9 +501,6 @@
     <ClCompile Include="Application\Src\Component\LookOnCamera.cpp">
       <Filter>Application\Component\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Component\CpuControl.cpp">
-      <Filter>Application\Component\Pilot\Cpu</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Src\Component\BaseMs.cpp">
       <Filter>Application\Component\Ms</Filter>
     </ClCompile>
@@ -514,7 +511,7 @@
       <Filter>Application\Component\Manager\Battle</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Component\HumanPilot.cpp">
-      <Filter>Application\Component\Pilot\Hyuman</Filter>
+      <Filter>Application\Component\Pilot\Human</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Component\BasePilot.cpp">
       <Filter>Application\Component\Pilot</Filter>
@@ -533,6 +530,9 @@
     </ClCompile>
     <ClCompile Include="Application\Src\Component\CameraManager.cpp">
       <Filter>Application\Component\Camera\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\CpuPilot.cpp">
+      <Filter>Application\Component\Pilot\Cpu</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -854,9 +854,6 @@
     <ClInclude Include="Application\Src\Component\LookOnCamera.h">
       <Filter>Application\Component\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\Component\CpuControl.h">
-      <Filter>Application\Component\Pilot\Cpu</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Src\Component\BaseSlash.h">
       <Filter>Application\Component\Weapon</Filter>
     </ClInclude>
@@ -867,7 +864,7 @@
       <Filter>Application\Component\Manager\Battle</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Component\HumanPilot.h">
-      <Filter>Application\Component\Pilot\Hyuman</Filter>
+      <Filter>Application\Component\Pilot\Human</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Component\BasePilot.h">
       <Filter>Application\Component\Pilot</Filter>
@@ -886,6 +883,15 @@
     </ClInclude>
     <ClInclude Include="Application\Src\Component\CameraManager.h">
       <Filter>Application\Component\Camera\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\CpuPilot.h">
+      <Filter>Application\Component\Pilot\Cpu</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\DamageInfo.h">
+      <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Global.h">
+      <Filter>Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

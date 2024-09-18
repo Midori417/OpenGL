@@ -74,7 +74,7 @@ void CpuPilot::ControlStart()
 void CpuPilot::GameInputUpdate()
 {
 	return;
-	auto targetMs = targetOwner->myMs;
+	auto targetMs = GetTargetMs();
 
 	// ˆÚ“®•ûŒü‚ğ—”‚ÅŒˆ‚ß‚é
 	moveTimer -= Time::DeltaTime();
@@ -92,9 +92,8 @@ void CpuPilot::GameInputUpdate()
 	{
 		cpuState = (int)Random::Range(CpuState::None, CpuState::Max - 1);
 		cpuTimer = cpuTime;
-		targetNum = (int)Random::Range(0, static_cast<int>(otherTeamOwner.size() - 1));
+		targetNum = (int)Random::Range(0, static_cast<int>(GetOtherTeamPilotSize() - 1));
 	}
-
 
 	// ƒWƒƒƒ“ƒv
 	gameInput->jumpBtn = false;

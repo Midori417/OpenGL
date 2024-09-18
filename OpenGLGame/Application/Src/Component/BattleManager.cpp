@@ -23,42 +23,38 @@ BattleInfoPtr BattleManager::battleInfo = nullptr;
 void BattleManager::Awake()
 {
 	// 各マネージャを取得
-	auto resManager = AssetManager::GetInstance();
+	auto assetManager = AssetManager::GetInstance();
 
 	// フェードオブジェクトを作成
 	{
-		auto obj = Instantate(resManager->GetGameObject("FadeObject"));
+		auto obj = Instantate(assetManager->GetGameObject("FadeObject"));
 		fadeOut = obj->GetComponent<FadeOut>();
 	}
 
 	// バトル情報を作成
+	// 後々バトル設定シーンでする
 	battleInfo = std::make_shared<BattleInfo>();
 	{
 		// 配列を予約
-		battleInfo->controlInfo.reserve(playerMax);
+		battleInfo->pilotInfos.reserve(playerMax);
 		for (int i = 0; i < playerMax; ++i)
 		{
-			battleInfo->controlInfo.push_back(std::make_shared<ControlInfo>());
+			PilotInfo pilotInfo;
+			battleInfo->pilotInfos.push_back(pilotInfo);
 		}
 
 		// テスト
-		battleInfo->controlInfo[0]->teamId = 1;
-		battleInfo->controlInfo[0]->playerId = 0;
-		battleInfo->controlInfo[0]->ms = MsList::Gundam;
+		battleInfo->pilotInfos[0].teamId = 1;
+		battleInfo->pilotInfos[0].playerId = 0;
+		battleInfo->pilotInfos[0].ms = MsList::Gundam;
 
-		battleInfo->controlInfo[1]->teamId = 2;
-		battleInfo->controlInfo[1]->playerId = 1;
-		battleInfo->controlInfo[1]->ms = MsList::Gundam;
-
-		battleInfo->controlInfo[2]->teamId = 2;
-		battleInfo->controlInfo[2]->playerId = 1;
-		battleInfo->controlInfo[2]->ms = MsList::Gundam;
-
-		battleInfo->controlInfo[3]->teamId = 1;
-		battleInfo->controlInfo[3]->playerId = 1;
-		battleInfo->controlInfo[3]->ms = MsList::Gundam;
+		battleInfo->pilotInfos[1].teamId = 2;
+		battleInfo->pilotInfos[1].playerId = 1;
+		battleInfo->pilotInfos[1].ms = MsList::Gundam;
 
 		// バトル情報を設定
+
+		// チーム体力を設定
 		if (battleInfo->team1Hp > 0)
 		{
 			team1Hp = std::make_shared<int>(battleInfo->team1Hp);
@@ -67,126 +63,11 @@ void BattleManager::Awake()
 		{
 			team2Hp = std::make_shared<int>(battleInfo->team2Hp);
 		}
+
+		// 時間を設定
 	}
 
 	BattleSetting();
-
-	//// コントロールの作成
-	//int i = 0;
-	//for (auto x : battleInfo->controlInfo)
-	//{
-	//	// チームIDが0なら出場なし
-	//	if (x->teamId == 0)
-	//	{
-	//		i++;
-	//		continue;
-	//	}
-	//	// プレイヤーを作成
-	//	auto player = Instantate(CreateObjectType::Empty);
-	//	player->name = "Player" + std::to_string(i);
-	//	// 誰が操作するかを設定
-	//	if (x->playerId == 0)
-	//	{
-	//		auto hyumanControl = player->AddComponent<HumanPilot>();
-	//		pilots.push_back(hyumanControl);
-	//		// 機体を設定
-	//		auto ms = Instantate(CreateObjectType::Empty);
-	//		ms->name = "MS" + std::to_string(i);
-	//		// 対応するMsコンポーネントを追加
-	//		hyumanControl->myMs = SetMs(ms, x->ms);
-	//		// カメラを設定
-	//		auto camera = OwnerObject()->GetScene()->GetMainCameraInfo()->OwnerObject();
-	//		camera->name = "PlayerCamera";
-	//		hyumanControl->myCamera = camera->AddComponent<CameraManager>();
-	//		// チームを設定
-	//		if (x->teumId == 1)
-	//		{
-	//			team1Pilots.push_back(hyumanControl);
-	//			// チーム人数が1以上なら自チームのオーナを設定
-	//			if (team1Pilots.size() > 1)
-	//			{
-	//				hyumanControl->myTeamOtherOwner = team1Pilots.begin()->get();
-	//				team1Pilots.begin()->get()->myTeamOtherOwner = hyumanControl.get();
-	//			}
-	//		}
-	//		else if (x->teumId == 2)
-	//		{
-	//			team2Pilots.push_back(hyumanControl);
-	//			// チーム人数が1以上なら自チームのオーナを設定
-	//			if (team2Pilots.size() > 1)
-	//			{
-	//				hyumanControl->myTeamOtherOwner = team2Pilots.begin()->get();
-	//				team2Pilots.begin()->get()->myTeamOtherOwner = hyumanControl.get();
-	//			}
-	//		}
-	//	}
-	//	else if (x->playerId == 1)
-	//	{
-	//		auto cpuControl = player->AddComponent<CpuPilot>();
-	//		pilots.push_back(cpuControl);
-	//		// 機体を設定
-	//		auto ms = Instantate(CreateObjectType::Empty);
-	//		ms->name = "MS" + std::to_string(i);
-	//		// 対応するMsコンポーネントを追加
-	//		cpuControl->myMs = SetMs(ms, x->ms);
-	//		// 仮想カメラを設定
-	//		auto camera = Instantate(CreateObjectType::Empty);
-	//		camera->name = "VitualCaemra";
-	//		cpuControl->myCamera = camera->AddComponent<CameraManager>();
-	//		// チームを設定
-	//		if (x->teumId == 1)
-	//		{
-	//			team1Pilots.push_back(cpuControl);
-	//			// チーム人数が1以上なら自チームのオーナを設定
-	//			if (team1Pilots.size() > 1)
-	//			{
-	//				cpuControl->myTeamOtherOwner = team1Pilots.begin()->get();
-	//				team1Pilots.begin()->get()->myTeamOtherOwner = cpuControl.get();
-	//			}
-	//		}
-	//		else if (x->teumId == 2)
-	//		{
-	//			team2Pilots.push_back(cpuControl);
-	//			// チーム人数が1以上なら自チームのオーナを設定
-	//			if (team2Pilots.size() > 1)
-	//			{
-	//				cpuControl->myTeamOtherOwner = team2Pilots.begin()->get();
-	//				team2Pilots.begin()->get()->myTeamOtherOwner = cpuControl.get();
-	//			}
-	//		}
-	//	}
-	//	i++;
-	//}
-
-	// 相手チームのオーナを設定
-	{
-		for (auto teum1 : team1Pilots)
-		{
-			for (auto teum2 : team2Pilots)
-			{
-				teum1->otherTeamOwner.push_back(teum2.get());
-			}
-		}
-		for (auto teum2 : team2Pilots)
-		{
-			for (auto teum1 : team1Pilots)
-			{
-				teum2->otherTeamOwner.push_back(teum1.get());
-			}
-		}
-	}
-
-	// 自チーム体力を設定
-	{
-		for (auto teum1 : team1Pilots)
-		{
-			teum1->SetTeamHP(team1Hp.get(), team2Hp.get());
-		}
-		for (auto teum2 : team2Pilots)
-		{
-			teum2->SetTeamHP(team2Hp.get(), team1Hp.get());
-		}
-	}
 
 	// UI
 	{
@@ -195,7 +76,7 @@ void BattleManager::Awake()
 			auto standbay = Instantate(CreateObjectType::Empty);
 			standbay->name = "Standby";
 			imgStandbay = standbay->AddComponent<Image>();
-			imgStandbay->texture = resManager->GetTexture("Standby");
+			imgStandbay->texture = assetManager->GetTexture("Standby");
 			imgStandbay->SetWindowSize();
 		}
 		// GOを作成
@@ -203,7 +84,7 @@ void BattleManager::Awake()
 			auto go = Instantate(CreateObjectType::Empty);
 			go->name = "Go";
 			imgGo = go->AddComponent<Image>();
-			imgGo->texture = resManager->GetTexture("Go");
+			imgGo->texture = assetManager->GetTexture("Go");
 			imgGo->SetWindowSize();
 		}
 	}
@@ -433,80 +314,93 @@ void BattleManager::BattleSetting()
 
 	// コントロールを作成
 	{
-		auto controllInfos = battleInfo->controlInfo;
-		for (int i = 0; i < controllInfos.size(); ++i)
+		std::vector<PilotInfo> pilotInfos = battleInfo->pilotInfos;
+		for (int i = 0; i < pilotInfos.size(); ++i)
 		{
-			auto info = controllInfos[i];
+			PilotInfo pilotInfo = pilotInfos[i];
 
 			// チームIDが0なら出場しない
-			if (info->teamId == 0)
+			if (pilotInfo.teamId == 0)
 			{
 				continue;
 			}
 
-			// プレイヤーを作成
-			auto player = Instantate(CreateObjectType::Empty);
-			player->name = "Player" + std::to_string(i);
+			// パイロットを作成
+			GameObjectPtr pilotObj = Instantate(CreateObjectType::Empty);
+			pilotObj->name = "Pilot" + std::to_string(i);
 
 			// 人間が操作
-			if (info->playerId == 0)
+			if (pilotInfo.playerId == 0)
 			{
-				auto control = player->AddComponent<HumanPilot>();
+				BasePilotPtr pilot = pilotObj->AddComponent<HumanPilot>();
 
 				// コントロール配列に追加
-				pilots.push_back(control);
+				pilots.push_back(pilot);
 
 				// 機体を作成
 				GameObjectPtr ms = Instantate(CreateObjectType::Empty);
-
-				// msにMSListに対応するコンポーネントを追加
-				control->myMs = SetMs(ms, info->ms);
+				// msに対応する機体コンポーネントを追加してパイロットに設定
+				pilot->myMs = SetMs(ms, pilotInfo.ms);
 
 				// カメラを取得して設定
-				auto camera = OwnerObject()->GetScene()->GetMainCameraInfo()->OwnerObject();
-				control->myCamera = camera->AddComponent<CameraManager>();
+				GameObjectPtr camera = OwnerObject()->GetScene()->GetMainCameraInfo()->OwnerObject();
+				camera->name = "Camera";
+				pilot->myCamera = camera->AddComponent<CameraManager>();
 
 				// チームを設定
-				SetTeum(control, info->teamId);
+				SetTeum(pilot, pilotInfo.teamId);
 			}
 			// CPUが操作
 			else
 			{
-				auto control = player->AddComponent<CpuPilot>();
+				BasePilotPtr pilot = pilotObj->AddComponent<CpuPilot>();
 
 				// コントロール配列に追加
-				pilots.push_back(control);
+				pilots.push_back(pilot);
 
 				// 機体を作成
 				GameObjectPtr ms = Instantate(CreateObjectType::Empty);
-
-				// msにMSListに対応するコンポーネントを追加
-				control->myMs = SetMs(ms, info->ms);
+				// msに対応する機体コンポーネントを追加してパイロットに設定
+				pilot->myMs = SetMs(ms, pilotInfo.ms);
 
 				// 仮想カメラを作成
-				auto camera = Instantate(CreateObjectType::Empty);
-				control->myCamera = camera->AddComponent<CameraManager>();
+				GameObjectPtr camera = Instantate(CreateObjectType::Empty);
+				camera->name = "VirtualCamera";
+				pilot->myCamera = camera->AddComponent<CameraManager>();
 
 				// チームを設定
-				SetTeum(control, info->teamId);
+				SetTeum(pilot, pilotInfo.teamId);
 			}
 		}
 	}
-	// コントロールに相手にチームのコントロールを設定
+
+	// パイロットに相手チームのパイロットを設定
 	{
-		for (auto teum1 : team1Pilots)
+		for (BasePilotPtr& pilot1 : team1Pilots)
 		{
-			for (auto teum2 : team2Pilots)
+			for (BasePilotPtr& pilot2 : team2Pilots)
 			{
-				teum1->otherTeamOwner.push_back(teum2.get());
+				pilot1->SetOtherTeamPilot(pilot2);
 			}
 		}
-		for (auto teum2 : team2Pilots)
+		for (BasePilotPtr& pilot2 : team2Pilots)
 		{
-			for (auto teum1 : team2Pilots)
+			for (BasePilotPtr& pilot1 : team2Pilots)
 			{
-				teum2->otherTeamOwner.push_back(teum1.get());
+				pilot2->SetOtherTeamPilot(pilot1);
 			}
+		}
+	}
+
+	// 自チーム体力を設定
+	{
+		for (BasePilotPtr pilot : team1Pilots)
+		{
+			pilot->SetTeamHP(team1Hp.get(), team2Hp.get());
+		}
+		for (BasePilotPtr pilot : team1Pilots)
+		{
+			pilot->SetTeamHP(team2Hp.get(), team1Hp.get());
 		}
 	}
 }
@@ -549,8 +443,8 @@ void BattleManager::SetTeum(const BasePilotPtr& control, int id)
 		// チーム人数が1以上なら自チームのコントロールを設定
 		if (team1Pilots.size() > 1)
 		{
-			control->myTeamOtherOwner = team1Pilots.begin()->get();
-			team1Pilots.begin()->get()->myTeamOtherOwner = control.get();
+			control->SetPartnerPilot(team1Pilots[0]);
+			team1Pilots[0]->SetPartnerPilot(control);
 		}
 	}
 	else
@@ -561,8 +455,8 @@ void BattleManager::SetTeum(const BasePilotPtr& control, int id)
 		// チーム人数が1以上なら自チームのコントロールを設定
 		if (team2Pilots.size() > 1)
 		{
-			control->myTeamOtherOwner = team2Pilots.begin()->get();
-			team2Pilots.begin()->get()->myTeamOtherOwner = control.get();
+			control->SetPartnerPilot(team2Pilots[0]);
+			team2Pilots[0]->SetPartnerPilot(control);
 		}
 	}
 }

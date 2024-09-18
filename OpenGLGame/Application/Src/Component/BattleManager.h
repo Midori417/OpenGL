@@ -69,8 +69,11 @@ public:
 	*/
 	void SetResponPos(const std::vector<Vector3>& poses);
 
-private:
+private:	// バトルセッティング
 
+	/**
+	* バトルセッティングで決めた情報をもとにバトルルールを決める
+	*/
 	void BattleSetting();
 
 	/**

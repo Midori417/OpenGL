@@ -32,25 +32,24 @@ enum class VictoryState
 };
 
 /**
-* コントロール情報
+* パイロット情報
 */
-struct ControlInfo
+struct PilotInfo
 {
 	// チームId
 	// 0 = 出場無し, 1 = チーム１, 2 = チーム2
-	int teamId = -1;
+	int teamId = 0;
 
 	// PlayerId
 	// 0 = 人間 , 1 = CPU
 	int playerId = -1;
 
-	// 使うMS
+	// 使う機体
 	MsList ms;
 };
-using ControlInfoPtr = std::shared_ptr<ControlInfo>;
 
 /**
-* バトル前情報
+* バトル情報
 */
 struct BattleInfo
 {
@@ -66,8 +65,8 @@ struct BattleInfo
 	// -1 = ∞
 	float time = 0;
 
-	// コントロール情報配列
-	std::vector<ControlInfoPtr> controlInfo;
+	// パイロット情報
+	std::vector<PilotInfo> pilotInfos;
 };
 
 #endif // !GLOBAL_H_INCLUDED

@@ -121,7 +121,7 @@ void HumanPilot::Start()
 			}
 		}
 		// 自チームの味方体力
-		if (myTeamOtherOwner)
+		if (GetPartnerPilot())
 		{
 			// パートナー機体体力背景
 			{
@@ -174,7 +174,7 @@ void HumanPilot::Start()
 			imgTargetMark->texture = texTargetMarkGreen;
 			imgTargetMark->size = imgTargetMark->texture->GetSize();
 		}
-		for (int i = 0; i < otherTeamOwner.size(); ++i)
+		for (int i = 0; i < GetOtherTeamPilotSize(); ++i)
 		{
 			// ターゲットの情報を作成
 			{
@@ -275,7 +275,7 @@ void HumanPilot::Start()
 		{
 			x->isActive = false;
 		}
-		if (myTeamOtherOwner)
+		if (GetPartnerPilot())
 		{
 			imgPartnerHpBack->isActive = (false);
 			inPartnerMsHp->isActive = (false);
@@ -283,7 +283,7 @@ void HumanPilot::Start()
 			imgMyTeumOtherMsInfo->isActive =false;
 		}
 		imgTargetMark->isActive =(false);
-		for (int i = 0; i < otherTeamOwner.size(); ++i)
+		for (int i = 0; i < GetOtherTeamPilotSize(); ++i)
 		{
 			imgOtherTeumMsInfoBacks[i]->isActive =(false);
 			imgOtherTeumMsHpBars[i]->isActive =(false);
@@ -409,14 +409,14 @@ void HumanPilot::UIUpdate()
 	}
 
 	// 味方の体力
-	if (myTeamOtherOwner)
+	if (GetPartnerPilot())
 	{
 		if (inPartnerMsHp)
 		{
-			inPartnerMsHp->num = myTeamOtherOwner->myMs->GetHP();
+			inPartnerMsHp->num = GetPartnerMs()->GetHP();
 		}
 
-		auto otherMs = myTeamOtherOwner->myMs;
+		auto otherMs = GetPartnerMs();
 		if (!otherMs->IsDeath())
 		{
 			// MSの方向を調べる
@@ -484,12 +484,12 @@ void HumanPilot::UIUpdate()
 		imgWeaponBars[i]->fillAmout = Mathf::Clamp01((amoMax - (amoMax - amo)) / amoMax);
 	}
 
-	if (targetOwner)
+	if (GetTargetPilot())
 	{
 		// ターゲットマークの処理
 		if (imgTargetMark)
 		{
-			auto targetMs = targetOwner->myMs;
+			auto targetMs = GetTargetMs();
 
 			if (!targetMs->IsDeath())
 			{
@@ -541,9 +541,9 @@ void HumanPilot::UIUpdate()
 
 	}
 	// 相手チームの機体体力
-	for (int i = 0; i < otherTeamOwner.size(); ++i)
+	for (int i = 0; i < GetOtherTeamPilotSize(); ++i)
 	{
-		auto otherMs = otherTeamOwner[i]->myMs;
+		BaseMsPtr otherMs = GetOtherTeamMs(i);
 
 		if (!otherMs->IsDeath())
 		{
@@ -615,7 +615,7 @@ void HumanPilot::Finish(VictoryState victoryState)
 		imgBoostBarBack->isActive = (false);
 		imgBoostBar->isActive =(false);
 		imgBoostBarOverHeat->isActive =(false);
-		if (myTeamOtherOwner)
+		if (GetPartnerPilot())
 		{
 			imgPartnerHpBack->isActive =(false);
 			imgMyTeumOtherMsHpBar->isActive =(false);
@@ -639,7 +639,7 @@ void HumanPilot::Finish(VictoryState victoryState)
 			x->isActive = (false);
 		}
 		imgTargetMark->isActive = (false);
-		for (int i = 0; i < otherTeamOwner.size(); ++i)
+		for (int i = 0; i < GetOtherTeamPilotSize(); ++i)
 		{
 			imgOtherTeumMsInfoBacks[i]->isActive =(false);
 			imgOtherTeumMsHpBars[i]->isActive =(false);

@@ -19,11 +19,23 @@ void BasePilot::SetTeamHP(int* myTeamHp, int* otherTeamHp)
 }
 
 /**
-* チーム体力を無限にする
+* パートナーパイロットを設定
+*
+* @param 設定するパートナーパイロット
 */
-void BasePilot::TeamHPInivinit()
+void BasePilot::SetPartnerPilot(const BasePilotPtr& pilot)
 {
-	isTeamHpInfinit = true;
+	partnerPilot = pilot.get();
+}
+
+/**
+* 相手チームのパイロットを設定
+*
+* @param 設定する相手チームのパイロット
+*/
+void BasePilot::SetOtherTeamPilot(const BasePilotPtr& pilot)
+{
+	otherTeamPilots.push_back(pilot.get());
 }
 
 /**
@@ -32,17 +44,17 @@ void BasePilot::TeamHPInivinit()
 void BasePilot::Initialize()
 {
 	// 初期ターゲットを設定
-	targetOwner = otherTeamOwner[0];
+	targetPilot = otherTeamPilots[0];
 
 	// カメラに自身のMSを設定
 	myCamera->SetMyMs(myMs->GetTransform());
 
 	// カメラにターゲットを設定
-	myCamera->SetTarget(targetOwner->myMs->GetTransform());
+	myCamera->SetTarget(targetPilot->myMs->GetTransform());
 
 	// プレイヤーにカメラ設定
 	myMs->SetCamera(myCamera->GetTransform().get());
-	myMs->SetTargetMS(targetOwner->myMs.get());
+	myMs->SetTargetMS(targetPilot->myMs.get());
 
 	// ゲーム入力を作成
 	gameInput = std::make_shared<GameInput>();
@@ -97,39 +109,39 @@ void BasePilot::MyMsDeadUpdate()
 void BasePilot::TargetUpdate()
 {
 	// ターゲット切り替え
-	if (gameInput->targetChangeBtn && otherTeamOwner.size() > 1)
+	if (gameInput->targetChangeBtn && otherTeamPilots.size() > 1)
 	{
-		if (targetOwner == otherTeamOwner[0])
+		if (targetPilot == otherTeamPilots[0])
 		{
-			targetOwner = otherTeamOwner[1];
+			targetPilot = otherTeamPilots[1];
 			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SetTarget(targetOwner->myMs->GetTransform());
+			myMs->SetTargetMS(targetPilot->myMs.get());
+			myCamera->SetTarget(targetPilot->myMs->GetTransform());
 		}
-		else if (targetOwner == otherTeamOwner[1])
+		else if (targetPilot == otherTeamPilots[1])
 		{
-			targetOwner = otherTeamOwner[0];
+			targetPilot = otherTeamPilots[0];
 			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SetTarget(targetOwner->myMs->GetTransform());
+			myMs->SetTargetMS(targetPilot->myMs.get());
+			myCamera->SetTarget(targetPilot->myMs->GetTransform());
 		}
 	}
 	// ターゲットの機体が死んだら
-	if (targetOwner->myMs->IsDeath() && otherTeamOwner.size() > 1)
+	if (targetPilot->myMs->IsDeath() && otherTeamPilots.size() > 1)
 	{
-		if (targetOwner == otherTeamOwner[0])
+		if (targetPilot == otherTeamPilots[0])
 		{
-			targetOwner = otherTeamOwner[1];
+			targetPilot = otherTeamPilots[1];
 			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SetTarget(targetOwner->myMs->GetTransform());
+			myMs->SetTargetMS(targetPilot->myMs.get());
+			myCamera->SetTarget(targetPilot->myMs->GetTransform());
 		}
-		else if (targetOwner == otherTeamOwner[1])
+		else if (targetPilot == otherTeamPilots[1])
 		{
-			targetOwner = otherTeamOwner[0];
+			targetPilot = otherTeamPilots[0];
 			// カメラと機体にターゲットを持たせる
-			myMs->SetTargetMS(targetOwner->myMs.get());
-			myCamera->SetTarget(targetOwner->myMs->GetTransform());
+			myMs->SetTargetMS(targetPilot->myMs.get());
+			myCamera->SetTarget(targetPilot->myMs->GetTransform());
 		}
 	}
 }
@@ -140,6 +152,89 @@ void BasePilot::TargetUpdate()
 int& BasePilot::MyTeamHp() const
 {
 	return *myTeamHp;
+}
+
+/**
+* パートナーパイロットを取得
+*/
+BasePilot* BasePilot::GetPartnerPilot() const
+{
+	return partnerPilot;
+}
+
+/**
+* パートナーの機体を取得
+*/
+BaseMsPtr BasePilot::GetPartnerMs() const
+{
+	if (!partnerPilot)
+	{
+		// パートナーがいない
+		return nullptr;
+	}
+
+	return partnerPilot->myMs;
+}
+
+/**
+* 相手チームのパイロットを取得
+*
+* @param index パイロット番号
+*/
+BasePilot* BasePilot::GetOtherTeamPilot(size_t index) const
+{
+	// 相手チームのパイロットより多い配列番号の場合はnullptrを返す
+	if (index > otherTeamPilots.size() - 1)
+	{
+		return nullptr;
+	}
+
+	return otherTeamPilots[index];
+}
+
+/**
+* 相手チームの機体を取得
+*
+* @param index パイロット番号
+*/
+BaseMsPtr BasePilot::GetOtherTeamMs(size_t index) const
+{
+	// 相手チームのパイロットより多い配列番号の場合はnullptrを返す
+	if (index > otherTeamPilots.size() - 1)
+	{
+		return nullptr;
+	}
+
+	return otherTeamPilots[index]->myMs;
+}
+
+/**
+* 相手チームのパイロットの数を取得
+*/
+size_t BasePilot::GetOtherTeamPilotSize() const
+{
+	return otherTeamPilots.size();
+}
+
+/**
+* ターゲットパイロットを取得
+*/
+BasePilot* BasePilot::GetTargetPilot() const
+{
+	return targetPilot;
+}
+
+/**
+* ターゲット機体を取得
+*/
+BaseMsPtr BasePilot::GetTargetMs() const
+{
+	if (!targetPilot)
+	{
+		return nullptr;
+	}
+
+	return targetPilot->myMs;
 }
 
 /**
@@ -163,9 +258,9 @@ void BasePilot::TeumHpSud()
 */
 float BasePilot::GetDistance()
 {
-	if (targetOwner)
+	if (targetPilot)
 	{
-		auto targetMs = targetOwner->myMs;
+		auto targetMs = targetPilot->myMs;
 		if (targetMs)
 		{
 			return Vector3::Distance(targetMs->GetTransform()->position, myMs->GetTransform()->position);

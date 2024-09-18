@@ -6,15 +6,16 @@
 #include "FGEngine/Component/GameEvent.h"
 using namespace FGEngine;
 
-
 // 先行宣言
+class BasePilot;
+using BasePilotPtr = std::shared_ptr<BasePilot>;
 class BaseMs;
 using BaseMsPtr = std::shared_ptr<BaseMs>;
 class CameraManager;
 using CameraManagerPtr = std::shared_ptr<CameraManager>;
-enum class VictoryState;
 struct GameInput;
 using GameInputPtr = std::shared_ptr<GameInput>;
+enum class VictoryState;
 
 /**
 * パイロットの基底コンポーネント
@@ -46,6 +47,13 @@ public:
 	virtual void ControlStart(){}
 
 	/**
+	* 終了
+	*/
+	virtual void Finish(VictoryState victoryState) {}
+
+public:
+
+	/**
 	* 自チームと相手チームの体力を設定
 	* 
 	* @param myTeamHp		自チームの体力ポインター
@@ -54,14 +62,18 @@ public:
 	void SetTeamHP(int* myTeumHp, int* otherTeumHp);
 
 	/**
-	* 終了
+	* パートナーパイロットを設定
+	* 
+	* @param 設定するパートナーパイロット
 	*/
-	virtual void Finish(VictoryState victoryState){}
+	void SetPartnerPilot(const BasePilotPtr& pilot);
 
 	/**
-	* チーム体力を無限にする
+	* 相手チームのパイロットを設定
+	* 
+	* @param 設定する相手チームのパイロット
 	*/
-	void TeamHPInivinit();
+	void SetOtherTeamPilot(const BasePilotPtr& pilot);
 
 protected:
 
@@ -91,6 +103,45 @@ protected:
 	int& MyTeamHp() const;
 
 	/**
+	* パートナーパイロットを取得
+	*/
+	BasePilot* GetPartnerPilot() const;
+
+	/**
+	* パートナーの機体を取得
+	*/
+	BaseMsPtr GetPartnerMs() const;
+
+	/**
+	* 相手チームのパイロットを取得
+	* 
+	* @param index パイロット番号
+	*/
+	BasePilot* GetOtherTeamPilot(size_t index) const;
+
+	/**
+	* 相手チームの機体を取得
+	*
+	* @param index パイロット番号
+	*/
+	BaseMsPtr GetOtherTeamMs(size_t index) const;
+
+	/**
+	* 相手チームのパイロットの数を取得
+	*/
+	size_t GetOtherTeamPilotSize() const;
+
+	/**
+	* ターゲットパイロットを取得
+	*/
+	BasePilot* GetTargetPilot() const;
+
+	/**
+	* ターゲット機体を取得
+	*/
+	BaseMsPtr GetTargetMs() const;
+
+	/**
 	* 相手チームの体力を取得
 	*/
 	int& OtherTeamHp() const;
@@ -118,12 +169,6 @@ public:
 	// 自分の機体
 	BaseMsPtr myMs = nullptr;
 
-	// 自チームの別オーナ
-	BasePilot* myTeamOtherOwner = nullptr;
-
-	// 相手チームのオーナ配列
-	std::vector<BasePilot*> otherTeamOwner;
-
 	// 復活位置配列
 	std::vector<Vector3> responPoss;
 
@@ -138,11 +183,21 @@ protected:
 	// 自分のMSの死亡の有無
 	bool isMsDeath = false;
 
-	// 現在のターゲットオーナー
-	BasePilot* targetOwner = nullptr;
-
 	// 入力を更新するか
 	bool isInputUpdate = true;
+
+private:
+
+	// 現在のターゲットパイロット
+	BasePilot* targetPilot = nullptr;
+
+	// パートナーパイロット
+	BasePilot* partnerPilot = nullptr;
+
+	// 相手チームパイロット配列
+	std::vector<BasePilot*> otherTeamPilots;
+
+private:
 
 	// 復活タイマー
 	float responTimer = 0;
