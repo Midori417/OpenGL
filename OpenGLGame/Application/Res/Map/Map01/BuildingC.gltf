@@ -26,8 +26,11 @@
     "materials" : [
         {
             "doubleSided" : true,
-            "name" : "M_BuildingC",
+            "name" : "M_Building",
             "pbrMetallicRoughness" : {
+                "baseColorTexture" : {
+                    "index" : 0
+                },
                 "metallicFactor" : 0,
                 "roughnessFactor" : 0.5
             }
@@ -47,6 +50,19 @@
                     "material" : 0
                 }
             ]
+        }
+    ],
+    "textures" : [
+        {
+            "sampler" : 0,
+            "source" : 0
+        }
+    ],
+    "images" : [
+        {
+            "mimeType" : "image/png",
+            "name" : "UV_BuildingA",
+            "uri" : "UV_BuildingA.png"
         }
     ],
     "accessors" : [
@@ -109,6 +125,12 @@
             "byteLength" : 396,
             "byteOffset" : 3904,
             "target" : 34963
+        }
+    ],
+    "samplers" : [
+        {
+            "magFilter" : 9729,
+            "minFilter" : 9987
         }
     ],
     "buffers" : [

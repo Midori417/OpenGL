@@ -18,13 +18,14 @@
 */
 void TitleManager::Start()
 {
-	// シーン切り替え時のフェードオブジェクトを作成しておく
-	auto fadeObject = Instantate(CreateObjectType::Empty);
-	fadeObject->name = "FadeObject";
-	fadeOut = fadeObject->AddComponent<FadeOut>();
+	// アセットマネージャーを取得
+	auto assetManager = AssetManager::GetInstance();
 
-	// これからも使う予定なのでアセットマネージャーに登録しておく
-	AssetManager::GetInstance()->LoadGameObject(fadeObject);
+	// フェードオブジェクトを作成
+	{
+		auto obj = Instantate(assetManager->GetGameObject("FadeObject"));
+		fadeOut = obj->GetComponent<FadeOut>();
+	}
 
 	// 決定音を鳴らすためにサウンドコンポーネントを追加
 	audioSource = OwnerObject()->AddComponent<AudioSource>();

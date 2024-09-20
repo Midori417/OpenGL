@@ -19,7 +19,6 @@ void ImageNum::Awake()
 		auto img = resManager->GetTexture(num);
 		texNums.push_back(img);
 	}
-	
 }
 
 /**

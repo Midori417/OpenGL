@@ -3,7 +3,7 @@
 */
 #ifndef GAMEINPUT_H_INCLUDED
 #define GAMEINPUT_H_INCLUDED
-#include "FGEngine.h"
+#include "FGEngine/Math/Vector2.h"
 using namespace FGEngine;
 
 /**
@@ -33,6 +33,22 @@ struct GameInput
 
 	// ターゲット切り替えボタン
 	bool targetChangeBtn = false;
+
+	/**
+	* 入力を初期状態にする
+	*/
+	void Initialize()
+	{
+		moveAxis = Vector2::zero;
+		jumpBtn = false;
+		dashBtn = false;
+		stepBtn = false;
+		action1Btn = false;
+		action2Btn = false;
+		action3Btn = false;
+		targetChangeBtn = false;
+	}
 };
+using GameInputPtr = std::shared_ptr<GameInput>;
 
 #endif // !MSCONTROL_H_INCLUDED

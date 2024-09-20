@@ -2,200 +2,70 @@
 * @file BaseMs.cpp
 */
 #include "BaseMs.h"
-
-bool BaseMs::isResoueLoad = false;
+#include "FGEngine/GameObject.h"
+#include "FGEngine/Component/Transform.h"
+#include "FGEngine/Component/Rigidbody.h"
+#include "FGEngine/Component/GltfMeshRenderer.h"
+#include "FGEngine/Component/Animator.h"
 
 /**
-* HPを取得
+* 機体入力を設定
 */
-int BaseMs::GetHP() const
+void BaseMs::SetMsInput(const GameInputPtr& gameInput)
 {
-	return static_cast<int>(baseParamater.hp);
+	msInput = gameInput;
 }
 
 /**
-* HPを取得(0～1)
+* カメラのトランスフォームを設定する
 */
-float BaseMs::GetHP01()
+void BaseMs::SetTrsCamera(const TransformPtr& camera)
 {
-	return Mathf::Clamp01((baseParamater.hpMax - (baseParamater.hpMax - baseParamater.hp)) / baseParamater.hpMax);
+	trsCamera = camera.get();
 }
 
 /**
-* エネルギー残量の取得(0～1)
+* ターゲット機体を設定
 */
-float BaseMs::GetBoostEnergy() const
+void BaseMs::SetTargetMs(const BaseMsPtr& targetMs)
 {
-	return Mathf::Clamp01((boostParamater.max - (boostParamater.max - boostParamater.current)) / boostParamater.max);
+	this->targetMs = targetMs.get();
 }
 
 /**
-* 機体コストを取得
+* カメラ正面を基準に移動方向を計算する
 */
-int BaseMs::GetCost() const
+Vector3 BaseMs::MoveForward(const Vector2& moveAxis)
 {
-	return baseParamater.cost;
+	// カメラの方向から、X-Z単位ベクトル(正規化)を取得
+	Vector3 cameraForward = Vector3::Normalize(GetTrsCamera()->Forward() * Vector3(1, 0, 1));
+	Vector3 moveForward = cameraForward * moveAxis.y + GetTrsCamera()->Right() * moveAxis.x;
+
+	return moveForward;
 }
 
 /**
-* 死亡か取得
+* 共通コンポーネントの取得
 */
-bool BaseMs::IsDeath() const
+void BaseMs::ComponentGet()
 {
-	return isDeath;
+	rb = OwnerObject()->AddComponent<Rigidbody>();
+	renderer = OwnerObject()->AddComponent<GltfMeshRenderer>();
+	anim = OwnerObject()->AddComponent<Animator>();
 }
 
 /**
-* 敵との距離を設定
-* 
-* @param distance 敵との距離
+* カメラのトランスフォームを取得する
 */
-void BaseMs::SetDistance(float distance)
+Transform* BaseMs::GetTrsCamera() const
 {
-	this->distance = distance;
+	return trsCamera;
 }
 
 /**
-* カメラのトランスフォームを設定
+* ターゲット機体を取得
 */
-void BaseMs::SetCamera(Transform* camera)
-{
-	this->cameraTrasform = camera;
-}
-
-/**
-* ターゲットMSの設定
-*/
-void BaseMs::SetTargetMS(BaseMs* baseMS)
-{
-	this->targetMs = baseMS;
-}
-
-/**
-* ゲーム入力を設定
-*/
-void BaseMs::SetGameInput(GameInput* gameInput)
-{
-	this->gameInput = gameInput;
-}
-
-/**
-* 停止させる
-*/
-void BaseMs::Stop()
-{
-	isStop = true;
-}
-
-/**
-* 死亡チェック
-*
-* @retval true	死亡
-* @retval false 生存
-*/
-bool BaseMs::DeadChaeck()
-{
-	// すでに死亡していたら何もしない
-	if (isDeath)
-	{
-		return true;
-	}
-
-	// HPがなければ死亡状態にする
-	if (baseParamater.hp <= 0 || GetTransform()->position.y < -10)
-	{
-		// 描画しない
-		renderer->enabled = false;
-		rb->velocity = Vector3::zero;
-		return true;
-	}
-	return false;
-}
-
-/**
-* ブーストエネルギーの更新
-*/
-void BaseMs::BoostEnergyUpdate()
-{
-	// 地面についているとき
-	if (rb->IsGround() && !boostParamater.chageLock)
-	{
-		// エネルギーの回復スタートタイマーが0以下なら
-		if (boostParamater.chageStartTimer <= 0)
-		{
-			// ブーストエネルギーが減っていたら
-			if (boostParamater.current < boostParamater.max)
-			{
-				// エネルギーを回復
-				boostParamater.current += boostParamater.chageSpeed * Time::DeltaTime();
-			}
-		}
-		else
-		{
-			// エネルギーチャージ開始タイマーを減らす
-			boostParamater.chageStartTimer -= Time::DeltaTime();
-		}
-		boostParamater.current = Mathf::Clamp(boostParamater.current, 0.0f, boostParamater.max);
-	}
-}
-
-/**
-* 敵との距離を取得
-*/
-float BaseMs::GetDistance() const
-{
-	return distance;
-}
-
-/**
-* ブーストエネルギーがオーバーヒートしてるか
-*/
-void BaseMs::BoostCheck()
-{
-	boostParamater.chageLock = false;
-	if (boostParamater.current <= 0)
-	{
-		boostParamater.chageStartTimer = boostParamater.chageStartTime;
-	}
-	else
-	{
-		boostParamater.chageStartTimer = boostParamater.overHeatChageStartTime;
-	}
-}
-
-/**
-* 誘導可能かチェック
-*
-* @retval true  誘導可能
-* @retval false 誘導不可
-*/
-bool BaseMs::HomingCheck() const
-{
-	Vector3 pos = GetTransform()->position;
-	Vector3 targetPos = targetMs->GetTransform()->position;
-	float distanceXY = Mathf::Abs(Vector3::Distance(pos * Vector3(1, 0, 1), targetPos * Vector3(1, 0, 1)));
-	float distanceY = pos.y - targetPos.y;
-	return (distanceXY < redLookDistaceXZ) && (distanceY > redLookDistanceMinY) && (distanceY < redLookDistanceMaxY);
-}
-
-bool BaseMs::GetHoimngCancel() const
-{
-	return moveParamater.step.isNow;
-}
-
-/**
-* カメラのトランスフォームを取得
-*/
-Transform* BaseMs::GetCameraTransform() const
-{
-	return cameraTrasform;
-}
-
-/**
-* ターゲットMSを取得
-*/
-BaseMs* BaseMs::GetTargetMs() const
+BaseMs* BaseMs::GetTarget() const
 {
 	return targetMs;
 }
-

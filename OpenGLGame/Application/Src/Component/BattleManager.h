@@ -77,12 +77,11 @@ private:	// バトルセッティング
 	void BattleSetting();
 
 	/**
-	* msに対応するコンポーネントをobjに追加する
+	* オブジェクトを生成しmsに対応したコンポーネントを追加する
 	*
-	* @param obj 追加するオブジェクト
 	* @param ms 追加したいコンポーネントに対応するMsList
 	*/
-	BaseMsPtr SetMs(GameObjectPtr obj,  MsList ms);
+	BaseMsPtr CreateMs(MsList ms);
 
 	/**
 	* チームを設定する
@@ -91,6 +90,14 @@ private:	// バトルセッティング
 	* @param id			チームID
 	*/
 	void SetTeum(const BasePilotPtr& control, int id);
+
+	/**
+	* バトルスタート位置を設定する
+	* 
+	* @param pilots	配置するパイロット
+	* @param id		チームID
+	*/
+	void SetBattlePosition(const std::vector<BasePilotPtr>& pilots, int id);
 
 private:
 
@@ -123,7 +130,7 @@ private:
 		// 勝敗
 		Victory,
 	};
-	BattleState battleState = BattleState::Ready;
+	BattleState battleState = BattleState::Battle;
 
 	// タイマー
 	float timer = 0;
@@ -149,10 +156,10 @@ private:
 	std::vector<BasePilotPtr> team2Pilots;
 
 	// チーム1体力
-	std::shared_ptr<int> team1Hp = 0;
+	int team1Hp = 0;
 
 	// チーム2体力
-	std::shared_ptr<int> team2Hp = 0;
+	int team2Hp = 0;
 
 private:
 
@@ -165,8 +172,11 @@ private:
 	// シーン切り替え時のフェードアウトコンポーネント
 	FadeOutPtr fadeOut = nullptr;
 
+	// BGMを鳴らすコンポーネント
+	AudioSourcePtr audioBGM = nullptr;
+
 	// 決定音を鳴らすためのコンポーネント
-	AudioSourcePtr audioSourceSE = nullptr;
+	AudioSourcePtr audioSE = nullptr;
 };
 
 #endif // !BATTLEMANAGER_H_INCLUDED

@@ -103,13 +103,13 @@ namespace FGEngine
 	public:	// 衝突イベント
 
 		// 他のコリジョンに触れたときに実行
-		virtual void OnCollisionEnter(const CollisionPtr other) {}
+		virtual void OnCollisionEnter(const CollisionPtr& other) {}
 
 		// 他のコリジョンから離れたときに実行
-		virtual void OnCollisionExit(const CollisionPtr other) {}
+		virtual void OnCollisionExit(const CollisionPtr& other) {}
 
 		// 他のコリジョンに触れ続けているときに実行
-		virtual void OnCollisionStay(const CollisionPtr ohter) {}
+		virtual void OnCollisionStay(const CollisionPtr& ohter) {}
 
 	public:
 

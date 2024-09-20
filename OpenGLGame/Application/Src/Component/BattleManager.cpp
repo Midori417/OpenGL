@@ -7,12 +7,13 @@
 #include "CameraManager.h"
 
 #include "BaseMs.h"
-#include "Gundam.h"
+#include "Ms/Gundam.h"
 
 #include "HumanPilot.h"
 #include "CpuPilot.h"
 
 #include "../Global.h"
+#include "../GameSoundName.h"
 
 // スタティック変数を初期化
 BattleInfoPtr BattleManager::battleInfo = nullptr;
@@ -52,19 +53,16 @@ void BattleManager::Awake()
 		battleInfo->pilotInfos[1].playerId = 1;
 		battleInfo->pilotInfos[1].ms = MsList::Gundam;
 
-		// バトル情報を設定
+		//battleInfo->pilotInfos[2].teamId = 2;
+		//battleInfo->pilotInfos[2].playerId = 1;
+		//battleInfo->pilotInfos[2].ms = MsList::Gundam;
 
-		// チーム体力を設定
-		if (battleInfo->team1Hp > 0)
-		{
-			team1Hp = std::make_shared<int>(battleInfo->team1Hp);
-		}
-		if (battleInfo->team1Hp > 0)
-		{
-			team2Hp = std::make_shared<int>(battleInfo->team2Hp);
-		}
+		//battleInfo->pilotInfos[3].teamId = 1;
+		//battleInfo->pilotInfos[3].playerId = 1;
+		//battleInfo->pilotInfos[3].ms = MsList::Gundam;
 
-		// 時間を設定
+		battleInfo->team1Hp = teamMaxHp;
+		battleInfo->team2Hp = teamMaxHp;
 	}
 
 	BattleSetting();
@@ -88,6 +86,11 @@ void BattleManager::Awake()
 			imgGo->SetWindowSize();
 		}
 	}
+
+	audioBGM = OwnerObject()->AddComponent<AudioSource>();
+	audioBGM->SetSoundFilename(GameSound::BGM::battle01);
+	audioBGM->isLooop = true;
+	audioBGM->Play();
 }
 
 /**
@@ -95,29 +98,8 @@ void BattleManager::Awake()
 */
 void BattleManager::Start()
 {
-	// MSの出撃位置を設定
-	for (int i = 0; i < team1Pilots.size(); ++i)
-	{
-		auto teum1 = team1Pilots[i];
-
-		teum1->myMs->GetTransform()->position = responPoses[0] + Vector3(10.0f * i, 0, 0);
-		teum1->responPoss = responPoses;
-
-		Vector3 toTargetVector = Vector3::Normalize(responPoses[1] - responPoses[0]);
-		teum1->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector * Vector3(0, 0, 1));
-	}
-	for (int i = 0; i < team2Pilots.size(); ++i)
-	{
-		auto teum2 = team2Pilots[i];
-
-		teum2->myMs->GetTransform()->position = responPoses[1] + Vector3(10.0f * i, 0, 0);
-
-		// リスポーン位置を設定
-		teum2->responPoss = responPoses;
-
-		Vector3 toTargetVector = Vector3::Normalize(responPoses[0] - responPoses[1]);
-		teum2->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector * Vector3(0, 0, 1));
-	}
+	SetBattlePosition(team1Pilots, 0);
+	SetBattlePosition(team2Pilots, 1);
 
 	// UIを非表示
 	imgStandbay->isActive = false;
@@ -133,113 +115,24 @@ void BattleManager::Update()
 	switch (battleState)
 	{
 	case BattleManager::BattleState::Ready:
-
-		// 準備
 	{
-		// タイマーを進める
-		timer += Time::DeltaTime();
-		if (timer > readyTime)
-		{
-			// バトル状態をスタンバイに
-			battleState = BattleState::Standbay;
-
-			// Stanbayを表示
-			imgStandbay->isActive = true;
-
-			// タイマーを0にする
-			timer = 0;
-		}
 	}
 
 	break;
 	case BattleManager::BattleState::Standbay:
-
-		// スタンバイ
 	{
-		// タイマーを進める
-		timer += Time::DeltaTime();
-		if (timer > standbayTime)
-		{
-			// バトル状態をゴーに
-			battleState = BattleState::GO;
-
-			// Stanbayを非表示に
-			imgStandbay->isActive = false;
-			// GOを表示
-			imgGo->isActive = true;
-
-			// タイマーを0にする
-			timer = 0;
-		}
 	}
 	break;
 	case BattleManager::BattleState::GO:
-		// ゴー
 	{
-		// タイマーを進める
-		timer += Time::DeltaTime();
-		if (timer > goTime)
-		{
-			// バトル状態をバトルに
-			battleState = BattleState::Battle;
-
-			// GOを非表示に
-			imgGo->isActive = false;
-
-			// コントロールの処理を開始させる
-			for (auto teum1 : team1Pilots)
-			{
-				teum1->ControlStart();
-			}
-			for (auto teum2 : team2Pilots)
-			{
-				teum2->ControlStart();
-			}
-		}
 	}
 	break;
 	case BattleManager::BattleState::Battle:
-		// バトル中
 	{
-		if (*team1Hp <= 0 || *team2Hp <= 0)
-		{
-			VictoryState teum1Victory = VictoryState::None;
-			VictoryState teum2Victory = VictoryState::None;
-			// どちらのチームHpも0ならば引き分け
-			if (*team1Hp <= 0 && *team2Hp <= 0)
-			{
-				teum1Victory = VictoryState::Drow;
-				teum2Victory = VictoryState::Drow;
-			}
-			else if (*team1Hp <= 0)
-			{
-				teum1Victory = VictoryState::Lose;
-				teum2Victory = VictoryState::Win;
-			}
-			else if (*team2Hp <= 0)
-			{
-				teum1Victory = VictoryState::Win;
-				teum2Victory = VictoryState::Lose;
-			}
 
-			// 終了処理させる
-			for (auto teum1 : team1Pilots)
-			{
-				teum1->Finish(teum1Victory);
-				teum1->isActive = false;
-			}
-			for (auto teum2 : team2Pilots)
-			{
-				teum2->Finish(teum2Victory);
-				teum2->isActive = false;
-			}
-			battleState = BattleState::Victory;
-		}
 	}
 	break;
 	case BattleManager::BattleState::Victory:
-
-		// 勝敗
 	{
 		if (InputKey::GetKey(KeyCode::Enter))
 		{
@@ -252,7 +145,6 @@ void BattleManager::Update()
 			SceneManager::LoadScene("BattleSettingScene");
 		}
 	}
-
 	break;
 	}
 }
@@ -286,25 +178,13 @@ void BattleManager::BattleSetting()
 		// チーム1の体力を設定
 		if (battleInfo->team1Hp > 0)
 		{
-			team1Hp = std::make_shared<int>(battleInfo->team1Hp);
-		}
-		// teum1Hpが0以下なら体力をチーム体力を無限にする
-		else
-		{
-			team1Hp = std::make_shared<int>(teamMaxHp);
-			//isTeum1HpInfinity = true;
+			team1Hp = battleInfo->team1Hp;
 		}
 
 		// チーム2の体力を設定
 		if (battleInfo->team1Hp > 0)
 		{
-			team2Hp = std::make_shared<int>(battleInfo->team2Hp);
-		}
-		// teum2Hpが0以下なら体力をチーム体力を無限にする
-		else
-		{
-			team2Hp = std::make_shared<int>(teamMaxHp);
-			//isTeum2HpInfinity = true;
+			team2Hp = battleInfo->team2Hp;
 		}
 	}
 
@@ -338,9 +218,7 @@ void BattleManager::BattleSetting()
 				pilots.push_back(pilot);
 
 				// 機体を作成
-				GameObjectPtr ms = Instantate(CreateObjectType::Empty);
-				// msに対応する機体コンポーネントを追加してパイロットに設定
-				pilot->myMs = SetMs(ms, pilotInfo.ms);
+				pilot->myMs = CreateMs(pilotInfo.ms);
 
 				// カメラを取得して設定
 				GameObjectPtr camera = OwnerObject()->GetScene()->GetMainCameraInfo()->OwnerObject();
@@ -359,9 +237,7 @@ void BattleManager::BattleSetting()
 				pilots.push_back(pilot);
 
 				// 機体を作成
-				GameObjectPtr ms = Instantate(CreateObjectType::Empty);
-				// msに対応する機体コンポーネントを追加してパイロットに設定
-				pilot->myMs = SetMs(ms, pilotInfo.ms);
+				pilot->myMs = CreateMs(pilotInfo.ms);
 
 				// 仮想カメラを作成
 				GameObjectPtr camera = Instantate(CreateObjectType::Empty);
@@ -394,35 +270,30 @@ void BattleManager::BattleSetting()
 
 	// 自チーム体力を設定
 	{
-		for (BasePilotPtr pilot : team1Pilots)
-		{
-			pilot->SetTeamHP(team1Hp.get(), team2Hp.get());
-		}
-		for (BasePilotPtr pilot : team1Pilots)
-		{
-			pilot->SetTeamHP(team2Hp.get(), team1Hp.get());
-		}
 	}
 }
 
 /**
-* msに対応するコンポーネントをobjに追加する
+* オブジェクトを生成しmsに対応したコンポーネントを追加する
 *
-* @param obj 追加するオブジェクト
 * @param ms 追加したいコンポーネントに対応するMsList
 */
-BaseMsPtr BattleManager::SetMs(GameObjectPtr obj, MsList ms)
+BaseMsPtr BattleManager::CreateMs(MsList ms)
 {
+	// 機体を生成
+	GameObjectPtr obj = Instantate(CreateObjectType::Empty);
+	obj->tag = "Ms";
+
+	// msに対応したコンポーネントを追加する
 	switch (ms)
 	{
-	case MsList::None:
-		return nullptr;
-		break;
 	case MsList::Gundam:
 		return obj->AddComponent<Gundam>();
 		break;
 	}
 
+	// 対応したコンポーネントがないのでオブジェクトを破壊する
+	obj->Destroy();
 	return nullptr;
 }
 
@@ -458,5 +329,42 @@ void BattleManager::SetTeum(const BasePilotPtr& control, int id)
 			control->SetPartnerPilot(team2Pilots[0]);
 			team2Pilots[0]->SetPartnerPilot(control);
 		}
+	}
+}
+
+/**
+* バトルスタート位置を設定する
+*
+* @param pilots	配置するパイロット
+* @param id		チームID
+*/
+void BattleManager::SetBattlePosition(const std::vector<BasePilotPtr>& pilots, int id)
+{
+	// リスポーン位置が２個以上なければ何もしない
+	if (responPoses.size() < 2)
+	{
+		return;
+	}
+
+	// MSの出撃位置を設定
+	for (int i = 0; i < pilots.size(); ++i)
+	{
+		BasePilotPtr pilot = pilots[i];
+
+		pilot->myMs->GetTransform()->position = responPoses[id] + Vector3(10.0f * i, 0, 0);
+
+		// リスポーン位置を設定
+		pilot->responPoss = responPoses;
+
+		Vector3 toTargetVector;
+		if (id == 0)
+		{
+			toTargetVector = Vector3::Normalize(responPoses[1] - responPoses[0]);
+		}
+		else
+		{
+			toTargetVector = Vector3::Normalize(responPoses[0] - responPoses[1]);
+		}
+		pilot->myMs->GetTransform()->rotation = Quaternion::LookRotation(toTargetVector);
 	}
 }

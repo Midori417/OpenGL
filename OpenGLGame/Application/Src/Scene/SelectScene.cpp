@@ -8,6 +8,7 @@
 #include "FGEngine/Asset/AssetManager.h"
 
 #include "../Component/SelectManager.h"
+#include "../GameSoundName.h"
 
 /**
 * ゲーム選択シーンの初期化
@@ -25,7 +26,7 @@ bool SelectScene::Initialize()
     AudioSourcePtr audio = camera->AddComponent<AudioSource>();
 
     // いいBGMが見つかっていないので一旦タイトルBGMを流す
-    audio->SetSoundFilename("Application/Res/Sound/Title/Title.mp3");
+    audio->SetSoundFilename(GameSound::BGM::title);
     audio->Play();
     audio->isLooop = true;
 

@@ -10,6 +10,7 @@
 
 #include "../Component/TitleManager.h"
 #include "../Component/ImageBlinking.h"
+#include "../GameSoundName.h"
 
 /**
 * タイトルシーンの初期化
@@ -27,7 +28,7 @@ bool TitleScene::Initialize()
     AudioSourcePtr audio = camera->AddComponent<AudioSource>();
 
     // タイトルBGMを流す
-    audio->SetSoundFilename("Application/Res/Sound/Title/Title.mp3");
+    audio->SetSoundFilename(GameSound::BGM::title);
     audio->Play();
     audio->isLooop = true;
 

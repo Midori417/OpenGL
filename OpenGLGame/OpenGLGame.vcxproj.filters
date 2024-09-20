@@ -495,17 +495,11 @@
     <ClCompile Include="Application\Src\Scene\BattleMap01Scene.cpp">
       <Filter>Application\Scene\BattleMap\1</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Component\Gundam.cpp">
-      <Filter>Application\Component\Ms\Gundam</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Src\Component\LookOnCamera.cpp">
       <Filter>Application\Component\Camera</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Component\BaseMs.cpp">
       <Filter>Application\Component\Ms</Filter>
-    </ClCompile>
-    <ClCompile Include="Application\Src\Component\BaseSlash.cpp">
-      <Filter>Application\Component\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="Application\Src\Component\BattleManager.cpp">
       <Filter>Application\Component\Manager\Battle</Filter>
@@ -519,9 +513,6 @@
     <ClCompile Include="Application\Src\Component\ImageNum.cpp">
       <Filter>Application\Component\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Component\HomingBullet.cpp">
-      <Filter>Application\Component\Weapon\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Src\Component\BaseBullet.cpp">
       <Filter>Application\Component\Weapon\Bullet</Filter>
     </ClCompile>
@@ -533,6 +524,12 @@
     </ClCompile>
     <ClCompile Include="Application\Src\Component\CpuPilot.cpp">
       <Filter>Application\Component\Pilot\Cpu</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\Ms\Gundam.cpp">
+      <Filter>Application\Component\Ms\Gundam</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\Ms\GroundCheck.cpp">
+      <Filter>Application\Component\Ms</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -848,17 +845,8 @@
     <ClInclude Include="Application\Src\Component\BaseMs.h">
       <Filter>Application\Component\Ms</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\Component\Gundam.h">
-      <Filter>Application\Component\Ms\Gundam</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Src\Component\LookOnCamera.h">
       <Filter>Application\Component\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Component\BaseSlash.h">
-      <Filter>Application\Component\Weapon</Filter>
-    </ClInclude>
-    <ClInclude Include="Application\Src\Component\BaseWeapon.h">
-      <Filter>Application\Component\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Component\BattleManager.h">
       <Filter>Application\Component\Manager\Battle</Filter>
@@ -872,9 +860,6 @@
     <ClInclude Include="Application\Src\Component\ImageNum.h">
       <Filter>Application\Component\UI</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\Component\HomingBullet.h">
-      <Filter>Application\Component\Weapon\Bullet</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Src\Component\BaseBullet.h">
       <Filter>Application\Component\Weapon\Bullet</Filter>
     </ClInclude>
@@ -887,11 +872,14 @@
     <ClInclude Include="Application\Src\Component\CpuPilot.h">
       <Filter>Application\Component\Pilot\Cpu</Filter>
     </ClInclude>
-    <ClInclude Include="Application\Src\DamageInfo.h">
-      <Filter>Application</Filter>
-    </ClInclude>
     <ClInclude Include="Application\Src\Global.h">
       <Filter>Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\Ms\Gundam.h">
+      <Filter>Application\Component\Ms\Gundam</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\Ms\GroundCheck.h">
+      <Filter>Application\Component\Ms</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

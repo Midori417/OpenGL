@@ -10,26 +10,17 @@ class ImageNum : public GameEvent
 {
 public:
 
-	// コンストラクタ・デストラクタ
+	/**
+	* デフォルトコンストラクタ
+	*/
 	ImageNum() = default;
-	virtual ~ImageNum() = default;
 
-public:
+private:
 
 	/**
 	* 生成されたときに実行
 	*/
 	virtual void Awake() override;
-
-	void Stop();
-
-	virtual ComponentPtr Clone() const override
-	{
-		return nullptr;
-
-	}
-
-private:
 
 	/**
 	* 最初に実行
@@ -41,6 +32,14 @@ private:
 	*/
 	virtual void Update() override;
 
+	virtual ComponentPtr Clone() const override
+	{
+		return nullptr;
+	}
+
+public:
+
+	void Stop();
 
 public:
 

@@ -26,7 +26,7 @@ bool BattleSettingScene::Initialize()
     AudioSourcePtr audio = camera->AddComponent<AudioSource>();
 
     // ‚¢‚¢BGM‚ªŒ©‚Â‚©‚Á‚Ä‚¢‚È‚¢‚Ì‚Åˆê’Uƒ^ƒCƒgƒ‹BGM‚ð—¬‚·
-    audio->SetSoundFilename("Application/Res/Sound/Title/Title.mp3");
+    audio->SetSoundFilename(GameSound::BGM::title);
     audio->Play();
     audio->isLooop = true;
 

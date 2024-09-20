@@ -29,10 +29,10 @@ bool BattleMap01Scene::Initialize()
     // バトルマネージャーを作成
     GameObjectPtr manager = Instantate(CreateObjectType::Empty);
     auto batManager = manager->AddComponent<BattleManager>();
-    auto mapRangeLimit = manager->AddComponent<MapRangeLimit>();
     
     // ステージの大きさを設定
     const Vector2 mapSize(150, 180);
+    auto mapRangeLimit = manager->AddComponent<MapRangeLimit>();
     mapRangeLimit->mapSize = mapSize;
 
     // 復帰位置
@@ -60,7 +60,7 @@ bool BattleMap01Scene::Initialize()
 
             auto col = ground->AddComponent<AabbCollider>();
             col->min = Vector3(-mapSize.x, -10.0f, -mapSize.y);
-            col->max = Vector3(mapSize.x, 1, mapSize.y);
+            col->max = Vector3(mapSize.x, 1.2f, mapSize.y);
         }
         // 建物A
         {
@@ -108,6 +108,7 @@ bool BattleMap01Scene::Initialize()
             biru->name = "BiruC";
             biru->tag = "Bilding";
             biru->GetTransform()->position = Vector3(-28, 1, 40);
+            biru->GetTransform()->rotation = Quaternion::AngleAxis(Vector3::up, -90);
 
             GltfMeshRendererPtr render = biru->AddComponent<GltfMeshRenderer>();
             render->glTFfile = assetManager->GetGltfFile("Map01/BiruC");

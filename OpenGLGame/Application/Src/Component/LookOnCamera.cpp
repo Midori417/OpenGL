@@ -13,7 +13,8 @@ void LookOnCamera::LookCamera(Transform* target, Transform* myMs)
 {
 	// 自身とターゲットのMSの位置を取得
 	Vector3 playerMsPos = myMs->position;
-	Vector3 targetMsPos = target->position;
+
+	Vector3 targetMsPos = target ? target->position : Vector3::zero;
 
 	// ターゲットへのベクトル
 	Vector3 targetVector = targetMsPos - playerMsPos;
