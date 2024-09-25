@@ -39,12 +39,22 @@ private: // 便利
 	*/
 	virtual bool Check();
 
+private: // アイドル
+
 	/**
 	* アイドル状態にする
 	*/
 	void IdleAnimation();
 
 private: // 移動
+
+	/**
+	* 移動できるかチェック
+	* 
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool MoveCheck() const;
 
 	/**
 	* 移動処理
@@ -55,6 +65,26 @@ private: // 移動
 	* 移動アニメーションの処理
 	*/
 	void MoveAnimation();
+
+private: // ジャンプ
+
+	/**
+	* ジャンプ可能かチェック
+	* 
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool JumpCheck() const;
+
+	/**
+	* ジャンプ処理
+	*/
+	void Jump(const Vector2& moveAxis, bool isBtn);
+
+	/**
+	* ジャンプアニメーションの処理
+	*/
+	void JumpAnimation();
 
 private:
 

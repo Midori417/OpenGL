@@ -21,6 +21,15 @@ namespace AnimationName
 
 	const char RunRifle[] = "Run.Rifle";
 	const char RunSable[] = "Run.Sable";
+
+	namespace Jump
+	{
+		const char Rifle[] = "Jump.Rifle";
+		const char Sable[] = "Jump.Sable";
+
+		const char GroundRifle[] = "Jump.Rifle.Ground";
+		const char GroundSable[] = "Jump.Sable.Ground";
+	}
 }
 
 /**
@@ -67,6 +76,17 @@ void Gundam::Awake()
 		move.speed = 20.0f;
 		move.rotationSpeed = 0.05f;
 	}
+	// ダッシュパラメータ
+	{
+
+	}
+	// ジャンプパラメータ
+	{
+		jump.power = 20.0f;
+		jump.speed = 10.0f;
+		jump.rotationSpeed = 0.01f;
+		jump.useBoost = 30.0f;
+	}
 }
 
 /**
@@ -80,6 +100,7 @@ void Gundam::Update()
 	}
 
 	Move(msInput->moveAxis);
+	Jump(msInput->moveAxis, msInput->jumpBtn);
 }
 
 /**
@@ -131,6 +152,21 @@ void Gundam::IdleAnimation()
 }
 
 /**
+* 移動できるかチェック
+*
+* @retval true	可能
+* @retval false	不可能
+*/
+bool Gundam::MoveCheck() const
+{
+	if (jump.isNow)
+	{
+		return false;
+	}
+	return true;
+}
+
+/**
 * 移動処理
 */
 void Gundam::Move(const Vector2& moveAxis)
@@ -139,13 +175,22 @@ void Gundam::Move(const Vector2& moveAxis)
 
 	if (rb->IsGround())
 	{
+		// 移動処理できるかチェック
+		if (!MoveCheck())
+		{
+			return;
+		}
+
+		// トランスフォームを取得
 		TransformPtr transform = GetTransform();
+		
 		// 進行方向に補間しながら回転
 		if(moveFoward != Vector3::zero)
 		{
 			transform->rotation = Quaternion::Slerp(transform->rotation,
 				Quaternion::LookRotation(moveFoward), move.rotationSpeed);
 			transform->position += transform->Forward() * move.speed * Time::DeltaTime();
+
 			MoveAnimation();
 		}
 		else
@@ -169,4 +214,103 @@ void Gundam::MoveAnimation()
 		anim->SetAnimation(AnimationName::RunSable, true);
 	}
 	anim->Play();
+}
+
+/**
+* ジャンプ可能かチェック
+*
+* @retval true	可能
+* @retval false	不可能
+*/
+bool Gundam::JumpCheck() const
+{
+	return true;
+}
+
+/**
+* ジャンプ処理
+*/
+void Gundam::Jump(const Vector2& moveAxis, bool isBtn)
+{
+	// ジャンプ入力があれば
+	if (isBtn)
+	{
+		if (boost.current > 0)
+		{
+			// トランスフォームを取得
+			TransformPtr transform = GetTransform();
+
+			// 重力を無効化
+			rb->velocity = Vector3::zero;
+			rb->isGravity = false;
+
+			// 移動方向を取得
+			Vector3 moveFoward = MoveForward(moveAxis);
+
+			// 進行方向に補間しながら回転
+			if (moveFoward != Vector3::zero)
+			{
+				transform->rotation = Quaternion::Slerp(transform->rotation,
+					Quaternion::LookRotation(moveFoward), jump.rotationSpeed);
+				transform->position += transform->Forward() * jump.speed * Time::DeltaTime();
+			}
+
+			// 上昇
+			transform->position.y += jump.power * Time::DeltaTime();
+
+			// アニメーション切り替え
+			JumpAnimation();
+
+			// ジャンプ状態にする
+			jump.isNow = true;
+		}
+	}
+	else
+	{
+		// ジャンプ中だった場合
+		if (jump.isNow)
+		{
+			// 重力を有効
+			rb->isGravity = true;
+		
+			// ジャンプ状態を解除
+			jump.isNow = false;
+		}
+	}
+}
+
+/**
+* ジャンプアニメーションの処理
+*/
+void Gundam::JumpAnimation()
+{
+	// ジャンプしてない場合のみアニメーションを再生する
+	if (!jump.isNow)
+	{
+		// 地面についていたら
+		if (rb->IsGround())
+		{
+			if (handWeapon == HandWeapon::Rifle)
+			{
+				anim->SetAnimation(AnimationName::Jump::GroundRifle);
+			}
+			else
+			{
+				//anim->SetAnimation(AnimationName::Jump::GroundSable);
+				anim->SetAnimation(AnimationName::Jump::GroundRifle);
+			}
+		}
+		else
+		{
+			if (handWeapon == HandWeapon::Rifle)
+			{
+				anim->SetAnimation(AnimationName::Jump::Rifle);
+			}
+			else
+			{
+				anim->SetAnimation(AnimationName::Jump::Sable);
+			}
+		}
+		anim->Play();
+	}
 }

@@ -110,6 +110,34 @@ protected:
 	Paramater paramater;
 
 	/**
+	* ブーストパラメータ
+	*/
+	struct BoostParamater
+	{
+		// ブーストのエネルギー最大値
+		const float max = 100;
+
+		// 現在のブースト
+		float current = 100;
+
+		// ブーストの回復速度
+		float chargeSpeed = 500;
+
+		// チャージ開始タイマー
+		float chageStartTimer = 0;
+
+		// チャージの開始速度
+		const float chageStartTime = 0.2f;
+
+		// チャージ開始速度(OVERHEATの場合)
+		const float overHeatChageStartTime = 0.5f;
+
+		// ブーストを回復するか
+		bool chageLock = false;
+	};
+	BoostParamater boost;
+
+	/**
 	* 移動パラメータ
 	*/
 	struct MoveParamater
@@ -127,10 +155,27 @@ protected:
 
 	};
 
+	/**
+	* ジャンプパラメータ
+	*/
 	struct JumpParamater
 	{
+		// ジャンプ力
+		float power = 0;
 
+		// 横移動速度
+		float speed = 0;
+
+		// 旋回速度
+		float rotationSpeed = 0;
+
+		// ブーストの消費量
+		float useBoost = 0;
+
+		// ジャンプ中か
+		bool isNow = false;
 	};
+	JumpParamater jump;
 };
 
 #endif // !BASEMS_H_INCLUDED
