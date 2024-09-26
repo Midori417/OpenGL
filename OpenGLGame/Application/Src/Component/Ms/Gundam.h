@@ -44,7 +44,7 @@ private: // アイドル
 	/**
 	* アイドル状態にする
 	*/
-	void IdleAnimation();
+	void IdleAnimation() const;
 
 private: // 移動
 
@@ -64,7 +64,27 @@ private: // 移動
 	/**
 	* 移動アニメーションの処理
 	*/
-	void MoveAnimation();
+	void MoveAnimation() const;
+
+private: // ダッシュ
+
+	/**
+	* ダッシュできるかチェック
+	*
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool DashCheck() const;
+
+	/**
+	* ダッシュ処理
+	*/
+	void Dash(const Vector2& moveAxis, bool isBtn);
+
+	/**
+	* ダッシュアニメーションの処理
+	*/
+	void DashAnimation();
 
 private: // ジャンプ
 
@@ -84,7 +104,27 @@ private: // ジャンプ
 	/**
 	* ジャンプアニメーションの処理
 	*/
-	void JumpAnimation();
+	void JumpAnimation() const;
+
+private: // ビームライフル射撃
+
+	/**
+	* ビームライフル射撃ができるかチェック
+	* 
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool BeumRifleShotCheck() const;
+
+	/**
+	* ビームライフル射撃処理
+	*/
+	void BeumRifleShot(bool isBtn);
+
+	/**
+	* ビームライフル射撃アニメーションの処理
+	*/
+	void BeumRifleShotAnimaion() const;
 
 private:
 

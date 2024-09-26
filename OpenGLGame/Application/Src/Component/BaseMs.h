@@ -150,24 +150,26 @@ protected:
 	};
 	MoveParamater move;
 
-	struct DashParamater
+	/**
+	* ダッシュパラメータ
+	*/
+	struct DashParamater : public MoveParamater
 	{
+		// ブーストの消費量
+		float useBoost = 0;
 
+		// ダッシュ中か
+		bool isNow = false;
 	};
+	DashParamater dash;
 
 	/**
 	* ジャンプパラメータ
 	*/
-	struct JumpParamater
+	struct JumpParamater : public MoveParamater
 	{
 		// ジャンプ力
 		float power = 0;
-
-		// 横移動速度
-		float speed = 0;
-
-		// 旋回速度
-		float rotationSpeed = 0;
 
 		// ブーストの消費量
 		float useBoost = 0;

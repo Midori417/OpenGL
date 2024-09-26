@@ -30,6 +30,11 @@ namespace AnimationName
 		const char GroundRifle[] = "Jump.Rifle.Ground";
 		const char GroundSable[] = "Jump.Sable.Ground";
 	}
+	namespace Dash
+	{
+		const char Rifle[] = "Dash.Rifle";
+		const char Sable[] = "Dash.Sable";
+	}
 }
 
 /**
@@ -78,7 +83,9 @@ void Gundam::Awake()
 	}
 	// ダッシュパラメータ
 	{
-
+		dash.speed = 30.0f;
+		dash.rotationSpeed = 0.01f;
+		dash.useBoost = 30.0f;
 	}
 	// ジャンプパラメータ
 	{
@@ -100,6 +107,7 @@ void Gundam::Update()
 	}
 
 	Move(msInput->moveAxis);
+	Dash(msInput->moveAxis, msInput->dashBtn);
 	Jump(msInput->moveAxis, msInput->jumpBtn);
 }
 
@@ -138,7 +146,7 @@ bool Gundam::Check()
 /**
 * アイドル状態にする
 */
-void Gundam::IdleAnimation()
+void Gundam::IdleAnimation() const
 {
 	if (handWeapon == HandWeapon::Rifle)
 	{
@@ -159,7 +167,7 @@ void Gundam::IdleAnimation()
 */
 bool Gundam::MoveCheck() const
 {
-	if (jump.isNow)
+	if (jump.isNow || dash.isNow)
 	{
 		return false;
 	}
@@ -183,9 +191,9 @@ void Gundam::Move(const Vector2& moveAxis)
 
 		// トランスフォームを取得
 		TransformPtr transform = GetTransform();
-		
+
 		// 進行方向に補間しながら回転
-		if(moveFoward != Vector3::zero)
+		if (moveFoward != Vector3::zero)
 		{
 			transform->rotation = Quaternion::Slerp(transform->rotation,
 				Quaternion::LookRotation(moveFoward), move.rotationSpeed);
@@ -203,7 +211,7 @@ void Gundam::Move(const Vector2& moveAxis)
 /**
 * 移動アニメーションの処理
 */
-void Gundam::MoveAnimation()
+void Gundam::MoveAnimation() const
 {
 	if (handWeapon == HandWeapon::Rifle)
 	{
@@ -217,6 +225,92 @@ void Gundam::MoveAnimation()
 }
 
 /**
+* ダッシュできるかチェック
+*
+* @retval true	可能
+* @retval false	不可能
+*/
+bool Gundam::DashCheck() const
+{
+	return true;
+}
+
+/**
+* ダッシュ処理
+*/
+void Gundam::Dash(const Vector2& moveAxis, bool isBtn)
+{
+	// ダッシュ入力があれば
+	if (isBtn)
+	{
+		// ダッシュ可能かチェック
+		if (!DashCheck())
+		{
+			return;
+		}
+		if (boost.current > 0)
+		{
+			// トランスフォームを取得
+			TransformPtr transform = GetTransform();
+
+			// 重力を無効化
+			rb->isGravity = false;
+
+			// 移動方向を取得
+			Vector3 moveFoward = MoveForward(moveAxis);
+
+			// 進行方向に補間しながら回転
+			if (moveFoward != Vector3::zero)
+			{
+				transform->rotation = Quaternion::Slerp(transform->rotation,
+					Quaternion::LookRotation(moveFoward), dash.rotationSpeed);
+			}
+			transform->position += transform->Forward() * dash.speed * Time::DeltaTime();
+
+			// アニメーション切り替え
+			DashAnimation();
+
+			// ダッシュ状態にする
+			dash.isNow = true;
+		}
+	}
+	else
+	{
+		if (dash.isNow)
+		{
+			// 重力を有効
+			rb->isGravity = true;
+
+			// ダッシュ状態を解除
+			dash.isNow = false;
+
+			// アニメーション切り替え
+			IdleAnimation();
+		}
+	}
+}
+
+/**
+* ダッシュアニメーションの処理
+*/
+void Gundam::DashAnimation()
+{
+	// ダッシュしていないときにアニメーションする
+	if (!dash.isNow)
+	{
+		if (handWeapon == HandWeapon::Rifle)
+		{
+			anim->SetAnimation(AnimationName::Dash::Rifle);
+		}
+		else
+		{
+			anim->SetAnimation(AnimationName::Dash::Sable);
+		}
+		anim->Play();
+	}
+}
+
+/**
 * ジャンプ可能かチェック
 *
 * @retval true	可能
@@ -224,6 +318,10 @@ void Gundam::MoveAnimation()
 */
 bool Gundam::JumpCheck() const
 {
+	if (dash.isNow)
+	{
+		return false;
+	}
 	return true;
 }
 
@@ -232,6 +330,12 @@ bool Gundam::JumpCheck() const
 */
 void Gundam::Jump(const Vector2& moveAxis, bool isBtn)
 {
+	// ジャンプ可能かチェック
+	if (!JumpCheck())
+	{
+		return;
+	}
+
 	// ジャンプ入力があれば
 	if (isBtn)
 	{
@@ -272,9 +376,12 @@ void Gundam::Jump(const Vector2& moveAxis, bool isBtn)
 		{
 			// 重力を有効
 			rb->isGravity = true;
-		
+
 			// ジャンプ状態を解除
 			jump.isNow = false;
+
+			// アニメーション切り替え
+			IdleAnimation();
 		}
 	}
 }
@@ -282,7 +389,7 @@ void Gundam::Jump(const Vector2& moveAxis, bool isBtn)
 /**
 * ジャンプアニメーションの処理
 */
-void Gundam::JumpAnimation()
+void Gundam::JumpAnimation() const
 {
 	// ジャンプしてない場合のみアニメーションを再生する
 	if (!jump.isNow)
@@ -313,4 +420,29 @@ void Gundam::JumpAnimation()
 		}
 		anim->Play();
 	}
+}
+
+/**
+* ビームライフル射撃ができるかチェック
+*
+* @retval true	可能
+* @retval false	不可能
+*/
+bool Gundam::BeumRifleShotCheck() const
+{
+	return true;
+}
+
+/**
+* ビームライフル射撃処理
+*/
+void Gundam::BeumRifleShot(bool isBtn)
+{
+}
+
+/**
+* ビームライフル射撃アニメーションの処理
+*/
+void Gundam::BeumRifleShotAnimaion() const
+{
 }
