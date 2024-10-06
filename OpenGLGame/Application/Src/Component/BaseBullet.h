@@ -16,6 +16,14 @@ protected:
 	*/
 	BaseBullet() = default;
 
-private:
+protected:
 
+	// 与えるダメージ
+	float damage = 0;
+
+	// 速度
+	float speed = 0;
+
+	// 生成されてから消えるまでの時間
+	float destroyTime = 0;
 };

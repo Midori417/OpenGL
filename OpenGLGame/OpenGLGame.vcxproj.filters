@@ -274,12 +274,6 @@
     <Filter Include="Application\Component\Camera">
       <UniqueIdentifier>{e0a24d24-1bfe-479a-a749-7cc258843320}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Application\Component\Weapon">
-      <UniqueIdentifier>{d987fdcb-253c-44ef-a3a7-dbc764407f7e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Application\Component\Weapon\Bullet">
-      <UniqueIdentifier>{df1b7d91-b08a-48ec-9c61-21990cc9c72f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Application\Component\Map">
       <UniqueIdentifier>{4e259a5b-8e1b-4f37-96d6-49f5ca9f7d17}</UniqueIdentifier>
     </Filter>
@@ -294,6 +288,18 @@
     </Filter>
     <Filter Include="Application\Component\Pilot\Human">
       <UniqueIdentifier>{da2bc426-ac67-4c57-87bd-c555e34fd02c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Armed">
+      <UniqueIdentifier>{d987fdcb-253c-44ef-a3a7-dbc764407f7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Armed\Bullet">
+      <UniqueIdentifier>{94bacb77-81b2-4b65-877b-6e95e15e310a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Armed\Bullet\BaseBullet">
+      <UniqueIdentifier>{df1b7d91-b08a-48ec-9c61-21990cc9c72f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application\Component\Armed\Bullet\Homing">
+      <UniqueIdentifier>{4af37d45-5743-4f9b-878e-a6e89b28e789}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -513,9 +519,6 @@
     <ClCompile Include="Application\Src\Component\ImageNum.cpp">
       <Filter>Application\Component\UI</Filter>
     </ClCompile>
-    <ClCompile Include="Application\Src\Component\BaseBullet.cpp">
-      <Filter>Application\Component\Weapon\Bullet</Filter>
-    </ClCompile>
     <ClCompile Include="Application\Src\Component\MapRangeLimit.cpp">
       <Filter>Application\Component\Map</Filter>
     </ClCompile>
@@ -530,6 +533,9 @@
     </ClCompile>
     <ClCompile Include="Application\Src\Component\Ms\GroundCheck.cpp">
       <Filter>Application\Component\Ms</Filter>
+    </ClCompile>
+    <ClCompile Include="Application\Src\Component\HomingBullet.cpp">
+      <Filter>Application\Component\Armed\Bullet\Homing</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -861,7 +867,7 @@
       <Filter>Application\Component\UI</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Component\BaseBullet.h">
-      <Filter>Application\Component\Weapon\Bullet</Filter>
+      <Filter>Application\Component\Armed\Bullet\BaseBullet</Filter>
     </ClInclude>
     <ClInclude Include="Application\Src\Component\MapRangeLimit.h">
       <Filter>Application\Component\Map</Filter>
@@ -880,6 +886,9 @@
     </ClInclude>
     <ClInclude Include="Application\Src\Component\Ms\GroundCheck.h">
       <Filter>Application\Component\Ms</Filter>
+    </ClInclude>
+    <ClInclude Include="Application\Src\Component\HomingBullet.h">
+      <Filter>Application\Component\Armed\Bullet\Homing</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

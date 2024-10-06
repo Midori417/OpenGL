@@ -87,10 +87,10 @@ void BattleManager::Awake()
 		}
 	}
 
-	audioBGM = OwnerObject()->AddComponent<AudioSource>();
-	audioBGM->SetSoundFilename(GameSound::BGM::battle01);
-	audioBGM->isLooop = true;
-	audioBGM->Play();
+	//audioBGM = OwnerObject()->AddComponent<AudioSource>();
+	//audioBGM->SetSoundFilename(GameSound::BGM::battle01);
+	//audioBGM->isLooop = true;
+	//audioBGM->Play();
 }
 
 /**

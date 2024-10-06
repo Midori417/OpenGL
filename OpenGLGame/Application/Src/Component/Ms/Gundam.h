@@ -4,6 +4,7 @@
 #ifndef GUNDAM_H_INCLUDED
 #define GUNDAM_H_INCLUDED
 #include "../BaseMs.h"
+#include "FGEngine/Math/Vector3.h"
 
 /**
 * ガンダム
@@ -42,7 +43,15 @@ private: // 便利
 private: // アイドル
 
 	/**
-	* アイドル状態にする
+	* アイドルアニメーションを再生可能かチェック
+	*
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool IdleAnimationCheck() const;
+
+	/**
+	* アイドルアニメーションの処理
 	*/
 	void IdleAnimation() const;
 
@@ -60,6 +69,14 @@ private: // 移動
 	* 移動処理
 	*/
 	void Move(const Vector2& moveAxis);
+
+	/**
+	* 移動アニメーションを再生可能かチェック
+	* 
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool MoveAnimationCheck() const;
 
 	/**
 	* 移動アニメーションの処理
@@ -82,9 +99,17 @@ private: // ダッシュ
 	void Dash(const Vector2& moveAxis, bool isBtn);
 
 	/**
+	* ダッシュアニメーションを再生可能かチェック
+	*
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool DashAnimationCheck() const;
+
+	/**
 	* ダッシュアニメーションの処理
 	*/
-	void DashAnimation();
+	void DashAnimation() const;
 
 private: // ジャンプ
 
@@ -102,11 +127,50 @@ private: // ジャンプ
 	void Jump(const Vector2& moveAxis, bool isBtn);
 
 	/**
+	* ジャンプアニメーションを再生可能かチェック
+	*
+	* @retval true	可能
+	* @retval false	不可能
+	*/
+	bool JumpAnimationCheck() const;
+
+	/**
 	* ジャンプアニメーションの処理
 	*/
 	void JumpAnimation() const;
 
 private: // ビームライフル射撃
+
+	/**
+	* ビームライフル構造体
+	*/
+	struct BeumRifle
+	{
+		// 弾
+		int amo = 0;
+
+		// 最大弾
+		int amoMax = 0;
+
+		// オブジェクト
+		GameObjectPtr bullet;
+
+		// 弾発射タイミング(アニメーションが再生されてから)
+		const float shotTime = 0.2f;
+
+		// 弾生成位置
+		const Vector3 shotPos = Vector3(0, 0, 5);
+
+		// 射撃中
+		bool isNow = false;
+
+		// 弾が発射したか
+		bool isShot = false;
+
+		// バックショットしているか
+		bool isBackShot = false;
+	};
+	BeumRifle beumRifle;
 
 	/**
 	* ビームライフル射撃ができるかチェック
@@ -123,21 +187,24 @@ private: // ビームライフル射撃
 
 	/**
 	* ビームライフル射撃アニメーションの処理
+	* 
+	* @param perY	垂直Y
+	* @param dot	内積
 	*/
-	void BeumRifleShotAnimaion() const;
+	void BeumRifleShotAnimaion();
 
 private:
 
 	/**
 	* 持っている武器
 	*/
-	enum class HandWeapon
+	enum class HandArmed
 	{
 		Rifle,
 
 		Sable
 	};
-	HandWeapon handWeapon = HandWeapon::Rifle;
+	HandArmed handArmed = HandArmed::Rifle;
 };
 
 #endif // !GUNDAM_H_INCLUDED

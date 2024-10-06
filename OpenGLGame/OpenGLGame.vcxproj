@@ -150,7 +150,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application\Src\Application.cpp" />
-    <ClCompile Include="Application\Src\Component\BaseBullet.cpp" />
     <ClCompile Include="Application\Src\Component\BaseMs.cpp" />
     <ClCompile Include="Application\Src\Component\BattleManager.cpp" />
     <ClCompile Include="Application\Src\Component\BattleSettingManager.cpp" />
@@ -158,6 +157,7 @@
     <ClCompile Include="Application\Src\Component\CameraManager.cpp" />
     <ClCompile Include="Application\Src\Component\CpuPilot.cpp" />
     <ClCompile Include="Application\Src\Component\FadeOut.cpp" />
+    <ClCompile Include="Application\Src\Component\HomingBullet.cpp" />
     <ClCompile Include="Application\Src\Component\HumanPilot.cpp" />
     <ClCompile Include="Application\Src\Component\ImageBlinking.cpp" />
     <ClCompile Include="Application\Src\Component\ImageNum.cpp" />
@@ -238,6 +238,7 @@
     <ClInclude Include="Application\Src\Component\CameraManager.h" />
     <ClInclude Include="Application\Src\Component\CpuPilot.h" />
     <ClInclude Include="Application\Src\Component\FadeOut.h" />
+    <ClInclude Include="Application\Src\Component\HomingBullet.h" />
     <ClInclude Include="Application\Src\Component\HumanPilot.h" />
     <ClInclude Include="Application\Src\Component\ImageBlinking.h" />
     <ClInclude Include="Application\Src\Component\ImageNum.h" />
